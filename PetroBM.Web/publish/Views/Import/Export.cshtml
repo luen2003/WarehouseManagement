@@ -1,0 +1,168 @@
+﻿@model PetroBM.Web.Models.ImportModel
+@using PetroBM.Common.Util
+
+@{
+    ViewBag.Title = "Số lượng hàng xuất trong quá trình nhập";
+}
+
+@using (Html.BeginForm("DoExport", "Import", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ImportInfo.Id)
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                Bể xuất
+            </label>
+            <div class="col-xs-8">
+                @*@if (Model.TankList.Any())
+                {
+                    @Html.DropDownListFor(model => model.TankId, Model.TankList, "Chọn...", new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.TankId, new SelectList(new List<string>()), "Chọn... ", new { @class = "form-control" })
+                }*@
+
+                @if (Model.TankList.Any())
+                {
+                    @Html.DropDownListFor(model => model.ListTankId, new SelectList(Model.TankList, "TankId", "TankName", "") as SelectList, "Chọn... ", new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.ListTankId, new SelectList(new List<string>()), "Chọn... ", new { @class = "form-control" })
+                }
+
+
+            </div>
+        </div>
+
+        @for (int i = 0; i < Model.ListClock.Count(); i++)
+        {
+            <div class="form-group">
+                <label class="control-label col-xs-4 col-sm-3">
+                    @Model.ListClock[i].ClockName
+                </label>
+                <div class="col-xs-4">
+                    <input value='' type='text' name='ListClockExport[@i].StartVtt' class="start-export form-control input-number"></input>
+                    @*@Html.EditorFor(model => model.ListClockExport[i].StartVtt, new { htmlAttributes = new { @class = "start-export form-control input-number" } })*@
+                    @Constants.DIMENSION_L
+                    @*@Html.ValidationMessageFor(model => model.ListClockExport[i].StartVtt, "", new { @class = "text-danger" })*@
+                </div>
+                <div class="col-xs-4">
+                    <input value='' type='text' name='ListClockExport[@i].EndVtt' class="end-export form-control input-number"></input>
+                    @*@Html.EditorFor(model => model.ListClockExport[i].EndVtt, new { htmlAttributes = new { @class = "end-export form-control input-number" } })*@
+                    @Constants.DIMENSION_L
+                    @*@Html.ValidationMessageFor(model => model.ListClockExport[i].EndVtt, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ExportVtt)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ExportVtt, new { htmlAttributes = new { @class = "total-export form-control input-number" } })
+                @Html.ValidationMessageFor(model => model.ExportVtt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ExportV15)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ExportV15, new { htmlAttributes = new { @class = "form-control input-number" } })
+                @Html.ValidationMessageFor(model => model.ExportV15, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-offset-4 col-sm-offset-3 col-xs-8">
+                <input type="button" value="Lưu" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary"
+                       onclick="location.href='@Url.Action("Edit",new { id = Model.ImportInfo.Id })'" />
+            </div>
+        </div>
+    </div>
+}
+
+@section style{
+    @Styles.Render("~/Content/bootstrap-select")
+
+    <style>
+        .form-control {
+            display: inline;
+        }
+    </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/input-validate");
+    <script>
+        var sum = 0, startSum = 0, endSum = 0;
+
+        $(document).ready(function () {
+            SetStartExport();
+            SetEndExport();
+
+            $('.start-export').blur(function () {
+                SetStartExport();
+                SetTotalExport();
+            });
+
+            $('.end-export').blur(function () {
+                SetEndExport();
+                SetTotalExport();
+            });
+
+            AddCommas();
+
+            $('.btn-success').click(function (e) {
+
+                $('.input-number').each(function (i, obj) {
+                    $(this).val($(this).val().replace(/,/g, ''));
+                });
+
+                if($('form').valid()){
+                    $('form').submit();
+                }else{
+                    AddCommas();
+                };
+            });
+        });
+
+        function SetStartExport() {
+            startSum = 0;
+            $('.start-export').each(function () {
+                startSum += Number($(this).val().replace(/,/g, ''));
+            });
+        }
+
+        function SetEndExport() {
+            endSum = 0;
+            $('.end-export').each(function () {
+                endSum += Number($(this).val().replace(/,/g, ''));
+            });
+        }
+
+        function SetTotalExport() {
+            sum = endSum - startSum;
+            $('.total-export').val(sum).change();
+        }
+
+        function AddCommas(){
+             $('.input-number').each(function (i, obj) {
+                    setInputNumber(obj);
+                });
+
+            $('#ExportVtt').on('change',function(){
+                setInputNumber($(this));
+            });
+        }
+    </script>
+}

@@ -1,0 +1,54 @@
+﻿@model PVOil.Models.ReportModel
+@using PVOil.Common.Util;
+@{
+    ViewBag.Title = "XuatNhap";
+}
+
+<h2>XuatNhap</h2>
+
+@using (Html.BeginForm())
+{
+<div class="row">
+    <div class='col-sm-4'>
+        <div class="row">
+            <label class="control-label col-xs-4">Ngày bắt đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Ngày kết thúc</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4"></label>
+            <div class="form-group col-xs-8">
+                <input type="submit" value="Xác nhận" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
+   
+</div>
+}
+
+@section scripts{
+<script>
+     $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY hh:mm A' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY hh:mm A' });
+        });
+</script>
+}

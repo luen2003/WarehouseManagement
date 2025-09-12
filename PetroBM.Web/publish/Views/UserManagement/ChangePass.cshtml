@@ -1,0 +1,36 @@
+﻿@model PetroBM.Web.Models.UserModel
+
+@{
+    ViewBag.Title = "Cấp mới mật mã";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.User.UserName)
+
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.LabelFor(Model => Model.User.Passwd)
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.User.Passwd, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User.Passwd, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" 
+                       onclick="location.href='@Url.Action("Edit",new {userName = Model.User.UserName })'" />
+            </div>
+        </div>
+    </div>
+}
+

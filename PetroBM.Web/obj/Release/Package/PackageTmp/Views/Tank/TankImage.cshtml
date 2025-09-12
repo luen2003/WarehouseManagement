@@ -1,0 +1,61 @@
+﻿@model PetroBM.Web.Models.TankModel
+@using PetroBM.Common.Util;
+
+<div class="tank-image" style="width:@(Model.RatioImage*240)px; height:@(Model.RatioImage*240)px;
+      font-size:@(Model.RatioImage*15)px; color: blue;">
+    @{
+        double? ph = 0, wh = 0, fr = 0, tl = 0;
+        var pcolor = "";
+
+        if (Model.TankLive != null)
+        {
+            ph = (Model.TankLive.ProductLevel / Model.Tank.HighMax) * 130 * Model.RatioImage;
+            wh = (Model.TankLive.WaterLevel / Model.Tank.HighMax) * 130 * Model.RatioImage;
+            fr = Model.TankLive.FlowRate;
+            tl = Model.TankLive.TotalLevel;
+        }
+
+        if (Model.Tank.MProduct != null)
+        {
+            pcolor = Model.Tank.MProduct.Color;
+        }
+
+        <div class="flow-rate" style="position : absolute; text-align: right;
+                 width:@(Model.RatioImage*50)px; bottom:@(Model.RatioImage*80)px; left:@(Model.RatioImage*35)px">
+            @NumberUtil.FormatNumber(fr, 2)
+            <br />@Html.Raw(Constants.DIMENSION_FLOW)
+        </div>
+
+        <div class="product-name" style="position : absolute;
+                 width:@(Model.RatioImage*120)px; bottom:@(Model.RatioImage*145)px; left:@(Model.RatioImage*110)px">
+            @(NumberUtil.FormatNumber(tl, 2) + Constants.DIMENSION_MM)
+        </div>
+
+        <div class="tank-barem" style="height:@(Model.RatioImage*130)px; width:@(Model.RatioImage*20)px;
+              bottom:@(Model.RatioImage*15)px; left:@(Model.RatioImage*110)px">
+            <div class="tank-product" style="height:@(ph.ToString()+"px");
+                 bottom: @(wh.ToString()+"px"); background: @pcolor"></div>
+            <div class="tank-water" style="height:@(wh.ToString()+"px")"></div>
+        </div>
+
+        if (fr > 0)
+        {
+            <img class="product-up" src="~/Content/images/icon/arrow-up.png" style="display: block;
+                 width:@(Model.RatioImage*18)px; bottom:@(Model.RatioImage*80)px; left:@(Model.RatioImage*90)px" />
+        }
+        else if (fr < 0)
+        {
+            <img class="product-down" src="~/Content/images/icon/arrow-down.png" style="display: block;
+                 width:@(Model.RatioImage*18)px; bottom:@(Model.RatioImage*80)px; left:@(Model.RatioImage*90)px" />
+        }
+
+        if (Model.Alarm != null)
+        {
+            <div class="text-alarm" style="position : absolute;
+                         width:@(Model.RatioImage*60)px; bottom:@(Model.RatioImage*75)px; left:@(Model.RatioImage*133)px">
+                @Html.DisplayFor(model => model.Alarm.Issue)
+            </div>
+        }
+    }
+</div>
+

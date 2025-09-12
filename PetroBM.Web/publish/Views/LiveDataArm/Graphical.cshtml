@@ -1,0 +1,222 @@
+﻿@model PetroBM.Web.Models.LiveDataArmModel
+
+
+@{
+    ViewBag.Title = "Trực quan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="visual-ware-house">
+    @*<div>
+            <div class="col-md-1">
+                <label>Hiển thị họng</label>
+            </div>
+
+            <div class="col-md-11 form-group">
+                <select id="armname">
+                    @foreach (var item in Model.ListConfigArm)
+                {
+                        <option>@Html.DisplayFor(modelItem => item.ArmName)</option>
+                    }
+
+                </select>
+            </div>
+        </div>*@
+    @foreach (var item in Model.ListLiveDataArm)
+    {
+        <div class="arm-display col-md-6">
+            <div> <label>Họng <span id="armno-@Html.DisplayFor(modelItem => item.ArmNo)">@Html.DisplayFor(modelItem => item.ArmNo)</span></label> </div>
+            @*<div class="arm-info"> <label>LL kế</label> <label> Sensor T</label> <label> Status</label></div>*@
+            <div class="info-warehouse">
+                <div class="arm-visual"></div>
+                <div class="pump-2"><span class="info-txt" id="flowrate-2-txt-@Html.DisplayFor(modelItem => item.ArmNo)"></span></div>
+                <div class="pipe-line-inactive-2" id="pipe-@Html.DisplayFor(modelItem => item.ArmNo)"></div>
+                <div class="flowmeter-2 tool-tip">
+                    @*<span class="flowmeter-2-txt tooltip-text"  id="flowmeter-2-txt-@Html.DisplayFor(modelItem => item.ArmNo)"></span>*@
+                    <span class="info-txt" id="flowmeter-2-txt-@Html.DisplayFor(modelItem => item.ArmNo)"></span>
+                    <img src="~/Content/images/icon/u327.png" width="60" />
+                </div>
+                <div class="status-2">
+                    <span id="status-2-@Html.DisplayFor(modelItem => item.ArmNo)"></span>
+                </div>
+                <div class="temp-meter-2 tool-tip">
+                    @*<span class="temp-2-txt tooltip-text" id="temp-2-txt-@Html.DisplayFor(modelItem => item.ArmNo)"></span>*@
+                    <span class="info-txt" id="temp-2-txt-@Html.DisplayFor(modelItem => item.ArmNo)"></span>
+                    <img src="~/Content/images/icon/Temp-meter.gif" width="30" />
+                </div>
+                <div class="valve-2">
+                    <span class="info-txt" id="valve-status"></span>
+                    <img src="~/Content/images/icon/u329.png" width="60" />
+                </div>
+                
+                <div class="loading-arm-2"><img src="~/Content/images/icon/loading-arm-2.gif" /></div>
+                <div id="vehicle-img-@Html.DisplayFor(modelItem => item.ArmNo)" class="tool-tip">
+                    <span class="" id="vehicle-text-@Html.DisplayFor(modelItem => item.ArmNo)"></span>
+                    <span id="progress-bar-@Html.DisplayFor(modelItem => item.ArmNo)"></span>
+                </div>
+                <div class="" id="dsc-@Html.DisplayFor(modelItem => item.ArmNo)">
+                    <span><img src="~/Content/images/icon/dsc.gif" width="80" /></span>
+                </div>
+                <div class="pipe-corner-2"><img src="~/Content/images/icon/Pipe-conner1.gif" width="27" /></div>
+                <div id="mix-arm-@Html.DisplayFor(modelItem => item.ArmNo)">
+                    <div class="pipe-line-inactive-small-2" id="pipe-small-@Html.DisplayFor(modelItem => item.ArmNo)"></div>
+                    <div class="connecter-2"><img src="~/Content/images/icon/connecter.gif" width="32" /></div>
+                    
+                    <div class="pump-small-2"><span class="info-txt" id="flowrate-small-2-txt-@Html.DisplayFor(modelItem => item.ArmNo)"></span></div>
+                    <div class="flowmeter-small-2 tool-tip">
+                        @*<span class="flowmeter-small-2-txt tooltip-text" id="flowmeter-small-2-txt-@Html.DisplayFor(modelItem => item.ArmNo)"> </span>*@
+                        <span class="info-txt" id="flowmeter-small-2-txt-@Html.DisplayFor(modelItem => item.ArmNo)"></span>
+                        <img src="~/Content/images/icon/u327.png" width="50" />
+                    </div>
+                    
+                    <div class="temp-meter-small-2 tool-tip"><span class="temp-small-txt tooltip-text" id="temp-small-2-txt-@Html.DisplayFor(modelItem => item.ArmNo)"></span><img src="~/Content/images/icon/Temp-meter.gif" width="20" /></div>
+                    <div class="valve-small-2"><img src="~/Content/images/icon/u329.png" width="50" /></div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            SearchData();
+
+            setInterval(function () {
+                SearchData();
+
+            }, 5000);
+            $(document.body).on("keydown", this, function (event) {
+                if (event.keyCode == 116) {
+                    alert = function () { };
+                }
+            });
+            function SearchData() {
+
+                var armNo;
+                $.ajax({
+                    url: '/LoadingArm/GetSearchingData/',
+                    type: 'POST',
+                    data: {
+                        "warehousecode": @Html.Raw(Json.Encode(@Model.WareHouseCode)),
+                        "grouparm":  @Html.Raw(Json.Encode(@Model.ConfigArmGrpId)),
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (i, item) {
+                            if (item.Flowrate == 0 || item.Flowrate == null) {
+                                document.getElementById("pipe-" + item.ArmNo).className = "pipe-line-inactive-2";
+                            } else {
+                                document.getElementById("pipe-" + item.ArmNo).className = "pipe-line-active-2";
+                            }
+
+                            if (item.Flowrate_E == 0 || item.Flowrate_E == null) {
+                                document.getElementById("pipe-small-" + item.ArmNo).className = "pipe-line-inactive-small-2";
+                                document.getElementById('flowrate-2-txt-' + item.ArmNo).innerHTML = item.Flowrate;
+                            } else {
+                                document.getElementById("pipe-small-" + item.ArmNo).className = "pipe-line-active-small-2";
+                                document.getElementById('flowrate-2-txt-' + item.ArmNo).innerHTML = item.Flowrate_Base;
+                            }
+                            document.getElementById('temp-2-txt-' + item.ArmNo).innerHTML = item.CurrentTemperature;
+
+                            //document.getElementById('temp-small-2-txt-'+armNo).innerHTML = item.CurrentTemperature;
+                            //document.getElementById('flowmeter-small-2-txt-'+armNo).innerHTML = item.Flowrate_E;
+
+                            //if (item.V_Actual == null || item.V_Actual == 0) {
+                            //    document.getElementById('vehicle-img-'+ item.ArmNo).className = "hidden";
+                            //} else {
+                            //    document.getElementById('vehicle-img-'+ item.ArmNo).className = "tanker-truck-2 tool-tip";
+                            //    //document.getElementById('tanker-truck-text-'+ item.ArmNo).innerHTML = Math.round((item.V_Actual / item.V_Preset) * 100) + "%";  
+                            //    document.getElementById('tanker-truck-text-'+ item.ArmNo).className= "";
+                            //}
+
+                            document.getElementById('flowmeter-2-txt-' + item.ArmNo).innerHTML = item.V_Actual;
+                            document.getElementById('flowrate-small-2-txt-' + item.ArmNo).innerHTML = item.Flowrate_E;
+                            document.getElementById('flowmeter-small-2-txt-' + item.ArmNo).innerHTML = item.V_Actual_E;
+                            if (item.ESD == 0) {
+                                document.getElementById('dsc-' + item.ArmNo).className = "hidden";
+                            } else {
+                                document.getElementById('dsc-' + item.ArmNo).className = "dsc-2";
+                            }
+                            
+                            if(item.Abbreviations.indexOf('E5') || item.Abbreviations.indexOf('e5')){
+                                if (item.MixingRatio == 0 || item.MixingRatio == null) {
+                                    document.getElementById('mix-arm-'+item.ArmNo).className = "hidden";
+                                }else{
+                                    document.getElementById('mix-arm-'+item.ArmNo).className = "";
+                                }
+                            } else {
+                                document.getElementById('mix-arm-'+item.ArmNo).className = "hidden";
+                            }
+
+                            //if (item.MixingRatio == 0 || item.MixingRatio == null) {
+                            //    document.getElementById('mix-arm').className = "hidden";
+                            //} else {
+                            //    document.getElementById('mix-arm').className = "";
+                            //}
+
+                                 
+                            //if (item.MixingRatio == 0 || item.MixingRatio == null) {
+                            //    document.getElementById('mix-arm-'+item.ArmNo).className = "hidden";
+                            //} else {
+                            //    document.getElementById('mix-arm-'+item.ArmNo).className = "";
+                            //}
+
+                            if (item.Flowrate == null || item.Flowrate == 0) {
+                                document.getElementById('vehicle-img-'+item.ArmNo).className = "hidden";
+                            } else{
+                                if(item.CommandType == 1){
+                                    document.getElementById('vehicle-img-'+item.ArmNo).className = "tanker-truck-2 tool-tip";
+                                    document.getElementById('vehicle-text-'+item.ArmNo).innerHTML = Math.round((item.V_Actual / item.V_Preset) * 100) + "%";
+                                    document.getElementById('vehicle-text-'+item.ArmNo).className = "tanker-truck-text-2";
+                                    document.getElementById('progress-bar-'+item.ArmNo).className = "progress-bar-truck-2";
+                                    document.getElementById('progress-bar-'+item.ArmNo).style.width = Math.round((item.V_Actual / item.V_Preset) * 133) + "px";
+
+                                }else if(item.CommandType == 0){
+                                    document.getElementById('vehicle-img-'+item.ArmNo).className = "tanker-ship-2 tool-tip";
+                                    document.getElementById('vehicle-text-'+item.ArmNo).innerHTML = Math.round((item.V_Actual / item.V_Preset) * 100) + "%";
+                                    document.getElementById('vehicle-text-'+item.ArmNo).className = "tanker-ship-text-2";
+                                    document.getElementById('progress-bar-'+item.ArmNo).className = "progress-bar-ship-2";
+                                    document.getElementById('progress-bar-'+item.ArmNo).style.width = Math.round((item.V_Actual / item.V_Preset) * 133) + "px";
+                                }}
+
+
+                            switch (item.Status) {
+                                case 0:
+                                    document.getElementById('status-2-' + item.ArmNo).innerHTML = "Chờ quẹt thẻ";
+                                    break;
+                                case 1:
+                                    document.getElementById('status-2-' + item.ArmNo).innerHTML = "Nhập mã ngăn";
+                                    break;
+                                case 2:
+                                    document.getElementById('status-2-' + item.ArmNo).innerHTML = "Chuẩn bị xuất";
+                                    break;
+                                case 3:
+                                    document.getElementById('status-2-' + item.ArmNo).innerHTML = "Đang xuất";
+                                    break;
+                                case 4:
+                                    document.getElementById('status-2-' + item.ArmNo).innerHTML = "Kết thúc";
+                                    break;
+                                case 5:
+                                    document.getElementById('status-2-' + item.ArmNo).innerHTML = "Dừng ép";
+                                    break;
+                                case 6:
+                                    document.getElementById('status-2-' + item.ArmNo).innerHTML = "Nhập mã lệnh";
+                                    break;
+                                case 7:
+                                    document.getElementById('status-2-' + item.ArmNo).innerHTML = "Nhập serial";
+                                    break;
+                            }
+
+                        })
+                    }
+                });
+
+            }
+        });
+    </script>
+}

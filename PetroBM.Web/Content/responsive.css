@@ -1,0 +1,71 @@
+﻿@media (max-width: 768px) {
+    body {
+        font-size: 12px;
+        padding: 0 10px 10px 10px;
+    }
+
+    header {
+        font-size: x-large;
+    }
+
+    select, input, .bootstrap-select {
+        max-width: 175px;
+    }
+
+    .col-sm-2, .col-sm-10, .col-md-2, .col-md-10 {
+        padding: 0px 0px;
+    }
+
+    .vertical-offset-100 {
+        padding-top: 20px !important;
+    }
+
+    .nav-top {
+        padding: 5px 5px !important;
+    }
+
+    .navbar-toggle {
+        padding: 5px 0px;
+        margin: 0px 0px;
+    }
+
+    .check-data-server {
+        font-size: 14px;
+    }
+
+    .menu {
+        border: none;
+        margin: 0px 0px;
+    }
+           
+    .main {
+        font-size: 11px;
+        padding: 5px 5px;
+    }
+
+    .panel-heading {
+        padding: 5px 5px;
+    }
+
+    .panel-title {
+        font-size: 14px;
+    }
+
+    .panel-body {
+        padding: 10px 10px;
+    }
+
+    .icon-alarm li {
+        float: left;
+        margin-right: 50px;
+    }
+
+    .bottom-right-box {
+        margin-right: -10px;
+        padding-right: 20px;
+    }
+
+    .tbl-header, .tbl-subheader, .box-content {
+        font-size: 11px;
+    }
+}

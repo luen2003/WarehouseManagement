@@ -1,0 +1,174 @@
+﻿@model PetroBM.Web.Models.DriverModel
+
+@{
+    ViewBag.Title = "Tạo thông tin Lái xe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div id="datetimepicker2">
+
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Driver.Name, new { htmlAttributes = new { @class = "form-control", } })
+                @Html.ValidationMessageFor(model => model.Driver.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                <div class='input-group date' id='JBirthDate'>
+                    @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.IdentificationNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Driver.IdentificationNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Driver.IdentificationNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.LicenseDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                <div class='input-group date' id='JLicenseDate'>
+                    @Html.EditorFor(model => model.LicenseDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.IssuedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Driver.IssuedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Driver.IssuedBy, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.DriversLicense, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Driver.DriversLicense, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Driver.DriversLicense, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.DriversLicenseExpire, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                <div class='input-group date' id='JDriversLicenseExpire'>
+                    @Html.EditorFor(model => model.DriversLicenseExpire, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.SavetyCertificates, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Driver.SavetyCertificates, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Driver.SavetyCertificates, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.SavetyCertificatesExpire, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                <div class='input-group date' id='JSavetyCertificatesExpire'>
+                    @Html.EditorFor(model => model.SavetyCertificatesExpire, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.FireTrainingLicense, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Driver.FireTrainingLicense, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Driver.FireTrainingLicense, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Driver.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Driver.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Driver.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Tạo mới" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#JLicenseDate').datetimepicker({ format: 'DD/MM/YYYY' });
+            $('#JBirthDate').datetimepicker({ format: 'DD/MM/YYYY' });
+            $('#JDriversLicenseExpire').datetimepicker({ format: 'DD/MM/YYYY' });
+            $('#JSavetyCertificatesExpire').datetimepicker({ format: 'DD/MM/YYYY' });
+            //$(".btn-success").click( function(){
+            //    var strBirthDate = $("#BirthDate").val();
+            //    if (strBirthDate == null || strBirthDate=="") {
+            //        alert("Nhập ngày sinh không đúng");
+            //        return false;
+            //    }
+            //    var strDriversLicenseExpire = $("#DriversLicenseExpire").val();
+            //    if (strDriversLicenseExpire == null || strDriversLicenseExpire=="") {
+
+            //        alert("Thời hạn lái xe không đúng");
+            //        return false;
+            //    }
+            //    var strSavetyCertificatesExpire = $("#SavetyCertificatesExpire").val();
+            //    if (strSavetyCertificatesExpire == null || strSavetyCertificatesExpire == "")
+            //    {
+            //        alert("Ngày hết hạn lái xe không đúng");
+            //        return false;
+            //    }
+
+            //    $("#BirthDate").val(convertDate(strBirthDate));
+            //    $("#DriversLicenseExpire").val(convertDate(strDriversLicenseExpire));
+            //    $("#SavetyCertificatesExpire").val(convertDate(strSavetyCertificatesExpire));
+
+            //    return true;
+            //});
+        });
+
+        function convertDate(strsub) {
+            var str = strsub.substring(3, 5);
+            str += "/" + strsub.substring(0, 2);
+            str += "/" + strsub.substring(6, 10);
+            return str;
+        }
+    </script>
+
+
+}
+

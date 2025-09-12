@@ -1,0 +1,690 @@
+﻿@model PetroBM.Web.Models.TankGroupModel
+@using PetroBM.Common.Util;
+@using PetroBM.Domain.Entities;
+@using PetroBM.Web.Models;
+
+@{
+    ViewBag.Title = "Kho: " + @Session[Constants.Session_WareHouseName] + " > Nhóm bể: " + Model.TankGrp.TanktGrpName + " > Dạng bảng ";
+}
+
+<div class="table-data">
+    <table class="table-header table table-striped table-reflow">
+        <thead>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Tank.TankName)
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.Product.ProductName)
+                </td>
+
+                @{
+                    foreach (var id in Model.ListSelectedField)
+                    {
+                        switch (int.Parse(id))
+                        {
+                            case (int)ConfigurationModel.FieldNames.WaterLevel:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.WaterLevel)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.ProductLevel:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.ProductLevel)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.TotalLevel:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.TotalLevel)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.WaterVolume:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.WaterVolume)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.ProductVolume:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.ProductVolume)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.TotalVolume:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.TotalVolume)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.TankEmpty:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.TankEmpty)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.AvgTemperature:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.AvgTemperature)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.Temperature1:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Temperature1)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.Temperature2:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Temperature2)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.Temperature3:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Temperature3)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.Temperature4:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Temperature4)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.Temperature5:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Temperature5)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.Temperature6:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Temperature6)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.Temperature7:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Temperature7)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.Temperature8:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Temperature8)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.Temperature9:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Temperature9)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.Temperature10:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Temperature10)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.LevelRate:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.LevelRate)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.FlowRate:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.FlowRate)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.AvailableVolume:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.AvailableVolume)
+                                </td>
+
+                                break;
+
+                            case (int)ConfigurationModel.FieldNames.Mass:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.Mass)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.MassRate:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.MassRate)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.ProductVolume15:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.ProductVolume15)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.VCF:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.VCF)
+                                </td>
+
+                                break;
+                            case (int)ConfigurationModel.FieldNames.WCF:
+
+                                <td>
+                                    @Html.LabelFor(model => model.TankLive.WCF)
+                                </td>
+
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            </tr>
+
+        </thead>
+    </table>
+
+    <div class="table-content">
+        <table class="table table-striped table-reflow">
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+
+                    @{
+                        foreach (var id in Model.ListSelectedField)
+                        {
+                            switch (int.Parse(id))
+                            {
+                                case (int)ConfigurationModel.FieldNames.WaterLevel:
+
+                                    <td>
+                                        @Constants.DIMENSION_MM
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.ProductLevel:
+                                    <td>
+                                        @Constants.DIMENSION_MM
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.TotalLevel:
+                                    <td>
+                                        @Constants.DIMENSION_MM
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.WaterVolume:
+                                    <td>
+                                        @Constants.DIMENSION_L
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.ProductVolume:
+                                    <td>
+                                        @Constants.DIMENSION_L
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.TotalVolume:
+                                    <td>
+                                        @Constants.DIMENSION_L
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.TankEmpty:
+                                    <td>
+                                        @Constants.DIMENSION_L
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.AvgTemperature:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.Temperature1:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.Temperature2:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.Temperature3:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.Temperature4:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.Temperature5:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.Temperature6:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.Temperature7:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.Temperature8:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.Temperature9:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.Temperature10:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.LevelRate:
+                                    <td>
+                                        @Constants.DIMENSION_LEVEL_RATE
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.FlowRate:
+                                    <td>
+                                        @Html.Raw(Constants.DIMENSION_FLOW)
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.AvailableVolume:
+                                    <td>
+                                        @Constants.DIMENSION_L
+                                    </td>
+
+                                    break;
+
+                                case (int)ConfigurationModel.FieldNames.Mass:
+                                    <td>
+                                        @Constants.DIMENSION_MASS
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.MassRate:
+                                    <td>
+                                        @Constants.DIMENSION_MASS_RATE
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.ProductVolume15:
+                                    <td>
+                                        @Constants.DIMENSION_L
+                                    </td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.VCF:
+
+                                    <td></td>
+
+                                    break;
+                                case (int)ConfigurationModel.FieldNames.WCF:
+
+                                    <td></td>
+
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                </tr>
+
+                @{
+                    foreach (var item in Model.Tanks)
+                    {
+                        if (item.DeleteFlg == Constants.FLAG_OFF)
+                        {
+                            var tankLive = item.MTankLives.OrderByDescending(tl => tl.InsertDate).FirstOrDefault();
+                            if (tankLive == null)
+                            {
+                                tankLive = new MTankLive();
+                            }
+                            <tr>
+                                <td>
+                                    @item.TankName
+                                </td>
+                                <td>
+                                    @*@if (null != item.MProduct)
+                                    {
+                                        @item.MProduct.ProductName
+                                    }*@
+
+                                    @foreach (var it in Model.Products)
+                                    {
+                                        if (it.ProductId == item.ProductId)
+                                        {
+                                            @it.ProductName 
+                                        }
+                                    }
+                                </td>
+                                @{
+                                    foreach (var id in Model.ListSelectedField)
+                                    {
+                                        switch (int.Parse(id))
+                                        {
+                                            case (int)ConfigurationModel.FieldNames.WaterLevel:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.WaterLevel, 2)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.ProductLevel:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.ProductLevel, 2)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.TotalLevel:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.TotalLevel, 2)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.WaterVolume:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.WaterVolume, 2)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.ProductVolume:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.ProductVolume, 2)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.TotalVolume:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.TotalVolume, 2)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.TankEmpty:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.TankEmpty, 2)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.AvgTemperature:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.AvgTemperature, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.Temperature1:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Temperature1, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.Temperature2:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Temperature2, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.Temperature3:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Temperature3, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.Temperature4:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Temperature4, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.Temperature5:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Temperature5, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.Temperature6:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Temperature6, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.Temperature7:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Temperature7, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.Temperature8:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Temperature8, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.Temperature9:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Temperature9, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.Temperature10:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Temperature10, 1)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.LevelRate:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.LevelRate, 3)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.FlowRate:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.FlowRate, 2)
+                                                    @if (tankLive.FlowRate > 0)
+                                                    {
+                                                        <img class="product-up" src="~/Content/images/icon/arrow-up.png" style="width: 13px; float: right;" />
+                                                    }
+                                                    else if (tankLive.FlowRate < 0)
+                                                    {
+                                                        <img class="product-down" src="~/Content/images/icon/arrow-down.png" style="width: 13px; float: right;" />
+                                                    }
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.AvailableVolume:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.AvailableVolume, 2)
+                                                </td>
+
+                                                break;
+
+                                            case (int)ConfigurationModel.FieldNames.Mass:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.Mass, 2)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.MassRate:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.MassRate, 2)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.ProductVolume15:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.ProductVolume15, 2)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.VCF:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.VCF, 5)
+                                                </td>
+
+                                                break;
+                                            case (int)ConfigurationModel.FieldNames.WCF:
+
+                                                <td>
+                                                    @NumberUtil.FormatNumber(tankLive.WCF, 5)
+                                                </td>
+
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                }
+                            </tr>
+                                        }
+                                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section style{
+    <style>
+        .table-header {
+            width: auto !important;
+            float: left;
+        }
+
+        .table-content {
+            margin: 0px 0px 30px 140px;
+            overflow-x: auto;
+        }
+
+        .table-reflow thead {
+            float: left;
+            width: 140px;
+        }
+
+        .table-reflow tbody {
+            display: flex;
+            white-space: nowrap;
+        }
+
+        .table-reflow tr {
+            float: left;
+        }
+
+            .table-reflow tr td,
+            .table-reflow tr td {
+                line-height: 25px;
+                min-height: 25px;
+                height: 25px;
+                display: block !important;
+            }
+    </style>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            setInterval(function () {
+                $.ajax({
+                    url: '@(Url.Action("Table"))',
+                    type: 'GET',
+                    dataType: 'html',
+                    data: '@Model.TankGrp.TankGrpId',
+                    cache: false,
+                    success: function (data) {
+                        var newData = $(data).find('.table-data').html();
+
+                        $(".table-data").html(newData);
+                    },
+                    error: function (xhr, status, error) {
+                    }
+                });
+            }, 5000);
+
+        });
+    </script>
+}

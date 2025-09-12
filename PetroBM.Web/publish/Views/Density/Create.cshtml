@@ -1,0 +1,95 @@
+﻿@model PetroBM.Web.Models.DensityModel
+@using PetroBM.Common.Util 
+
+@{
+    ViewBag.Title = "Kho: " + @Session[Constants.Session_WareHouseName] + " > Thêm Tỉ trọng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.ArmNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select class="form-control" name="Density.ArmNo" id="ArmNo" onchange="Onchange()">
+                    @foreach (var item in Model.ListConfigArm)
+                    {
+                        <option value="@item.ArmNo">@item.ArmNo</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" id="ListProduct">
+                <select class="form-control" name="Density.ProductCode" id="ProductCode">
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.MixingRatio, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Density.MixingRatio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Density.MixingRatio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.GasDensity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Density.GasDensity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Density.GasDensity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.AlcoholicDensity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Density.AlcoholicDensity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Density.AlcoholicDensity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+
+}
+
+<script type="text/javascript">
+    var lstProduct =@Html.Raw(Json.Encode(@Model.ListProductTemp));
+    var warehouse =  '@Session[Constants.Session_WareHouse]';
+    Onchange();
+
+    function Onchange(){
+        var armno = $("#ArmNo").val();
+        $.post("@Url.Action("GetProductCode", "Density")", { wareHouseCode: warehouse,armNo:armno}, function (data) {
+
+            var strOpt ="<select class='form-control' name='Density.ProductCode' id='ProductCode'>";
+            for (var i = 0; i < lstProduct.length; i++) {
+                for (var j = 0; j < data.length; j++) {
+                    if (lstProduct[i].ProductCode == data[j])
+                    {
+                        strOpt +="<option value=" + lstProduct[i].ProductCode + ">" + lstProduct[i].ProductName  +"</option>";
+                    }
+                }
+            }
+
+            strOpt += "</select>";
+            document.getElementById("ListProduct").innerHTML = strOpt;
+        });
+        return ;
+    }
+</script>
+
+

@@ -1,0 +1,242 @@
+﻿@model PetroBM.Web.Models.AlarmModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util
+
+@{
+    ViewBag.Title = "Danh sách cảnh báo";
+}
+
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian cuối</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Kho</label>
+            <div class="form-group col-xs-8">
+                <select class="form-control" name="WareHouseCoce">
+                    @foreach (var item in Model.WareHouseList)
+                    {
+                        if (item.WareHouseCode == Model.WareHoueCode)
+                        {
+                            <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                        }
+                    }
+
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Loại cảnh báo</label>
+            <div class="form-group col-xs-8">
+                @if (Model.AlarmTypeList.Any())
+                {
+                    @Html.DropDownListFor(model => model.AlarmTypeId,
+                   new SelectList(Model.AlarmTypeList, "TypeId", "TypeName", "") as SelectList, "Chọn tất cả",
+                   new { @class = "form-control", @style = "width:205px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.AlarmTypeId,
+                   new SelectList(new List<string>()), "Chọn... ",
+                   new { @class = "form-control", @style = "width:205px;" })
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-2' style="margin-bottom: 10px">
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+    </div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Ngày
+            </th>
+            <th>
+                Loại cảnh báo
+            </th>
+            <th>
+                Bể
+            </th>
+            <th>
+                Vấn đề
+            </th>
+            <th>
+                Giá trị
+            </th>
+            <th class="text-center">
+                Trạng thái
+            </th>
+            <th>
+                ID
+            </th>
+        </tr>
+    </thead>
+    @{
+        var i = 0;
+        foreach (var item in Model.AlarmList)
+        {
+            i++;
+            if (item.TypeId == Constants.ALARM_TYPE_ERROR)
+            {
+                <tr class="error-record">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsertDate)
+                    </td>
+
+                    @foreach (var it in Model.AlarmTypeList)
+                    {
+                        if (it.TypeId == item.TypeId)
+                        {
+                            <td>
+                                @it.TypeName
+                            </td>
+                        }
+                    }  
+                    
+                    <td>
+                        @foreach (var it in Model.TankList)
+                        {
+                            if (it.TankId ==item.TankId && it.WareHouseCode ==Model.WareHoueCode)
+                            {
+                               @it.TankName 
+                            }
+
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Issue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Value)
+                    </td>
+                    <td class="text-center">
+                        @if (!item.ConfirmFlag)
+                        {
+                            <img class="confirm-alarm" src="~/Content/images/icon/alert.gif"
+                                 data-toggle="modal" data-target="#CommentModal" style="height: 14px;" />
+                        }
+                        else
+                        {
+                            if (!item.SolveFlag)
+                            {
+                                <img class="solve-alarm" src="~/Content/images/icon/fix.png"
+                                     data-toggle="modal" data-target="#CommentModal" style="height: 14px;" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/icon/tick.png" style="height: 14px;" />
+                            }
+                        }
+                        @Html.Hidden("AlarmId", item.AlarmId.ToString())
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.AlarmId.ToString(), "Detail", "Alarm", new { id = item.AlarmId }, null)
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr class="alarm-record">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsertDate)
+                    </td>
+                    @foreach (var it in Model.AlarmTypeList)
+                    {
+                        if (it.TypeId == item.TypeId)
+                        {
+                            <td>
+                                @it.TypeName
+                            </td>
+                        }
+                    }
+
+                    <td>
+                        @foreach (var it in Model.TankList)
+                        {
+                            if (it.TankId == item.TankId && it.WareHouseCode == Model.WareHoueCode)
+                            {
+                                @it.TankName
+                            }
+
+                        }
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Issue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Value)
+                    </td>
+                    <td class="text-center">
+                        @if (!item.ConfirmFlag)
+                        {
+                            <img class="confirm-alarm" src="~/Content/images/icon/alert.gif" 
+                                  data-toggle="modal" data-target="#CommentModal" style="height: 14px;" />
+                        }
+                        else
+                        {
+                            if (!item.SolveFlag)
+                            {
+                                <img class="solve-alarm" src="~/Content/images/icon/fix.png" 
+                                      data-toggle="modal" data-target="#CommentModal" style="height: 14px;" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/icon/tick.png" style="height: 14px;" />
+                            }
+                        }
+                        @Html.Hidden("AlarmId", item.AlarmId.ToString())
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.AlarmId.ToString(), "Detail", "Alarm", new { id = item.AlarmId }, null)
+                    </td>
+                </tr>
+            }
+        }
+    }
+</table>
+<div class="text-center">
+    @Html.PagedListPager(Model.AlarmList, page => Url.Action("Index",
+    new { startDate = Model.StartDate, endDate = Model.EndDate, warehousecode =Model.WareHoueCode, alarmTypeId = Model.AlarmTypeId, page }))
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        });
+    </script>
+}

@@ -1,0 +1,157 @@
+﻿@model PetroBM.Web.Models.PriceModel
+
+@{
+    ViewBag.Title = "Tạo mới bảng giá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm("Create", "Price", FormMethod.Post, new { @name = "frmCreate" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Loại hàng", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select id="ProductType" class="form-control" onchange="ProductChange()">
+                    @foreach (var it in Model.ProductTemps)
+                    {
+                        <option value="@it.ProductCode">@it.ProductName</option>
+                    }
+
+                </select>
+            </div>
+        </div>
+        <div class="form-group" style="display:none">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price.ProductName, htmlAttributes: new { @class = "control-label col-md-2"  })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Price.ProductName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "ProductName" } })
+                    @Html.ValidationMessageFor(model => model.Price.ProductName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price.Abbreviations, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Price.Abbreviations, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "Abbreviations" } })
+                    @Html.ValidationMessageFor(model => model.Price.Abbreviations, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Price.ProductCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "ProductCode" } })
+                    @Html.ValidationMessageFor(model => model.Price.ProductCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price.Unit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="Price.Unit" class="form-control">
+                    <option value="Ltt" selected="selected">Ltt</option>
+                    <option value="L15">L15</option>
+                    <option value="Kg">Kg</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price.AreaPrice1, htmlAttributes: new { @class = "control-label col-md-2 " })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price.AreaPrice1, new { htmlAttributes = new { @class = "form-control input-number" } })
+                @Html.ValidationMessageFor(model => model.Price.AreaPrice1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price.AreaPrice2, htmlAttributes: new { @class = "control-label col-md-2 " })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price.AreaPrice2, new { htmlAttributes = new { @class = "form-control input-number" } })
+                @Html.ValidationMessageFor(model => model.Price.AreaPrice2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price.EnvironmentTax, htmlAttributes: new { @class = "control-label col-md-2 " })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price.EnvironmentTax, new { htmlAttributes = new { @class = "form-control input-number" } })
+                @Html.ValidationMessageFor(model => model.Price.EnvironmentTax, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Tạo mới" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-select")
+    @Scripts.Render("~/bundles/input-validate")
+    <script>
+            var lstProduct =@Html.Raw(Json.Encode(@Model.ProductTemps));
+            Init();
+            function Init()
+            {
+                if (lstProduct.length>0){
+                    document.getElementById("ProductName").value =lstProduct[0].ProductName;
+                    document.getElementById("ProductCode").value =lstProduct[0].ProductCode;
+                    document.getElementById("Abbreviations").value =lstProduct[0].Abbreviations;
+
+                }
+            }
+
+            function ProductChange()
+            {
+                var productcode =$("#ProductType").val();
+
+                for (var i = 0; i < lstProduct.length; i++) {
+
+                    if (lstProduct[i].ProductCode==productcode)
+                    {
+                        document.getElementById("ProductName").value =lstProduct[i].ProductName;
+                        document.getElementById("ProductCode").value =lstProduct[i].ProductCode;
+                        document.getElementById("Abbreviations").value =lstProduct[i].Abbreviations;
+                    }
+                }
+
+            }
+
+
+            AddCommas();
+
+            $('.btn-success').click(function (e) {
+
+                $('.input-number').each(function (i, obj) {
+                    $(this).val($(this).val().replace(/,/g, ''));
+                });
+
+                if ($('frmCreate').valid()) {
+                    $('frmCreate').submit();
+                } else {
+                    AddCommas();
+                };
+            });
+
+            function AddCommas() {
+                $('.input-number').each(function (i, obj) {
+                    setInputNumber(obj);
+                });
+            }
+
+       </script>
+
+}
+
+

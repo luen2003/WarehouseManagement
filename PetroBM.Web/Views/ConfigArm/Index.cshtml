@@ -1,0 +1,194 @@
+﻿@model PetroBM.Web.Models.ConfigArmModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách Họng xuất";
+}
+
+
+@using (Html.BeginForm())
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Kho</label>
+            <div class="form-group col-xs-8">
+                @if (Model.ListWareHouse.Any())
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(Model.ListWareHouse, "WareHouseCode", "WareHouseName", "") as SelectList,
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(new List<string>()), "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;", @value = "@ViewBag.warehouseid" })
+                }
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Tên họng</label>
+            <div class="form-group col-xs-8">
+                @Html.EditorFor(model => model.ArmName, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>
+    <div class='col-sm-5 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Trạng thái kích hoạt</label>
+            <div class="form-group col-xs-8">
+                <select id="ActiveStatus" name="ActiveStatus" class="form-control">
+                    @if (Model.ActiveStatus == 0)
+                    {
+                        <option value="1">Kích hoạt</option>
+                        <option value="0" selected="selected">Chưa kích hoạt</option>
+                        <option value="2">Tất cả </option>
+                    }
+                    @if (Model.ActiveStatus == 1)
+                    {
+                        <option value="1" selected="selected">Kích hoạt</option>
+                        <option value="0" >Chưa kích hoạt</option>
+                        <option value="2">Tất cả </option>
+                    }
+                    @if (Model.ActiveStatus == 2)
+                    {
+                        <option value="1">Kích hoạt</option>
+                        <option value="0">Chưa kích hoạt</option>
+                        <option value="2" selected="selected">Tất cả </option>
+                    }
+
+
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">&nbsp;</label>
+            <div class="form-group col-xs-8">
+                <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfigArm.WareHouseCode)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfigArm.ArmName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfigArm.ArmNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfigArm.ProductCode_1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfigArm.ProductCode_2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfigArm.ProductCode_3)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfigArm.ActiveStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfigArm.TypeExport)
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        @foreach (var item in Model.ListConfigArm)
+        {
+            <tr>
+                <td>
+                    @foreach (var it in Model.ListWareHouse)
+                    {
+                        if (item.WareHouseCode == it.WareHouseCode)
+                        {
+                            @it.WareHouseName
+                       }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArmName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArmNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode_1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode_2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode_3)
+                </td>
+
+                @if (item.ActiveStatus == 1)
+                    {
+                    <td>
+                        Kích hoạt
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        Chưa kích hoạt
+                    </td>
+                }
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeExport)
+                </td>
+                <td>
+                    @Html.ActionLink("Sửa", "Edit", new { id = item.ConfigArmID }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.ConfigArmID }, new { @class = "delete-configarm" })
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+        <div class="text-center">
+            @Html.PagedListPager(Model.ListConfigArm, page => Url.Action("Index", new { page, armName = Model.ArmName, wareHouseCode = Model.WareHouseCode, activeStatus = Model.ActiveStatus }))
+        </div>
+}
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("Create")'" />
+
+<p>
+    @using (Html.BeginForm("Import", "ConfigArm", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="submit" value="Nhập từ file Excel" class="btn btn-primary" />
+        <div class="btn btn-primary">@Html.TextBoxFor(model => model.ImportFile, new { type = "file", accept = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })</div>
+
+    }
+</p>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-configarm').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}
+
+

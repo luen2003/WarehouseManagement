@@ -1,0 +1,111 @@
+﻿@model PetroBM.Web.Models.TankModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách bể";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.LabelFor(Model => Model.Tank.TankId)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.Tank.TankName)
+            </th>
+            <th>
+                Kho
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.Tank.MProduct.ProductName)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.Tank.InsertDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.Tank.InsertUser)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.Tank.UpdateDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.Tank.UpdateUser)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.ListTank)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TankId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TankName)
+            </td>
+            <td>
+                @foreach (var it in Model.ListWareHouse)
+                {
+                    if (it.WareHouseCode == item.WareHouseCode)
+                    {
+                        @it.WareHouseName
+                    }
+                }
+            </td>
+
+            <td>
+                @{ if (null != item.ProductId)
+                    {
+                        @Html.DisplayFor(modelItem => item.MProduct.ProductName)
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsertDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsertUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateUser)
+            </td>
+            <td>
+                @*@Html.ActionLink("Sửa", "Edit", new { id = item.TankId }) |
+                @Html.ActionLink("Xóa", "Delete", new { id = item.TankId}, new { @class = "delete-tank" })*@
+                <a href="/Tank/Edit/?wareHouseCode=@item.WareHouseCode&tankId=@item.TankId">Sửa</a>|
+                <a href="/Tank/Delete/?tankId=@item.TankId&wareHouseCode=@item.WareHouseCode">Xóa</a>
+            </td>
+        </tr>
+                    }
+</table>
+<div class="text-center">
+    @Html.PagedListPager(Model.ListTank, page => Url.Action("Index", new { page }))
+</div>
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("Create")'" />
+</p>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-tank').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}

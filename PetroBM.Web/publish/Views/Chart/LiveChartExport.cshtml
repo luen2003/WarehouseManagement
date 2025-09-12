@@ -1,0 +1,471 @@
+﻿@model PetroBM.Web.Models.ChartModel
+@using PetroBM.Common.Util;
+
+@{
+    ViewBag.Title = "Thời gian thực bến xuất";
+}
+
+    <div class="row">
+        <div class='col-sm-4'>
+            <form id="livechart-Export">
+                <div class="row">
+                    <label class="control-label col-xs-5">Khoảng thời gian</label>
+                    <div class="form-group col-xs-7">
+                        @if (Model.DurationList.Any())
+                        {
+                            @Html.DropDownListFor(model => model.Duration,
+                       new SelectList(Model.DurationList, "Value", "Text", "") as SelectList, "Chọn... ",
+                       new { @class = "form-control", @style = "width:205px;" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.Duration,
+                       new SelectList(new List<string>()), "Chọn... ",
+                       new { @class = "form-control", @style = "width:205px;" })
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="control-label col-xs-5">Kho</label>
+                    <div class="form-group col-xs-7">
+                        <select class="form-control" name="WareHouseCode" id="WareHouseCode" style="width:205px;" onchange="WareHouseChange()">
+                            @foreach (var item in Model.WareHouseList)
+                            {
+                                if (Model.WareHouseCode != item.WareHouseCode)
+                                {
+                                    <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="control-label col-xs-5">Họng</label>
+                    <div class="form-group col-xs-7" id="ListArmNo">
+                        <select id="ArmNo" name="ArmNo" class="form-control" style="width:205px;"></select>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-5">
+                            @Html.Label("Flow rate Xăng gốc", new { @class = "lb-flowrate-base" })
+                        </label>
+                        <div class="col-xs-4">
+                            <input class="flow-rate-base-color" />
+                            @Html.HiddenFor(model => model.FlowRateBaseColor)
+                            @Html.CheckBoxFor(model => model.IsFlowRateBase)
+                        </div>
+                        <div class="flow-ratebase-val col-xs-3">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-xs-5">
+                            @Html.Label("Flow rate Ethanol", new { @class = "lb-flowrate-e" })
+                        </label>
+                        <div class="col-xs-4">
+                            <input class="flow-rate-e-color" />
+                            @Html.HiddenFor(model => model.FlowRateEColor)
+                            @Html.CheckBoxFor(model => model.IsFlowRateE)
+                        </div>
+                        <div class="flow-ratee-val col-xs-3">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-xs-5">
+                            @Html.Label("Flow rate", new { @class = "lb-flow-rate" })
+                        </label>
+                        <div class="col-xs-4">
+                            <input class="flow-rate-color" />
+                            @Html.HiddenFor(model => model.FlowRateColor)
+                            @Html.CheckBoxFor(model => model.IsFlowRate)
+                        </div>
+                        <div class="flow-rate-val col-xs-3">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-xs-5">
+                            @Html.Label("Tỷ lệ trộn thực tế", new { @class = "lb-actual-ratio" })
+                        </label>
+                        <div class="col-xs-4">
+                            <input class="actual-ratio-color" />
+                            @Html.HiddenFor(model => model.ActualRatioColor)
+                            @Html.CheckBoxFor(model => model.IsActualRatio)
+                        </div>
+                        <div class="actual-ratio-val col-xs-3">
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row">
+                    <label class="control-label col-xs-4"></label>
+                    <div class="form-group col-xs-8">
+                        <input type="button" value="Xem" class="btn-run btn btn-success" style="width:70px;" />
+
+                    </div>
+                </div>
+        </div>
+
+        <div class='col-sm-8'>
+            <div id="chartContainer" style="height: 600px; width: 100%;">
+            </div>
+        </div>
+    </div>
+
+
+@section style{
+    @Styles.Render("~/Content/spectrum")
+    <style>
+        .color-picker {
+            display: inline-block;
+            width: 228px;
+        }
+    </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/canvasjs")
+    @Scripts.Render("~/bundles/spectrum")
+
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        });
+
+        $(document).ready(function () {
+            InitColorPicker($('.flow-rate-base-color'),'@Model.FlowRateBaseColor');
+            InitColorPicker($('.flow-rate-e-color'),'@Model.FlowRateEColor');
+            InitColorPicker($('.flow-rate-color'),'@Model.FlowRateColor');
+            InitColorPicker($('.actual-ratio-color'),'@Model.ActualRatioColor');
+        });
+
+        function InitColorPicker(elem, color) {
+            elem.spectrum({
+                showPaletteOnly: true,
+                togglePaletteOnly: true,
+                togglePaletteMoreText: 'more',
+                togglePaletteLessText: 'less',
+                color: color,
+                palette: [
+                    ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
+                    ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
+                    ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
+                    ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
+                    ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0"],
+                    ["#c00", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79"],
+                    ["#900", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47"],
+                    ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"]
+                ],
+                change: function (color) {
+                    $(this).next().next().val(color.toHexString());
+                }
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        var lstWarHouse = @Html.Raw(Json.Encode(@Model.WareHouseList)); //Lay cac kho
+        var listArmNo = @Html.Raw(Json.Encode(@Model.ConfigArmTempList));//Lay danh sach cac họng
+        WareHouseChange();
+
+        function WareHouseChange()
+        {
+            var selWareHouse = $("#WareHouseCode").val();
+            var opt ="<select class='form-control' id='ArmNo' name='ArmNo' style='width:205px;'>";
+
+            for (var i = 0; i < listArmNo.length; i++) {
+                if (listArmNo[i].WareHouseCode ==selWareHouse)
+                {
+                    opt += "<Option value=" + listArmNo[i].ArmNo  +">" + listArmNo[i].ArmName + "</option>";
+                }
+            }
+            opt += "</select>";
+            document.getElementById("ListArmNo").innerHTML = opt;
+        }
+
+    </script>
+
+    <script>
+        var isRunning = false;
+        var chart;
+        var flowRateBaseData = [];
+        var flowRateEData = [];
+        var flowRateData = [];
+        var actualRatio = [];
+
+        $(function () {
+            InitColorPicker($('.flow-rate-base-color'), $('#FlowRateBaseColor').val());
+            InitColorPicker($('.flow-rate-e-color'), $('#FlowRateEColor').val());
+            InitColorPicker($('.flow-rate-color'), $('#FlowRateColor').val());
+            InitColorPicker($('.actual-ratio-color'), $('#ActualRatioColor').val());
+        });
+
+        function InitColorPicker(elem, color) {
+            elem.spectrum({
+                showPaletteOnly: true,
+                togglePaletteOnly: true,
+                togglePaletteMoreText: 'more',
+                togglePaletteLessText: 'less',
+                color: color,
+                palette: [
+                    ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
+                    ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
+                    ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
+                    ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
+                    ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0"],
+                    ["#c00", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79"],
+                    ["#900", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47"],
+                    ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"]
+                ],
+                change: function (color) {
+                    $(this).next().next().val(color.toHexString());
+                }
+            });
+        }
+
+        $(function () {
+            setInterval(function () { DrawChart() }, 2500);
+            $('.btn-run').click(function () {
+                if (isRunning) {
+                    isRunning = false;
+                    $(this).removeClass("btn-danger");
+                    $(this).addClass('btn-success');
+                    $(this).val("Chạy");
+                }
+                else {
+                    InitChart();
+                    DrawChart();
+
+                    isRunning = true;
+                    $(this).removeClass("btn-success");
+                    $(this).addClass('btn-danger');
+                    $(this).val("Dừng");
+
+                }
+            });
+        });
+
+        function InitChart() {
+            chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                    text: "Đồ thị thời gian thực bến xuất",
+                    fontFamily: "arial",
+                    fontSize: 20
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisY: [{
+                    title: 'Flow rate Xăng gốc',
+                    includeZero: false,
+                    labelFontSize: 14,
+                    titleFontSize: 18,
+                    labelFontColor: $('#FlowRateBaseColor').val(),
+                    titleFontColor: $('#FlowRateBaseColor').val(),
+                    lineColor: $('#FlowRateBaseColor').val(),
+                    lineThickness: 2,
+                },
+                {
+                    title:'Flow rate Ethanol',
+                    includeZero: false,
+                    labelFontSize: 14,
+                    titleFontSize: 18,
+                    labelFontColor: $('#FlowRateEColor').val(),
+                    titleFontColor: $('#FlowRateEColor').val(),
+                    lineColor: $('#FlowRateEColor').val(),
+                    lineThickness: 2,
+                }],
+                toolTip: {
+                    shared: true
+                },
+                axisY2: [{
+                    title: 'Flow rate',
+                    includeZero: false,
+                    labelFontSize: 14,
+                    titleFontSize: 18,
+                    labelFontColor: $('#FlowRateColor').val(),
+                    titleFontColor: $('#FlowRateColor').val(),
+                    lineColor: $('#FlowRateColor').val(),
+                    lineThickness: 2,
+                },
+               {
+                   title: 'Tỷ lệ trộn thực tế',
+                   includeZero: false,
+                   labelFontSize: 14,
+                   titleFontSize: 18,
+                   labelFontColor: $('#ActualRatioColor').val(),
+                   titleFontColor: $('#ActualRatioColor').val(),
+                   lineColor: $('#ActualRatioColor').val(),
+                   lineThickness: 2,
+               }],
+                axisX: {
+                    lineThickness: 2,
+                    labelFontSize: 14,
+                    labelFormatter: function (e) {
+                        return CanvasJS.formatDate(e.value, "DD-MM-YY HH:mm:ss");
+                    }
+                },
+                data: [{
+                    type: "stepLine",
+                    markerSize: 0,
+                    name: "Flow rate xăng gốc",
+                    lineThickness: 2,
+                    lineColor: $('#FlowRateColor').val(),
+                    color: $('#FlowRateColor').val(),
+                    xValueType: "dateTime",
+                    dataPoints: flowRateBaseData
+                },
+                {
+                    type: "stepLine",
+                    markerSize: 0,
+                    name: "Flow rate Ethanol",
+                    axisYIndex: 1,
+                    lineThickness: 2,
+                    lineColor: $('#FlowRateEColor').val(),
+                    color: $('#FlowRateEColor').val(),
+                    xValueType: "dateTime",
+                    dataPoints: flowRateEData
+                },
+                {
+                    type: "stepLine",
+                    markerSize: 0,
+                    name: "Flow Rate",
+                    axisYType: "secondary",
+                    lineThickness: 2,
+                    lineColor: $('#FlowRateColor').val(),
+                    color: $('#FlowRateColor').val(),
+                    xValueType: "dateTime",
+                    dataPoints: flowRateData
+                },
+                {
+                    type: "stepLine",
+                    markerSize: 0,
+                    name: "Tỷ lệ trộn thực tế",
+                    axisYType: "secondary",
+                    axisYIndex: 1,
+                    lineThickness: 2,
+                    lineColor: $('#ActualRatioColor').val(),
+                    color: $('#ActualRatioColor').val(),
+                    xValueType: "dateTime",
+                    dataPoints: actualRatio
+                }]
+            });
+        }
+
+        function DrawChart() {
+            if (isRunning) {
+                //Flow rate Xăng gốc
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetLiveDataArmFlowRateBase", "Chart")',
+                    data: $("#livechart-Export").serialize(),
+                    success: function (data) {
+                        var html = '';
+                        if (data.max) {
+                            html += '<div><strong>Max: </strong>' + data.max + ' @Html.Raw(@Constants.DIMENSION_FLOW)' + '</div>';
+                        }
+                        if (data.min) {
+                            html += '<div><strong>Min: </strong>' + data.min + ' @Html.Raw(@Constants.DIMENSION_FLOW)' + '</div>';
+                        }
+                        $('.flow-ratebase-val').html(html);
+
+                        chart.options.data[0].dataPoints = data.data;
+                        chart.render();
+                        $('.canvasjs-chart-credit').hide();
+                    },
+                    error: function () {
+                    }
+                });
+
+                //Flow rate Ethanol
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetLiveDataArmFlowRateBaseE", "Chart")',
+                    data: $("#livechart-Export").serialize(),
+                    success: function (data) {
+                        var html = '';
+                        if (data.max) {
+                            html += '<div><strong>Max: </strong>' + data.max + ' @Html.Raw(@Constants.DIMENSION_FLOW)' + '</div>';
+                        }
+                        if (data.min) {
+                            html += '<div><strong>Min: </strong>' + data.min + ' @Html.Raw(@Constants.DIMENSION_FLOW)' + '</div>';
+                        }
+                        $('.flow-ratee-val').html(html);
+
+                        chart.options.data[1].dataPoints = data.data;
+                        chart.render();
+                        $('.canvasjs-chart-credit').hide();
+                    },
+                    error: function () {
+                    }
+                });
+
+                //Flow rate
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetLiveDataArmFlowRateBase", "Chart")',
+                    data: $("#livechart-Export").serialize(),
+                    success: function (data) {
+                        var html = '';
+                        if (data.max) {
+                            html += '<div><strong>Max: </strong>' + data.max + ' @Html.Raw(@Constants.DIMENSION_FLOW)' + '</div>';
+                        }
+                        if (data.min) {
+                            html += '<div><strong>Min: </strong>' + data.min + ' @Html.Raw(@Constants.DIMENSION_FLOW)' + '</div>';
+                        }
+                        $('.flow-rate-val').html(html);
+
+                        chart.options.data[2].dataPoints = data.data;
+                        chart.render();
+                        $('.canvasjs-chart-credit').hide();
+                    },
+                    error: function () {
+                    }
+                });
+                // Tỷ lệ trộn thực tế
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetLiveDataArmActualRatio", "Chart")',
+                    data: $("#livechart-Export").serialize(),
+                    success: function (data) {
+                        var html = '';
+                        if (data.max) {
+                            html += '<div><strong>Max: </strong>' + data.max + '@Html.Raw(@Constants.DIMENSION_FLOW)' + '</div>';
+                        }
+                        if (data.min) {
+                            html += '<div><strong>Min: </strong>' + data.min + '@Html.Raw(@Constants.DIMENSION_FLOW)' + '</div>';
+                        }
+                        $('.actual-ratio-val').html(html);
+
+                        chart.options.data[3].dataPoints = data.data;
+                        chart.render();
+                        $('.canvasjs-chart-credit').hide();
+                    },
+                    error: function () {
+                    }
+                });
+            }
+
+        }
+    </script>
+
+
+}

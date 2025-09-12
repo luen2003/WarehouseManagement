@@ -1,0 +1,158 @@
+﻿@model PetroBM.Web.Models.TankGroupModel
+
+
+@{
+    ViewBag.Title = "Cập nhập nhóm bể - " + Model.TankGrp.TanktGrpName;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        @Html.HiddenFor(model => model.TankGrp.TankGrpId)
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" for="TankGrp_TanktGrpName">
+                @Html.LabelFor(Model => Model.TankGrp.TanktGrpName)
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.TankGrp.TanktGrpName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TankGrp.TanktGrpName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" for="TankGrp_TanktGrpName">
+                Kho
+            </label>
+            <div class="col-xs-4">
+                <select class="form-control" name="TankGrp.WareHouseCode" id="WareHouseCode" onchange="SelectedChange()">
+                    @foreach (var item in Model.WareHouses)
+                    {
+                        if (Model.TankGrp.WareHouseCode == item.WareHouseCode)
+                        {
+                            <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.WareHouseCode" >@item.WareHouseName</option>
+                        }
+
+                    }
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" for="TankGrp_TanktGrpName">
+                @Html.LabelFor(Model => Model.TankGrp.MTanks)
+            </label>
+            <div class="col-xs-3">
+                <select multiple class="selectpicker form-control tank-list" name="ListTankId" id="tank-multiple" data-container="body" data-live-search="true" title="Select a number" data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false">
+
+                </select>
+
+                @*@if (Model.ListTank.Any())
+                {
+                    @Html.ListBoxFor(model => model.ListTankId, Model.ListTank, new { @class = "selectpicker", @multiple = "", @data_live_search = "true", @data_actions_box = "true" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.ListTankId, new SelectList(new List<String>()), new { @class = "selectpicker", @multiple = "", @data_live_search = "true", @data_actions_box = "true" })
+                }*@
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+}
+
+@section style{
+    @Styles.Render("~/Content/bootstrap-select")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-select");
+    <script>
+
+        var listTank =@Html.Raw(Json.Encode(@Model.TankTemps));
+        var startWareHouseCode =@Html.Raw(Json.Encode(@Model.TankGrp.WareHouseCode));
+        var listStartTank =@Html.Raw(Json.Encode(@Model.SelectedTankTemps));
+        Init();
+        $(document).ready(function () {
+            $(document).on("submit", "form", function (e) {
+            
+            });
+        });
+
+        function Init(){
+            var options = [], _options;
+                for (var i = 0; i < listTank.length; i++) {
+                    if (listTank[i].WareHouseCode==startWareHouseCode){
+                        var chk =true;
+                        for (var j = 0; j < listStartTank.length; j++) {
+                            if (listStartTank[j].TankId ==listTank[i].TankId){
+                                chk=false;
+                                var option = "<option selected='selected' value=" + listTank[i].TankId + ">" + listTank[i].TankName + "</option>";
+                                options.push(option);
+                            }
+                        }
+                        if (chk){
+                            var option = "<option value=" + listTank[i].TankId + ">" + listTank[i].TankName + "</option>";
+                            options.push(option);
+                        }     
+                    }
+                }
+                _options = options.join('');
+                $('#tank-multiple')[0].innerHTML = _options;
+                $('.tank-list').selectpicker('refresh');
+         }
+
+
+
+
+        function SelectedChange(){
+            var wareHousecode =$("#WareHouseCode").val();   
+            var options = [], _options;
+
+            if (wareHousecode!="" && wareHousecode!=null ){ 
+
+                for (var i = 0; i < listTank.length; i++) {
+                    if (listTank[i].WareHouseCode==wareHousecode)
+                    {
+                        var chk =true;
+                        if (startWareHouseCode ==wareHousecode){
+
+                            for (var j = 0; j < listStartTank.length; j++) {
+                                if (listStartTank[j].TankId ==listTank[i].TankId){
+                                    chk=false;
+                                    var option = "<option selected='selected' value=" + listTank[i].TankId + ">" + listTank[i].TankName + "</option>";
+                                    options.push(option);
+                                }
+                            }
+                        }
+                        if (chk){
+                            var option = "<option value=" + listTank[i].TankId + ">" + listTank[i].TankName + "</option>";
+                            options.push(option);
+                        }       
+                    }
+                }
+                _options = options.join('');
+                $('#tank-multiple')[0].innerHTML = _options;
+                $('.tank-list').selectpicker('refresh');
+            }
+        }
+
+
+
+
+    </script>
+}

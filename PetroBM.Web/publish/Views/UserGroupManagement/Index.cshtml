@@ -1,0 +1,92 @@
+﻿@model PetroBM.Web.Models.UserGroupModel
+@using PetroBM.Common.Util
+
+@{
+    ViewBag.Title = "Danh sách nhóm người dùng";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.LabelFor(Model => Model.UserGrp.GrpId)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.UserGrp.GrpName)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.UserGrp.InsertDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.UserGrp.InsertUser)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.UserGrp.UpdateDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.UserGrp.UpdateUser)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model.UserGrpList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GrpId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GrpName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsertDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsertUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateUser)
+            </td>
+            <td>
+                @if (item.GrpId > Constants.ADMIN_GROUP_ID)
+                {
+                    @Html.ActionLink("Sửa", "Edit", new { id = item.GrpId })
+                    <span>|</span>
+                        @Html.ActionLink("Xóa", "DoDeleteUserGrp", new { id = item.GrpId }, new { @class = "delete-user-grp" })
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-primary" onclick="location.href='@Url.Action("New")'" />
+</p>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-user-grp').click(function () {
+                var r = confirm("Xóa nhóm người dùng");
+                return r;
+            });
+        });
+    </script>
+}

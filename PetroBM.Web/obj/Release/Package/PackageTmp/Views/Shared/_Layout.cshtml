@@ -1,0 +1,424 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("style", required: false)
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Menu/Css/simple-sidebar.css" rel="stylesheet" />
+    <link href="~/Content/Menu/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div id="nav-top" class="collapse">
+        <header>
+            @Html.Action("LogoImage", "Configuration")
+            @Html.Action("CompanyName", "Configuration")
+            @*<img class="pull-right" src="~/Content/images/logo.png">*@
+        </header>
+    </div>
+    <div class="nav-top grad">
+        <div data-toggle="collapse" data-target="#nav-top" id="top-collapse" class="glyphicon glyphicon-chevron-down"> </div>
+
+        @if (Request.IsAuthenticated)
+        {
+            <a href="@Url.Action("ChangePass","Account")">
+                <img style="width: 19px;" src="~/Content/images/icon/user.png">
+                @HttpContext.Current.User.Identity.Name
+            </a>
+
+            <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+                <i class="glyphicon glyphicon-align-left"></i>
+                <span></span>
+            </button>
+
+        }
+        <section class="nav-right">
+            <a href="#">About</a>
+            <a href="#">Help</a>
+            @if (Request.IsAuthenticated)
+            {
+                @Html.ActionLink("Logout", "Logout", "Account")
+            }
+            else
+            {
+                @Html.ActionLink("Login", "Login", "Account")
+            }
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" id="menu-toggle">
+                <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-collapse" style="margin-left:20px">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </section>
+    </div>
+
+    <section>
+        <div class="wrapper">
+            <!-- Sidebar Holder -->
+            @Html.Action("Menu", "Menu")
+            <!-- Page Content Holder -->
+            <div class="col-lg-12" >
+                <div class="banner">
+                    @Html.Action("TopNavBar", "Menu", new { screenName = ViewBag.Title })
+                    <div class="mains">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="">
+        <audio id="main-alarm-sound"></audio>
+        <div id="alarm-box">
+            @Html.Action("TopAlarm", "Alarm")
+        </div>
+    </section>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/site")
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+
+            });
+        });
+
+        function Mnu_WarehouseSelect(warehousecode) {
+            $.ajax({
+                url: '/Menu/WarehouseSelect/',
+                type: 'GET',
+                data: {
+                    "warehousecode": warehousecode
+                },
+                dataType: 'json',
+                success: function (data) {
+                },
+                error: function (err) {
+                }
+            });
+        }
+       var isConfirmAlarm = true;
+        var alarmSelected;
+        var commentStr;
+        var passStr;
+       
+
+        $(document).ready(function () {
+            checkCookieMenu();
+            //CheckDataServerRunning();
+             CheckEventAlarm();
+            SetModal();
+            SetConfirmAlarm();
+            SetSolveAlarm();
+            MenuCollapse();
+            AlarmCollapse();
+            HeaderCollapse();
+
+            ResizeHeight();
+
+
+            setInterval(function () {
+                //CheckDataServerRunning();
+                CheckEventAlarm();
+            }, 25000); // every 5 sec
+
+
+            function MenuCollapse() {
+                $('#index').on("click", function () {
+                    localStorage.removeItem("group");
+                    localStorage.removeItem("item");
+                });
+
+                $('.clicker').on("click", function () {
+                    var id = $(this).parent().closest("ul").prop("id");
+                    var id2 = $("#" + id).parent().closest("ul").prop("id");
+                    if ($(this).prop("id") != 'index') {
+                        localStorage.setItem("group", id);
+                        localStorage.setItem("item", id2);
+                    }
+                });
+
+                var group = localStorage.getItem("group");
+                var item = localStorage.getItem("item");
+                $('#' + group).collapse('toggle');
+                if (item != null) {
+                    $('#' + item).collapse('toggle');
+                } else { }
+            }
+
+            function AlarmCollapse() {
+                $('#alarm-toggle').on("click", function () {
+                    if (document.getElementById('top-alarm').className == 'collapse in') {
+                        localStorage.setItem("alarm", 1);
+                    } else {
+                        localStorage.setItem("alarm", 0);
+                    }
+                });
+
+                if (alarm = localStorage.getItem("alarm") != 1) {
+                    $('#top-alarm').addClass("in");
+                    $(document.getElementById('alarm-collapse').className = 'col-md-1 glyphicon glyphicon-chevron-down');
+                }
+            }
+
+            function HeaderCollapse() {
+                $('#top-collapse').on("click", function () {
+                    if (document.getElementById('nav-top').className == 'collapse in') {
+                        localStorage.setItem("nav-top", 1);
+                    } else {
+                        localStorage.setItem("nav-top", 0);
+                    }
+
+                    ResizeHeight();
+                });
+
+                if (header = localStorage.getItem("nav-top") != 1) {
+                    $('#nav-top').addClass("in");
+                    $(document.getElementById('top-collapse').className = 'glyphicon glyphicon-chevron-up');
+                }
+            }
+
+        });
+
+        function ResizeHeight() {
+            var heightMenu, heightMain;
+            if (header = localStorage.getItem("nav-top") != 1) {
+                heightMenu = window.innerHeight - 160;
+                heightMain = window.innerHeight - 210;
+            }
+            else {
+                heightMenu = window.innerHeight - 60;
+                heightMain = window.innerHeight - 115;
+            }
+
+            $('.menu').css('max-height', heightMenu + 'px')
+            $('.main').css('min-height', heightMain + 'px')
+        }
+
+        function SetModal() {
+            $("#confirm-ok").click(function () {
+                passStr = $('#confirm-password').val();
+                $('#confirm-password').val("");
+
+                if (isConfirmAlarm) {
+                    ConfirmAlarm(alarmSelected);
+                }
+                else {
+                    SolveAlarm(alarmSelected);
+                }
+
+            });
+            $("#comment-ok").click(function () {
+                commentStr = $('#alarm-comment').val();
+                $('#alarm-comment').val("");
+                setInterval(function () {
+                    $('#confirm-password').focus();
+                }, 500);
+            });
+            $("#confirm-close").click(function () {
+                $('#confirm-password').val("");
+            });
+            $("#comment-close").click(function () {
+                $('#alarm-comment').val("");
+            });
+        }
+
+        function SetConfirmAlarm() {
+            $(".confirm-alarm").unbind('click');
+            $(".confirm-alarm").click(function () {
+                isConfirmAlarm = true;
+                alarmSelected = $(this);
+                setInterval(function () {
+                    $('#alarm-comment').focus();
+                }, 500);
+            });
+        }
+
+        function SetSolveAlarm() {
+            $(".solve-alarm").unbind('click');
+            $(".solve-alarm").click(function () {
+                isConfirmAlarm = false;
+                alarmSelected = $(this);
+                setInterval(function () {
+                    $('#alarm-comment').focus();
+                }, 500);
+            });
+        }
+
+        function ConfirmAlarm(alarm) {
+            var alarmId = alarm.next().val();
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ConfirmAlarm", "Alarm")',
+                data: { password: passStr, alarmId: alarmId, comment: commentStr },
+                dataType: 'text',
+                success: function (data) {
+                    rs = JSON.parse(data);
+                    if (rs.result) {
+                        var audio = document.getElementById('main-alarm-sound');
+                        audio.pause();
+                        alarm.replaceWith("<img class='solve-alarm' src='/Content/images/icon/fix.png'"
+                            + "data-toggle='modal' data-target='#CommentModal'  style='height: 14px;' />");
+                        SetSolveAlarm();
+                        ShowAlert("Xác nhận thành công");
+                    }
+                    else {
+                        ShowAlert("Không thể xác nhận");
+                    }
+                },
+                error: function () {
+                    ShowAlert("Không thể xác nhận");
+                }
+            });
+        }
+
+        function SolveAlarm(alarm) {
+            var alarmId = alarm.next().val();
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SolveAlarm", "Alarm")',
+                data: { password: passStr, alarmId: alarmId, comment: commentStr },
+                dataType: 'text',
+                success: function (data) {
+                    rs = JSON.parse(data);
+                    if (rs.result) {
+                        ShowAlert("Xử lý thành công");
+                        alarm.replaceWith("<img src='/Content/images/icon/tick.png' style='height: 14px;' />");
+                    }
+                    else {
+                        ShowAlert("Không thể xử lý");
+                    }
+                },
+                error: function () {
+                    ShowAlert("Không thể xử lý");
+                }
+            });
+        }
+
+        function ShowAlert(str) {
+            $('#alert-result').text(str);
+            $('#AlertModal').modal('show');
+        }
+
+        function CheckEventAlarm()
+        {    // Check alarm not confirmed
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("CheckAlarmNotConfirmed", "Alarm")',
+                success: function (data) {
+                    if (data != '') {
+                        $('#alert-alarm').show();
+
+                        if (data != 'null') {
+                            var audio = document.getElementById('main-alarm-sound');
+                            audio.src = data;
+                            audio.load();
+                            audio.play();
+
+                        }
+                    }
+                    else {
+                        $('#alert-alarm').hide();
+                    }
+                },
+                error: function () {
+                }
+            });
+
+            // Auto refresh Alarm
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("TopAlarm", "Alarm")',
+                success: function (data) {
+                    $('#top-alarm .info').html($(data).find('.info'));
+                    SetConfirmAlarm();
+                    SetSolveAlarm();
+                },
+                error: function () {
+                }
+            });
+
+            // Auto refresh Event
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("TopEvent", "Event")',
+                success: function (data) {
+                    $('#top-event .info').html($(data).find('.info'));
+                },
+                error: function () {
+                }
+            });
+        };
+
+        // Check data server error
+        function CheckDataServerRunning() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("CheckDataServerRunning", "Menu")',
+                success: function (data) {
+                    if (data == "False") {
+                        $('.check-data-server').text("Kiểm tra lại phần mềm Data Server");
+                    }
+                    else {
+                        $('.check-data-server').text("");
+                    }
+                },
+                error: function () {
+                }
+            });
+        }
+
+        function setCookie(cLinkMenu) {
+
+            //var currentMenuSelect = getCookie("currentMenuSelect");
+            //if (currentMenuSelect == cLinkMenu) {
+            //    cLinkMenu="";
+            //}
+
+            var d = new Date();
+            d.setTime(d.getTime() + (60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = "currentMenuSelect=" + cLinkMenu + ";" + expires + ";path=/";
+
+        }
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function checkCookieMenu() {
+            var currentMenuSelect = getCookie("currentMenuSelect");
+            if (currentMenuSelect != "") {
+                currentMenuSelects = currentMenuSelect.split(',');
+                for (var i = 0; i < currentMenuSelects.length; i++) {
+                    //var link = currentMenuSelects[i];
+                    $('a[href="' + currentMenuSelects[i] + '"]').click();
+                }
+            } 
+        }
+    </script>
+</body>
+</html>

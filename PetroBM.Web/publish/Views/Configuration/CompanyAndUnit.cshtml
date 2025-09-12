@@ -1,0 +1,50 @@
+﻿@model PetroBM.Web.Models.ConfigurationModel
+
+@{
+    ViewBag.Title = "Đặt tên công ty và đơn vị";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+@using (Html.BeginForm("EditCompanyAndUnit", "Configuration", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.CompanyConfig.KeyCode)
+        @Html.HiddenFor(model => model.UnitConfig.KeyCode)
+
+        <div class="form-group">
+            <label class="control-label col-xs-2">Tên công ty</label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.CompanyConfig.Value, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CompanyConfig.Value, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2">Tên đơn vị</label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.UnitConfig.Value, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UnitConfig.Value, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-8">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("CompanyAndUnit")'" />
+            </div>
+        </div>
+    </div>
+}

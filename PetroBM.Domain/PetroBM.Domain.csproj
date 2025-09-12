@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{13C3CF03-DD37-4F39-9FFB-C86EA7861897}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PetroBM.Domain</RootNamespace>
+    <AssemblyName>PetroBM.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\MDepartment.cs" />
+    <Compile Include="Entities\MDispatch.cs" />
+    <Compile Include="Entities\MCustomerGroup.cs" />
+    <Compile Include="Entities\MDispatchWater.cs" />
+    <Compile Include="Entities\MImage.cs" />
+    <Compile Include="Entities\MLocation.cs" />
+    <Compile Include="Entities\MShip.cs" />
+    <Compile Include="Entities\ReportTankExport.cs" />
+    <Compile Include="Entities\TWarehouseCard.cs" />
+    <Compile Include="Entities\MExportArmImport.cs" />
+    <Compile Include="Entities\MWareHousePermission.cs" />
+    <Compile Include="Entities\MUserGroupUser.cs" />
+    <Compile Include="Entities\MConfigArmGrp.cs" />
+    <Compile Include="Entities\MConfigArmGrpConfigArm.cs" />
+    <Compile Include="Entities\MDataLogArm.cs" />
+    <Compile Include="Entities\MTankGrpTank.cs" />
+    <Compile Include="Entities\MTankLiveChart.cs" />
+    <Compile Include="Entities\MLiveDataArm.cs" />
+    <Compile Include="Entities\MInvoice.cs" />
+    <Compile Include="Entities\MInvoiceDetail.cs" />
+    <Compile Include="Entities\MCommand.cs" />
+    <Compile Include="Entities\MCommandDetail.cs" />
+    <Compile Include="Entities\MVehicle.cs" />
+    <Compile Include="Entities\MWareHouse.cs" />
+    <Compile Include="Entities\MDensity.cs" />
+    <Compile Include="Entities\MPrice.cs" />
+    <Compile Include="Entities\MCustomer.cs" />
+    <Compile Include="Entities\MSeal.cs" />
+    <Compile Include="Entities\MConfigArm.cs" />
+    <Compile Include="Entities\MCard.cs" />
+    <Compile Include="Entities\MDriver.cs" />
+    <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\MAlarm.cs" />
+    <Compile Include="Entities\MAlarmType.cs" />
+    <Compile Include="Entities\MBarem.cs" />
+    <Compile Include="Entities\MEvent.cs" />
+    <Compile Include="Entities\MEventType.cs" />
+    <Compile Include="Entities\MPermission.cs" />
+    <Compile Include="Entities\MProduct.cs" />
+    <Compile Include="Entities\MTank.cs" />
+    <Compile Include="Entities\MTankDensity.cs" />
+    <Compile Include="Entities\MTankGrp.cs" />
+    <Compile Include="Entities\MTankImportTemp.cs" />
+    <Compile Include="Entities\MTankLive.cs" />
+    <Compile Include="Entities\MTankLog.cs" />
+    <Compile Include="Entities\MUser.cs" />
+    <Compile Include="Entities\MUserGrp.cs" />
+    <Compile Include="Entities\MUserGrpPermission.cs" />
+    <Compile Include="Entities\MClock.cs" />
+    <Compile Include="Entities\MClockExport.cs" />
+    <Compile Include="Entities\MImportInfo.cs" />
+    <Compile Include="Entities\MTankImport.cs" />
+    <Compile Include="Entities\MTankManual.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Entities\WSystemSetting.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PetroBM.Common\PetroBM.Common.csproj">
+      <Project>{45b6c352-d44f-4dcb-8580-093ec3977054}</Project>
+      <Name>PetroBM.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,124 @@
+﻿@model PetroBM.Web.Models.InvoiceModel
+@using System 
+@using System.Data
+@{
+    ViewBag.Title = "Danh sách hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "Bills", FormMethod.Post, new { @id = "Form1" }))
+{
+
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+			<label class="control-label col-xs-4">Thời gian đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+			<label class="control-label col-xs-4">Thời gian cuối</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<div class='col-sm-4 col-xs-6'>
+		<div class="row">
+			<label class="control-label col-xs-4">Mã lệnh</label>
+			<div class="form-group col-xs-8">
+				@Html.EditorFor(model => model.WorkOrder, new { htmlAttributes = new { @class = "form-control" } })
+			</div>
+		</div>
+		<div class="row">
+			<label class="control-label col-xs-4">Số phương tiện</label>
+			<div class="form-group col-xs-8">
+				@Html.EditorFor(model => model.VerhicleNumber, new { htmlAttributes = new { @class = "form-control" } })
+			</div>
+		</div>
+		<div class="row">
+			<label class="control-label col-xs-4">Card Serial</label>
+			<div class="form-group col-xs-8">
+				@Html.EditorFor(model => model.CardSerial, new { htmlAttributes = new { @class = "form-control" } })
+			</div>
+		</div>
+	</div>
+
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <button type="submit" class='btn btn-success'>Tìm kiếm</button>
+        </div>
+    </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Invoice.WorkOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Invoice.CardData)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Invoice.CardSerial)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Invoice.AccountCustomNo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Invoice.VehicleNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Invoice.DriverName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.ListEnumInvoice)
+            {
+                <tr>
+                    <td>
+                        @Convert.ToInt32(item.WorkOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CardData)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CardSerial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountCustomNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VehicleNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DriverName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Chi tiết", "PrintInvoice", new { InvoiceID = item.InvoiceID })
+                    </td>
+                </tr>
+            }
+
+        </table>
+        }
+
+@section scripts{
+    <script>
+        $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+    </script>
+}

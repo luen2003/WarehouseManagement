@@ -1,0 +1,44 @@
+2025-02-15 00:35:15,726 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 7] -> View Login
+2025-02-15 00:35:38,779 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 7] -> post login
+2025-02-15 00:35:39,039 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 7] -> login success
+2025-02-15 00:35:42,340 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 16] -> GetAllConfigArm
+2025-02-15 00:35:42,389 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 16] -> Start GetListWareHouse_ByUserName
+2025-02-15 00:35:42,414 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 16] -> Finish GetListWareHouse_ByUserName
+2025-02-15 00:35:42,415 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 16] -> Start GetAllWareHouse
+2025-02-15 00:35:42,434 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 16] -> Finnish GetAllWareHouse
+2025-02-15 00:35:43,695 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 16] -> GetAllConfigArm
+2025-02-15 00:36:23,448 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2025-02-15 00:36:23,458 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2025-02-15 00:36:28,242 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 7] -> GetAllCustomer
+2025-02-15 00:36:28,269 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 7] -> Start controller command CommandbyVehicle
+2025-02-15 00:36:32,368 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 7] -> Finish controller command CommandbyVehicle
+2025-02-15 00:36:36,279 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2025-02-15 00:36:36,294 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2025-02-15 00:36:36,301 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2025-02-15 00:36:36,301 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2025-02-15 00:36:36,314 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2025-02-15 00:36:36,485 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2025-02-15 00:36:37,168 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2025-02-15 00:36:37,179 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2025-02-15 00:36:41,072 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 19] -> GetAllCustomer
+2025-02-15 00:36:41,117 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 19] -> Start controller command CommandbyVehicle
+2025-02-15 00:36:45,246 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 19] -> Finish controller command CommandbyVehicle
+2025-02-15 00:36:45,372 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 19] -> GetAllConfigArm
+2025-02-15 00:36:45,388 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 19] -> Start GetListWareHouse_ByUserName
+2025-02-15 00:36:45,397 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 19] -> Finish GetListWareHouse_ByUserName
+2025-02-15 00:36:45,397 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 19] -> Start GetAllWareHouse
+2025-02-15 00:36:45,405 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 19] -> Finnish GetAllWareHouse
+2025-02-15 00:36:45,603 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 19] -> GetAllConfigArm
+2025-02-15 00:36:45,836 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2025-02-15 00:36:45,843 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2025-02-15 00:37:38,500 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 7] -> GetAllCustomer
+2025-02-15 00:37:39,470 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 7] -> Start controller command CommandbyVehicle
+2025-02-15 00:41:24,087 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 7] -> Finish controller command CommandbyVehicle
+2025-02-15 00:41:24,195 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2025-02-15 00:41:24,210 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2025-02-15 00:41:24,216 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2025-02-15 00:41:24,216 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2025-02-15 00:41:24,227 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2025-02-15 00:41:24,434 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2025-02-15 00:41:24,532 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2025-02-15 00:41:24,543 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse

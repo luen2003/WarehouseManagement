@@ -1,0 +1,766 @@
+﻿@model PetroBM.Web.Models.DispatchWaterModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util;
+@using Newtonsoft.Json
+@using System.Data;
+@{
+    ViewBag.Title = "Kho " + Session[Constants.Session_WareHouseName] + " > Danh sách lệnh điều vận đường thủy cho văn thư";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var listIEDispatch = JsonConvert.SerializeObject(Model.ListIEDispatch);
+
+    var ListVehicleFillter = JsonConvert.SerializeObject(Model.LstVehicle);
+}
+<script>
+    var imageUrl = '@(Model.MImage?.ImageURL ?? "")';
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@using (Html.BeginForm("DispatchDetailWater_3", "DispatchWater", FormMethod.Post))
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+<div class="alert alert-success alert-dismissable">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>@alert</strong>
+</div>
+    }
+<div class="container">
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Số chứng từ</label>
+            <div class="form-group col-xs-8">
+                @Html.EditorFor(model => model.CertificateNumber, new { htmlAttributes = new { @class = "form-control",
+                @autofocus = "autofocus" } })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Phương tiện</label>
+            <div class="form-group col-xs-8">
+                @Html.EditorFor(model => model.VehicleNumber, new { htmlAttributes = new { @class = "form-control", @id
+                = "IdVehicle", @name = "ReportModel.Vehicle", @style = "width:217px" } })
+            </div>
+
+        </div>
+
+        @*<div class="row">
+            <label class="control-label col-xs-4">Card Data</label>
+            <div class="form-group col-xs-8">
+                @Html.EditorFor(model => model.CardData, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>*@
+    </div>
+
+    <div class='col-sm-5 col-xs-6'>
+
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đăng ký</label>
+            <div class="form-group col-xs-6">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Phân xưởng</label>
+            <div class="form-group col-xs-6">
+                @Html.EditorFor(model => model.Dispatch.Department, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+    </div>
+
+    <div class='col-sm-3 col-xs-6'>
+        <div class="row">
+            <div class="form-group col-xs-10">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row" style="padding-left:15px;padding-top:20px;">
+            <button type="submit" class='btn btn-success' style=" vertical-align: text-bottom;">Tìm kiếm</button>
+        </div>
+    </div>
+    <br>
+    <table class="table" id="tabledispatch">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.CertificateNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.TimeOrder)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.VehicleNumber)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.Department)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.DstPickup1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.DstPickup2)
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+
+            </tr>
+        </thead>
+
+        @{
+        var i = 0; var hong = "";
+        foreach (var item in Model.ListIEDispatch.Where(x => x.ProcessStatus == 2))
+        {
+        i = i + 1;
+        <tr>
+            <td class="text-center">
+                <a href="../DispatchWater/DispatchWaterView/@item.DispatchID">
+                    @Html.DisplayFor(modelItem =>
+                    item.CertificateNumber)
+                </a>
+            </td>
+            <td>
+                @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleNumber)
+            </td>
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DstPickup1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DstPickup2)
+            </td>
+            <td class="text-center">
+                <img style='max-width: 30px' src='/Content/images/send-message.png' />
+            </td>
+            <td class="text-center">
+                <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.DispatchID);"
+                     src='/Content/images/print.png' />
+            </td>
+
+        </tr>
+
+        }
+        }
+    </table>
+    <div class="text-center">
+        @Html.PagedListPager(Model.ListIEDispatch, page => Url.Action("DispatchDetailWater", new
+        {
+        certificateNumber = Model.CertificateNumber,
+        dstPickup1 = Model.DstPickup1,
+        dstPickup2 = Model.DstPickup2,
+        dstReceive = Model.DstReceive,
+        startDate = Model.StartDate,
+        endDate = Model.EndDate,
+        page
+
+        }))
+    </div>
+    @*<button id="Submit" class='btn btn-success' style="float:right">Lưu</button>
+    <input type="button" value="In phiếu xuất kho" class="btn btn-primary" onclick="PrintInventoryOutput()" />*@
+</div>
+}
+<div id="commandInphieuxuatkho" style="visibility:hidden">
+
+</div>
+@section scripts {
+<script src="~/Scripts/Autocomplete/jquery.easy-autocomplete.js"></script>
+<link href="~/Scripts/Autocomplete/easy-autocomplete.css" rel="stylesheet" />
+<script type="text/javascript">
+
+    var objInvoice; //Hiển thị lưới danh mục hóa đơn //Hóa đơn gốc
+    var objListInvoiceDetail; //Khởi tạo toàn bộ danh mục giá chung
+    var objListWarehouse = @Html.Raw(Json.Encode(@Model.ListWareHouse)); //danh sách kho hàng
+    var objListDispatch = @Html.Raw(listIEDispatch); //Chi tiết lệnh điều vận
+    var objListProduct = @Html.Raw(Json.Encode(@Model.ListTemProduct)); //danh sách hàng hóa
+    var objListVehicle = @Html.Raw(Json.Encode(@Model.ListVehicle)); //danh sách phương tiện
+    var objListCustomer = @Html.Raw(Json.Encode(@Model.ListCustomer)); //danh sách khách hàng
+    var objMaster; //thông tin về lệnh
+    var objListDriver; //thông tin về lái xe
+
+    var titleWareHouseName = '@Session[Constants.Session_WareHouseName]';
+    var titleCompanyName = '@Session[Constants.Session_TitleReportCompanyName]';
+    var titleCompanyAddress = '@Session[Constants.Session_TitleCompanyAddress]';
+    var titleCompanyPhone = '@Session[Constants.Session_TitleCompanyPhone]';
+    var titleCompanyFax = '@Session[Constants.Session_TitleCompanyFax] ';
+    var titleIdentificationNumber = '@Session[Constants.Session_TitleIdentificationNumber] ';
+    var selectedIdTable = new Array();
+
+    //setOption();
+    function setOption() {
+
+        optionVehicle = {
+            data: @Html.Raw(ListVehicleFillter),
+            getValue: "name",
+            template: {
+                type: "description",
+                fields: {
+                    description: "type"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                }
+            }
+        };
+        $("#IdVehicle").easyAutocomplete(optionVehicle);
+    }
+
+    $('.idcommand').each(function () {
+        selectedIdTable.push($(this).attr("id"));
+
+    });
+
+    var selectedIdVehicle = new Array();
+    $('.vehiclecommand').each(function () {
+        selectedIdVehicle.push($(this).attr("id"));
+
+    });
+
+    for (var i = 0; i < selectedIdVehicle.length; i++) {
+        if (selectedIdTable[0] != selectedIdTable[i + 1] & selectedIdVehicle[0] == selectedIdVehicle[i + 1]) {
+            var b = Math.min.apply(Math, selectedIdTable);
+        }
+
+    }
+
+    function formatNumber(number, decimalPlace) {
+        if (number === null || number === undefined) {
+            return '';
+        }
+
+        let formatOptions = {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: decimalPlace
+        };
+
+        return number.toLocaleString('en-US', formatOptions);
+    }
+
+    function formatNumberV2(number, decimalPlace) {
+        if (number === null || number === undefined) {
+            return '';
+        }
+
+        let format = '#,##0';
+        if (decimalPlace > 0) {
+            format += '.';
+            for (let i = 0; i < decimalPlace; i++) {
+                format += '#';
+            }
+        } else {
+            return number.toLocaleString('en-US').replace(/,/g, '.');
+        }
+
+        return number.toLocaleString('en-US', {
+            minimumFractionDigits: decimalPlace,
+            maximumFractionDigits: decimalPlace
+        });
+    }
+
+    function DeleteDispatch(dispatchID) {
+        var stt = '';
+        $.ajax({
+            url: '/DispatchWater/DeleteWaterDispatch/',
+            type: 'POST',
+            data: {
+                "DispatchID": dispatchID
+            },
+            dataType: 'bool',
+            success: function (result) {
+                if (result = true) {
+                    update = 1;
+                    console.log(update);
+                }
+            }
+        });
+        setTimeout(function () {
+            window.location.reload();
+        }, 500);
+    }
+
+    function PrintInventoryOutput(dispatchID) {
+        var stt = '';
+        var count = 1;
+
+        //var outtime =document.getElementById('OutTime').value;
+
+        var content = "";
+
+
+        for (var j = 0; j < objListDispatch.length; j++) {
+            if (objListDispatch[j].DispatchID == dispatchID) {
+
+                content += "<table style='width: 100%;border:1px' cellspacing='0'>";
+                content += "    <tbody>";
+                content += "        <tr>";
+                content += "            <td width=40% style='text-align: center;' > ";
+                content += "            <td width=10% >";
+                content += "            <td width=50% style='text-align: center;' >";
+                content += "        <tr>";
+                content += "            <td style='text-align: center;' ><p>TẬP ĐOÀN CÔNG NGHIỆP</p><p>THAN - KHOÁNG SẢN VIỆT NAM</p><p><strong>CÔNG TY CỔ PHẦN VẬT TƯ - TKV</strong><br><u><b>";
+                content += "            <td width=10% >";
+                content += "            <td style='text-align: center;' ><p><strong>CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong><br><u><b>Độc lập - Tự do - Hạnh phúc</b></u></p>";
+                content += "    </tbody>";
+                content += "</table>";
+
+                content += "<table style='width: 100%;border:1px' cellspacing='0'>";
+                content += "    <tbody>";
+                content += "        <tr style='height: 30px;'>";
+                content += "            <td width=30%>";
+                content += "            <td width=40%>";
+                content += "            <td width=20%>";
+                content += "            <td width=10%>";
+                content += "        <tr><td style='text-align: center;'>";
+                content += "            <td ><p><strong><center><h2>LỆNH ĐIỀU ĐỘNG</h2></center></strong></p> ";
+                content += "            <td>";
+                content += "    </tbody>";
+                content += "</table>";
+
+                content += "<div>";
+                content += "<table style='width: 100%;border:1px;line-height: 30px;' cellspacing='0'>";
+                content += "    <tbody>";
+                content += "        <tr>";
+                content += "            <td colspan=3 ><strong>Căn cứ vào yêu cầu sản xuất: Công ty cổ phần Vật tư - TKV</strong> ";
+                content += "        <tr>";
+                content += "        <tr>";
+                content += "            <td colspan=3 ><strong>Giám đốc Công ty lệnh:</strong>Phân xưởng: " + objListDispatch[j].Department + " - Số phương tiện: " + objListDispatch[j].ProductCode + " " + objListDispatch[j].Paragraph1 + " Điểm bắt đầu: " + objListDispatch[j].DstPickup1 + " " + objListDispatch[j].Paragraph2 + " Điểm làm việc: " + objListDispatch[j].DstPickup2 + " " + objListDispatch[j].Paragraph3 + " Điểm kết thúc: " + objListDispatch[j].DstReceive + " " + objListDispatch[j].Paragraph4 + "<br>";
+                content += "        <tr>";
+                content += "            <td colspan=3 >" + GenTime("Đúng ", objListDispatch[j].TimeOrder.toString()) + "";
+                content += "        <tr>";
+                content += "            <td colspan=3 >" + GenTime("Thời gian từ ", objListDispatch[j].TimeStart.toString()) + "";
+                content += "        <tr>";
+                content += "            <td colspan=3 >" + GenTime("Đến khi ", objListDispatch[j].TimeStop.toString()) + "";
+                content += "        <tr>";
+                content += "            <td colspan=3 >Căn cứ vào nội dung trên, phân xưởng " + objListDispatch[j].Department;
+                content += "        <tr>";
+                content += "        <tr>";
+                content += "            <td colspan=3 >" + "Phải nghiêm chỉnh chấp hành quy đinh, đảm bảo an toàn tuyệt đối cho người, thiết bị, phương tiện và";
+                content += "        <tr>";
+                content += "        <tr>";
+                content += "            <td colspan=3 >" + "hàng hóa trong quá trình làm việc.";
+                content += "        <tr>";
+                content += "        <tr>";
+                content += "            <td colspan=3  style='text-align: right;'>" + GenTimeNow("Hạ long") + "";
+                content += "</table>";
+                content += "<div style='padding-top:2%'>";
+                content += "    <div style='width:25%;float:left;padding-top: 16px; '>";
+                content += "        <center>";
+                content += "            <b>";
+                content += "        </center>";
+                content += "    </div>";
+                content += "    <div style='width:25%;float:left;padding-top: 16px; '>";
+                content += "        <center>";
+                content += "            <b>";
+                content += "        </center>";
+                content += "    </div>";
+                content += "    <div style='width:50%;float:left;padding-top: 16px; '>";
+                content += "        <center>";
+                content += "<strong>" + GenTimeNow("Hạ long") + "</strong><br><b>TL. GIÁM ĐỐC</b><br><b>TP/PTP KHĐT</b><br><br>" + "<img src='" + imageUrl + "' style='width:100px; height:auto;'/>" + "<br><br><strong>Nguyễn Văn A/B</strong>";
+                content += "        </center>";
+                content += "    </div>";
+                content += "</div>";
+                content += "<br><br><br><br><br><br><br><br><br><br><br><br>";
+                content += "<br><br><br><br><br><br><br><br><br><br><br><br>";
+                content += "<br><br><br><br><br><br><br></b></b>";
+                content += "<table style='width:100%; border-collapse:collapse;'>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "<tr><td style='border-bottom:1px dotted #000;'>&nbsp;</td></tr>";
+                content += "</table>";
+                content += "<p>Ghi chú: lệnh sản xuất gồm 2 mặt trước và sau</p>";
+                content += "<p>1, Lệnh sản xuất áp dụng chung cho cả đoàn phương tiện vận chuyển Than, tàu chở Dầu DO, Tàu Phục vụ bốc xếp.</p>";
+                content += "<p>2, Trong lệnh: các nội dung để …. Là phần tự ghi. Tên phương tiện, điểm xuất phát, điểm làm việc nằm trên phần mềm, có thể bổ sung điểm các điểm hoặc thêm phương tiện. Mặt sau để hàng …..để cần thiết tự viết vào khi in ra</p>";
+                content += "<p>3, Chữ ký số áp dụng được trưởng phòng hoặc phó trưởng phòng theo uỷ quyền của Giám đốc công ty</p>";
+
+
+
+
+
+
+            }
+        }
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><head><style>.page-break-before {page-break-before: always;}</style></head><body onload="window.print()">' + content + '</body></html>');
+        newWin.document.close();
+        //setTimeout(function () {
+        //    window.location.reload();
+        //}, 3000);
+    }
+
+    function GenTime(text, datetime) {
+        if (datetime == "") {
+            return "";
+        }
+        // Tạo đối tượng Date
+        const date = new Date(datetime.toString());
+
+        // Lấy thông tin năm, tháng, ngày, giờ, phút
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // getMonth() trả về tháng từ 0-11, nên cần +1
+        const day = date.getDate();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+
+        return text + hours + " giờ " + minutes + " phút, ngày " + day + " tháng " + month + " năm " + year;
+    }
+
+    function GenTimeNow(text) {
+        // Tạo đối tượng Date
+        const date = new Date();
+
+        // Lấy thông tin năm, tháng, ngày, giờ, phút
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // getMonth() trả về tháng từ 0-11, nên cần +1
+        const day = date.getDate();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+
+        return text + ", ngày " + day + " tháng " + month + " năm " + year;
+    }
+
+    function DocSo3ChuSo(baso) {
+        var tram;
+        var chuc;
+        var donvi;
+        var KetQua = "";
+        tram = parseInt(baso / 100);
+        chuc = parseInt((baso % 100) / 10);
+        donvi = baso % 10;
+        if (tram == 0 && chuc == 0 && donvi == 0) return "";
+        if (tram != 0) {
+            KetQua += ChuSo[tram] + " trăm ";
+            if ((chuc == 0) && (donvi != 0)) KetQua += " linh ";
+        }
+        if ((chuc != 0) && (chuc != 1)) {
+            KetQua += ChuSo[chuc] + " mươi";
+            if ((chuc == 0) && (donvi != 0)) KetQua = KetQua + " linh ";
+        }
+        if (chuc == 1) KetQua += " mười ";
+        switch (donvi) {
+            case 1:
+                if ((chuc != 0) && (chuc != 1)) {
+                    KetQua += " mốt ";
+                }
+                else {
+                    KetQua += ChuSo[donvi];
+                }
+                break;
+            case 5:
+                if (chuc == 0) {
+                    KetQua += ChuSo[donvi];
+                }
+                else {
+                    KetQua += " lăm ";
+                }
+                break;
+            default:
+                if (donvi != 0) {
+                    KetQua += ChuSo[donvi];
+                }
+                break;
+        }
+        return KetQua;
+    }
+
+    //2. Hàm đọc số thành chữ (Sử dụng hàm đọc số có ba chữ số)
+
+    function DocTienBangChu(SoTien) {
+        var lan = 0;
+        var i = 0;
+        var so = 0;
+        var KetQua = "";
+        var tmp = "";
+        var ViTri = new Array();
+        if (SoTien < 0) return "Số tiền âm !";
+        if (SoTien == 0) return "Không đồng !";
+        if (SoTien > 0) {
+            so = SoTien;
+        }
+        else {
+            so = -SoTien;
+        }
+        if (SoTien > 8999999999999999) {
+            //SoTien = 0;
+            return "Số quá lớn!";
+        }
+        ViTri[5] = Math.floor(so / 1000000000000000);
+        if (isNaN(ViTri[5]))
+            ViTri[5] = "0";
+        so = so - parseFloat(ViTri[5].toString()) * 1000000000000000;
+        ViTri[4] = Math.floor(so / 1000000000000);
+        if (isNaN(ViTri[4]))
+            ViTri[4] = "0";
+        so = so - parseFloat(ViTri[4].toString()) * 1000000000000;
+        ViTri[3] = Math.floor(so / 1000000000);
+        if (isNaN(ViTri[3]))
+            ViTri[3] = "0";
+        so = so - parseFloat(ViTri[3].toString()) * 1000000000;
+        ViTri[2] = parseInt(so / 1000000);
+        if (isNaN(ViTri[2]))
+            ViTri[2] = "0";
+        ViTri[1] = parseInt((so % 1000000) / 1000);
+        if (isNaN(ViTri[1]))
+            ViTri[1] = "0";
+        ViTri[0] = parseInt(so % 1000);
+        if (isNaN(ViTri[0]))
+            ViTri[0] = "0";
+        if (ViTri[5] > 0) {
+            lan = 5;
+        }
+        else if (ViTri[4] > 0) {
+            lan = 4;
+        }
+        else if (ViTri[3] > 0) {
+            lan = 3;
+        }
+        else if (ViTri[2] > 0) {
+            lan = 2;
+        }
+        else if (ViTri[1] > 0) {
+            lan = 1;
+        }
+        else {
+            lan = 0;
+        }
+        for (i = lan; i >= 0; i--) {
+            tmp = DocSo3ChuSo(ViTri[i]);
+            KetQua += tmp;
+            if (ViTri[i] > 0) KetQua += Tien[i];
+            if ((i > 0) && (tmp.length > 0)) KetQua += ',';//&& (!string.IsNullOrEmpty(tmp))
+        }
+        if (KetQua.substring(KetQua.length - 1) == ',') {
+            KetQua = KetQua.substring(0, KetQua.length - 1);
+        }
+        KetQua = KetQua.substring(1, 2).toUpperCase() + KetQua.substring(2);
+        return KetQua;//.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
+    }
+
+
+    function getDateNow() {
+        var strFormat = "";
+        var strDate = new Date();
+
+        strFormat += ("00" + strDate.getDate()).toString().slice(-2);
+        strFormat += "/" + ("00" + (strDate.getMonth() + 1)).toString().slice(-2);
+        strFormat += "/" + strDate.getFullYear();
+        return strFormat;
+    }
+
+    function getDayNow() {
+        var strFormat = "";
+        var strDate = new Date();
+        strFormat += ("00" + strDate.getDate()).toString().slice(-2);
+        return strFormat;
+    }
+
+    function getMonthNow() {
+        var strFormat = "";
+        var strDate = new Date();
+        strFormat += ("00" + (strDate.getMonth() + 1)).toString().slice(-2);
+        return strFormat;
+    }
+
+    function getYearNow() {
+        var strFormat = "";
+        var strDate = new Date();
+        strFormat += strDate.getFullYear();
+        return strFormat;
+    }
+
+    function getTimeNow() {
+        var strFormat = "";
+        var strDate = new Date();
+
+        strFormat += " " + ("00" + strDate.getHours()).toString().slice(-2);
+        strFormat += ":" + ("00" + strDate.getMinutes()).toString().slice(-2);
+
+        return strFormat;
+    }
+
+    function formatTimestamp(timestamp) {
+        // Create a new Date object from the timestamp
+        const date = new Date(timestamp);
+
+        // Format the date to dd/MM/yyyy HH:mm
+        const formattedDate = ('0' + date.getDate()).slice(-2) + '/' +
+            ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+            date.getFullYear() + ' ' +
+            ('0' + date.getHours()).slice(-2) + ':' +
+            ('0' + date.getMinutes()).slice(-2);
+
+        return formattedDate;
+    }
+
+    function formatTimestamp2(timestamp) {
+        // Create a new Date object from the timestamp
+        const date = new Date(timestamp);
+
+        // Format the date to dd/MM/yyyy HH:mm
+        const formattedDate = ('0' + date.getDate()).slice(-2) + '/' +
+            ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+            date.getFullYear();
+
+        return formattedDate;
+    }
+
+    function formatDateVN(date) {
+        var strFormat = "";
+        var nowtimeorder = new Date(parseInt(date.substring(6)));
+        //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+        var datetimeorder = new Date(nowtimeorder);
+
+        if (datetimeorder.getDate() < 10) {
+            strFormat += "0" + datetimeorder.getDate();
+        }
+        else {
+            strFormat += datetimeorder.getDate();
+        }
+
+        if (datetimeorder.getMonth() < 9) {//bij hao 1 thang ko hieu kieu gi
+            strFormat += "/0" + (datetimeorder.getMonth() + 1);
+        }
+        else {
+            strFormat += "/" + (datetimeorder.getMonth() + 1);
+        }
+
+        strFormat += "/" + datetimeorder.getFullYear();
+        strFormat += " " + ("00" + datetimeorder.getHours()).toString().slice(-2);
+        strFormat += ":" + ("00" + datetimeorder.getMinutes()).toString().slice(-2);
+        return strFormat;
+    }
+
+    function formatDateOnlyVN(date) {
+
+        var strFormat = "";
+        var nowtimeorder = new Date(parseInt(date.substring(6)));
+        //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+        var datetimeorder = new Date(nowtimeorder);
+
+        if (datetimeorder.getDate() < 10) {
+            strFormat += "0" + datetimeorder.getDate();
+        }
+        else {
+            strFormat += datetimeorder.getDate();
+        }
+
+        if (datetimeorder.getMonth() < 9) {//bij hao 1 thang ko hieu kieu gi
+            strFormat += "/0" + (datetimeorder.getMonth() + 1);
+        }
+        else {
+            strFormat += "/" + (datetimeorder.getMonth() + 1);
+        }
+
+        strFormat += "/" + datetimeorder.getFullYear();
+        return strFormat;
+
+    }
+
+    function formatCharacterDate(date) {
+
+        var strFormat = "";
+        var nowtimeorder = new Date(parseInt(date.substring(6)));
+        //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+        var datetimeorder = new Date(nowtimeorder);
+
+        if (datetimeorder.getDate() < 10) {
+            strFormat += "Ngày 0" + datetimeorder.getDate();
+        }
+        else {
+            strFormat += "Ngày" + datetimeorder.getDate();
+        }
+
+        if (datetimeorder.getMonth() < 11) {//bij hao 1 thang ko hieu kieu gi
+            strFormat += " tháng 0" + (datetimeorder.getMonth() + 1);
+        }
+        else {
+            strFormat += " tháng " + (datetimeorder.getMonth() + 1);
+        }
+
+        strFormat += " năm" + datetimeorder.getFullYear();
+        return strFormat;
+
+    }
+
+    var objListSeal = @Html.Raw(Json.Encode(@Model.ListSeal)); //Chi tiết lệnh
+    var ChuSo = new Array(" không ", " một ", " hai ", " ba ", " bốn ", " năm ", " sáu ", " bảy ", " tám ", " chín ");
+    var Tien = new Array("", " nghìn", " triệu", " tỷ", " nghìn tỷ", " triệu tỷ");
+
+    var listVolume = "";
+    var tTb = 0;
+    var dTb = 0;
+    var wcfTb = 0;
+    var vcfTb = 0;
+    var ltt = 0;
+    var l15 = 0;
+    var kg = 0;
+    var objInvoiceDetailId = 0;
+    var noteStored = "";
+
+    $(document).ready(function () {
+        $('input:checkbox').click(function () {
+            $('input:checkbox').not(this).prop('checked', false);
+        });
+    });
+
+    function ReDirectUrl() {
+        window.location.href = "/Bills/Index";
+    };
+
+    function CheckedCheckBox() {
+        document.getElementById("note").innerHTML = "";
+        //for (var i = 0; i < objListInvoiceDetail.length; i++) {
+        //    if (document.getElementById(objListInvoiceDetail[i].ListVolume).checked == true) {
+        //        document.getElementById("note").innerHTML = objListInvoiceDetail[i].Note;
+        //    }
+        //}
+    };
+
+    Number.prototype.pad = function (size) {
+        var s = String(this);
+        while (s.length < (size || 2)) { s = "0" + s; }
+        return s;
+    }
+</script>
+
+}

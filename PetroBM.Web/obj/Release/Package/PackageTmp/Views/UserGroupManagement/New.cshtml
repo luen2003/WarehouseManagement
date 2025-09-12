@@ -1,0 +1,166 @@
+﻿@model PetroBM.Web.Models.UserGroupModel
+
+@{
+    ViewBag.Title = "Tạo mới nhóm người dùng";
+}
+
+@using (Html.BeginForm("DoCreate", "UserGroupManagement", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.UserGrp.GrpId)
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6">
+                    <label class="control-label col-xs-3">
+                        @Html.LabelFor(Model => Model.UserGrp.GrpName)
+                    </label>
+                    <div class="col-xs-9">
+                        @Html.EditorFor(model => model.UserGrp.GrpName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserGrp.GrpName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <label class="control-label col-xs-3">
+                        Kho
+                    </label>
+                    <div class="col-xs-9">
+                        <select class="form-control" name="UserGrp.WareHouseCode">
+                            @foreach (var item in Model.WareHouseList)
+                            {
+                                if (item.WareHouseCode == Model.UserGrp.WareHouseCode)
+                                {
+                                    <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6">
+                    <label class="control-label col-xs-3">
+                        @Html.LabelFor(Model => Model.UserGrp.Description)
+                    </label>
+                    <div class="col-xs-9">
+                        @Html.EditorFor(model => model.UserGrp.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserGrp.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-xs-6">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6">
+                    <label class="control-label col-xs-4">
+                        @Html.Label("Nhóm quyền chung")
+                    </label>
+                    <div class="col-xs-8">
+                        <table class="table table-striped">
+                            @{
+                                var i = 0;
+                                foreach (var per in Model.UserGrpPermissionList)
+                                {
+                                    if (per.MPermission.Type == false)
+                                    {
+                                        if (per.PermissionCode % 100 == 0)
+                                        {
+                                            <tr>
+                                                <td>
+                                                  <b>@per.MPermission.Name</b>  
+                                                    @Html.HiddenFor(model => model.UserGrpPermissionList[i].PermissionCode)
+                                                </td>
+                                                <td>
+                                                    @Html.CheckBoxFor(model => model.UserGrpPermissionList[i].ActiveFlg)
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @per.MPermission.Name
+                                                    @Html.HiddenFor(model => model.UserGrpPermissionList[i].PermissionCode)
+                                                </td>
+                                                <td>
+                                                    @Html.CheckBoxFor(model => model.UserGrpPermissionList[i].ActiveFlg)
+                                                </td>
+                                            </tr>
+
+                                        }
+
+                                    }
+                                    i++;
+                                }
+                            }
+                        </table>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <label class="control-label col-xs-4">
+                        @Html.Label("Nhóm quyền theo kho")
+                    </label>
+                    <div class="col-xs-8">
+                        <table class="table table-striped">
+                            @{
+                                var j = 0;
+                                foreach (var per in Model.UserGrpPermissionList)
+                                {
+                                    if (per.MPermission.Type == true)
+                                    {
+                                        if (per.PermissionCode % 10 == 0)
+                                        {
+                                            <tr>
+                                                <td>
+                                                   <b>@per.MPermission.Name</b> 
+                                                    @Html.HiddenFor(model => model.UserGrpPermissionList[j].PermissionCode)
+                                                </td>
+                                                <td>
+                                                    @Html.CheckBoxFor(model => model.UserGrpPermissionList[j].ActiveFlg)
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @per.MPermission.Name
+                                                    @Html.HiddenFor(model => model.UserGrpPermissionList[j].PermissionCode)
+                                                </td>
+                                                <td>
+                                                    @Html.CheckBoxFor(model => model.UserGrpPermissionList[j].ActiveFlg)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    j++;
+                                }
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-8">
+                <input type="submit" value="Tạo mới" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+                        }

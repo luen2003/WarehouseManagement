@@ -1,0 +1,86 @@
+﻿@model PetroBM.Web.Models.TankModel
+@using PetroBM.Common.Util;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Kho: " + @Session[Constants.Session_WareHouseName]+ " > Bể:"+  Model.Tank.TankName + " > Cập nhật tỉ trọng";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+@using (Html.BeginForm("DoCreateDensity", "Tank", FormMethod.Post))
+{
+    <div class="row">
+        <div class='col-md-5 col-sm-10 col-xs-10'>
+            @Html.LabelFor(model => model.TankDensity.Density, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="form-group col-xs-9">
+                @Html.EditorFor(model => model.TankDensity.Density, new { htmlAttributes = new { @class = "input-number form-control" } })
+                (@Constants.DIMENSION_DENSITY)
+                <br />@Html.ValidationMessageFor(model => model.TankDensity.Density, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.TankDensity.TankId)
+            </div>
+        </div>
+        <div class='col-md-7 col-sm-2 col-xs-2'>
+            <input type="submit" value="Tạo mới" class="btn btn-success" />
+        </div>
+    </div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.TankDensity.InsertDate)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.TankDensity.Density) (@Constants.DIMENSION_DENSITY)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.TankDensity.InsertUser)
+            </th>
+        </tr>
+    </thead>
+    @{
+        foreach (var item in Model.ListTankDensity)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsertDate)
+                </td>
+                <td>
+                   @NumberUtil.FormatNumber(item.Density, 5)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsertUser)
+                </td>
+            </tr>
+        }
+    }
+</table>
+<div class="text-center">
+    @Html.PagedListPager(Model.ListTankDensity, page => Url.Action("Density", new { page }))
+</div>
+
+<style>
+    .form-control {
+        display: inline;
+    }
+</style>
+
+@*@section scripts{
+    @Scripts.Render("~/bundles/input-validate")
+    <script>
+        $(function () {
+            setInputNumber($(".input-number"));
+        })
+    </script>
+}*@

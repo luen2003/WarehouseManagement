@@ -1,0 +1,206 @@
+﻿@model PetroBM.Web.Models.ReportModel
+@using PetroBM.Common.Util;
+@{
+    ViewBag.Title = "Báo cáo nhập hàng";
+}
+
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian cuối</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Bể</label>
+            <div class="form-group col-xs-8">
+                @if (Model.TankList.Any())
+                {
+                    @Html.DropDownListFor(model => model.TankId,
+                       new SelectList(Model.TankList, "TankId", "TankName", "") as SelectList, "Chọn tất cả",
+                       new { @class = "form-control", @style = "width:205px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.TankId,
+                       new SelectList(new List<string>()), "Chọn... ",
+                       new { @class = "form-control", @style = "width:205px;" })
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-6' style="margin-bottom:10px;">
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+        <input type="submit" fileType="PDF" formtarget="_blank" value="Xuất PDF" class="btn btn-primary" />
+        <input type="submit" fileType="EXCEL" value="Xuất EXCEL" class="btn btn-primary" />
+    </div>
+
+    @Html.HiddenFor(model => model.FileType)
+
+}
+<table class="table table-striped">
+    <thead id="table-header">
+        <tr>
+            <th>STT</th>
+            <th>
+                Bể
+            </th>
+            <th>
+                Thời gian đầu
+            </th>
+            <th>
+                Thời gian cuối
+            </th>
+            <th>
+                Mức tồn hàng đầu
+            </th>
+            <th>
+                Lượng tồn đầu
+            </th>
+            <th>
+                Mức tồn hàng cuối
+            </th>
+            <th>
+                Lượng tồn cuối
+            </th>
+            <th>
+                Lượng nhập Vtt
+            </th>
+            <th>
+                Nhiệt độ
+            </th>
+            <th>
+                Tỷ trọng
+            </th>
+            <th>
+                Hệ số VCF
+            </th>
+            <th>
+                Lượng nhập V15
+            </th>
+        </tr>
+    </thead>
+    <tbody id="table-body">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_MM</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_MM</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Html.Raw(Constants.DIMENSION_TEMPERATURE)</td>
+            <td>@Constants.DIMENSION_DENSITY</td>
+            <td></td>
+            <td>@Constants.DIMENSION_L</td>
+        </tr>
+        @{
+            var i = 0;
+            foreach (System.Data.DataRow row in Model.DataTable.Rows)
+            {
+                i++;
+                <tr>
+                    <td>@i</td>
+                    <td>@row["TankName"]</td>
+                    <td>@((row["StartDate"] == @DBNull.Value) ? string.Empty : @Convert.ToDateTime(@row["StartDate"]).ToString(Constants.DATE_FORMAT))</td>
+                    <td>@((row["EndDate"] == @DBNull.Value) ? string.Empty : @Convert.ToDateTime(@row["EndDate"]).ToString(Constants.DATE_FORMAT))</td>
+                    <td>@((row["StartProductVolume"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartProductVolume"]), 2))</td>
+                    <td>@((row["StartLevel"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartLevel"]), 2))</td>
+                    <td>@((row["EndProductVolume"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndProductVolume"]), 2))</td>
+                    <td>@((row["EndLevel"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndLevel"]), 2))</td>
+                    <td>@((row["InVolume"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["InVolume"]), 2))</td>
+                    <td>@((row["AvgTemperature"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToSingle(@row["AvgTemperature"]), 1))</td>
+                    <td>@((row["Density"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["Density"]), 5))</td>
+                    <td>@((row["VCF"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToSingle(@row["VCF"]), 5))</td>
+                    <td>@((row["ProductVolume15"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["ProductVolume15"]), 2))</td>
+                </tr>
+            }
+
+            if (Model.DataTable.Rows.Count > 0)
+            {
+                <tr class="total-row">
+                    <td></td>
+                    <td>Tổng</td>
+                    <td></td>
+                    <td></td>
+                    <td>@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(StartProductVolume)", "").ToString()), 2)</td>
+                    <td></td>
+                    <td>@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(EndProductVolume)", "").ToString()), 2)</td>
+                    <td></td>
+                    <td>@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(InVolume)", "").ToString()), 2)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(ProductVolume15)", "").ToString()), 2)</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@section style{
+    <style>
+        .table-striped tbody {
+            display: block;
+            height: 500px;
+            overflow: auto;
+        }
+
+            .table-striped thead, .table-striped tbody tr {
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+            }
+    </style>
+}
+@section scripts{
+    <script>
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+            $('.btn').on('click', function (e) {
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+            });
+
+            $.fn.HasScrollBar = function () {
+                var _elm = $(this)[0];
+                var _hasScrollBar = false;
+                if ((_elm.clientHeight < _elm.scrollHeight) || (_elm.clientWidth < _elm.scrollWidth)) {
+                    _hasScrollBar = true;
+                }
+                return _hasScrollBar;
+            }
+
+            if ($("#table-body").HasScrollBar() == true) {
+                $("#table-header").css('width', 'calc( 100% - 1em )')
+            }
+        });
+
+    </script>
+}

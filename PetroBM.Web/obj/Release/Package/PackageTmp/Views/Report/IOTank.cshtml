@@ -1,0 +1,535 @@
+﻿@model PetroBM.Web.Models.ReportModel
+@using PetroBM.Common.Util;
+@using System.Data
+
+@{
+    ViewBag.Title = "Báo cáo nhập xuất, tồn, trống bể";
+}
+
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Kho</label>
+            <div class="form-group col-xs-8">
+                @if (Model.ListWareHouse.Any())
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(Model.ListWareHouse, "WareHouseCode", "WareHouseName", "") as SelectList, "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(new List<string>()), "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian cuối</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row" id="tankgrp">
+            <label class="control-label col-xs-4">Nhóm bể</label>
+            <div class="form-group col-xs-8" id="tankgroup">
+                @if (Model.TankGroupList.Any())
+                {
+                    @Html.DropDownListFor(model => model.TankGroupId,
+            new SelectList(Model.TankGroupList, "TankGrpId", "TanktGrpName", "") as SelectList, "Chọn... ",
+            new { @class = "form-control", @style = "width:205px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.TankGroupId,
+            new SelectList(new List<string>()), "Chọn... ",
+            new { @class = "form-control", @style = "width:205px;" })
+                }
+            </div>
+        </div>
+        <div class="row" id="tank">
+            <label class="control-label col-xs-4">Bể</label>
+            <div class="form-group col-xs-8" id="tankbytankgrp" >
+                @if (Model.TankList.Any())
+                {
+                    @Html.DropDownListFor(model => model.TankId,
+                new SelectList(Model.TankList, "TankId", "TankName", "") as SelectList, "Chọn... ",
+                new { @class = "form-control", @style = "width:205px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.TankId,
+                new SelectList(new List<string>()), "Chọn... ",
+                new { @class = "form-control", @style = "width:205px;" })
+                }
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <label class="control-label col-xs-4">Tên mặt hàng</label>
+            <div class="form-group col-xs-8" id="productlist">
+                @if (Model.ListProduct.Any())
+                {
+                    @Html.DropDownListFor(model => model.ProductId,
+            new SelectList(Model.ListProduct, "ProductId", "ProductName", "") as SelectList, "Chọn... ",
+            new { @class = "form-control", @style = "width:205px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.ProductId,
+            new SelectList(new List<string>()), "Chọn... ",
+            new { @class = "form-control", @style = "width:205px;" })
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-12' style="margin-bottom:10px;">
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+        <input type="submit" fileType="PDF" formtarget="_blank" value="Xuất PDF" class="btn btn-primary" />
+        <input type="submit" fileType="EXCEL" value="Xuất EXCEL" class="btn btn-primary" />
+        <input type="submit" fileType="PDF" formtarget="_blank" value="In" class="print btn btn-primary" />
+    </div>
+
+    @Html.HiddenFor(model => model.FileType)
+
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Kho</th>
+            <th>
+                Bể
+            </th>
+            <th>
+                Loại hàng
+            </th>
+            <th>
+                Tồn đầu kỳ
+            </th>
+            <th>
+                Trống đầu kỳ
+            </th>
+            <th>
+                Nhập trong kỳ
+            </th>
+            <th>
+                Xuất trong kỳ
+            </th>
+            <th>
+                Tồn cuối kỳ
+            </th>
+            <th>
+                Trống cuối kỳ
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+        </tr>
+        @{
+            if (Model.DataTable.Rows.Count > 0)
+            {
+                int id = int.Parse(Model.DataTable.Rows[0]["ProductId"].ToString());
+                double result;
+                foreach (DataRow row in Model.DataTable.Rows)
+                {
+                    if (id != int.Parse(row["ProductId"].ToString()))
+                    {
+                        <tr class="total-row">
+                            <td></td>
+                            <td>Tổng</td>
+                            <td></td>
+                            @if (double.TryParse(Model.DataTable.Compute("Sum(StartVolume)", "ProductId = " + id).ToString(), out result))
+                            {
+                                <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(StartVolume)", "ProductId = " + id).ToString()), 2)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            @if (double.TryParse(Model.DataTable.Compute("Sum(StartEmpty)", "ProductId = " + id).ToString(), out result))
+                            {
+                                <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(StartEmpty)", "ProductId = " + id).ToString()), 2)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            @if (double.TryParse(Model.DataTable.Compute("Sum(ProductIn)", "ProductId = " + id).ToString(), out result))
+                            {
+                                <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(ProductIn)", "ProductId = " + id).ToString()), 2)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            @if (double.TryParse(Model.DataTable.Compute("Sum(ProductOut)", "ProductId = " + id).ToString(), out result))
+                            {
+                                <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(ProductOut)", "ProductId = " + id).ToString()), 2)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            @if (double.TryParse(Model.DataTable.Compute("Sum(EndVolume)", "ProductId = " + id).ToString(), out result))
+                            {
+                                <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(EndVolume)", "ProductId = " + id).ToString()), 2)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            @if (double.TryParse(Model.DataTable.Compute("Sum(EndEmpty)", "ProductId = " + id).ToString(), out result))
+                            {
+                                <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(EndEmpty)", "ProductId = " + id).ToString()), 2)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+
+                        id = int.Parse(row["ProductId"].ToString());
+                    }
+                    <tr>
+                        <td></td>
+                        <td>@row["TankName"]</td>
+                        <td>@row["ProductName"]</td>
+                        <td class="text-right">@((row["StartVolume"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartVolume"]), 2))</td>
+                        <td class="text-right">@((row["StartEmpty"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartEmpty"]), 2))</td>
+                        <td class="text-right">@((row["ProductIn"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["ProductIn"]), 2))</td>
+                        <td class="text-right">@((row["ProductOut"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["ProductOut"]), 2))</td>
+                        <td class="text-right">@((row["EndVolume"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndVolume"]), 2))</td>
+                        <td class="text-right">@((row["EndEmpty"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndEmpty"]), 2))</td>
+                    </tr>
+
+                }
+                <tr class="total-row">
+                    <td></td>
+                    <td>Tổng</td>
+                    <td></td>
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(StartVolume)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(StartVolume)", "ProductId = " + id).ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(StartEmpty)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(StartEmpty)", "ProductId = " + id).ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(ProductIn)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(ProductIn)", "ProductId = " + id).ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(ProductOut)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(ProductOut)", "ProductId = " + id).ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(EndVolume)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(EndVolume)", "ProductId = " + id).ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(EndEmpty)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(EndEmpty)", "ProductId = " + id
+                           ).ToString()), 2)
+                    </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+
+                <tr class="total-row">
+                    <td>Tổng</td>
+                    <td></td>
+                    <td></td>
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(StartVolume)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(StartVolume)", "").ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(StartEmpty)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(StartEmpty)", "").ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(ProductIn)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(ProductIn)", "").ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(ProductOut)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(ProductOut)", "").ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(EndVolume)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(EndVolume)", "").ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (double.TryParse(Model.DataTable.Compute("Sum(EndEmpty)", "ProductId = " + id).ToString(), out result))
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(EndEmpty)", "").ToString()), 2)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<iframe id="print-frame" src="" style="display:none"></iframe>
+
+@section scripts{
+    <script>
+        $("#Id").change(function () {
+            warehouseid = document.getElementById("Id").value;
+            if (warehouseid == "" || warehouseid == null) {
+                var tr = "";
+                tr += "<select id='TankGroupId' name='TankGroupId' class='form-control' style='width:205px;'>";
+                tr += "<option value='' selected='selected'>Chọn...</option>";
+
+                tr += "</select>";
+                tr += "</div>";
+                $("#tankgroup").html(tr);
+                $("#tankbytankgrp").html(tr);
+                $("#productlist").html(tr);
+            }
+                $.ajax({
+                    url: '/WareHouse/GetTankGrpbyWareHouseId/',
+                    type: 'GET',
+                    data: {
+                        "warehouseid": warehouseid
+                    },
+                    dataType: 'json',
+                    success: function (tankgrpdata) {
+                        if (tankgrpdata.length == 0) {
+                            var tr = "";
+                            tr += "<select id='TankGroupId' name='TankGroupId' class='form-control' style='width:205px;'>";
+                            tr += "<option value='' selected='selected'>Chọn...</option>";
+
+                            tr += "</select>";
+                            tr += "</div>";
+                            $("#tankgroup").html(tr);
+                        }
+                        else {
+                            var tr = "";
+
+                            tr += "<select id='TankGroupId' name='TankGroupId' class='form-control' style='width:205px;'>";
+                            tr += "<option value='' selected='selected'>Chọn...</option>";
+                            for (var i = 0; i < tankgrpdata.length; i++) {
+                                tr += "<option value=" + tankgrpdata[i].tankgrpid + " >" + tankgrpdata[i].tankgrpname + "</option>";
+
+                            }
+                            tr += "</select>";
+
+                            $("#tankgroup").html(tr);
+                            $("#TankGroupId").change(function () {
+                                tankgrpid = document.getElementById("TankGroupId").value;
+                                if (tankgrpid == null || tankgrpid == "") {
+                                    var tr = "";
+                                    tr += "<select id='TankGroupId' name='TankGroupId' class='form-control' style='width:205px;'>";
+                                    tr += "<option value='' selected='selected'>Chọn...</option>";
+
+                                    tr += "</select>";
+                                    tr += "</div>";
+                                    $("#tankbytankgrp").html(tr);
+                                    $("#productlist").html(tr);
+                                }
+                                $.ajax({
+                                    url: '/WareHouse/GetTankByTankGrp/',
+                                    type: 'GET',
+                                    data: {
+                                        "tankgrpid": tankgrpid
+                                    },
+                                    dataType: 'json',
+                                    success: function (tankdata) {
+                                        console.log(tankdata);
+                                        var tr = "";
+                                        tr += "<select id='TankId' name='TankId' class='form-control' style='width:205px;'>";
+                                        tr += "<option value='' selected='selected'>Chọn...</option>";
+                                        for (var i = 0; i < tankdata.length; i++) {
+                                            tr += "<option value=" + tankdata[i].tankid + " >" + tankdata[i].tankname + "</option>";
+
+                                        }
+                                        tr += "</select>";
+                                        tr += "</div>";
+                                        $("#tankbytankgrp").html(tr);
+                                        $("#TankId").change(function () {
+                                            tankid = document.getElementById("TankId").value;
+                                            if (tankid == null || tankid == "") {
+                                                var tr = "";
+                                                tr += "<select id='TankGroupId' name='TankGroupId' class='form-control' style='width:205px;'>";
+                                                tr += "<option value='' selected='selected'>Chọn...</option>";
+
+                                                tr += "</select>";
+                                                tr += "</div>";
+                                                $("#productlist").html(tr);
+                                            }
+                                            $.ajax({
+                                                url: '/WareHouse/GetProductByTankId/',
+                                                type: 'GET',
+                                                data: {
+                                                    "tankid": tankid
+                                                },
+                                                dataType: 'json',
+                                                success: function (productdata) {
+                                                    var tr = "";
+                                                    tr += "<select id='ProductId' name='ProductId' class='form-control' style='width:205px;'>";
+                                                    tr += "<option value='' selected='selected'>Chọn...</option>";
+                                                    for (var i = 0; i < productdata.length; i++) {
+                                                        tr += "<option value=" + productdata[i].productid + " >" + productdata[i].productname + "</option>";
+                                                    }
+                                                    tr += "</select>";
+                                                    tr += "</div>";
+                                                    $("#productlist").html(tr);
+                                                },
+                                                error: function (err) {
+
+                                                }
+                                            });
+                                        });
+                                    },
+                                    error: function (err) {
+
+                                    }
+                                });
+                            });
+                        }
+
+                    },
+                    error: function (err) {
+                        
+                    }
+                });
+            }
+           
+        );
+
+    </script>
+
+
+
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+            $('.btn').on('click', function (e) {
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+            });
+
+            var isChrome = !!window.chrome && !!window.chrome.webstore;
+            if (!isChrome) {
+                $('.print').hide();
+            }
+
+            $('.print').on('click', function (e) {
+
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+
+                var http = new XMLHttpRequest();
+                var url = '@Url.Action("IOTank", "Report")';
+                var params = $('form').serialize();
+                http.responseType = "blob";
+                http.open("POST", url, true);
+
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                http.onreadystatechange = function () {
+                    if (http.readyState == 4 && http.status == 200) {
+                        var response = http.response;
+
+                        var blob = new Blob([response], { type: 'application/pdf' });
+                        var fileURL = URL.createObjectURL(blob);
+                        $('#print-frame').attr('src', fileURL);
+                        $('#print-frame').on('load', function () {
+                            $('#print-frame').get(0).contentWindow.document.execCommand("print", false, null);
+                        });
+                    }
+                }
+
+                http.send(params);
+
+                return false;
+            });
+        });
+    </script>
+}

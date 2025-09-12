@@ -1,0 +1,230 @@
+﻿@model PetroBM.Web.Models.ConfigArmModel
+@using PetroBM.Common.Util 
+
+@{
+    ViewBag.Title = "Sửa Thông tin Họng xuất";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+ 
+        @Html.HiddenFor(model => model.ConfigArm.ConfigArmID)
+        @Html.HiddenFor(model => model.ConfigArm.WareHouseCode)
+
+        <div class="form-group">
+            @Html.Label("Kho", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.WareHouseName, new { htmlAttributes = new { @class = "form-control", @readonly ="readonly" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ArmNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ConfigArm.ArmNo, new { htmlAttributes = new { @class = "form-control",@id="ArmNo",@onchange = "OnchangeArmNo()" } })
+                @Html.ValidationMessageFor(model => model.ConfigArm.ArmNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ArmName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ConfigArm.ArmName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ConfigArm.ArmName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+           <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ProductCode_1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="ConfigArm.ProductCode_1" id="ConfigArm.ProductCode_1" class="form-control">
+                    @{
+                        foreach (var item in Model.ListProduct)
+                        {
+                            if (item.ProductCode == Model.ConfigArm.ProductCode_1)
+                            {
+                                <option value="@item.ProductCode" selected="selected"> @item.ProductName </option>
+                            }
+                            else
+                            {
+                                <option value="@item.ProductCode"> @item.ProductName </option>
+                            }
+                        }
+ 
+                    }
+                    
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ProductCode_2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="ConfigArm.ProductCode_2" id="ConfigArm.ProductCode_2" class="form-control">
+                    @{
+                        var chk2 = false;
+                        foreach (var item in Model.ListProduct)
+                        {
+                            if (item.ProductCode == Model.ConfigArm.ProductCode_2)
+                            {
+                                <option value="@item.ProductCode" selected="selected"> @item.ProductName </option>
+                                chk2 = true;
+                            }
+                            else
+                            {
+                                <option value="@item.ProductCode"> @item.ProductName </option>
+                            }
+                        }
+                        if (!chk2)
+                        {
+                            <option value="" selected="selected">Chọn... </option>
+                        }
+                        else
+                        {
+                            <option value="">Chọn... </option>
+                        }
+                    }
+                </select>
+
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ProductCode_3, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="ConfigArm.ProductCode_3" id="ConfigArm.ProductCode_3" class="form-control">
+                    @{
+                        var chk3 = false;
+                        foreach (var item in Model.ListProduct)
+                        {
+                            if (item.ProductCode == Model.ConfigArm.ProductCode_3)
+                            {
+                                <option value="@item.ProductCode" selected="selected"> @item.ProductName </option>
+                                chk3 = true;
+                            }
+                            else
+                            {
+                                <option value="@item.ProductCode"> @item.ProductName </option>
+                            }
+                        }
+                        if (!chk3)
+                        {
+                            <option value="" selected="selected">Chọn... </option>
+                        }
+                        else
+                        {
+                            <option value="">Chọn... </option>
+                        }
+                    }
+                </select>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.TankID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select  name="ConfigArm.TankID" class = "form-control" >
+                    @foreach (var item in Model.ListTankTemps)
+                    {
+                        if (item.TankId == Model.ConfigArm.TankID)
+                        {
+                           <option selected="selected" value="@item.TankId">@item.TankName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.TankId">@item.TankName</option>
+                        }
+
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.TypeExport, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select class='form-control' name='ConfigArm.TypeExport' id="TypeExport">
+                    @if (Model.ConfigArm.TypeExport == 0)
+                    {
+                        <option value='1'>Xuất bộ</option>
+                        <option value='0' selected="selected">Xuất thủy</option>
+                    }
+                    else
+                    {
+                        <option value='1' selected="selected">Xuất bộ</option>
+                        <option value='0'>Xuất thủy</option>
+                    }
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ActiveStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select class='form-control' name='ConfigArm.ActiveStatus' id="ActiveStatus">
+                    @if (Model.ConfigArm.ActiveStatus == 0)
+                    {
+                        <option value='1'>Kích hoạt</option>
+                        <option value='0' selected="selected">Chưa kích hoạt</option>
+                    }
+                    else
+                    {
+                        <option value='1' selected="selected">Kích hoạt</option>
+                        <option value='0'>Chưa kích hoạt</option>
+                    }
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <h4 id="ErrorMessage" style="color:red"></h4>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Lưu" class="btn btn-success" onclick="return CheckValidate();" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+    var lstConfigArm = @Html.Raw(Json.Encode(@Model.ListCheckConfigArm));
+    var warehouse = @Html.Raw(Json.Encode(@Model.ConfigArm.WareHouseCode));
+    var configarmId = @Html.Raw(Json.Encode(@Model.ConfigArm.ConfigArmID));
+
+    function CheckValidate(){
+
+        var armno =document.getElementById('ArmNo').value;
+
+        for (var i = 0; i < lstConfigArm.length; i++) {
+
+            if (lstConfigArm[i].ArmNo==armno && lstConfigArm[i].ConfigArmID!=configarmId)
+            {
+                document.getElementById("ErrorMessage").innerHTML ="Bạn thay đổi mã họng trùng với số họng khác trong kho!";
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function OnchangeArmNo(){
+
+        document.getElementById("ErrorMessage").innerHTML ="";
+    }
+
+
+
+</script>

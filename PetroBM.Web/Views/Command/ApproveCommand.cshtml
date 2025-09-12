@@ -1,0 +1,499 @@
+﻿@model PetroBM.Web.Models.CommandModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util;
+@using Newtonsoft.Json
+@using System.Data;
+@{
+    ViewBag.Title = "Kho " + Session[Constants.Session_WareHouseName] + " > Duyệt lệnh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ListVehicleFillter = JsonConvert.SerializeObject(Model.LstVehicle);
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@using (Html.BeginForm("ApproveCommand", "Command", FormMethod.Post, new { @id = "CommandbyVehicle" }))
+{
+    <div class="container">
+        <div class='col-sm-4 col-xs-6'>
+            <div class="row">
+                <label class="control-label col-xs-4">Card Serial</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.CardSerial, new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus" } })
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Phương tiện</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.VehicleNumber, new { htmlAttributes = new { @class = "form-control", @id = "IdVehicle", @name = "commandModel.Vehicle", @style = "width:217px" } })
+                </div>
+
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Mã lệnh</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.WorkOrder, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            @*<div class="row">
+                    <label class="control-label col-xs-4">Card Data</label>
+                    <div class="form-group col-xs-8">
+                        @Html.EditorFor(model => model.CardData, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>*@
+        </div>
+
+        <div class='col-sm-5 col-xs-6'>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đăng ký</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Trạng thái</label>
+                <div class="form-group col-xs-8" id="statuslist">
+                    @Html.DropDownListFor(model => model.Flag,
+           new SelectList(Model.LstStatus, "flag", "name", "") as SelectList,
+           new { @class = "form-control", @style = "width:208px;" })
+                </div>
+            </div>
+
+        </div>
+
+        <div class='col-sm-3 col-xs-6'>
+            <div class="row">
+                <div class="form-group col-xs-10">
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row" style="padding-left:15px;padding-top:30px;">
+                <button type="submit" class='btn btn-success'>Tìm kiếm</button>
+            </div>
+        </div>
+        <table class="table" id="tablecommand">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.TimeOrder)
+                    </th>
+                    <th>
+                        Khách hàng
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.VehicleNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.DriverName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.CertificateNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.CardData)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.CardSerial)
+                    </th>
+                    <th>
+                        Tổng lượng đặt
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.Status)
+                    </th>
+                    <th>
+                        <label class="checkbox-inline"><input type="checkbox" value="" id="checkAllApprove">Duyệt</label>
+                    </th>
+                    <th>
+                        <label class="checkbox-inline"><input type="checkbox" value="" id="checkAllUnApprove">Hủy duyệt</label>
+                    </th>
+                    <th>
+                        <label class="checkbox-inline"><input type="checkbox" value="" id="checkAllDelete">Hủy</label>
+                    </th>
+                </tr>
+            </thead>
+
+            @{ var i = 0;
+                foreach (var item in Model.ListIECommand)
+                {
+                    i = i + 1;
+                    if (@item.Status == 1 || @item.Status == 3 || @item.Status == 6 || @item.IsApprove == 0)
+                    {
+
+                        <tr>
+                            <td>
+                                @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
+                            </td>
+                            <td>
+                                @foreach (var customer in Model.ListCustomer)
+                                {
+                                    if (item.CustomerCode == customer.CustomerCode)
+                                    {
+                                        @customer.CustomerName
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VehicleNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DriverName)
+                            </td>
+                            <td>
+                                <span><a href="CommandView/@item.CommandID">@item.CertificateNumber</a></span><br />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CardData)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CardSerial)
+                            </td>
+
+
+
+                            @{ var j = 0; var soluong = 0;
+                                foreach (var item2 in Model.ListCommandDetail)
+                                {
+                                    if (item.CommandID == item2.CommandID)
+                                    {
+                                        soluong += int.Parse(item2.V_Preset.ToString());
+                                    }
+                                }
+                            }
+                            <td style="text-align:center">
+                                @NumberUtil.FormatNumber(Convert.ToDouble(soluong), 0)
+                            </td>
+                            @if (item.Status == Constants.Command_Flag_Register)
+                            {
+                                <td class="text-center">Đăng ký lệnh</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_Approved)
+                            {
+                                <td class="text-center">Đã duyệt</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_PrepareExport)
+                            {
+                                <td class="text-center">Chuẩn bị xuất</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_Exported)
+                            {
+                                <td class="text-center">Xuất xong</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_Invoice)
+                            {
+                                <td class="text-center">Xuất phiếu xong</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_InputCancel)
+                            {
+                                <td class="text-center">Huỷ lệnh</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_InputHand)
+                            {
+                                <td class="text-center">Nhập tay</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_StopPressing)
+                            {
+                                <td class="text-center">Dừng ép</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_ChangeDate)
+                            {
+                                <td class="text-center">Chuyển ngày</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_Exporting)
+                            {
+                                <td class="text-center">Đang xuất</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_Complete)
+                            {
+                                <td class="text-center">Hoàn thành</td>
+                            }
+                            else
+                            {
+                                <td class="text-center">@Html.DisplayFor(modelItem => item.Status)</td>
+                            }
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                                @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
+                            </td>
+                            <td>
+                                @foreach (var customer in Model.ListCustomer)
+                                {
+                                    if (item.CustomerCode == customer.CustomerCode)
+                                    {
+                                        @customer.CustomerName
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VehicleNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DriverName)
+                            </td>
+                            <td>
+                                <span><a href="CommandView/@item.CommandID">@item.CertificateNumber</a></span><br />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CardData)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CardSerial)
+                            </td>
+
+
+                            @{ var j = 0; var soluong = 0;
+                                foreach (var item2 in Model.ListCommandDetail)
+                                {
+                                    if (item.CommandID == item2.CommandID)
+                                    {
+                                        soluong += int.Parse(item2.V_Preset.ToString());
+                                    }
+                                }
+                            }
+                            <td style="text-align:center">
+                                @NumberUtil.FormatNumber(Convert.ToDouble(soluong), 0)
+                            </td>
+                            @if (item.Status == Constants.Command_Flag_Register)
+                            {
+                                <td class="text-center">Đăng ký lệnh</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_Approved)
+                            {
+                                <td class="text-center">Đã duyệt</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_PrepareExport)
+                            {
+                                <td class="text-center">Chuẩn bị xuất</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_Exported)
+                            {
+                                <td class="text-center">Xuất xong</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_Invoice)
+                            {
+                                <td class="text-center">Xuất phiếu xong</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_InputCancel)
+                            {
+                                <td class="text-center">Huỷ lệnh</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_InputHand)
+                            {
+                                <td class="text-center">Nhập tay</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_StopPressing)
+                            {
+                                <td class="text-center">Dừng ép</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_ChangeDate)
+                            {
+                                <td class="text-center">Chuyển ngày</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_Exporting)
+                            {
+                                <td class="text-center">Đang xuất</td>
+                            }
+                            else if (item.Status == Constants.Command_Flag_Complete)
+                            {
+                                <td class="text-center">Hoàn thành</td>
+                            }
+                            else
+                            {
+                                <td class="text-center">@Html.DisplayFor(modelItem => item.Status)</td>
+                            }
+
+                            <td class="text-center">
+                                @if (item.Status == Constants.Command_Flag_Register)
+                                {
+                                    <input type="checkbox" class="checkIdApprove" name="checkIdApprove" id="@item.CommandID">
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (item.Status == Constants.Command_Flag_Approved)
+                                {
+                                    <input type="checkbox" class="checkIdUnApprove" name="checkIdUnApprove" id="@item.CommandID">
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (item.Status != Constants.Command_Flag_InputCancel && item.Status != Constants.Command_Flag_Exported && item.Status != Constants.Command_Flag_Invoice && item.Status != Constants.Command_Flag_StopPressing && item.Status != Constants.Command_Flag_Complete)
+                                {
+                                    <input type="checkbox" class="checkIdDelete" name="checkIdDelete" id="@item.CommandID">
+                                }
+                            </td>
+                        </tr>
+
+                    }
+
+                }
+            }
+        </table>
+        <div class="text-center">
+            @Html.PagedListPager(Model.ListIECommand, page => Url.Action("ApproveCommand", new
+       {
+           workOrder = Model.WorkOrder,
+           cardSerial = Model.CardSerial,
+           cardData = Model.CardData,
+           vehicleNumber = Model.VehicleNumber,
+           startDate = Model.StartDate,
+           endDate = Model.EndDate,
+           flag = Model.Flag,
+                page
+
+            }))
+        </div>
+        <button id="Submit" class='btn btn-success' style="float:right">Lưu</button>
+    </div>
+}
+
+@section scripts{
+    <script src="~/Scripts/Autocomplete/jquery.easy-autocomplete.js"></script>
+    <link href="~/Scripts/Autocomplete/easy-autocomplete.css" rel="stylesheet" />
+    <script>
+        $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#flag').val();
+        setOption();
+            function setOption() {
+
+                optionVehicle = {
+                    data: @Html.Raw(ListVehicleFillter),
+                    getValue: "name",
+                    template: {
+                        type: "description",
+                        fields: {
+                            description: "type"
+                        }
+                    },
+                    list: {
+                        match: {
+                            enabled: true
+                        }
+                    }
+                };
+                $("#IdVehicle").easyAutocomplete(optionVehicle);
+            }
+    </script>
+
+    <script>
+        $("#checkAllApprove").click(function () {
+            $('.checkIdApprove').not(this).prop('checked', this.checked);
+        });
+        $("#checkAllDelete").click(function () {
+            $('.checkIdDelete').not(this).prop('checked', this.checked);
+        });
+        $("#checkAllUnApprove").click(function () {
+            $('.checkIdUnApprove').not(this).prop('checked', this.checked);
+        });
+    </script>
+
+    <script>
+        $("#Submit").click(function () {
+            // Delete checkbox
+            var selectedIDs = new Array();
+            $('.checkIdDelete').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).attr("id"));
+                }
+            });
+            if (selectedIDs != null) {
+                $.post("/CommandDetail/Edit", { lstCommandId: selectedIDs })
+                    .done(function (msg) { })
+                    .fail(function (xhr, status, error) { });
+            }
+
+            // Approve checkbox
+            var selectedApproveIDs = new Array();
+            $('.checkIdApprove').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedApproveIDs.push($(this).attr("id"));
+                }
+            });
+            console.log('in:' + selectedApproveIDs);
+            if (selectedApproveIDs != null && selectedApproveIDs != '') {
+                $.ajax({
+                    url: '/CommandDetail/ApproveV2/',
+                    type: 'POST',
+                    data: {
+                        "lstCommandId": selectedApproveIDs
+                    },
+                    dataType: 'text',
+                    success: function (result) {
+                        alert(result);
+                    }
+                });
+                selectedApproveIDs = null;
+                console.log('rein:');
+            }
+            //Unapprove checkbox
+            var selectedUnApproveIDs = new Array();
+            $('.checkIdUnApprove').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedUnApproveIDs.push($(this).attr("id"));
+                }
+            });
+
+            console.log('un:' + selectedUnApproveIDs);
+            if (selectedUnApproveIDs != null && selectedUnApproveIDs != '') {
+                $.ajax({
+                    url: '/CommandDetail/UnApproveV2/',
+                    type: 'POST',
+                    data: {
+                        "lstCommandId": selectedUnApproveIDs
+                    },
+                    dataType: 'text',
+                    success: function (result) {
+                        alert(result);
+                    }
+                });
+                selectedUnApproveIDs = null;
+                console.log('reun:');
+            }
+            setTimeout(function () {
+                window.location.reload();
+            }, 3000);
+
+        });
+    </script>
+
+    <script>
+        var selectedIdTable = new Array();
+        $('.idcommand').each(function () {
+            selectedIdTable.push($(this).attr("id"));
+
+        });
+
+        var selectedIdVehicle = new Array();
+        $('.vehiclecommand').each(function () {
+            selectedIdVehicle.push($(this).attr("id"));
+
+        });
+
+        for (var i = 0; i < selectedIdVehicle.length; i++) {
+            if (selectedIdTable[0] != selectedIdTable[i + 1] & selectedIdVehicle[0] == selectedIdVehicle[i + 1]) {
+                var b = Math.min.apply(Math, selectedIdTable);
+            }
+
+        }
+    </script>
+
+}

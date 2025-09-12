@@ -1,0 +1,285 @@
+﻿@model PetroBM.Web.Models.CommandDetailModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util;
+
+
+@{
+    ViewBag.Title = "Kho " + Session[Constants.Session_WareHouseName] + " > Danh sách lệnh bị lỗi xuất";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("UpdateFlag", "CommandDetail", FormMethod.Post, new { @id = "Form1" }))
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+    <div class="container">
+        <div class='col-sm-4 col-xs-6'>
+            <div class="row">
+                <label class="control-label col-xs-4">Số chứng từ</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.CertificateNumber, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            @*<div class="row">
+                    <label class="control-label col-xs-4">Card data</label>
+                    <div class="form-group col-xs-8">
+                        @Html.EditorFor(model => model.CardData, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>*@
+
+            <div class="row">
+                <label class="control-label col-xs-4">Card serial</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.CardSerial, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Họng</label>
+                <div class="form-group col-xs-8">
+                    @if (Model.ListConfigArm.Any())
+                    {
+                        @Html.DropDownListFor(model => model.ArmNo,
+                new SelectList(Model.ListConfigArm, "ArmNo", "ArmName", "") as SelectList, "Tất cả",
+                new { @class = "form-control", @style = "width:200px;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.ArmNo,
+                new SelectList(new List<string>()), "Chọn... ",
+                new { @class = "form-control", @style = "width:200px;" })
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        <div class='col-sm-5 col-xs-6'>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đăng ký</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Phương tiện</label>
+                <div class="form-group col-xs-8">
+                    <select style="width:200px" class="form-control" name="VerhicleNumber">
+                        @foreach (var item in Model.ListVehicle)
+                        {
+                            if (Model.VerhicleNumber == item.VehicleNumber)
+                            {
+                                <option selected="selected" value="@item.VehicleNumber">@item.VehicleNumber</option>
+                            }
+                            else
+                            {
+                                <option value="@item.VehicleNumber">@item.VehicleNumber</option>
+                            }
+                        }
+                        @if (Model.VerhicleNumber == "")
+                        {
+                            <option selected="selected" value="">Tất cả</option>
+                        }
+                        else
+                        {
+                            <option value="">Tất cả</option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+        </div>
+        <div class='col-sm-3 col-xs-6'>
+            <div class="row">
+                <div class="form-group col-xs-10">
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row" style="padding-left:15px;padding-top:30px;">
+                <button type="submit" class='btn btn-success'>Tìm kiếm</button>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+
+                    <th>
+                        Khách hàng
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommandDetail.Vehicle)
+                    </th>
+                    <th>
+                        Lái xe
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommandDetail.CertificateNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommandDetail.CardData)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommandDetail.CardSerial)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommandDetail.ProductName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommandDetail.ArmNo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommandDetail.CompartmentOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommandDetail.V_Preset)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommandDetail.V_Actual)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CommandDetail.AvgTemperature)
+                    </th>
+                    <th>
+                        <label class="checkbox-inline"><input type="checkbox" value="" id="checkAllMoveFlag">Chuyển Trạng thái</label>
+                    </th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.ListCommandDetail)
+            {
+                <tr>
+                    @foreach (var item1 in Model.ListCommand)
+                    {
+                        if (@item.CommandID == @item1.CommandID)
+                        {
+                            <td>
+                                @foreach (var customer in Model.ListCustomer)
+                                {
+                                    if (item1.CustomerCode == customer.CustomerCode)
+                                    {
+                                        @customer.CustomerName
+                                    }
+                                }
+                            </td>
+                        }
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Vehicle)
+                    </td>
+                    @foreach (var item1 in Model.ListCommand)
+                    {
+                        if (@item.CommandID == @item1.CommandID)
+                        {
+                            <td>
+                                @item1.DriverName
+                            </td>
+                        }
+                    }
+                    <td>
+                        @Convert.ToInt32(item.CertificateNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CardData)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CardSerial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArmNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompartmentOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.V_Preset)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.V_Actual)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AvgTemperature)
+                    </td>
+
+                    <td>
+                        <input type="checkbox" class="checkMoveFlag" id="@item.ID">
+                    </td>
+                </tr>
+            }
+        </table>
+        <div class="text-center">
+            @Html.PagedListPager(Model.ListCommandDetail, page => Url.Action("Index", new
+            {
+                workOrder = Model.WorkOrder,
+                cardSerial = Model.CardSerial,
+                cardData = Model.CardData,
+                verhicleNumber = Model.VerhicleNumber,
+                startDate = Model.StartDate,
+                endDate = Model.EndDate,
+                status = Model.Status,
+                certificateNumber = Model.CertificateNumber,
+                page
+            }))
+        </div>
+        <button id="Submit" class='btn btn-success' style="float:right">Chuyển trạng thái</button>
+    </div>
+}
+
+<div id="warningcommanddetail" style="clear: both;">
+</div>
+
+@section scripts{
+    <script>
+        $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+        $("#checkAllCancel").click(function () {
+            $('.checkIdCancel').not(this).prop('checked', this.checked);
+        });
+    </script>
+    <script>
+        $("#checkAllMoveFlag").click(function () {
+            $('.checkMoveFlag').not(this).prop('checked', this.checked);
+        });
+    </script>
+    <script>
+
+		$("#Submit").click(function () {
+			// Cancel checkbox
+			var selectedIDs = new Array();
+            $('.checkMoveFlag').each(function () {
+				if ($(this).prop('checked')) {
+					selectedIDs.push($(this).attr("id"));
+				}
+			});
+			if (selectedIDs != null) {
+                $.post("/CommandDetail/POSFlag", { lstId: selectedIDs })
+					.done(function (msg) { })
+					.fail(function (xhr, status, error) { });
+			}
+		});
+
+        
+    </script>
+}

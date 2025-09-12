@@ -1,0 +1,42 @@
+﻿@model PetroBM.Web.Models.ConfigurationModel
+
+@{
+    ViewBag.Title = "Trang chủ";
+}
+
+<img src="/Content/images/2.png" style="width: 100%; height:100%" />
+
+<div>
+    @*<div class="col-lg-6">
+        <h3><b>1. Cấu hình chung</b></h3><br />
+        <span>  <a href="/WareHouse/Index">1.1. Danh mục kho	</a> </span><br />
+        <span>  <a href="/Card">1.2. Danh mục thẻ</a> </span><br />
+        <span>  <a href="/Vehicle">1.3. Danh Mục Phương Tiện</a> </span><br />
+        <span>  <a href="/Driver">1.4. Danh Mục Lái Xe</a> </span><br />
+        <span>  <a href="/Product">1.5. Danh Mục Hàng Hóa</a> </span><br />
+        <span>  <a href="/ConfigArm"> 1.6. Danh Mục Họng Xuất</a> </span><br />
+        <span>  <a href="/Customer">1.7. Danh Mục Khách Hàng	</a> </span><br />
+        <span><a href="/Density">1.8. Tỷ Trọng</a></span><br />
+        <span><a href="/Price">1.9. Danh mục giá</a></span><br />  
+    </div>*@
+    @*<div class="col-lg-6">
+        <h3><b>2. Đăng ký lấy hàng, phát hành hóa đơn/ phiếu xuất kho</b></h3><br />
+        <span>  <a href="/command/RegisterCommand"> 2.1. Đăng Ký Lệnh</a> </span><br />
+        <span style="padding-left:2%">  <a href="CommandDetail/CommanddetailbyVehicle" style="color:red"> 2.1.1 Danh sách lệnh theo xe</a> </span><br />
+        <span style="padding-left:2%">  <a href="CommandDetail/Index" style="color:red"> 2.1.2 Danh sách lệnh theo ngăn</a> </span><br />
+      
+        <span>  <a href="/Seal/RegisterSeal"> 2.3. Niêm Chì</a> </span><br />
+        <span><a href="/Bills/CreateInvoice"> 2.4 Hóa đơn</a></span><br />
+        <span style="padding-left:2%">  <a href="Bills/Index" style="color:red"> 2.4.1 Danh sách hóa đơn</a> </span><br />
+        <span><a href="/Bills/BillList"> 2.5 Nhập thông tin xuất hàng bằng tay</a></span><br />
+
+
+    </div>*@
+</div>
+
+@section scripts{
+    <script>
+        localStorage.removeItem("group");
+        localStorage.removeItem("item");
+    </script>
+}

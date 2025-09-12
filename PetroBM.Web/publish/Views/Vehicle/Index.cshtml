@@ -1,0 +1,160 @@
+﻿@model PetroBM.Web.Models.VehicleModel
+
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách phương tiện";
+}
+
+
+@using (Html.BeginForm("Index", "Vehicle", FormMethod.Post))
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-5">Lái xe mặc định</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.DriverDefault, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-5">Số phương tiện</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.VehicleNumber, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Card Serial</label>
+            <div class="form-group col-xs-8">
+                @Html.EditorFor(model => model.CardSerial, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4"></label>
+            <div class="form-group col-xs-8">
+                <input type="submit" value="Tìm Kiếm" class="btn btn-primary" />
+            </div>
+            
+        </div>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Vehicle.VehicleNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Vehicle.CardID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Vehicle.RegisterNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Vehicle.ExpireDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Vehicle.AccreditationNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Vehicle.AccreditationExpire)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Vehicle.Driverdefault)
+                </th>
+                <th>
+                    Trạng thái
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model.ListVehiclePageList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleNumber)
+                </td>
+                <td>
+                    @if (item.CardID != null)
+                    {
+                        foreach (var item2 in Model.Card)
+                        {
+                            if (item.CardID == item2.ID)
+                            {
+                                @item2.CardSerial 
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisterNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpireDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccreditationNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccreditationExpire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Driverdefault)
+                </td>
+                @if (item.DeleteFlg == true)
+                {
+                    <td>Đã huỷ</td>
+                }
+                else
+                {
+                    <td>hoạt động</td>
+                }
+                <td>
+                    @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID }, new { @class = "delete-vehicle" })
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div class="text-center">
+        @Html.PagedListPager(Model.ListVehiclePageList, page => Url.Action("Index", new { page, vehicleNumber = Model.VehicleNumber, driverDefault = Model.DriverDefault }))
+    </div>
+
+}
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("Create")'" />
+
+    @using (Html.BeginForm("Import", "Vehicle", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="submit" value="Nhập từ file Excel" class="btn btn-primary" />
+        <div class="btn btn-primary">
+            @Html.TextBoxFor(model => model.ImportFile,
+            new { type = "file", accept = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })
+        </div>
+
+    }
+</p>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-vehicle').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+
+
+
+}

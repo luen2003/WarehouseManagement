@@ -1,0 +1,145 @@
+﻿@model PetroBM.Web.Models.CardModel
+@using PetroBM.Common.Util;
+@{
+    ViewBag.Title = "Cập nhập thẻ - " + Model.Card.ID;
+}
+
+
+
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.Label("Kho", htmlAttributes: new { @class = "control-label col-xs-2" })
+        <div class="col-xs-3">
+            <select class="form-control" name="Card.WareHouseCode">
+                @foreach (var item in Model.ListWareHouse)
+                {
+                    if (item.WareHouseCode.ToString() == Model.Card.WareHouseCode)
+                    {
+                        <option selected="selected" value="@item.WareHouseCode">@item.WareHouseName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                    }
+                }
+            </select>
+
+        </div>
+        @Html.Label("", htmlAttributes: new { @class = "control-label col-xs-1", @style = "text-align :left" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Card.CardData, htmlAttributes: new { @class = "control-label col-xs-2" })
+        <div class="col-xs-3">
+            @Html.EditorFor(model => model.Card.CardData, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Card.CardData, "", new { @class = "text-danger" })
+        </div>
+        @Html.Label("", htmlAttributes: new { @class = "control-label col-xs-1", @style = "text-align :left" })
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Card.CardSerial, htmlAttributes: new { @class = "control-label col-xs-2" })
+        <div class="col-xs-3">
+            @Html.EditorFor(model => model.Card.CardSerial, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Card.CardSerial, "", new { @class = "text-danger" })
+        </div>
+        @Html.Label(" ", htmlAttributes: new { @class = "control-label col-xs-1", @style = "text-align :left" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Card.UseStatus, htmlAttributes: new { @class = "control-label col-xs-2" })
+        <div class="col-xs-3">
+            <select class="form-control" name="Card.UseStatus">
+                @if (Model.Card.UseStatus == 0)
+                {
+                    <option value="0" selected="selected">Chưa sử dụng</option>
+                    <option value="1">Sử dụng</option>
+                }
+                else
+                {
+                    <option value="0">Chưa sử dụng</option>
+                    <option value="1" selected="selected">Sử dụng</option>
+                }
+            </select>
+        </div>
+        @Html.Label("", htmlAttributes: new { @class = "control-label col-xs-1", @style = "text-align :left" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Card.ActiveStatus, htmlAttributes: new { @class = "control-label col-xs-2" })
+        <div class="col-xs-3">
+            <select class="form-control" name="Card.ActiveStatus">
+                @if (Model.Card.ActiveStatus == 0)
+                {
+                    <option value="1">Kích hoạt</option>
+                    <option value="0" selected="selected">Không kích hoạt</option>
+                }
+                else
+                {
+                    <option value="1" selected="selected">Kích hoạt</option>
+                    <option value="0">không kích hoạt</option>
+                }
+
+            </select>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-2"> Hủy thẻ</label>            
+        <div class="col-xs-3">
+            @Html.CheckBoxFor(model => model.CardError, new { Style = "vertical-align:3px}", @checked = false, })
+        </div>
+
+    </div>
+
+
+
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-4">
+            <input type="button" value="Lưu" class="btn btn-success" />
+            <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+        </div>
+    </div>
+</div>
+
+    @Html.HiddenFor(model => model.Card.ID  );
+    @Html.HiddenFor(model => model.Card.InsertDate);
+    @Html.HiddenFor(model => model.Card.InsertUser);
+
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/input-validate")
+    <script>
+            $(function () {
+                AddCommas();
+
+                $('.btn-success').click(function (e) {
+
+                    $('.input-number').each(function (i, obj) {
+                        $(this).val($(this).val().replace(/,/g, ''));
+                    });
+
+                    if ($('form').valid()) {
+                        $('form').submit();
+                    } else {
+                        AddCommas();
+                    };
+                });
+            });
+
+            function AddCommas() {
+                $('.input-number').each(function (i, obj) {
+                    setInputNumber(obj);
+                });
+            }
+    </script>
+}

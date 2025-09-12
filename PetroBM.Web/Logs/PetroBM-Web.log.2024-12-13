@@ -1,0 +1,10 @@
+2024-12-13 14:34:06,341 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 7] -> View Login
+2024-12-13 16:03:07,663 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 7] -> View Login
+2024-12-13 16:03:38,696 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 5] -> post login
+2024-12-13 16:03:38,949 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 5] -> login success
+2024-12-13 16:03:44,315 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2024-12-13 16:03:44,379 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2024-12-13 16:03:44,447 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2024-12-13 16:03:44,447 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2024-12-13 16:03:44,481 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2024-12-13 16:03:46,636 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm

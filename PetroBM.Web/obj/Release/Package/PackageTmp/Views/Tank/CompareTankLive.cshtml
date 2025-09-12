@@ -1,0 +1,84 @@
+﻿@model PetroBM.Web.Models.TankModel
+@using PetroBM.Common.Util;
+
+@{
+    ViewBag.Title = "So sánh với đo máy";
+}
+<div class='col-sm-4'>
+    <div class="row">
+        <label class="control-label col-md-3">Id bể</label>
+        <div class="col-md-9">
+            @Html.TextBoxFor(model => model.TankManual.MTank.TankId, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    <div class="row">
+        <label class="control-label col-md-3">Tên bể</label>
+        <div class="col-md-9">
+            @Html.TextBoxFor(model => model.TankManual.MTank.TankName, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <br />
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+               @Html.LabelFor(m => m.TankManual.InsertDate)
+            </th>
+            <th>
+                @Html.LabelFor(m => m.TankManual.WaterLevel) (@Constants.DIMENSION_MM)
+            </th>
+            <th>
+                @Html.LabelFor(m => m.TankManual.ProductLevel) (@Constants.DIMENSION_MM)
+            </th>
+            <th>
+                @Html.LabelFor(m => m.TankManual.AvgTemperature) (@Html.Raw(Constants.DIMENSION_TEMPERATURE))
+            </th>
+        </tr>
+    </thead>
+    <tr>
+        <th>
+            Đo tay
+        </th>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.TankManual.InsertDate)
+        </td>
+        <td>
+            @NumberUtil.FormatNumber( Model.TankManual.WaterLevel,2)
+        </td>
+        <td>
+            @NumberUtil.FormatNumber(Model.TankManual.ProductLevel, 2)
+        </td>
+        <td>
+            @NumberUtil.FormatNumber(Model.TankManual.AvgTemperature, 1)
+        </td>        
+    </tr>
+    <tr>
+        <th>
+            Đo máy
+        </th>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.TankManual.LogInsertDate)
+        </td>
+        <td>
+            @NumberUtil.FormatNumber(Model.TankManual.LogWaterLevel, 2)
+        </td>
+        <td>
+            @NumberUtil.FormatNumber(Model.TankManual.LogProductLevel, 2)
+        </td>
+        <td>
+            @NumberUtil.FormatNumber(Model.TankManual.LogAvgTemperature, 1)
+        </td>
+    </tr>
+</table>
+
+<div>
+    <div class="col-md-8">
+        <input type="button" value="Trở lại" class="btn btn-primary"
+               onclick="location.href='@Url.Action("TankManual", new { id = Model.TankManual.MTank.TankId })'" />
+    </div>
+</div>

@@ -1,0 +1,160 @@
+﻿@model PetroBM.Web.Models.SealModel
+@using PetroBM.Common.Util
+
+@{
+
+
+    ViewBag.Title = "Kho " + Session[Constants.Session_WareHouseName] + " > Niêm chì";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm("RegisterSeal", "Seal", FormMethod.Post, new { @id = "Form1" }))
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()) && (alert.ToString().Contains(Constants.MESSAGE_ALERT_SEAL_SUCCESS) || alert.ToString().Contains(Constants.MESSAGE_ALERT_SEAL_FAILED)))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+
+
+    <div class="container">
+        <div class="col-md-5" id="commanddtail">
+            <h3>Chi tiết lệnh</h3>
+            <div>
+                <div class="col-md-6">
+                    <label>Thời gian đăng ký lệnh</label>
+                </div>
+                <div class="col-md-6">
+                    <div class='input-group date' id='datetimepicker'>
+                        <input type="text" class="form-control" id="timeordercommand" disabled="disabled">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Mã lệnh</label>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="codecommand" onchange="getCommandByCode()" disabled="disabled">
+                </div>
+            </div>
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Card Data</label>
+                </div>
+                <div class="col-md-6">
+                    <input id="cardData" type="text" class="form-control" onchange="getCommandByCardData()" readonly="readonly">
+                </div>
+            </div>
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Card serial</label>
+                </div>
+                <div class="col-md-6">
+                    <input id="cardserial" type="number" class="form-control" onchange="getCommandByCardSerial()" tabindex="1">
+                </div>
+            </div>
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Mã khách hàng</label>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="customercode" disabled="disabled">
+                </div>
+            </div>
+
+            <h3>Thông tin phương tiện</h3>
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Số phương tiện</label>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="vehiclenumber" disabled="disabled">
+                </div>
+            </div>
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Tên tài xế</label>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="drivername" disabled="disabled">
+                </div>
+            </div>
+            <div>
+                <h3 id="warningseal" style="color:red"></h3>
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-success" onclick="form.submit();" tabindex="4" id="buttonsubmit">Lưu</button>
+
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("RegisterSeal")'" tabindex="5" id="cancle" />
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div style="padding-top:2%">
+                <div class="col-md-4">
+                    <label>Số niêm chì lần cuối</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" onkeyup="Textchange()" id="SealLast" tabindex="2">
+                </div>
+            </div>
+
+            <div id="divSeal">
+                <h3>Lượng hàng theo từng ngăn </h3>
+                <table style="width:90% " class="table table-striped table-bordered" id="listCommandDetail">
+                    <thead>
+                        <tr>
+                            <th style="display:none"></th>
+                            <th>Mã ngăn</th>
+                            <th>V đặt</th>
+                            <th>Hàng hóa</th>
+                            <th>Vtt</th>
+                            <th>Niêm đầu</th>
+                            <th>Niêm cuối</th>
+                            <th>Chênh lệch</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th style="display:none"></th>
+                            <th>@Html.Label("Tổng", new { @id = "lblTotal" })</th>
+                            <th id="lvlTotalV_Actual"> </th>
+                            <th></th>
+                            <th></th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                            <th tabindex="3">&nbsp;</th>
+                        </tr>
+                    </tfoot>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script>
+		$('#datetimepicker').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+		$("#cardserial").focus();
+
+		if (@Model.ExportMode == @Constants.EXPORT_MODE_WORKORDER) {
+			$("#codecommand").prop("disabled", false);
+			$("#codecommand").focus();
+			$("#cardserial").prop("disabled", true);
+		}
+    </script>
+    <script src="~/Scripts/Seal.js"></script>
+
+}

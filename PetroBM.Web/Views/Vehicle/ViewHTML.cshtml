@@ -1,0 +1,190 @@
+﻿
+@{
+    ViewBag.Title = "ViewHTML";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewHTML</h2>
+
+<div>
+    <table width="100%">
+        <colgroup>
+            <col width="50%" />
+            <col width="50%" />
+        </colgroup>
+
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td>Thời gian đăng ký lệnh</td>
+                        <td><input type="text" value="15:20 18/11/2017"/>     </td>
+                    </tr>
+                    <tr>
+                        <td>Mã kho</td>
+                        <td><input type="text" value="Mông dương" />     </td>
+                    </tr>
+                    <tr>
+                        <td>Mã lệnh</td>
+                        <td><input type="text" value="123456" />     </td>
+                    </tr>
+                    <tr>
+                        <td>Card data</td>
+                        <td><input type="text" value="74870001122444" />     </td>
+                    </tr>
+                    <tr>
+                        <td>Card serial</td>
+                        <td><input type="text" value="172333" />     </td>
+                    </tr>
+                    <tr>
+                        <td>Mã khách hàng</td>
+                        <td><input type="text" value="DD000001" />     </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Số phương tiện</td>
+                        <td><input type="text" value="15:20 18/11/2017" />     </td>
+                    </tr>
+                    <tr>
+                        <td>Tên tài xế</td>
+                        <td><input type="text" value="Mông dương" />     </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> Cảnh báo phương tiện</td>
+                    </tr>
+                    <tr>
+                        <td>Hết hạn kiểm định:</td>
+                        <td>Hết hạn lượng bồn</td>
+                    </tr>
+                    <tr>
+                        <td>Hết hạn bằng lái</td>
+                        <td> Hết hạn chứng chỉ an toàn</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>STT</td>
+                            <td>Hàng hóa</td>
+                            <td>Ngăn</td>
+                            <td>Tổng sổ lượng</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>1</td>
+                        <td>DOC</td>
+                        <td><input type="text" value="123" /> </td>
+                        <td>3.000</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>E5_A92</td>
+                        <td><input type="text" value="456" /></td>
+                        <td>3.000</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>A92</td>
+                        <td><input type="text" value="78" /></td>
+                        <td>6.000</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>KE</td>
+                        <td><input type="text" value="9" /></td>
+                        <td>4.000</td>
+                    </tr>
+                    <tr>
+                        <td>Tổng</td>
+                        <td>4</td>
+                        <td>9</td>
+                        <td>15.000</td>
+                    </tr>
+                </table>
+            </td>
+
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Mã ngăn</td>
+                            <td>Dung tích</td>
+                            <td>Hàng hóa</td>
+                            <td>Số lượng</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>1</td>
+                        <td>3.000</td>
+                        <td>DOC</td>
+                        <td>3.000</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>3.000</td>
+                        <td>DOC</td>
+                        <td>3.000</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>3.000</td>
+                        <td>DOC</td>
+                        <td>3.000</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>1.000</td>
+                        <td>E5_A92</td>
+                        <td>1.000</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>1.000</td>
+                        <td>E5_A92</td>
+                        <td>1.000</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>1.000</td>
+                        <td>E5_A92</td>
+                        <td>1.000</td>
+                    </tr>
+
+                    <tr>
+                        <td>7</td>
+                        <td>3.000</td>
+                        <td>A92</td>
+                        <td>3.000</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>3.000</td>
+                        <td>A92</td>
+                        <td>3.000</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>3.000</td>
+                        <td>KE</td>
+                        <td>9.000</td>
+                    </tr>
+
+
+                </table>
+
+            </td>
+
+        </tr>
+    </table>
+
+    <input type="button" id="btnSave" value="Lưu" /> <input type="button" id="btnPrint" value="In" />  <input type="button" id="btnCancel" value="Hủy" />
+
+</div>

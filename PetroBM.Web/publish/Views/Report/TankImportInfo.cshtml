@@ -1,0 +1,456 @@
+﻿@model PetroBM.Web.Models.ReportModel
+@using PetroBM.Common.Util;
+@{
+    ViewBag.Title = "Báo cáo nhập hàng";
+}
+
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class='col-sm-4 col-xs-6' style="margin-bottom:10px;">
+            <input type="submit" fileType="PDF" formtarget="_blank" value="Xuất PDF" class="btn btn-primary" />
+            <input type="submit" fileType="EXCEL" value="Xuất EXCEL" class="btn btn-primary" />
+            <input type="submit" fileType="PDF" formtarget="_blank" value="In" class="print btn btn-primary" />
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.FileType)
+    @Html.HiddenFor(model => model.ImportId)
+}
+<div class='col-md-12 col-sm-5 col-xs-6'>
+    <div class="row">
+        <label class="control-label col-md-2">Tên phương tiện nhập: </label>
+
+        <label class="control-label col-md-5"> @Model.TankImportInfoData.Rows[0][6].ToString()</label>
+
+    </div>
+    <div class="row">
+        <label class="control-label col-md-2">Loại hàng: </label>
+
+        <label class="control-label col-md-5"> @Model.TankImportInfoData.Rows[0][7].ToString()</label>
+
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead id="table-header">
+        <tr>
+            <td colspan="7" align="center"><span class="text-center" style="font-weight: bold;"> Số liệu đo tính trước khi nhập</span></td>
+            <td colspan="7" align="center"><span class="text-center" style="font-weight: bold;">Số liệu đo tính sau khi nhập </span></td>
+        </tr>
+        <tr>
+            <th>
+                Bồn
+            </th>
+            <th>
+                T<sup>o</sup>
+            </th>
+            <th>
+                Số đo
+            </th>
+            <th>
+                Vtt
+            </th>
+            <th>
+                Tỷ trọng
+            </th>
+            <th>
+                VCF
+            </th>
+            <th>
+                V15
+            </th>
+            <th>
+                Bồn
+            </th>
+            <th>
+                T<sup>o</sup>
+            </th>
+            <th>
+                Số đo
+            </th>
+            <th>
+                Vtt
+            </th>
+            <th>
+                Tỷ trọng
+            </th>
+            <th>
+                VCF
+            </th>
+            <th>
+                V15
+            </th>
+        </tr>
+    </thead>
+    <tbody id="table-body">
+        <tr>
+            <td></td>
+            <td>@Html.Raw(Constants.DIMENSION_TEMPERATURE)</td>
+            <td>@Constants.DIMENSION_MM</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_DENSITY</td>
+            <td></td>
+            <td>@Constants.DIMENSION_L</td>
+            <td></td>
+            <td>@Html.Raw(Constants.DIMENSION_TEMPERATURE)</td>
+            <td>@Constants.DIMENSION_MM</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_DENSITY</td>
+            <td></td>
+            <td>@Constants.DIMENSION_L</td>
+        </tr>
+        @{
+
+            var startSum = 0.0;
+            var endSum = 0.0;
+            var startSumVtt = 0.0;
+            var endSumVtt = 0.0;
+            var endSumV15 = 0.0;
+            var startFlag = Model.ImportInfo.StartFlag;
+            var endFlag = Model.ImportInfo.EndFlag;
+
+            foreach (System.Data.DataRow row in Model.TankImportData.Rows)
+            {
+                if (@Convert.ToInt32(row["TankId"]) != 9999) //bo qua Tec CC
+                {
+                    startSum += ((row["StartTemperature"] == @DBNull.Value) ? 0 : @Convert.ToDouble(row["StartTemperature"])) * ((row["StartProductVolume"] == @DBNull.Value) ? 0 : @Convert.ToDouble(row["StartProductVolume"]));
+                    endSum += ((row["EndTemperature"] == @DBNull.Value) ? 0 : @Convert.ToDouble(row["EndTemperature"])) * ((row["EndProductVolume"] == @DBNull.Value) ? 0 : @Convert.ToDouble(row["EndProductVolume"]));
+                    startSumVtt += (row["StartProductVolume"] == @DBNull.Value) ? 0 : @Convert.ToDouble(row["StartProductVolume"]);
+                    endSumVtt += (row["EndProductVolume"] == @DBNull.Value) ? 0 : @Convert.ToDouble(row["EndProductVolume"]);
+                    endSumV15 += (row["EndProductVolume15"] == @DBNull.Value) ? 0 : @Convert.ToDouble(row["EndProductVolume15"]);
+                }
+                <tr>
+                    <td>@row["TankName"]</td>
+                    <td>@((row["StartTemperature"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartTemperature"]), 2))</td>
+                    <td class="text-right">@((row["StartProductLevel"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartProductLevel"]), 2))</td>
+                    <td class="text-right">@((row["StartProductVolume"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartProductVolume"]), 0))</td>
+                    <td>@((row["StartDensity"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartDensity"]), 4))</td>
+                    <td>@((row["StartVCF"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartVCF"]), 4))</td>
+                    <td class="text-right">@((row["StartProductVolume15"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartProductVolume15"]), 0))</td>
+
+
+                    <td>@row["TankName"]</td>
+                    <td>@((row["EndTemperature"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndTemperature"]), 2))</td>
+                    <td class="text-right">@((row["EndProductLevel"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndProductLevel"]), 2))</td>
+                    <td class="text-right">@((row["EndProductVolume"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndProductVolume"]), 0))</td>
+                    <td>@((row["EndDensity"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndDensity"]), 4))</td>
+                    <td>@((row["EndVCF"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndVCF"]), 4))</td>
+                    <td class="text-right">@((row["EndProductVolume15"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndProductVolume15"]), 0))</td>
+
+
+                </tr>
+            }
+            double sumStartVTT = 0.0, sumEndVTT = 0.0, sumStartV15 = 0.0, sumEndV15 = 0.0, sumStartTemp = 0.0, sumEndTemp = 0.0, sumEndVCF = 0.0;
+            double.TryParse(Model.TankImportData.Compute("Sum(StartProductVolume)", "").ToString(), out sumStartVTT);
+            double.TryParse(Model.TankImportData.Compute("Sum(EndProductVolume)", "").ToString(), out sumEndVTT);
+            double.TryParse(Model.TankImportData.Compute("Sum(StartProductVolume15)", "").ToString(), out sumStartV15);
+            double.TryParse(Model.TankImportData.Compute("Sum(EndProductVolume15)", "").ToString(), out sumEndV15);
+            double.TryParse(Model.TankImportData.Compute("Sum(EndVCF)", "").ToString(), out sumEndVCF);
+
+            if (sumStartVTT != 0)
+            {
+                sumStartTemp = startSum / startSumVtt;
+            }
+
+            if (sumEndVTT != 0)
+            {
+                sumEndTemp = endSum / endSumVtt;
+            }
+
+            <tr class="total-row">
+                @if (startFlag)
+                {
+                    <td>Tổng</td>
+                    <td>@NumberUtil.FormatNumber(sumStartTemp, 2)</td>
+                    <td></td>
+                    <td class="text-right">@NumberUtil.FormatNumber(sumStartVTT, 0)</td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right">@NumberUtil.FormatNumber(sumStartV15, 0)</td>
+                }
+                else
+                {
+                    <td>Tổng</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                }
+
+                @if (endFlag)
+                {
+                    <td>Tổng</td>
+                    <td class="text-right">@NumberUtil.FormatNumber(sumEndTemp, 2)</td>
+                    <td></td>
+                    <td class="text-right">@NumberUtil.FormatNumber(sumEndVTT, 0)</td>
+                    <td></td>
+                    <td class="text-right">@NumberUtil.FormatNumber(endSumV15 / endSumVtt, 4)</td>
+                    <td class="text-right">@NumberUtil.FormatNumber(sumEndV15, 0)</td>
+                }
+                else
+                {
+                    <td>Tổng</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                }
+            </tr>
+
+            @*foreach (System.Data.DataRow row in Model.ClockExportData.Rows)
+                {
+                    <tr>
+                        <td colspan="2">@row["ClockName"]</td>
+                        <td></td>
+                        <td>@((row["StartVtt"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartVtt"]), 0))</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                        <td colspan="2">@row["ClockName"]</td>
+                        <td></td>
+                        <td>@((row["EndVtt"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndVtt"]), 0))</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            @if ((row["EndVtt"] != @DBNull.Value) && (row["StartVtt"] != @DBNull.Value))
+                            {
+                                @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndVtt"]) - @Convert.ToDouble(@row["StartVtt"]), 0)
+                            }
+                        </td>
+                    </tr>
+                }*@
+
+            foreach (System.Data.DataRow row in Model.ExportArmImportData.Rows)
+            {
+                <tr>
+                    <td colspan="2">@row["ArmName"]</td>
+                    <td></td>
+                    <td class="text-right">@((row["StartTotal"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["StartTotal"]), 0))</td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right">0</td>
+
+                    <td colspan="2">@row["ArmName"]</td>
+                    <td></td>
+                    <td class="text-right">@((row["EndTotal"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndTotal"]), 0))</td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right">
+                        @if ((row["EndTotal"] != @DBNull.Value) && (row["EndTotal"] != @DBNull.Value))
+                        {
+                            @NumberUtil.FormatNumber(@Convert.ToDouble(@row["EndTotal"]) - @Convert.ToDouble(@row["StartTotal"]), 0)
+                        }
+                    </td>
+                </tr>
+            }
+
+            double sumExportV = 0.0, sumExportV15 = 0.0;
+            double.TryParse(Model.ExportArmImportData.Compute("Sum(ExportValue)", "").ToString(), out sumExportV);
+            double.TryParse(Model.ExportArmImportData.Compute("Sum(ExportValue15)", "").ToString(), out sumExportV15);
+
+            <tr class="total-row">
+                <td colspan="6">Số lượng hàng xuất trong quá trình nhập, qua qua họng xuất:</td>
+                <td>Vtt(lít)</td>
+                <td class="text-right">@NumberUtil.FormatNumber(@sumExportV, 2)</td>
+                <td></td>
+                <td>V15(lít)</td>
+                <td class="text-right">@NumberUtil.FormatNumber(@sumExportV15, 2)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            var chenhlech = sumEndTemp - sumStartTemp;
+            //var vtung = (chenhlech * 0.0009 * sumStartVTT);
+            @*<tr>
+                <td colspan="7">Chênh lệch nhiệt độ kho trước và sau nhập(<sup>o</sup>C):</td>
+                @if (endFlag)
+                {
+                    <td class="text-right">@NumberUtil.FormatNumber(@chenhlech, 2)</td>
+                }
+                else
+                {
+                    <td class="text-right">0</td>
+                }
+                <td></td>
+                <td> V t/ứng(lít)</td>
+                @if (endFlag)
+                {
+                    if (@vtung < 0)
+                    {
+                        <td class="text-right">(@NumberUtil.FormatNumber(@vtung * -1, 0))</td>
+                    }
+                    else
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber(@vtung, 0)</td>
+                    }
+                }
+                else
+                {
+                    <td class="text-right">0</td>
+                }
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>*@
+
+            //var ketluanVtt = sumEndVTT + sumExportV - (sumStartVTT + vtung);
+            var ketluanVtt = sumEndVTT + sumExportV - (sumStartVTT);
+            var ketluanV15 = sumEndV15 + sumExportV15 - sumStartV15;
+            <tr>
+                <td colspan="4"><strong><u>Kết luận:</u></strong> Hàng nhập kho:</td>
+                <td><strong>Vtt(lít)</strong></td>
+                @if (endFlag)
+                {
+                    <td class="text-right">@NumberUtil.FormatNumber(@ketluanVtt, 0)</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="4"></td>
+                <td><strong>V15(lít)</strong></td>
+                @if (endFlag)
+                {
+                    <td class="text-right">@NumberUtil.FormatNumber(@ketluanV15, 0)</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                @foreach (System.Data.DataRow row in Model.TankImportInfoData.Rows)
+                {
+                    <td colspan="2">Theo hợp đồng</td>
+                    <td><strong>Vtt(lít)</strong></td>
+                    <td class="text-right">@((row["Export"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["Export"]), 0))</td>
+                    <td><strong>T<sup>o</sup>C</strong></td>
+                    <td>@((row["Temperature"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["Temperature"]), 2))</td>
+                    <td><strong>TT</strong></td>
+                    <td>@((row["Density"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["Density"]), 4))</td>
+                    <td><strong>VCF</strong></td>
+                    <td>@((row["VCF"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["VCF"]), 4))</td>
+                    <td><strong>V15(lít)</strong></td>
+                    <td class="text-right">@((row["V15"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["V15"]), 0))</td>
+                    <td></td>
+                    <td></td>
+                }
+            </tr>
+
+            <tr>
+                <td colspan="2"><strong>Thừa(Thiếu)</strong></td>
+                <td><strong>V15(lít)</strong></td>
+                @if (endFlag)
+                {
+                    if ((@ketluanV15 - (double.Parse(Model.TankImportInfoData.Compute("Sum(V15)", "").ToString()))) < 0)
+                    {
+                        <td class="text-right">(@NumberUtil.FormatNumber((@ketluanV15 - (double.Parse(Model.TankImportInfoData.Compute("Sum(V15)", "").ToString()))) * -1, 0))</td>
+                    }
+                    else
+                    {
+                        <td class="text-right">@NumberUtil.FormatNumber((@ketluanV15 - (double.Parse(Model.TankImportInfoData.Compute("Sum(V15)", "").ToString()))), 0)</td>
+                    }
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<iframe id="print-frame" src="" style="display:none"></iframe>
+
+@section style{
+    <style>
+        .table > thead > tr > td {
+            border: 1px solid #ebebeb;
+        }
+    </style>
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            $('.btn').on('click', function (e) {
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+            });
+
+            var isChrome = !!window.chrome && !!window.chrome.webstore;
+            if (!isChrome) {
+                $('.print').hide();
+            }
+
+            $('.print').on('click', function (e) {
+
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+
+                var http = new XMLHttpRequest();
+                var url = '@Url.Action("TankImportInfo", "Report")';
+                var params = $('form').serialize();
+                http.responseType = "blob";
+                http.open("POST", url, true);
+
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                http.onreadystatechange = function () {
+                    if (http.readyState == 4 && http.status == 200) {
+                        var response = http.response;
+
+                        var blob = new Blob([response], { type: 'application/pdf' });
+                        var fileURL = URL.createObjectURL(blob);
+                        $('#print-frame').attr('src', fileURL);
+                        $('#print-frame').on('load', function () {
+                            $('#print-frame').get(0).contentWindow.document.execCommand("print", false, null);
+                        });
+                    }
+                }
+
+                http.send(params);
+
+                return false;
+            });
+        });
+    </script>
+}

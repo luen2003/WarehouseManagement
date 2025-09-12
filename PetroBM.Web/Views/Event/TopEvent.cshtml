@@ -1,0 +1,36 @@
+﻿@model PetroBM.Web.Models.EventModel
+
+<div class="bottom-right-box col-md-6">
+    <div class="box-content">
+        <ul class="tbl-header">
+            <li class="col-xs-6">
+                <div data-toggle="collapse" data-target="#top-event" style="display:inline-block;">
+                    <div id="event-collapse" class="col-md-1 glyphicon glyphicon-chevron-down"></div>
+                    Sự Kiện
+                </div>
+            </li>
+            <li class="col-xs-6 text-right">@Html.ActionLink("Tất cả", "Index", "Event")</li>
+        </ul>
+        <section class="collapse in" id="top-event">
+            <ul class="tbl-subheader">
+                <li class="col-xs-3">Ngày</li>
+                <li class="col-xs-3">Loại sự kiện</li>
+                <li class="col-xs-3">Hành động</li>
+                <li class="col-xs-2">Người thực hiện</li>
+                <li class="col-xs-1">ID</li>
+            </ul>
+            <div class="info" id="info">
+                @foreach (var item in Model.EventList)
+                {
+                    <ul>
+                        <li class="col-xs-3">@item.InsertDate</li>
+                        <li class="col-xs-3">@item.MEventType.TypeName</li>
+                        <li class="col-xs-3">@item.EventName</li>
+                        <li class="col-xs-2">@item.InsertUser</li>
+                        <li class="col-xs-1">@item.EventId</li>
+                    </ul>
+                }
+            </div>
+        </section>
+    </div>
+</div>

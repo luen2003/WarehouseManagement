@@ -1,0 +1,112 @@
+﻿@model PetroBM.Web.Models.CommandModel
+@using PetroBM.Common.Util;
+@using PagedList.Mvc;
+@using System;
+@{
+    ViewBag.Title = "Danh sách đăng ký lệnh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Command.WorkOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Command.TimeOrder)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Command.WareHouseCode)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Command.CustomerCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Command.CardData)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Command.CardSerial)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Command.VehicleNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Command.DriverName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Command.Temperature)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Command.Status)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.ListCommand)
+        {
+            <tr>
+                <td>
+                    @Convert.ToInt32(item.WorkOrder)
+                </td>
+                <td>
+                    @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
+                </td>
+                @*<td>
+                        @foreach (var it in Model.ListWareHouse)
+                        {
+                            if (it.WareHouseCode == item.WareHouseCode)
+                            {
+                                @it.WareHouseName
+                            }
+                        }
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardData)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardSerial)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Temperature)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.ActionLink("Xem", "CommandView", new { id = item.CommandID })|
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.CommandID })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <div class="text-center">
+        @Html.PagedListPager(Model.ListCommand, page => Url.Action("Index", new { page }))
+    </div>
+    <p>
+        <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("RegisterCommand")'" />
+        <input type="button" value="Tìm kiếm" class="btn btn-primary" onclick="SearchClick()" />
+        <input type="text" name="Search" id="ValueSearch" value="" class="" />
+    </p>
+
+    <script type="text/javascript">
+        function SearchClick() {
+            var ipvalue = document.getElementById("ValueSearch").value;
+            location.href = '/Command/Index?page=1&search=' + ipvalue;
+        }
+    </script>

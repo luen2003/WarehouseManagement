@@ -1,0 +1,101 @@
+﻿@model PetroBM.Web.Models.TankGroupModel
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Danh sách nhóm bể";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.LabelFor(Model => Model.TankGrp.TankGrpId)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankGrp.TanktGrpName)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankGrp.WareHouseCode)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankGrp.InsertDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankGrp.InsertUser)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankGrp.UpdateDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankGrp.UpdateUser)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+
+@foreach (var item in Model.ListTankGrp) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TankGrpId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TanktGrpName)
+        </td>
+        <td>
+            @foreach (var it in Model.WareHouses)
+            {
+                if (it.WareHouseCode == item.WareHouseCode)
+                {
+                    @it.WareHouseName
+                }
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InsertDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InsertUser)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdateDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdateUser)
+        </td>
+        <td>
+            @Html.ActionLink("Sửa", "Edit", new { id=item.TankGrpId }) |
+            @Html.ActionLink("Xóa", "Delete", new { id=item.TankGrpId }, new { @class = "delete-tank-grp" })
+        </td>
+    </tr>
+}
+
+</table>
+<div class="text-center">
+    @Html.PagedListPager(Model.ListTankGrp, page => Url.Action("Index", new { page }))
+</div>
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("Create")'" />
+</p>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-tank-grp').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}

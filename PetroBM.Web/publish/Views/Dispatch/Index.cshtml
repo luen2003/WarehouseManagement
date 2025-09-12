@@ -1,0 +1,197 @@
+﻿
+@using PagedList.Mvc;
+@using PetroBM.Common.Util;
+
+
+@{
+    ViewBag.Title = "Kho " + Session[Constants.Session_WareHouseName] + " > Danh sách lệnh điều vận ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Index", "Dispatch", FormMethod.Post, new { @id = "Form1" }))
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+    <div class="container">
+        <div class='col-sm-4 col-xs-6'>
+            
+        </div> 
+        
+        <button id="Submit" class='btn btn-success' style="float:right">Lưu</button>
+    </div>
+}
+
+<div id="warningcommanddetail" style="clear: both;">
+</div>
+
+@section scripts{
+    <script>
+        $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+        $("#checkAllCancel").click(function () {
+            $('.checkIdCancel').not(this).prop('checked', this.checked);
+        });
+    </script>
+    <script>
+
+		$("#Submit").click(function () {
+			// Cancel checkbox
+			var selectedIDs = new Array();
+			$('.checkIdCancel').each(function () {
+				if ($(this).prop('checked')) {
+					selectedIDs.push($(this).attr("id"));
+				}
+			});
+			if (selectedIDs != null) {
+				$.post("/CommandDetail/CancelCompartment", { lstId: selectedIDs })
+					.done(function (msg) { })
+					.fail(function (xhr, status, error) { });
+			}
+		});
+
+        function GetEventValue(commanddetailid) {
+            document.getElementById("warningcommanddetail").innerHTML = "";
+            $.ajax({
+                url: '/CommandDetail/GetAllById/',
+                type: 'GET',
+                data: {
+                    "commanddetailid": commanddetailid
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    var div = "";
+					var k = 0;
+					div += '<form action="/CommandDetail/RegisterCommandDetail" id="Form2" method="post">';
+                    $.each(data, function (i, item) {
+                        var timeorder = item.TimeOrder;
+                        var nowtimeorder = new Date(parseInt(timeorder.substr(6)));
+                        datetimeorder = new Date(nowtimeorder).toLocaleString();
+                        console.log(data);
+                        div += "<h4>Cập nhật lượng xuất (Nhập khi TĐH bị lỗi) </h4>";
+                        div += "<div class='form-group col-xs-8' style='display:none'>";
+                        div += "<input type='text' value=" + item.CommandID + " class='form-control' name='mCommandDetail[" + k + "].CommandID'>";
+                        div += "<input type='text' value=" + item.CommandCode + " class='form-control' name='mCommandDetail[" + k + "].CommandCode'>";
+                        div += "<input type='text' value=" + item.CommandType + " class='form-control' name='mCommandDetail[" + k + "].CommandType'>";
+                        div += "<input type='text' value=" + item.WareHouseCode + " class='form-control' name='mCommandDetail[" + k + "].WareHouseCode'>";
+                        div += "<input type='text' value=" + item.CardSerial + " class='form-control' name='mCommandDetail[" + k + "].CardSerial'>";
+                        div += "<input type='text' value=" + item.ID + " class='form-control' name='mCommandDetail[" + k + "].ID'>";
+                        div += "</div>";
+                        div += "<div class='col-sm-4 col-xs-6'>";
+                        div += "<div class='row'>";
+                        div += "<label class='control-label col-xs-4'>Số phương tiện</label>";
+                        div += "<div class='form-group col-xs-8'>";
+                        div += "<input type='text' value=" + item.Vehicle + " class='form-control' name='mCommandDetail[" + k + "].Vehicle' readonly>";
+                        div += "</div>";
+                        div += "</div>";
+                        div += "<div class='row'>";
+                        div += "<label class='control-label col-xs-4'>Mã lệnh</label>";
+                        div += "<div class='form-group col-xs-8'>";
+                        div += "<input type='text' value=" + item.WorkOrder + " class='form-control' name='mCommandDetail[" + k + "].WorkOrder' readonly>";
+                        div += "</div>";
+                        div += "</div>";
+                        //div += "<div class='row'>";
+                        //div += "<label class='control-label col-xs-4'>Card Data</label>";
+                        //div += "<div class='form-group col-xs-8'>";
+                        //div += "<input type='text' value=" + item.CardData + " class='form-control' name='mCommandDetail[" + k + "].CardData' readonly>";
+                        //div += "</div>";
+                        //div += "</div>";
+                        //div += "</div>";
+                        div += "<div class='row'>";
+                        div += "<label class='control-label col-xs-4'>Mã ngăn</label>";
+                        div += "<div class='form-group col-xs-8'>";
+                        div += "<input type='text' value=" + item.CompartmentOrder + " class='form-control' name='mCommandDetail[" + k + "].CompartmentOrder' readonly>";
+                        div += "</div>";
+                        div += "</div>";
+                        div += "</div>";
+
+                        div += "<div class='col-sm-4 col-xs-6'>";
+                        div += "<div class='row'>";
+                        div += "<label class='control-label col-xs-4'>Thời gian đăng ký </label>";
+                        div += "<div class='form-group col-xs-8'>";
+                        div += "<input type='text' value='" + datetimeorder + "' class='form-control' name='mCommandDetail[" + k + "].TimeOrder' readonly>";
+                        div += "</div>";
+                        div += "</div>";
+                        div += "<div class='row'>";
+                        div += "<label class='control-label col-xs-4'>Hàng hóa</label>";
+                        div += "<div class='form-group col-xs-8'>";
+                        div += "<input type='text' value=" + item.ProductName + " class='form-control' name='mCommandDetail[" + k + "].ProductName' readonly>";
+                        div += "</div>";
+                        div += "</div>";
+      //                  div += "<div class='row'>";
+      //                  div += "<label class='control-label col-xs-4'>Mã ngăn</label>";
+      //                  div += "<div class='form-group col-xs-8'>";
+      //                  div += "<input type='text' value=" + item.CompartmentOrder + " class='form-control' name='mCommandDetail[" + k + "].CompartmentOrder' readonly>";
+      //                  div += "</div>";
+      //                  div += "</div>";
+						div += "</div>";
+
+                        if (item.V_Actual == null) {
+                            item.V_Actual = 0;
+						}
+
+                        div += "<div class='col-sm-4 col-xs-6'>";
+                        div += "<div class='row'>";
+                        div += "<label class='control-label col-xs-4'>Lượng đặt </label>";
+                        div += "<div class='form-group col-xs-8'>";
+                        div += "<input type='text' value=" + item.V_Preset + " class='form-control' id='V_Preset' readonly>";
+                        div += "</div>";
+                        div += "</div>";
+                        div += "<div class='row'>";
+                        div += "<label class='control-label col-xs-4'>Lượng xuất hiện tại</label>";
+                        div += "<div class='form-group col-xs-8'>";
+                        div += "<input type='number' value=" + item.V_Actual + " class='form-control' id='V_Actual' name='mCommandDetail[" + k + "].V_Actual' >";
+                        div += "</div>";
+                        div += "</div>";
+
+                        div += "<div class='row'>";
+                        div += "<label class='control-label col-xs-4'>Lượng xuất mới </label>";
+                        div += "<div class='form-group col-xs-8'>";
+                        div += "<input type='text' value=" + item.V_Preset + " class='form-control' id = 'V_Presetnew'  name='mCommandDetail[" + k + "].V_Preset' readonly>";
+
+                        div += "</div>";
+                        div += "<input type='submit' value='Lưu' class='btn btn-success' />";
+                        div +=  "<input type='button' onclick='location.href='@Url.Action("CommandDetail")'' value='Hủy' class='btn btn-danger' />";
+                        div += "</div>";
+                        div += "</div>";
+
+						k++;
+					})
+					div += "</form>";
+                    document.getElementById("warningcommanddetail").innerHTML = div;
+                    preset = parseInt(document.getElementById('V_Preset').value);
+                    $("#V_Actual").bind("change on keyup", function () {
+                        if (document.getElementById('V_Actual').value != "") {
+                            actual = parseInt(document.getElementById('V_Actual').value);
+                        }
+                        if (actual <= preset ) {
+                            presetnew = preset - actual;
+                        }
+
+                        else  {
+                            alert("Lượng xuất hiện tại phải nhỏ hơn hoặc bằng Lượng đặt");
+
+                        }
+
+                        if (actual == null) {
+                            presetnew = preset;
+                        }
+                        else {
+                            document.getElementById('V_Presetnew').value = presetnew;
+                        }
+                    });
+
+                },
+                error: function (err) {
+                    alert("Error: " + err.responseText);
+                }
+            });
+        }
+    </script>
+}

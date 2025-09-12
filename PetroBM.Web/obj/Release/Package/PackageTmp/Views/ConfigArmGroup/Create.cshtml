@@ -1,0 +1,88 @@
+﻿@model PetroBM.Web.Models.ConfigArmGroupModel
+@{
+    ViewBag.Title = "Thêm nhóm Họng Xuất";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            @Html.Label("Kho", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="ConfigArmGrp.WareHouseCode" id="WareHouseCode" onchange="Init()" class="form-control">
+                    @foreach (var item in Model.ListWareHouse)
+                    {
+                        <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArmGrp.ConfigArmName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ConfigArmGrp.ConfigArmName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ConfigArmGrp.ConfigArmName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Họng", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3" id="list-ConfigArmId">
+                <select multiple class="selectpicker form-control list-armNo" name="ListConfigArmId" id="armNo-multiple" data-container="body" data-live-search="true" title="Chọn họng" data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false">
+
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Lưu" class="btn btn-s" /> <input type="button" value="Hủy" class="btn btn-primary" onclick="Cancel()"/>
+            </div>
+        </div>
+    </div>
+}
+
+@section style{
+    @Styles.Render("~/Content/bootstrap-select")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-select");
+    <script>
+        var listConfigArm =@Html.Raw(Json.Encode(@Model.ListConfigArm));
+        Init();
+        $(document).ready(function () {
+           
+            $(document).on("submit", "form", function (e) {
+               // $('#ListConfigArmId').selectpicker('refresh');
+            });
+        });
+
+
+        function Init(){
+            var wareHousecode =$("#WareHouseCode").val();
+            if (wareHousecode!="" && wareHousecode!=null ){
+                var options = [], _options;
+                for (var i = 0; i < listConfigArm.length; i++) {
+
+                    if (listConfigArm[i].WareHouseCode==wareHousecode)
+                    {
+                        var option = "<option value=" + listConfigArm[i].ConfigArmID + ">" + listConfigArm[i].ArmName + "</option>";
+                        options.push(option);
+                    }
+                }
+                _options = options.join('');
+                $('#armNo-multiple')[0].innerHTML = _options;   
+            }
+            $('.list-armNo').selectpicker('refresh');
+        }
+
+        function Cancel(){
+            window.location.href = '/ConfigArmGroup/Index';
+        }
+
+    </script>
+}

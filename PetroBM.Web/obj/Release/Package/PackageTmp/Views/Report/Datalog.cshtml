@@ -1,0 +1,194 @@
+﻿@model PetroBM.Web.Models.ReportModel
+@using PetroBM.Common.Util;
+@{
+    ViewBag.Title = "Báo cáo tồn kho";
+}
+
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-5">Thời điểm</label>
+            <div class="form-group col-xs-7">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-5">Kho</label>
+            <div class="form-group col-xs-7">
+                <select name="WareHouseCode" id="WareHouseCode" class="form-control" onchange="OnchangeWareHouse()">
+                    @{
+                        foreach (var item in Model.ListWareHouse)
+                        {
+                            if (item.WareHouseCode == Model.WareHouseCode)
+                            {
+                                <option selected="selected" value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-6'>
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+        <input type="submit" fileType="PDF" formtarget="_blank" value="Xuất PDF" class="btn btn-primary" />
+        <input type="submit" fileType="EXCEL" value="Xuất EXCEL" class="btn btn-primary" />
+        <input type="submit" fileType="PDF" formtarget="_blank" value="In" class="print btn btn-primary" />
+    </div>
+
+    @Html.HiddenFor(model => model.FileType);
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Bể
+            </th>
+            <th>
+                Loại hàng
+            </th>
+            <th>
+                Chiều cao chung
+            </th>
+            <th>
+                Nhiệt độ
+            </th>
+            <th>
+                Tỷ trọng
+            </th>
+            <th class="text-center">
+                Thể tích chung
+            </th>
+            <th>
+                Chiều cao nước
+            </th>
+            <th>
+                Thể tích nước
+            </th>
+            <th>
+                Thể tích hàng Vtt
+            </th>
+            <th>
+                VCF
+            </th>
+            <th>
+                V15
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>@Constants.DIMENSION_MM</td>
+            <td>@Html.Raw(Constants.DIMENSION_TEMPERATURE)</td>
+            <td>@Constants.DIMENSION_DENSITY</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_MM</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td></td>
+            <td>@Constants.DIMENSION_L</td>
+        </tr>
+        @foreach (System.Data.DataRow row in Model.DataTable.Rows)
+        {
+            <tr>
+                <td>@row["TankName"]</td>
+                <td>@row["ProductName"]</td>
+                <td class="text-right">@((row["TotalLevel"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToSingle(@row["TotalLevel"]), 2))</td>
+                <td>@((row["AvgTemperature"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToSingle(@row["AvgTemperature"]), 1))</td>
+                <td>@((row["Density"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["Density"]), 5))</td>
+                <td class="text-right">@((row["TotalVolume"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["TotalVolume"]), 2))</td>
+                <td class="text-right">@((row["WaterLevel"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["WaterLevel"]), 2))</td>
+                <td class="text-right">@((row["WaterVolume"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["WaterVolume"]), 2))</td>
+                <td class="text-right">@((row["ProductVolume"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["ProductVolume"]), 2))</td>
+                <td>@((row["VCF"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToSingle(@row["VCF"]), 5))</td>
+                <td class="text-right">@((row["ProductVolume15"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["ProductVolume15"]), 2))</td>
+            </tr>
+        }
+
+        @if (Model.DataTable.Rows.Count > 0)
+        {
+            <tr class="total-row">
+                <td>Tổng</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(TotalVolume)", "").ToString()), 2)</td>
+                <td></td>
+                <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(WaterVolume)", "").ToString()), 2)</td>
+                <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(ProductVolume)", "").ToString()), 2)</td>
+                <td></td>
+                <td class="text-right">@NumberUtil.FormatNumber(double.Parse(Model.DataTable.Compute("Sum(ProductVolume15)", "").ToString()), 2)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<iframe id="print-frame" src="" style="display:none"></iframe>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+            $('.btn').on('click', function (e) {
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+            });
+
+            var isChrome = !!window.chrome && !!window.chrome.webstore;
+            if (!isChrome) {
+                $('.print').hide();
+            }
+
+            $('.print').on('click', function (e) {
+
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+
+                var http = new XMLHttpRequest();
+                var url = '@Url.Action("DataLog", "Report")';
+                var params = $('form').serialize();
+                http.responseType = "blob";
+                http.open("POST", url, true);
+
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                http.onreadystatechange = function () {
+                    if (http.readyState == 4 && http.status == 200) {
+                        var response = http.response;
+
+                        var blob = new Blob([response], { type: 'application/pdf' });
+                        var fileURL = URL.createObjectURL(blob);
+                        $('#print-frame').attr('src', fileURL);
+                        $('#print-frame').on('load', function () {
+                            $('#print-frame').get(0).contentWindow.document.execCommand("print", false, null);
+                        });
+                    }
+                }
+
+                http.send(params);
+
+                return false;
+            });
+        });
+    </script>
+}

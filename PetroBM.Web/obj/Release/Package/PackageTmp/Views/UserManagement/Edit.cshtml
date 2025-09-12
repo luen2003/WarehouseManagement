@@ -1,0 +1,97 @@
+﻿@model PetroBM.Web.Models.UserModel
+
+@{
+    ViewBag.Title = "Sửa thông tin người dùng - " + Model.User.UserName;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.User.UserName)
+                
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.LabelFor(Model => Model.User.FullName)
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.User.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User.FullName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.Label("Nhóm")
+            </label>
+            <div class="col-xs-3">
+                <select multiple class="selectpicker form-control" id="number-multiple" data-container="body" data-live-search="true" title="Chọn nhóm" data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false" name="ListUserGrpId">
+                    @foreach (var item in Model.ListUserGrp)
+                    {
+                        var kt = false;
+                        foreach (int it in Model.ListUserGrpId)
+                        {
+                            if (item.GrpId == it)
+                            {
+                                kt = true;
+                            }
+                        }
+
+                        if (kt)
+                        {
+                            <option value="@item.GrpId" selected="selected">@item.GrpName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.GrpId">@item.GrpName</option>
+                        }
+
+                    }
+                </select>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.LabelFor(Model => Model.User.Position)
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.User.Position, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User.Position, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+                <input type="button" value="Đổi mật mã" class="btn btn-primary"
+                       onclick="location.href='@Url.Action("ChangePass",new {userName = Model.User.UserName })'"/>
+                <input type="button" value="Hủy" class="btn btn-primary" 
+                       onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.User.InsertDate);
+    @Html.HiddenFor(model => model.User.InsertUser);
+}
+
+
+@section style{
+    @Styles.Render("~/Content/bootstrap-select")
+
+    @*<style>
+        .form-control {
+            display: inline;
+        }
+    </style>*@
+}
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-select");
+    @Scripts.Render("~/bundles/input-validate");
+}

@@ -1,0 +1,1014 @@
+﻿@model PetroBM.Web.Models.InvoiceModel
+@using Newtonsoft.Json
+@using PetroBM.Common.Util
+@{
+	ViewBag.Title = "Kho: " + Session[Constants.Session_WareHouseName] + " > Tạo hóa đơn";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("CreateInvoice", "Bills", FormMethod.Post, new { id = "frmCreateInvoice" }))
+{
+	@Html.AntiForgeryToken()
+
+<div class="container">
+    <div class="col-md-5">
+        <h4><b>Thông tin lấy hàng</b></h4>
+        <div>
+            <div class="col-md-6">
+                <label>Thời gian xuất HĐ</label>
+            </div>
+            <div class="col-md-6">
+                <div class='input-group date' id='datetimepicker'>
+                    @Html.EditorFor(model => model.OutTime, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @name = "InvoiceModel.OutTime" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Card Data</label>
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Invoice.CardData, new { htmlAttributes = new { @class = "form-control", @id = "CardData", @readonly = "readonly", @name = "InvoiceModel.Invoice.CardData" } })
+            </div>
+        </div>
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Card Serial</label>
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Invoice.CardSerial, new { htmlAttributes = new { @class = "form-control", @id = "SerialNumber", @onchange = "ChangeSerialNumber()", @name = "InvoiceModel.Invoice.CardSerial", @tabindex = "1" } })
+            </div>
+        </div>
+
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Mã lệnh</label>
+            </div>
+            <div class="col-md-6">
+
+                @Html.EditorFor(model => model.Invoice.WorkOrder, new { htmlAttributes = new { @class = "form-control", @id = "WorkOrder", @onchange = "ChangeWorkOrder()", @disabled = "true" } })
+                <div style="display:none">
+                    @Html.EditorFor(model => model.Invoice.CommandID, new { htmlAttributes = new { @class = "form-control", @id = "CommandID" } })
+                </div>
+
+            </div>
+        </div>
+
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Ngày đăng ký</label>
+            </div>
+            <div class="col-md-6">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.InTime, new { htmlAttributes = new { @class = "form-control", @id = "InTime", @readonly = "readonly", @name = "InTime" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Số phương tiện</label>
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Invoice.VehicleNumber, new { htmlAttributes = new { @class = "form-control", @id = "VehicleNumber", @name = "InvoiceModel.Invoice.VehicleNumber", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Tên tài xế</label>
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Invoice.DriverName, new { htmlAttributes = new { @class = "form-control", @id = "DriverName", @name = "InvoiceModel.Invoice.DriverName", @readonly = "readonly" } })
+            </div>
+        </div>
+
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Thuế môi trường</label>
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.EnvironmentTax, new { htmlAttributes = new { @class = "form-control", @id = "EnvironmentTax", @name = "InvoiceModel.EnvironmentTax", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="hidden" id="CertificateTime"></div>
+        <div class="hidden" id="CertificateNumber"></div>
+        <div class="hidden form-control" id="avgVcf" name="Invoice.AvgVcf"></div>
+        <div class="hidden form-control" id="avgDensity" name="Invoice.AvgDensity"></div>
+        <div class="hidden form-control" id="avgTemp" name="Invoice.AvgTemp"></div>
+        <h4><b>Thông tin hóa đơn</b></h4>
+        <div style="padding-top:2%;visibility:visible;">
+            <div class="col-md-6">
+                <label>Loại hàng</label>
+            </div>
+            <div class="col-md-6">
+                <select class="form-control" name="size" onchange="ListPrductOnchange()" id="ListProductID">
+                    @foreach (var item in Model.ListProduct)
+                    {
+                    <option value="@item.ProductCode">@item.ProductName</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div style="padding-top:10%;visibility:hidden" id="ListIdVolume">
+            <div class="col-md-6">
+                <label>Danh sách ngăn</label>
+            </div>
+            <div class="col-md-6">
+                <label style="visibility:hidden" id="volume1"><input type="checkbox" value="" id="chkVolume1">Ngăn 1</label>
+                <label style="visibility:hidden" id="volume2"><input type="checkbox" value="" id="chkVolume2">Ngăn 2</label>
+                <label style="visibility:hidden" id="volume3"><input type="checkbox" value="" id="chkVolume3">Ngăn 3</label>
+                <label style="visibility:hidden" id="volume4"><input type="checkbox" value="" id="chkVolume4">Ngăn 4</label>
+                <label style="visibility:hidden" id="volume5"><input type="checkbox" value="" id="chkVolume5">Ngăn 5</label>
+                <label style="visibility:hidden" id="volume6"><input type="checkbox" value="" id="chkVolume6">Ngăn 6</label>
+                <label style="visibility:hidden" id="volume7"><input type="checkbox" value="" id="chkVolume7">Ngăn 7</label>
+                <label style="visibility:hidden" id="volume8"><input type="checkbox" value="" id="chkVolume8">Ngăn 8</label>
+                <label style="visibility:hidden" id="volume9"><input type="checkbox" value="" id="chkVolume9">Ngăn 9</label>
+            </div>
+        </div>
+        <div>
+            <button type="button" onclick="CreateContractInvoice()" id="CreateContract" class="btn btn-primary">Tạo HĐ</button>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div>
+            <h4><b>Thông tin khách hàng</b></h4>
+        </div>
+        <div>
+            <div class="col-md-4">
+                <label>Họ tên người MH</label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.BuyerName, new { htmlAttributes = new { @class = "form-control", @id = "BuyerName", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Tên đơn vị : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.CompanyName, new { htmlAttributes = new { @class = "form-control", @id = "CompanyName", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Địa chỉ : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.Address, new { htmlAttributes = new { @class = "form-control", @id = "Address", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Số điện thoại : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @id = "PhoneNumber", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Số tài khoản : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.AccountCustomNo, new { htmlAttributes = new { @class = "form-control", @id = "AccountCustomNo", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Mã số thuế : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.TaxCode, new { htmlAttributes = new { @class = "form-control", @id = "TaxCode", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Hình thức thanh toán :</label>
+            </div>
+            <div class="col-md-8">
+                <select class="form-control" name="Invoice.PaymentType">
+                    <option value="CK" selected="selected">Chuyển khoản</option>
+                    <option value="TM">Tiền mặt</option>
+
+                </select>
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Đơn vị tính :</label>
+            </div>
+            <div class="col-md-8">
+                <select class="form-control" name="Invoice.Unit" id="UnitID">
+                    <option value="Ltt" selected="selected" id="selectedvalue">Ltt</option>
+                    <option value="L15">L15</option>
+                    <option value="Kg">Kg</option>
+                </select>
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Giá vùng:</label>
+            </div>
+            <div class="col-md-8">
+                <select class="form-control" name="Invoice.PriceLevel" onchange="PriceOnchange()" id="PriceLevelID">
+                    <option value="M1" selected="selected">Vùng 1 </option>
+                    <option value="M2">Vùng 2</option>
+                </select>
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Thuế VAT : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.TaxRate, new { htmlAttributes = new { @class = "form-control", @id = "TaxRate", @name = "InvoiceModel.Invoice.TaxRate" } })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="width:100%" class="container">
+    <h4><b>Danh sách hóa đơn</b></h4>
+    <div id="billlist" style="visibility:hidden">
+    </div>
+    <h4 id="MessageError" style="color:red;font:bold"></h4>
+    <input type="button" value="Lưu" class="btn btn-success" onclick="Validation()" />
+
+</div>
+<div class="container" style="width:100%;visibility:hidden " id="bill">
+    <div>
+        <h4><b>Chi tiết hóa đơn</b></h4>
+    </div>
+    <div>
+        <div class="col-md-8" id="InvoiceDetail">
+        </div>
+        <div class="col-md-4">
+            <div>
+                <h4><b>Ghi chú</b></h4>
+            </div>
+            <div>
+                @Html.TextAreaFor(model => model.Invoice.Note, new { @class = "form-control", @rows = "5", @id = "Note", @name = "InvoiceModel.Invoice.Note"  })
+            </div>
+        </div>
+    </div>
+</div>
+
+	@section Scripts{
+<script type="text/javascript">
+    var checkInvoice = false;
+    function GetDateVN(date) {
+
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1;
+        var yyyy = date.getFullYear();
+        var mim = date.getMinutes();
+        var hh = date.getHours();
+
+        var str = '';
+        if (dd < 10)
+            str += '0' + dd;
+        else
+            str += '' + dd;
+
+        if (mm < 10)
+            str += '/0' + mm;
+        else
+            str += '/' + mm;
+
+        if (hh < 10) {
+            str += '/' + yyyy + ' 0' + hh;
+        }
+        else {
+            str += '/' + yyyy + ' ' + hh;
+        }
+
+        if (mim < 10)
+            str += ':0' + mim;
+        else
+            str += ':' + mim;
+
+        return str;
+    }
+
+</script>
+
+<script type="text/javascript">
+    $("#SerialNumber").focus();
+    if (@Model.ExportMode == @Constants.EXPORT_MODE_WORKORDER) {
+        $("#WorkOrder").prop("disabled", false);
+        $("#WorkOrder").focus();
+        $("#SerialNumber").prop("disabled", true);
+    }
+
+    //Bắt lỗi submit lại đây!
+    function Validation() {
+        //if (!ValidateData()) {
+        //	document.getElementById("MessageError").innerHTML = "Card data đang bị trống";
+        //	return false;
+        //         }
+
+        $("#frmCreateInvoice").submit();
+    }
+
+    function Textchange() {
+
+
+        if (isNaN(document.getElementById("SealLast").value)) {
+            return;
+        }
+
+        var indexNo = Number(document.getElementById("SealLast").value);
+        var i = 0
+
+        $('#divSeal').find('input[type=text],select').each(function () {
+            if (i % 3 != 2) {
+                $(this).val(indexNo + 1);
+                indexNo = indexNo + 1;
+            }
+            i = i + 1;
+        });
+
+        return;
+    };
+
+    function BillSplit() {
+        $("#billlist").find()
+    };
+
+</script>
+<script type="text/javascript">
+
+    var ListInvoice = @Html.Raw(Json.Encode(@Model.ListInvoice)); //Hiển thị lưới danh mục hóa đơn //Hóa đơn gốc
+    var ListPrice = @Html.Raw(Json.Encode(@Model.ListPrice)); //Khởi tạo toàn bộ danh mục giá chung
+    var ListProduct = @Html.Raw(Json.Encode(@Model.ListProductTemp)); //Khởi tạo toàn bộ danh mục giá chung
+    var ListCommandDetail = []; //Chi tiết hóa đơn theo từng ngăn ở CommandDetail
+    var ListCreateInvoiceDetail = []; //Danh sách hóa đơn đang tách
+    var ListSeal = [];
+    var PriceLevel;
+    var lstVolumePost;
+    var arrSplitListVolume;//các ngăn cần check
+    var arrSplitListVolumeChecked; //Các ngăn đã check;
+    var strProductCode = "";
+    var strValue = "";
+    var strCalcUnit = "";
+    var strLevelAmount = "";
+    var ChuSo = new Array(" không ", " một ", " hai ", " ba ", " bốn ", " năm ", " sáu ", " bảy ", " tám ", " chín ");
+    var Tien = new Array("", " nghìn", " triệu", " tỷ", " nghìn tỷ", " triệu tỷ");
+    var avgTemp = 0;
+    var avgDensity = 0;
+    var avgVcf = 0;
+
+    GenerateTable();
+
+    //Generate table invoice detail với ListInvoice đã được tạo từ trước (mặc định)
+    function GenerateTable() {
+
+        PriceLevel = document.getElementById("PriceLevelID").value;
+        document.getElementById("billlist").innerHTML = "";
+        var arrListVolumn;
+        var tr = "";
+        tr = tr + "<table style='width:90%' class='table table-striped table-bordered'>";
+        tr = tr + "<thead><tr>";
+        tr = tr + "<td>STT</td>";
+        tr = tr + "<td>Hàng hóa</td>";
+        tr = tr + "<td>Ngăn</td>";
+        tr = tr + "<td>Đơn vị tính</td>";
+        tr = tr + "<td>Thể tích</td>";
+        tr = tr + "<td>Mức giá</td>";
+        tr = tr + "<td>Đơn giá</td>";
+        tr = tr + "<td>Tách HĐ</td>";
+        tr = tr + "<td>Chi tiết</td>";
+        tr = tr + "</tr></thead>";
+        tr = tr + "<tbody>";
+        for (var i = 0; i < ListInvoice.length; i++) {
+            for (var j = 0; j < ListPrice.length; j++) {
+                if (ListInvoice[i].ProductCode == ListPrice[j].Code && ListPrice[j].Name == PriceLevel && ListPrice[j].Unit == ListInvoice[i].CalcUnit) {
+                    if (document.getElementById('EnvironmentTax').value == "Có") {
+                        ListInvoice[i].EnvironmentTax = ListPrice[j].EnvironmentTax;
+                    } else {
+                        ListInvoice[i].EnvironmentTax = 0;
+                    }
+                    tr = tr + "<tr>";
+                    tr = tr + "<td style='width:50px;'><input style='width:50%;border:white;' value=" + ListInvoice[i].No + " type='text' name=[" + i + "].No readonly='readonly' /></td>";
+                    for (var k = 0; k < ListProduct.length; k++) {
+                        if (ListProduct[k].ProductCode == ListInvoice[i].ProductCode) {
+                            tr = tr + "<td><input style='width:100%;border:white;' value='" + ListProduct[k].ProductName + "' type='text' name=[" + i + "].ProductName readonly='readonly' /></td>";
+                        }
+                    }
+                    tr = tr + "<td><input style='width:100%;border:white;' value=" + ListInvoice[i].ListVolume + " type='text' name=[" + i + "].ListVolume readonly='readonly' /></td>";
+                    tr = tr + "<td><input style='width:100%;border:white;' value=" + ListInvoice[i].CalcUnit + " type='text' name=[" + i + "].CalcUnit readonly='readonly' /></td>";
+                    tr = tr + "<td><input style='width:100%;border:white;' value=" + ListInvoice[i].Value + " type='text' name=[" + i + "].Value readonly='readonly' /></td>";
+                    tr = tr + "<td><input style='width:100%;border:white;' value=" + ListInvoice[i].LevelAmount + " type='text' name=[" + i + "].LevelAmount readonly='readonly' /></td>";
+                    tr = tr + "<td><input style='width:100%;border:white;' value=" + ((ListPrice[j].Value - ListInvoice[i].EnvironmentTax - ListInvoice[i].Discount) / 1.1).toFixed(2) + " type='text' name=[" + i + "].PriceUnit readonly='readonly' /></td>";
+                    tr = tr + "<input type='hidden'value=" + ListInvoice[i].ProductCode + "  name=[" + i + "].ProductCode />";
+                    if (ListInvoice[i].ListVolume.length > 1)
+                        tr = tr + "<td><button type='button' onclick='CallCreateContract(" + ListInvoice[i].ListVolume + ")'>Tách HĐ</button></td>";
+                    else
+                        tr = tr + "<td></td>";
+                    tr = tr + "<td><button type='button' onclick='ShowBill(" + ListInvoice[i].ListVolume + ")'>Chi tiết HĐ</button></td>";
+                    tr = tr + "</tr>";
+                    document.getElementById("billlist").style = "";
+
+
+
+                }
+            }
+        }
+
+        tr = tr + "</tbody>";
+        tr = tr + "</table>"
+        document.getElementById("billlist").innerHTML = tr;
+
+    }
+    //Tạo hóa đơn theo các ngăn được chọn
+    function CallCreateContract(volume) {
+        lstVolumePost = JSON.stringify(volume);
+        arrCompartmentOrder = JSON.stringify(volume).split("");
+      //  document.getElementById("ListIdVolume").style.visibility = "visible";
+        document.getElementById("ListIdVolume").style.visibility = "hidden";
+        var strCode = "";
+        for (var i = 0; i < ListInvoice.length; i++) {
+            if (lstVolumePost == ListInvoice[i].ListVolume) {
+                var lstV = ListInvoice[i].ListV.split(",");
+                //Đẩy vào danh sách để tạo hóa đơn
+                for (var j = 0; j < arrCompartmentOrder.length; j++) {
+                    ListCreateInvoiceDetail.push({ No: "1", ProductCode: ListInvoice[i].ProductCode, ProductName: ListInvoice[i].ProductName, Value: eval(lstV[j]), CalcUnit: ListInvoice[i].CalcUnit, ListVolume: arrCompartmentOrder[j], LevelAmount: ListInvoice[i].LevelAmount, ListV: lstV[j], PriceUnit: ListInvoice[i].PriceUnit, Discount: ListInvoice[i].Discount, EnvironmentTax: ListInvoice[i].EnvironmentTax, Status: "1" });
+                    strCode = ListInvoice[i].ProductName;
+                    ObjectEnabled("CreateContract");
+                    //bill
+                    VisibleHiddenId("bill");
+                }
+                ListInvoice.splice(i, 1);
+            }
+        }
+        //Đặt lại Select loại hàng
+        for (var z = 0; z < ListProduct.length; z++) {
+            if (ListProduct[z].Abbreviations == strCode) {
+                $("#ListProductID").val(ListProduct[z].ProductCode);
+            }
+        }
+
+        ListPrductOnchange();
+        
+        GenerateTable(); // Khởi tạo lại lưới
+    }
+    function ListPrductOnchange() {
+        var strCode = $("#ListProductID").val();
+
+        for (var i = 1; i < 10; i++) {
+            document.getElementById("volume" + i).style.visibility = "hidden";
+        }
+
+        for (var i = 0; i < ListCreateInvoiceDetail.length; i++) {
+            if (ListCreateInvoiceDetail[i].ProductCode == strCode) {
+                document.getElementById("volume" + ListCreateInvoiceDetail[i].ListVolume).style.visibility = "visible";
+            }
+        }
+    }
+
+    function PriceOnchange() {
+        var objPriceID = $("#PriceLevelID").val();
+        var objUnitID = $("#UnitID").val();
+        var PriceValue = 0;
+        for (var i = 0; i < ListInvoice.length; i++) {
+            for (var j = 0; j < ListPrice.length; j++) {
+                if (ListInvoice[i].ProductCode == ListPrice[j].Code && ListPrice[j].Name == objPriceID && ListPrice[j].Unit == objUnitID) {
+                    for (var k = 0; k < ListCommandDetail.length; k++) {
+                        if (ListPrice[j].Code == ListCommandDetail[k].ProductCode) {
+                            ListInvoice[i].LevelAmount = ListPrice[j].Caption;
+                            ListInvoice[i].CalcUnit = objUnitID;
+                            ListInvoice[i].PriceUnit = ListPrice[j].Value / 1.1;
+                            if (document.getElementById('EnvironmentTax').value == "Có") {
+                                ListInvoice[i].EnvironmentTax = ListPrice[j].EnvironmentTax;
+                            } else {
+                                ListInvoice[i].EnvironmentTax = 0;
+                            }
+                            ListInvoice[i].Discount = ListCommandDetail[k].Discount;
+                        }
+                        //ListInvoice[i].PriceUnit =ListPrice[j].Value;
+                    }
+
+                }
+            }
+        }
+        GenerateTable();//Cần cập nhật lại mức giá
+    }
+
+
+
+    function CreateContractInvoice() {
+        var obj = { No: "1", ProductCode: "", ProductName: "", Value: 0, CalcUnit: "Lit", ListVolume: "", LevelAmount: "M1", ListV: "", PriceUnit: 0, Status: "1", EnvironmentTax: "0", Discount: "0" };
+
+
+        for (var i = 0; i < ListCreateInvoiceDetail.length; i++) {
+            if (document.getElementById("chkVolume" + ListCreateInvoiceDetail[i].ListVolume).checked == true) {
+                document.getElementById("volume" + arrCompartmentOrder[i]).style.visibility = "hidden";
+                document.getElementById("chkVolume" + ListCreateInvoiceDetail[i].ListVolume).checked = false;
+
+                obj.ProductCode = ListCreateInvoiceDetail[i].ProductCode;
+                obj.ProductName = ListCreateInvoiceDetail[i].ProductName;
+                obj.Value += ListCreateInvoiceDetail[i].Value;
+                obj.ListVolume += ListCreateInvoiceDetail[i].ListVolume;
+                obj.ListV += ListCreateInvoiceDetail[i].ListV + ",";
+                obj.LevelAmount = ListCreateInvoiceDetail[i].LevelAmount;
+                obj.PriceUnit = ListCreateInvoiceDetail[i].PriceUnit;
+                obj.CalcUnit = ListCreateInvoiceDetail[i].CalcUnit;
+                obj.EnvironmentTax = ListCreateInvoiceDetail[i].EnvironmentTax;
+                obj.Discount = ListCreateInvoiceDetail[i].Discount;
+                ListCreateInvoiceDetail.splice(i, 1);
+
+                i -= 1;
+            }
+        }
+        obj.ListV = obj.ListV.substring(0, obj.ListV.length - 1);
+
+        ListInvoice.push(obj);
+
+        //Đánh lại số thứ tự danh sách hóa đơn
+        for (var i = 0; i < ListInvoice.length; i++) {
+            ListInvoice[i].No = i + 1;
+        }
+        if (ListCreateInvoiceDetail.length == 0)
+            ObjectDisabled("CreateContract");
+        ListPrductOnchange();
+        GenerateTable();
+      
+    }
+
+    function ObjectDisabled(id) {
+        document.getElementById(id).disabled = true;
+        return true;
+    }
+
+    function ObjectEnabled(id) {
+        document.getElementById(id).disabled = false;
+        return true;
+    }
+
+    function VisibleHiddenId(id) {
+
+        document.getElementById(id).style.visibility = "hidden";
+    }
+
+    function ShowBill(listVolume) {
+
+        var objectTaxRate = eval(document.getElementById("TaxRate").value);
+
+        listVolume = JSON.stringify(listVolume);
+        var indexInvoice = 0;
+
+        var totalAmount = 0;
+
+        // $("#bill").css('visibility', 'visible');
+        document.getElementById("bill").style.visibility = "visible";
+
+        document.getElementById("InvoiceDetail").innerHTML = "";
+        var totalPrice = 0;
+        var tr = "";
+        tr = tr + "<table style='width:100% ' class='table table-striped table-bordered'>";
+        tr = tr + "<thead><tr>";
+        tr = tr + "<td>STT</td>";
+        tr = tr + "<td>Hàng hóa</td>";
+        tr = tr + "<td>Đơn vị tính</td>";
+        tr = tr + "<td>Số lượng</td>";
+        tr = tr + "<td>Đơn giá</td>";
+        tr = tr + "<td>Chiết khấu</td>";
+        tr = tr + "<td>Thuế môi trường</td>";
+        tr = tr + "<td>Thành tiền</td>";
+        tr = tr + "</tr></thead>";
+
+        tr = tr + "<tbody>";
+        tr = tr + "<tr>";
+        tr = tr + "<td>A</td>";
+        tr = tr + "<td>B</td>";
+        tr = tr + "<td>C</td>";
+        tr = tr + "<td>(1)</td>";
+        tr = tr + "<td>(2)</td>";
+        tr = tr + "<td>(3)</td>";
+        tr = tr + "<td>(4)</td>";
+        tr = tr + "<td>(5)=(1)x(2)-(3)x(1)-(4)x(1)</td>";
+        tr = tr + "</tr>";
+        for (var j = 0; j < ListInvoice.length; j++) {
+            if (ListInvoice[j].ListVolume == listVolume) {
+                //var v1 = eval(ListInvoice[j].Value);
+                //var v2 = eval(ListInvoice[j].PriceValue);
+                //var v3 = eval(ListInvoice[j].Value) * eval(ListInvoice[j].PriceValue)
+                totalPrice = (eval(ListInvoice[j].Value) * ((eval(ListInvoice[j].PriceUnit) - (eval(ListInvoice[j].Discount) + eval(ListInvoice[j].EnvironmentTax)) / 1.1)));
+                tr = tr + "<tr>";
+                tr = tr + " <td>1</td>";
+                for (var k = 0; k < ListProduct.length; k++) {
+                    if (ListInvoice[j].ProductCode == ListProduct[k].ProductCode) {
+                        tr = tr + " <td>" + ListProduct[k].ProductName + "</td>";
+                        break;
+                    }
+                }
+                //tr = tr + " <td>" + ListInvoice[j].ProductName + "</td>";
+                tr = tr + " <td>" + ListInvoice[j].CalcUnit.toLocaleString("de-DE") + "</td>";
+                tr = tr + " <td>" + eval(ListInvoice[j].Value).toLocaleString("de-DE") + "</td>";
+                tr = tr + " <td>" + eval((ListInvoice[j].PriceUnit).toFixed(2)).toLocaleString("de-DE") + "</td>";
+                tr = tr + " <td>" + eval((ListInvoice[j].Discount / 1.1).toFixed(2)).toLocaleString("de-DE") + "</td>";
+                tr = tr + " <td>" + eval((ListInvoice[j].EnvironmentTax / 1.1).toFixed(2)).toLocaleString("de-DE") + "</td>";
+                tr = tr + " <td>" + totalPrice.toLocaleString("de-DE") + "</td>";
+                tr = tr + "</tr>";
+
+                indexInvoice = j;
+            }
+        }
+        var kg = 0;
+        var l15 = 0;
+        //var arrListVolue= listVolume.split("");
+        for (var i = 0; i < listVolume.length; i++) {
+            for (var j = 0; j < ListCommandDetail.length; j++) {
+                if (listVolume[i] == ListCommandDetail[j].CompartmentOrder) {
+                    l15 = ListCommandDetail[j].V_Actual * ListCommandDetail[j].Vcf;
+                    kg = l15 * ListCommandDetail[j].Wcf
+                    tr = tr + "<tr>";
+                    //ghi dữ liệu ở đây chi tiết tại đây
+                    tr = tr + " <td colspan='8'> " + new Date(new Date(parseInt(ListCommandDetail[j].TimeOrder.substr(6)))).toLocaleString() + " Ngăn:" + ListCommandDetail[j].CompartmentOrder + " N.Độ:" + ListCommandDetail[j].AvgTemperature + " Tỷ trọng:" + ListCommandDetail[j].AvgDensity + " VCF: " + ListCommandDetail[j].Vcf + " WCF: " + ListCommandDetail[j].Wcf + " Ltt: " + ListCommandDetail[j].V_Actual + " L15:" + l15.toFixed(0) + " Kg:" + kg.toFixed(0) + " </td>";
+                    tr = tr + "</tr>";
+                }
+            }
+        }
+
+        tr = tr + "<tr>";
+        tr + " <td colspan='8'> ";
+        for (var i = 0; i < listVolume.length; i++) {
+            for (var j = 0; j < ListCommandDetail.length; j++) {
+                if (listVolume[i] == ListSeal[j].VolumeCode) {
+
+                    tr = tr + " Niêm đầu:" + ListSeal[j].Seal1 + ", Niêm cuối " + ListSeal[j].Seal2 + " ,SS:" + ListSeal[j].Ratio;
+
+                }
+            }
+        }
+
+        tr + " </td>";
+        tr = tr + "</tr>";
+
+        //ListSeal
+
+        tr = tr + "</tbody>";
+        tr = tr + "<tfooter>";
+        tr = tr + "<tr>";
+        tr = tr + "<th>I</th>";
+        tr = tr + "<th colspan='6'>Cộng tiền hành hóa dịch vụ</th>";
+        //tr = tr + " <td>" + eval(ListInvoice[j].Value) * eval(ListInvoice[j].PriceUnit).toLocaleString("de-DE") + "</td>";
+        tr = tr + " <td>" + totalPrice.toLocaleString("de-DE") + "</td>";
+        //tr = tr + " <td>" + (eval(ListInvoice[j].Value) * eval(ListInvoice[j].PriceUnit) - eval(ListInvoice[j].Value) * eval(ListInvoice[j].Discount)) - (eval(ListInvoice[j].Value) * eval(ListInvoice[j].PriceUnit) - (eval(ListInvoice[j].Value) * eval(ListInvoice[j].Discount))) / 100 * eval(ListInvoice[j].EnvironmentTax))).toLocaleString("de-DE") + "</td>";
+        tr = tr + "</tr>";
+
+        tr = tr + "<tr>";
+        tr = tr + "<th>II</th>";
+        tr = tr + "<th colspan='5'>Thuế xuất giá trị gia tăng:10%</th>";
+        tr = tr + "<th>Tiền thuế GTGT:</th>";
+        tr = tr + "<th>" + (totalPrice / 10).toLocaleString('de-DE') + "</th>";
+        tr = tr + "</tr>";
+
+        tr = tr + "<tr>";
+        tr = tr + "<th>III</b></th>";
+        tr = tr + "<th colspan='6'></b>Tổng cộng tiền thanh toán</th>";
+        tr = tr + "<th>" + (totalPrice * 1.1).toLocaleString('de-DE') + "</th>";
+        tr = tr + "</tr>";
+
+        tr = tr + "<tr>";
+        tr = tr + "<th colspan='8'>Số tiền viết bằng chữ: " + DocTienBangChu((totalPrice * 1.1).toFixed(0)) + " chẵn VNĐ</th>";
+        tr = tr + "</tr>";
+
+        tr = tr + "</tfoot>";
+        tr = tr + "</table>"
+
+        document.getElementById("InvoiceDetail").innerHTML = tr;
+
+    }
+
+
+    function DocSo3ChuSo(baso) {
+        var tram;
+        var chuc;
+        var donvi;
+        var KetQua = "";
+        tram = parseInt(baso / 100);
+        chuc = parseInt((baso % 100) / 10);
+        donvi = baso % 10;
+        if (tram == 0 && chuc == 0 && donvi == 0) return "";
+        if (tram != 0) {
+            KetQua += ChuSo[tram] + " trăm ";
+            if ((chuc == 0) && (donvi != 0)) KetQua += " linh ";
+        }
+        if ((chuc != 0) && (chuc != 1)) {
+            KetQua += ChuSo[chuc] + " mươi";
+            if ((chuc == 0) && (donvi != 0)) KetQua = KetQua + " linh ";
+        }
+        if (chuc == 1) KetQua += " mười ";
+        switch (donvi) {
+            case 1:
+                if ((chuc != 0) && (chuc != 1)) {
+                    KetQua += " mốt ";
+                }
+                else {
+                    KetQua += ChuSo[donvi];
+                }
+                break;
+            case 5:
+                if (chuc == 0) {
+                    KetQua += ChuSo[donvi];
+                }
+                else {
+                    KetQua += " lăm ";
+                }
+                break;
+            default:
+                if (donvi != 0) {
+                    KetQua += ChuSo[donvi];
+                }
+                break;
+        }
+        return KetQua;
+    }
+
+    //2. Hàm đọc số thành chữ (Sử dụng hàm đọc số có ba chữ số)
+
+    function DocTienBangChu(SoTien) {
+        var lan = 0;
+        var i = 0;
+        var so = 0;
+        var KetQua = "";
+        var tmp = "";
+        var ViTri = new Array();
+        if (SoTien < 0) return "Số tiền âm !";
+        if (SoTien == 0) return "Không đồng !";
+        if (SoTien > 0) {
+            so = SoTien;
+        }
+        else {
+            so = -SoTien;
+        }
+        if (SoTien > 8999999999999999) {
+            //SoTien = 0;
+            return "Số quá lớn!";
+        }
+        ViTri[5] = Math.floor(so / 1000000000000000);
+        if (isNaN(ViTri[5]))
+            ViTri[5] = "0";
+        so = so - parseFloat(ViTri[5].toString()) * 1000000000000000;
+        ViTri[4] = Math.floor(so / 1000000000000);
+        if (isNaN(ViTri[4]))
+            ViTri[4] = "0";
+        so = so - parseFloat(ViTri[4].toString()) * 1000000000000;
+        ViTri[3] = Math.floor(so / 1000000000);
+        if (isNaN(ViTri[3]))
+            ViTri[3] = "0";
+        so = so - parseFloat(ViTri[3].toString()) * 1000000000;
+        ViTri[2] = parseInt(so / 1000000);
+        if (isNaN(ViTri[2]))
+            ViTri[2] = "0";
+        ViTri[1] = parseInt((so % 1000000) / 1000);
+        if (isNaN(ViTri[1]))
+            ViTri[1] = "0";
+        ViTri[0] = parseInt(so % 1000);
+        if (isNaN(ViTri[0]))
+            ViTri[0] = "0";
+        if (ViTri[5] > 0) {
+            lan = 5;
+        }
+        else if (ViTri[4] > 0) {
+            lan = 4;
+        }
+        else if (ViTri[3] > 0) {
+            lan = 3;
+        }
+        else if (ViTri[2] > 0) {
+            lan = 2;
+        }
+        else if (ViTri[1] > 0) {
+            lan = 1;
+        }
+        else {
+            lan = 0;
+        }
+        for (i = lan; i >= 0; i--) {
+            tmp = DocSo3ChuSo(ViTri[i]);
+            KetQua += tmp;
+            if (ViTri[i] > 0) KetQua += Tien[i];
+            if ((i > 0) && (tmp.length > 0)) KetQua += ',';//&& (!string.IsNullOrEmpty(tmp))
+        }
+        if (KetQua.substring(KetQua.length - 1) == ',') {
+            KetQua = KetQua.substring(0, KetQua.length - 1);
+        }
+        KetQua = KetQua.substring(1, 2).toUpperCase() + KetQua.substring(2);
+        return KetQua;//.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
+    }
+
+    //Các hàm về Checkbox cho các hóa đơn
+    function ChkInvoiceAll() {
+        for (var i = 0; i < ListInvoice.length; i++)
+            document.getElementById("chkInvoice" + ListInvoice[i].ListVolume).checked = document.getElementById("chkInvoiceAll").checked;
+        return true;
+
+    }
+    //Check element in Invoice change
+    function ChkInvoice() {
+        for (var i = 0; i < ListInvoice.length; i++)
+            document.getElementById("chkInvoiceAll").checked = false;
+        return true;
+
+    }
+    function ChangeSerialNumber()
+    {
+        document.getElementById("PriceLevelID").value = "M1";
+        var cardSerial = document.getElementById('SerialNumber').value;
+        var wordOrder = document.getElementById('WorkOrder').value;
+        if (cardSerial == "" || cardSerial == null)
+            return;
+
+        $.post("@Url.Action("GetCommandCardSerial", "Bills")", { dataSerial: cardSerial }, function (data) {
+            if (data == "") {
+                document.getElementById("billlist").style.visibility = "hidden";
+                document.getElementById("MessageError").innerHTML = "Xe chưa được niêm chì hoặc không có card trong hệ thống. Bạn kiểm tra lại!";
+                return true;
+            }
+            else {
+                //document.getElementById('WorkOrder').value = parseInt(data.WorkOrder);
+                //ChangeWorkOrder();
+             //   var date = data.TimeOrder;
+             //   var nowDate = new Date(parseInt(date.substr(6)));
+             //   document.getElementById("MessageError").innerHTML = "";
+               // document.getElementById('CardData').value = data.CardData;
+          //      document.getElementById('InTime').value = GetDateVN(nowDate);
+              //  document.getElementById('VehicleNumber').value = data.VehicleNumber;
+              //  document.getElementById('DriverName').value = data.DriverName;
+                document.getElementById('WorkOrder').value = parseInt(data.WorkOrder);
+                ChangeWorkOrder();
+            
+              
+
+            }
+        });
+
+        return true;
+    }
+     
+    @*function ChangeSerialNumber()
+    {
+        document.getElementById("PriceLevelID").value = "M1";
+        var cardSerial = document.getElementById('SerialNumber').value;
+        var wordOrder = document.getElementById('WorkOrder').value;
+        if (cardSerial == "" || cardSerial == null)
+            return;
+
+        $.post("@Url.Action("GetCommandCardSerial", "Bills")", { dataSerial: cardSerial }, function (data) {
+            if (data == "") {
+                document.getElementById("billlist").style.visibility = "hidden";
+                document.getElementById("MessageError").innerHTML = "Xe chưa được niêm chì hoặc không có card trong hệ thống. Bạn kiểm tra lại!";
+                return true;
+            }
+            else {
+                //document.getElementById('WorkOrder').value = parseInt(data.WorkOrder);
+                //ChangeWorkOrder();
+                var date = data.TimeOrder;
+                var nowDate = new Date(parseInt(date.substr(6)));
+                document.getElementById("MessageError").innerHTML = "";
+                document.getElementById('CardData').value = data.CardData;
+                document.getElementById('InTime').value = GetDateVN(nowDate);
+                document.getElementById('VehicleNumber').value = data.VehicleNumber;
+                document.getElementById('DriverName').value = data.DriverName;
+                document.getElementById('WorkOrder').value = parseInt(data.WorkOrder);
+                ChangeWorkOrder();
+                document.getElementById('CommandID').value = data.CommandID;
+                document.getElementById('CertificateTime').value = data.CertificateTime;
+                document.getElementById('CertificateNumber').value = data.CertificateNumber;
+                //document.getElementById('Discount').value = data.Discount;
+                if (data.EnvironmentTax == true) {
+                    document.getElementById('EnvironmentTax').value = "Không";
+                } else if (data.EnvironmentTax == false) {
+                    document.getElementById('EnvironmentTax').value = "Có";
+                }
+
+                //Phần thông tin Khách hàng
+                $.post("@Url.Action("GetCustomerByCustomerCode", "Bills")", { customerCode: data.CustomerCode }, function (data) {
+
+                    if (data != "") {
+                        document.getElementById('BuyerName').value = data.CustomerName;
+                        document.getElementById('CompanyName').value = data.UnitName;
+                        document.getElementById('Address').value = data.CustomerAddress;
+                        document.getElementById('PhoneNumber').value = data.PhoneNumber;
+                        document.getElementById('AccountCustomNo').value = data.AccountNo;
+                        document.getElementById('TaxCode').value = data.TaxCode;
+
+                        $("#UnitID").val(data.Unit);
+                        $("#PriceLevelID").val(data.Price);
+
+
+                        //Gọi danh sách hóa đơn
+                        $.post("@Url.Action("GetListInvoice", "Bills")", { serialNumber: cardSerial }, function (data) {
+                            ListInvoice = data;
+                            PriceOnchange();
+                            checkInvoice = true;
+                        });
+
+                        document.getElementById("billlist").style.visibility = "visible";
+                    }
+                });
+
+                $.post("@Url.Action("GetCommandDetail", "Bills")", { cardSerial: cardSerial }, function (data) {
+
+                    ListCommandDetail = data;
+                });
+
+                $.post("@Url.Action("GetSeal", "Bills")", { cardSerial: cardSerial }, function (data) {
+
+                    ListSeal = data;
+                });
+            }
+        });
+
+        return true;
+    }*@
+
+    function ChangeWorkOrder() {
+        var workOrder = document.getElementById('WorkOrder').value;
+        if (workOrder == "" || workOrder == null)
+            return;
+
+        $.post("@Url.Action("GetCommandByWorkOrder", "Bills")", { workOrder: workOrder }, function (data) {
+            if (data == "") {
+                document.getElementById("billlist").style.visibility = "hidden";
+                document.getElementById("MessageError").innerHTML = "Xe chưa được niêm chì hoặc không có lệnh trong hệ thống. Bạn kiểm tra lại!";
+                return true;
+            }
+            else {
+                var date = data.TimeOrder;
+                var nowDate = new Date(parseInt(date.substr(6)));
+                document.getElementById("MessageError").innerHTML = "";
+                document.getElementById('SerialNumber').value = data.CardSerial;
+                document.getElementById('CardData').value = data.CardData;
+                document.getElementById('InTime').value = GetDateVN(nowDate);
+                document.getElementById('VehicleNumber').value = data.VehicleNumber;
+                document.getElementById('DriverName').value = data.DriverName;
+                document.getElementById('WorkOrder').value = parseInt(data.WorkOrder);
+                document.getElementById('CommandID').value = data.CommandID;
+                //document.getElementById('Discount').value = data.Discount;
+                if (data.EnvironmentTax == true) {
+                    document.getElementById('EnvironmentTax').value = "Không";
+                } else if (data.EnvironmentTax == false) {
+                    document.getElementById('EnvironmentTax').value = "Có";
+                }
+
+                //Phần thông tin Khách hàng
+                $.post("@Url.Action("GetCustomerByCustomerCode", "Bills")", { customerCode: data.CustomerCode }, function (data) {
+                    if (data != "") {
+                        document.getElementById('BuyerName').value = data.CustomerName;
+                        document.getElementById('CompanyName').value = data.UnitName;
+                        document.getElementById('Address').value = data.CustomerAddress;
+                        document.getElementById('PhoneNumber').value = data.PhoneNumber;
+                        document.getElementById('AccountCustomNo').value = data.AccountNo;
+                        document.getElementById('TaxCode').value = data.TaxCode;
+
+                        $("#UnitID").val(data.Unit);
+                        $("#PriceLevelID").val(data.Price);
+
+
+                        //Gọi danh sách hóa đơn
+                        if (checkInvoice == false) {
+                            $.post("@Url.Action("GetListInvoiceByWorkOrder", "Bills")", { workOrder: workOrder }, function (data) {
+                                ListInvoice = data;
+                                PriceOnchange();
+                            });
+                            document.getElementById("billlist").style.visibility = "visible";
+                        }
+
+                    }
+                });
+
+                $.post("@Url.Action("GetCommandDetailByWorkOrder", "Bills")", { workOrder: workOrder }, function (data) {
+
+                    ListCommandDetail = data;
+                });
+
+                $.post("@Url.Action("GetSealByWorkOrder", "Bills")", { workOrder: workOrder }, function (data) {
+
+                    ListSeal = data;
+                });
+            }
+        });
+
+        return true;
+    }
+
+    function ValidateData() {
+        var carddata = document.getElementById('CardData').value;
+        if (carddata == null || carddata == "") {
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
+	}
+}

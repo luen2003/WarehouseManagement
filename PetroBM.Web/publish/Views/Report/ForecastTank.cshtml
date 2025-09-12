@@ -1,0 +1,86 @@
+﻿@model PetroBM.Web.Models.ReportModel
+@using PetroBM.Common.Util;
+@using System.Data
+
+@{
+    ViewBag.Title = "Báo cáo dự báo điều hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian cuối</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Kho</label>
+            <div class="form-group col-xs-8">
+                @if (Model.ListWareHouse.Any())
+                {
+                    @Html.DropDownListFor(model => model.Id,
+            new SelectList(Model.ListWareHouse, "Id", "WareHouseName", "") as SelectList, "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.Id,
+            new SelectList(new List<string>()), "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Tên mặt hàng</label>
+            <div class="form-group col-xs-8" id="productlist">
+                @if (Model.ListProduct.Any())
+                {
+                    @Html.DropDownListFor(model => model.ProductId,
+new SelectList(Model.ListProduct, "ProductId", "ProductName", "") as SelectList,
+new { @class = "form-control", @style = "width:217px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.ProductId,
+new SelectList(new List<string>()),
+new { @class = "form-control", @style = "width:217px;" })
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class='col-sm-4 col-xs-12' style="margin-bottom:10px;">
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+    </div>
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        });
+    </script>
+    }

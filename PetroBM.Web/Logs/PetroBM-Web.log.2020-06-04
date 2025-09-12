@@ -1,0 +1,838 @@
+2020-06-04 08:09:12,900 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:09:13,208 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 7] -> View Login
+2020-06-04 08:09:33,103 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:09:53,121 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:10:13,149 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:10:33,161 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:10:53,172 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:11:14,560 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:11:34,572 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:11:54,588 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:12:14,600 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:12:34,653 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:12:54,671 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:13:12,994 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 8] -> post login
+2020-06-04 08:13:13,185 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 8] -> login success
+2020-06-04 08:13:14,682 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:13:17,150 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 16] -> GetAllConfigArm
+2020-06-04 08:13:17,184 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 16] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:13:17,192 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 16] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:13:17,193 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 16] -> Start GetAllWareHouse
+2020-06-04 08:13:17,205 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 16] -> Finnish GetAllWareHouse
+2020-06-04 08:13:18,506 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 16] -> GetAllConfigArm
+2020-06-04 08:13:22,118 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:13:22,120 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:13:25,311 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 8] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 08:13:25,336 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 8] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 08:13:26,398 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 08:13:26,402 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:13:26,404 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:13:26,404 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 08:13:26,406 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 08:13:26,456 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 08:13:27,623 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 17] -> Start GetAllWareHouse
+2020-06-04 08:13:27,625 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 17] -> Finnish GetAllWareHouse
+2020-06-04 08:13:34,711 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:13:44,529 INFO  PetroBM.Web.Controllers.CommandController.RegisterCommand[thread: 17] -> Start controller Command RegisterCommand
+2020-06-04 08:13:44,632 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 17] -> Start GetAllWareHouse
+2020-06-04 08:13:44,635 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 17] -> Finnish GetAllWareHouse
+2020-06-04 08:13:44,636 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 17] -> GetAllCustomer
+2020-06-04 08:13:44,679 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 17] -> GetAllDriver
+2020-06-04 08:13:44,700 INFO  PetroBM.Web.Controllers.CommandController.RegisterCommand[thread: 17] -> Finish controller Command RegisterCommand
+2020-06-04 08:13:48,563 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 17] -> GetAllConfigArm
+2020-06-04 08:13:48,566 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 17] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:13:48,567 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 17] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:13:48,568 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 17] -> Start GetAllWareHouse
+2020-06-04 08:13:48,569 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 17] -> Finnish GetAllWareHouse
+2020-06-04 08:13:48,617 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 17] -> GetAllConfigArm
+2020-06-04 08:13:48,857 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:13:48,860 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:13:54,724 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:13:58,057 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2020-06-04 08:14:02,575 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 08:14:02,579 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:14:02,581 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:14:02,582 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 08:14:02,583 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 08:14:02,630 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 08:14:02,794 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 16] -> Start GetAllWareHouse
+2020-06-04 08:14:02,798 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 16] -> Finnish GetAllWareHouse
+2020-06-04 08:14:14,737 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:14:34,772 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:14:54,786 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:15:14,798 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:15:35,248 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:15:55,281 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:16:15,291 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:16:35,306 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:16:55,352 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:17:15,362 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:17:20,697 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 25] -> GetAllConfigArmOrderByName
+2020-06-04 08:17:21,448 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 25] -> GetAllConfigArm
+2020-06-04 08:17:21,452 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 25] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:17:21,459 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 25] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:17:21,460 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 25] -> Start GetAllWareHouse
+2020-06-04 08:17:21,462 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 25] -> Finnish GetAllWareHouse
+2020-06-04 08:17:21,533 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 25] -> GetAllConfigArm
+2020-06-04 08:17:21,652 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 31] -> Start GetAllWareHouse
+2020-06-04 08:17:21,655 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 31] -> Finnish GetAllWareHouse
+2020-06-04 08:17:35,374 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:17:39,572 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:17:39,579 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:17:39,587 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:17:39,588 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:17:39,590 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:17:39,653 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:17:39,826 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 25] -> Start GetAllWareHouse
+2020-06-04 08:17:39,829 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 25] -> Finnish GetAllWareHouse
+2020-06-04 08:17:51,577 INFO  PetroBM.Web.Controllers.BillsController.RegisterBills[thread: 23] -> Start controller Bills HttpPost RegisterBills
+2020-06-04 08:17:53,420 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 23] -> Execute CalculateV15
+2020-06-04 08:17:54,630 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 23] -> Execute CalculateV15
+2020-06-04 08:17:55,401 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:17:55,886 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 23] -> Execute CalculateV15
+2020-06-04 08:17:57,092 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 23] -> Execute CalculateV15
+2020-06-04 08:17:58,259 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 23] -> Execute CalculateV15
+2020-06-04 08:17:58,267 INFO  PetroBM.Web.Controllers.BillsController.RegisterBills[thread: 23] -> Finish controller Bills HttpPost RegisterBills
+2020-06-04 08:17:58,290 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 11] -> GetAllConfigArm
+2020-06-04 08:17:58,293 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 11] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:17:58,294 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 11] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:17:58,295 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Start GetAllWareHouse
+2020-06-04 08:17:58,296 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Finnish GetAllWareHouse
+2020-06-04 08:17:58,338 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 11] -> GetAllConfigArm
+2020-06-04 08:17:58,470 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 31] -> Start GetAllWareHouse
+2020-06-04 08:17:58,474 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 31] -> Finnish GetAllWareHouse
+2020-06-04 08:18:09,866 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 23] -> GetAllConfigArm
+2020-06-04 08:18:09,870 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 23] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:18:09,871 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 23] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:18:09,872 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 23] -> Start GetAllWareHouse
+2020-06-04 08:18:09,873 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 23] -> Finnish GetAllWareHouse
+2020-06-04 08:18:09,916 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 23] -> GetAllConfigArm
+2020-06-04 08:18:10,054 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 23] -> Start GetAllWareHouse
+2020-06-04 08:18:10,057 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 23] -> Finnish GetAllWareHouse
+2020-06-04 08:18:13,151 INFO  PetroBM.Web.Controllers.SealController.GetCardDataByCardSerial[thread: 23] -> Get CardData by CardSerial
+2020-06-04 08:18:14,197 INFO  PetroBM.Web.Controllers.SealController.GetCommanDetailByCommandID[thread: 31] -> Get CommandDetail By CommandID
+2020-06-04 08:18:15,415 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:18:35,428 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:18:55,473 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:19:15,489 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:19:35,500 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:19:58,752 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:20:18,785 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:20:38,799 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:20:58,830 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:21:18,883 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:21:38,894 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:21:58,923 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:22:18,964 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:22:38,990 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:22:59,007 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:23:19,032 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:23:39,053 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:23:59,081 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:24:21,062 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:24:41,090 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:25:01,101 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:25:21,113 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:25:41,147 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:26:01,159 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:26:21,171 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:26:41,301 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:27:01,332 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:27:21,346 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:27:41,391 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:28:01,402 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:28:21,415 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:28:43,377 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:29:03,403 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:29:23,416 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:29:36,675 INFO  PetroBM.Web.Controllers.SealController.RegisterSeal[thread: 15] -> Register Seal!
+2020-06-04 08:29:42,541 INFO  PetroBM.Web.Controllers.SealController.RegisterSeal[thread: 15] -> Seal Susscess!
+2020-06-04 08:29:43,444 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:29:50,319 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:29:50,328 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:29:50,335 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:29:50,336 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:29:50,338 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:29:50,419 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:29:50,570 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 21] -> Start GetAllWareHouse
+2020-06-04 08:29:50,572 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 21] -> Finnish GetAllWareHouse
+2020-06-04 08:30:03,472 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:30:12,441 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 15] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 08:30:12,452 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 15] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 08:30:12,470 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:30:12,473 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:30:12,475 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:30:12,475 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:30:12,478 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:30:12,524 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:30:12,678 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 28] -> Start GetAllWareHouse
+2020-06-04 08:30:12,682 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 28] -> Finnish GetAllWareHouse
+2020-06-04 08:30:17,676 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 21] -> GetAllCustomer
+2020-06-04 08:30:23,487 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:30:34,967 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 21] -> Start controller Bills HttpPost CreateInvoice
+2020-06-04 08:30:39,367 INFO  PetroBM.Services.Services.InvoiceService.CreateInvoice[thread: 21] -> Start CreateInvoice
+2020-06-04 08:30:41,405 INFO  PetroBM.Services.Services.InvoiceService.CreateInvoice[thread: 21] -> Finish CreateInvoice
+2020-06-04 08:30:48,002 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:30:48,005 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 21] -> Finish controller Bills HttpPost CreateInvoice
+2020-06-04 08:30:48,024 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 21] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 08:31:08,020 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:31:31,385 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:31:34,319 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 08:31:34,366 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:31:34,374 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:31:34,375 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 08:31:34,387 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 08:31:35,156 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 08:31:36,174 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 08:31:36,178 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 08:31:40,485 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 7] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 08:31:40,521 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 7] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 08:31:40,809 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 08:31:40,815 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:31:40,822 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:31:40,822 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 08:31:40,824 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 08:31:40,891 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 08:31:41,083 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:31:41,085 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:31:42,992 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 08:31:42,997 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:31:42,999 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:31:43,000 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 08:31:43,001 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 08:31:43,050 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 08:31:43,149 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 08:31:43,152 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 08:31:45,236 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 15] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 08:31:53,068 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:31:54,614 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 15] -> GetAllDriver
+2020-06-04 08:31:54,639 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 15] -> Finish controller Bills HttpGet PrintInvoice
+2020-06-04 08:31:54,665 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:31:54,667 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:31:54,669 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:31:54,669 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:31:54,671 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:31:54,712 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:31:54,992 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 08:31:54,996 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 08:32:13,090 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:32:33,098 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:32:53,104 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:33:03,216 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 7] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 08:33:03,236 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 7] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 08:33:03,256 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 08:33:03,261 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:33:03,270 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:33:03,270 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 08:33:03,272 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 08:33:03,345 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 08:33:03,482 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:33:03,484 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:33:07,987 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 8] -> GetAllCustomer
+2020-06-04 08:33:10,681 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 8] -> Start controller Bills HttpPost CreateInvoice
+2020-06-04 08:33:14,371 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:33:34,380 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:33:45,584 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 8] -> Finish controller Bills HttpPost CreateInvoice
+2020-06-04 08:33:45,602 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 8] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 08:36:14,498 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:36:28,336 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 08:36:28,341 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:36:28,349 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:36:28,350 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 08:36:28,352 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 08:36:28,419 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 08:36:28,591 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 30] -> Start GetAllWareHouse
+2020-06-04 08:36:28,593 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 30] -> Finnish GetAllWareHouse
+2020-06-04 08:36:31,023 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 15] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 08:36:31,033 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 15] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 08:36:31,047 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:36:31,052 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:36:31,054 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:36:31,054 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:36:31,056 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:36:31,096 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:36:31,212 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 30] -> Start GetAllWareHouse
+2020-06-04 08:36:31,215 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 30] -> Finnish GetAllWareHouse
+2020-06-04 08:36:34,526 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:36:40,711 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 30] -> GetAllConfigArm
+2020-06-04 08:36:40,714 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 30] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:36:40,717 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 30] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:36:40,717 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 30] -> Start GetAllWareHouse
+2020-06-04 08:36:40,719 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 30] -> Finnish GetAllWareHouse
+2020-06-04 08:36:40,756 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 30] -> GetAllConfigArm
+2020-06-04 08:36:40,861 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:36:40,864 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:36:42,654 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 7] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 08:36:47,396 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 7] -> GetAllDriver
+2020-06-04 08:36:47,404 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 7] -> Finish controller Bills HttpGet PrintInvoice
+2020-06-04 08:36:47,416 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 08:36:47,419 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:36:47,421 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:36:47,421 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 08:36:47,423 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 08:36:47,468 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 08:36:47,723 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 30] -> Start GetAllWareHouse
+2020-06-04 08:36:47,726 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 30] -> Finnish GetAllWareHouse
+2020-06-04 08:36:54,541 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:37:14,608 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:37:34,823 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:37:54,833 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:38:14,846 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:38:34,864 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:38:54,872 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:39:14,879 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:39:34,885 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:39:54,905 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:40:14,912 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:40:20,976 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 19] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 08:40:44,348 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:41:03,551 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 19] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 08:41:03,572 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 19] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 08:41:03,591 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 19] -> GetAllConfigArm
+2020-06-04 08:41:03,597 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 19] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:41:03,605 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 19] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:41:03,605 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 19] -> Start GetAllWareHouse
+2020-06-04 08:41:03,607 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 19] -> Finnish GetAllWareHouse
+2020-06-04 08:41:03,679 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 19] -> GetAllConfigArm
+2020-06-04 08:41:03,968 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 18] -> Start GetAllWareHouse
+2020-06-04 08:41:03,972 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 18] -> Finnish GetAllWareHouse
+2020-06-04 08:41:04,369 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:41:11,891 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 18] -> GetAllCustomer
+2020-06-04 08:41:23,249 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 19] -> Start controller Bills HttpPost CreateInvoice
+2020-06-04 08:41:26,922 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:41:30,243 INFO  PetroBM.Services.Services.InvoiceService.CreateInvoice[thread: 19] -> Start CreateInvoice
+2020-06-04 08:41:32,170 INFO  PetroBM.Services.Services.InvoiceService.CreateInvoice[thread: 19] -> Finish CreateInvoice
+2020-06-04 08:41:53,704 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:41:53,710 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 19] -> Finish controller Bills HttpPost CreateInvoice
+2020-06-04 08:41:53,814 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 19] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 08:42:17,011 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:42:37,057 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 08:48:21,008 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:48:25,009 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 13] -> GetAllConfigArm
+2020-06-04 08:48:25,050 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 13] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:48:25,060 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 13] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:48:25,061 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 13] -> Start GetAllWareHouse
+2020-06-04 08:48:25,075 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 13] -> Finnish GetAllWareHouse
+2020-06-04 08:48:26,364 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 13] -> GetAllConfigArm
+2020-06-04 08:48:27,520 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 08:48:27,526 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 08:48:31,059 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 15] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 08:48:31,092 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 15] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 08:48:32,052 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:48:32,055 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:48:32,057 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:48:32,057 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 08:48:32,059 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 08:48:32,100 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 08:48:32,306 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Start GetAllWareHouse
+2020-06-04 08:48:32,309 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Finnish GetAllWareHouse
+2020-06-04 08:48:38,986 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 10] -> GetAllCustomer
+2020-06-04 08:48:41,200 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:48:49,009 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 11] -> Start controller Bills HttpPost CreateInvoice
+2020-06-04 08:49:01,208 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:49:14,097 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 11] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 08:49:21,822 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:49:22,302 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 11] -> GetAllDriver
+2020-06-04 08:49:22,328 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 11] -> Finish controller Bills HttpGet PrintInvoice
+2020-06-04 08:49:22,364 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 11] -> GetAllConfigArm
+2020-06-04 08:49:22,370 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 11] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:49:22,378 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 11] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:49:22,378 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Start GetAllWareHouse
+2020-06-04 08:49:22,381 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Finnish GetAllWareHouse
+2020-06-04 08:49:22,446 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 11] -> GetAllConfigArm
+2020-06-04 08:49:22,656 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Start GetAllWareHouse
+2020-06-04 08:49:22,659 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Finnish GetAllWareHouse
+2020-06-04 08:49:41,834 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:50:01,860 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:50:21,874 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:50:41,918 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:51:01,935 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:51:19,483 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 11] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 08:52:51,387 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:53:08,617 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 10] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 08:53:18,982 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:53:19,268 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 10] -> GetAllDriver
+2020-06-04 08:53:19,278 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 10] -> Finish controller Bills HttpGet PrintInvoice
+2020-06-04 08:53:19,306 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 08:53:19,312 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:53:19,320 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:53:19,320 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 08:53:19,322 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 08:53:19,386 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 08:53:19,710 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Start GetAllWareHouse
+2020-06-04 08:53:19,713 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Finnish GetAllWareHouse
+2020-06-04 08:53:27,978 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 24] -> GetAllConfigArm
+2020-06-04 08:53:27,981 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 24] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:53:27,983 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 24] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:53:27,984 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 24] -> Start GetAllWareHouse
+2020-06-04 08:53:27,985 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 24] -> Finnish GetAllWareHouse
+2020-06-04 08:53:28,023 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 24] -> GetAllConfigArm
+2020-06-04 08:53:28,165 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Start GetAllWareHouse
+2020-06-04 08:53:28,169 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Finnish GetAllWareHouse
+2020-06-04 08:53:30,522 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 10] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 08:53:30,852 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 10] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 08:53:30,878 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 08:53:30,905 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:53:30,957 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:53:30,958 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 08:53:30,961 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 08:53:31,581 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 08:53:31,765 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Start GetAllWareHouse
+2020-06-04 08:53:31,769 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Finnish GetAllWareHouse
+2020-06-04 08:53:38,995 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:53:48,075 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 11] -> GetAllConfigArm
+2020-06-04 08:53:48,079 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 11] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:53:48,088 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 11] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:53:48,088 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Start GetAllWareHouse
+2020-06-04 08:53:48,091 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Finnish GetAllWareHouse
+2020-06-04 08:53:48,166 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 11] -> GetAllConfigArm
+2020-06-04 08:53:48,314 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 08:53:48,319 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 08:53:59,015 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:54:12,931 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 10] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 08:54:12,942 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 10] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 08:54:12,956 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 08:54:12,959 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2020-06-04 08:54:12,960 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2020-06-04 08:54:12,961 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 08:54:12,963 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 08:54:13,020 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 08:54:13,175 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 24] -> Start GetAllWareHouse
+2020-06-04 08:54:13,177 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 24] -> Finnish GetAllWareHouse
+2020-06-04 08:54:17,599 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 33] -> GetAllCustomer
+2020-06-04 08:54:19,027 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:54:21,567 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 24] -> Start controller Bills HttpPost CreateInvoice
+2020-06-04 08:54:22,502 INFO  PetroBM.Services.Services.InvoiceService.CreateInvoice[thread: 24] -> Start CreateInvoice
+2020-06-04 08:54:24,422 INFO  PetroBM.Services.Services.InvoiceService.CreateInvoice[thread: 24] -> Finish CreateInvoice
+2020-06-04 08:54:39,040 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:56:25,973 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 08:56:31,290 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 10] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 08:57:21,757 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:05:14,475 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:05:18,408 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 09:05:18,443 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:05:18,452 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:05:18,453 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 09:05:18,466 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 09:05:19,700 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 09:05:20,781 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 13] -> Start GetAllWareHouse
+2020-06-04 09:05:20,785 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 13] -> Finnish GetAllWareHouse
+2020-06-04 09:05:34,603 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:05:52,521 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 8] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 09:05:52,558 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 8] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 09:05:55,931 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:05:55,973 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 09:05:55,979 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:05:55,986 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:05:55,987 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 09:05:55,988 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 09:05:56,048 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 09:05:56,224 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 12] -> Start GetAllWareHouse
+2020-06-04 09:05:56,225 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 12] -> Finnish GetAllWareHouse
+2020-06-04 09:06:15,950 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:06:35,969 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:06:55,989 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:07:16,023 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:07:36,034 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:07:56,053 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:08:16,076 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:08:27,077 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 24] -> GetAllCustomer
+2020-06-04 09:08:36,096 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:08:56,131 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:08:59,757 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 13] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 09:08:59,807 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 13] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 09:08:59,853 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 13] -> GetAllConfigArm
+2020-06-04 09:08:59,870 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 13] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:08:59,892 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 13] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:08:59,893 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 13] -> Start GetAllWareHouse
+2020-06-04 09:08:59,900 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 13] -> Finnish GetAllWareHouse
+2020-06-04 09:09:00,096 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 13] -> GetAllConfigArm
+2020-06-04 09:09:00,347 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 24] -> Start GetAllWareHouse
+2020-06-04 09:09:00,350 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 24] -> Finnish GetAllWareHouse
+2020-06-04 09:09:08,814 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 15] -> GetAllCustomer
+2020-06-04 09:09:16,207 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:09:27,732 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 26] -> Start controller Bills HttpPost CreateInvoice
+2020-06-04 09:09:36,219 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:09:54,807 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 21] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 09:10:03,039 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:10:05,829 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 21] -> GetAllDriver
+2020-06-04 09:10:05,857 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 21] -> Finish controller Bills HttpGet PrintInvoice
+2020-06-04 09:10:05,912 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 21] -> GetAllConfigArm
+2020-06-04 09:10:05,919 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 21] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:10:05,940 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 21] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:10:05,941 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 21] -> Start GetAllWareHouse
+2020-06-04 09:10:05,946 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 21] -> Finnish GetAllWareHouse
+2020-06-04 09:10:06,041 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 21] -> GetAllConfigArm
+2020-06-04 09:10:06,501 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 27] -> Start GetAllWareHouse
+2020-06-04 09:10:06,507 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 27] -> Finnish GetAllWareHouse
+2020-06-04 09:10:16,761 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 24] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 09:10:16,778 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 24] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 09:10:16,797 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 24] -> GetAllConfigArm
+2020-06-04 09:10:16,801 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 24] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:10:16,803 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 24] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:10:16,803 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 24] -> Start GetAllWareHouse
+2020-06-04 09:10:16,805 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 24] -> Finnish GetAllWareHouse
+2020-06-04 09:10:16,846 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 24] -> GetAllConfigArm
+2020-06-04 09:10:16,993 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 09:10:16,996 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 09:10:23,075 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:10:25,167 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 8] -> GetAllCustomer
+2020-06-04 09:10:34,579 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 8] -> Start controller Bills HttpPost CreateInvoice
+2020-06-04 09:10:43,087 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:10:50,694 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 15] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 09:11:03,098 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:11:08,521 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 15] -> GetAllDriver
+2020-06-04 09:11:08,539 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 15] -> Finish controller Bills HttpGet PrintInvoice
+2020-06-04 09:11:08,577 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 09:11:08,586 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:11:08,596 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 15] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:11:08,597 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 09:11:08,600 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 09:11:08,677 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 15] -> GetAllConfigArm
+2020-06-04 09:11:09,932 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 09:11:09,944 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 09:11:24,149 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:11:44,166 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:12:04,187 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:12:24,220 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:12:44,275 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:13:04,302 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:13:24,326 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 09:49:04,030 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:49:04,649 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 10] -> View Login
+2020-06-04 09:49:24,209 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:49:37,902 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 8] -> post login
+2020-06-04 09:49:38,344 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 8] -> login success
+2020-06-04 09:49:44,257 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:49:47,578 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 09:49:47,656 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:49:47,674 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:49:47,677 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 09:49:47,706 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 09:49:50,017 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 09:49:51,351 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Start GetAllWareHouse
+2020-06-04 09:49:51,354 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Finnish GetAllWareHouse
+2020-06-04 09:49:54,478 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 9] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 09:49:54,557 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 9] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 09:49:56,399 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2020-06-04 09:49:56,407 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:49:56,412 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:49:56,414 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Start GetAllWareHouse
+2020-06-04 09:49:56,419 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Finnish GetAllWareHouse
+2020-06-04 09:49:56,544 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2020-06-04 09:49:56,784 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 09:49:56,787 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 09:50:00,450 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2020-06-04 09:50:00,457 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:50:00,461 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:50:00,462 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Start GetAllWareHouse
+2020-06-04 09:50:00,465 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Finnish GetAllWareHouse
+2020-06-04 09:50:00,590 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2020-06-04 09:50:00,745 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 09:50:00,747 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 09:50:04,267 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:50:14,240 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 11] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 09:50:22,928 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 11] -> GetAllDriver
+2020-06-04 09:50:23,111 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 11] -> Finish controller Bills HttpGet PrintInvoice
+2020-06-04 09:50:23,603 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 11] -> GetAllConfigArm
+2020-06-04 09:50:23,754 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 11] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:50:23,827 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 11] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:50:23,828 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Start GetAllWareHouse
+2020-06-04 09:50:23,831 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Finnish GetAllWareHouse
+2020-06-04 09:50:24,285 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:50:24,355 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 11] -> GetAllConfigArm
+2020-06-04 09:50:25,593 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 09:50:25,600 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 09:50:34,820 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 10] -> Start controller command CommandbyVehicle
+2020-06-04 09:50:34,896 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 10] -> Finish controller command CommandbyVehicle
+2020-06-04 09:50:43,456 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 09:50:43,465 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:50:43,480 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:50:43,482 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 09:50:43,488 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 09:50:43,636 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 09:50:44,359 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:50:50,971 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 9] -> Start controller command CommandbyVehicle
+2020-06-04 09:50:50,988 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 9] -> Finish controller command CommandbyVehicle
+2020-06-04 09:50:51,019 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2020-06-04 09:50:51,031 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:50:51,039 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:50:51,040 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Start GetAllWareHouse
+2020-06-04 09:50:51,046 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Finnish GetAllWareHouse
+2020-06-04 09:50:51,148 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2020-06-04 09:50:59,103 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 10] -> Start controller command CommandbyVehicle
+2020-06-04 09:50:59,146 INFO  PetroBM.Web.Controllers.CommandController.CommandbyVehicle[thread: 10] -> Finish controller command CommandbyVehicle
+2020-06-04 09:50:59,181 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 09:50:59,185 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:50:59,189 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:50:59,190 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 09:50:59,193 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 09:50:59,305 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 09:50:59,464 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Start GetAllWareHouse
+2020-06-04 09:50:59,466 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Finnish GetAllWareHouse
+2020-06-04 09:50:59,907 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 09:50:59,912 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 09:51:04,374 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:51:04,971 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Start GetAllWareHouse
+2020-06-04 09:51:04,976 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 11] -> Finnish GetAllWareHouse
+2020-06-04 09:51:07,902 INFO  PetroBM.Web.Controllers.CommandController.CommandView[thread: 9] -> start controller command commandView
+2020-06-04 09:51:09,757 INFO  PetroBM.Services.Services.CustomerService.GetCustomerCode[thread: 9] -> GetCustomerCodeCTYNDMD
+2020-06-04 09:51:10,395 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 9] -> GetAllDriver
+2020-06-04 09:51:10,406 INFO  PetroBM.Web.Controllers.CommandController.CommandView[thread: 9] -> Finish controller command commandView
+2020-06-04 09:51:10,498 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2020-06-04 09:51:10,509 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Start GetListWareHouse_ByUserName
+2020-06-04 09:51:10,514 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Finish GetListWareHouse_ByUserName
+2020-06-04 09:51:10,515 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Start GetAllWareHouse
+2020-06-04 09:51:10,521 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Finnish GetAllWareHouse
+2020-06-04 09:51:10,660 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2020-06-04 09:51:14,108 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 13] -> Start GetAllWareHouse
+2020-06-04 09:51:14,114 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 13] -> Finnish GetAllWareHouse
+2020-06-04 09:51:24,386 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:51:44,402 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:52:04,437 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 09:52:12,199 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 09:52:12,206 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 09:52:14,971 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 09:52:14,976 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 09:52:24,450 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 20] -> Execute CalculateV15
+2020-06-04 10:12:43,369 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:12:52,665 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 10:12:52,761 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:12:52,779 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:12:52,781 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 10:12:52,809 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 10:12:55,994 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 10:12:58,161 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 10:12:58,165 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 10:13:03,558 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:13:23,576 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:13:43,614 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:14:01,584 INFO  PetroBM.Web.Controllers.CommandController.RegisterCommand[thread: 10] -> Start controller Command RegisterCommand
+2020-06-04 10:14:02,113 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 10:14:02,121 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 10:14:02,123 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 10] -> GetAllCustomer
+2020-06-04 10:14:02,231 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 10] -> GetAllDriver
+2020-06-04 10:14:02,285 INFO  PetroBM.Web.Controllers.CommandController.RegisterCommand[thread: 10] -> Finish controller Command RegisterCommand
+2020-06-04 10:14:03,623 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:14:10,882 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 10:14:10,895 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:14:10,912 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:14:10,914 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 10:14:10,919 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 10:14:11,092 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 10:14:23,635 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:14:31,814 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 10:14:31,825 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 10:14:43,710 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:15:03,734 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:15:23,751 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:15:25,546 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2020-06-04 10:15:35,847 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 10:15:35,860 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:15:35,877 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:15:35,879 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 10:15:35,885 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 10:15:36,231 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 10:15:36,454 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 10:15:36,457 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 10:15:42,843 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 9] -> GetAllConfigArmOrderByName
+2020-06-04 10:15:43,764 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:15:45,087 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2020-06-04 10:15:45,096 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:15:45,102 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:15:45,104 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Start GetAllWareHouse
+2020-06-04 10:15:45,109 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Finnish GetAllWareHouse
+2020-06-04 10:15:45,225 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2020-06-04 10:15:45,455 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 10:15:45,458 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 10:15:54,439 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2020-06-04 10:15:56,291 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 10:15:56,299 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:15:56,302 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:15:56,304 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 10:15:56,307 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 10:15:56,435 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 10:16:03,794 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:16:06,608 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 27] -> GetAllConfigArmOrderByName
+2020-06-04 10:16:08,348 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 27] -> GetAllConfigArm
+2020-06-04 10:16:08,357 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 27] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:16:08,362 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 27] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:16:08,364 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 27] -> Start GetAllWareHouse
+2020-06-04 10:16:08,370 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 27] -> Finnish GetAllWareHouse
+2020-06-04 10:16:08,506 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 27] -> GetAllConfigArm
+2020-06-04 10:16:08,685 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 10:16:08,689 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 10:16:12,626 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 37] -> Start GetAllWareHouse
+2020-06-04 10:16:12,632 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 37] -> Finnish GetAllWareHouse
+2020-06-04 10:16:13,728 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 28] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 10:16:13,803 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 28] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 10:16:22,103 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 28] -> GetAllConfigArm
+2020-06-04 10:16:22,112 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 28] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:16:22,117 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 28] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:16:22,119 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 28] -> Start GetAllWareHouse
+2020-06-04 10:16:22,125 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 28] -> Finnish GetAllWareHouse
+2020-06-04 10:16:22,265 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 28] -> GetAllConfigArm
+2020-06-04 10:16:22,472 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Start GetAllWareHouse
+2020-06-04 10:16:22,475 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Finnish GetAllWareHouse
+2020-06-04 10:16:23,810 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:16:32,174 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 8] -> GetAllCustomer
+2020-06-04 10:16:43,823 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:16:52,698 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 7] -> Start controller Bills HttpPost CreateInvoice
+2020-06-04 10:16:55,132 INFO  PetroBM.Services.Services.InvoiceService.CreateInvoice[thread: 7] -> Start CreateInvoice
+2020-06-04 10:16:59,872 INFO  PetroBM.Services.Services.InvoiceService.CreateInvoice[thread: 7] -> Finish CreateInvoice
+2020-06-04 10:17:03,873 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:17:18,458 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 7] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 10:17:26,332 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:17:28,420 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 7] -> GetAllDriver
+2020-06-04 10:17:28,429 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 7] -> Finish controller Bills HttpGet PrintInvoice
+2020-06-04 10:17:28,475 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 10:17:28,483 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:17:28,491 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:17:28,491 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 10:17:28,494 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 10:17:28,591 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 10:17:30,499 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 10:17:30,502 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 10:17:33,995 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 8] -> Start controller Bills HttpGet CreateInvoice
+2020-06-04 10:17:34,011 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 8] -> Finish controller Bills HttpGet CreateWareHouse
+2020-06-04 10:17:34,032 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 10:17:34,039 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:17:34,043 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:17:34,043 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 10:17:34,046 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 10:17:34,096 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 10:17:34,252 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Start GetAllWareHouse
+2020-06-04 10:17:34,255 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Finnish GetAllWareHouse
+2020-06-04 10:17:46,341 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:17:53,455 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 9] -> GetAllCustomer
+2020-06-04 10:17:59,288 INFO  PetroBM.Web.Controllers.BillsController.CreateInvoice[thread: 8] -> Start controller Bills HttpPost CreateInvoice
+2020-06-04 10:18:06,882 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:18:23,792 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 8] -> Start controller Bills HttpGet PrintInvoice
+2020-06-04 10:18:27,496 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:18:30,008 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 8] -> GetAllDriver
+2020-06-04 10:18:30,020 INFO  PetroBM.Web.Controllers.BillsController.PrintInvoice[thread: 8] -> Finish controller Bills HttpGet PrintInvoice
+2020-06-04 10:18:30,059 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 10:18:30,065 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:18:30,074 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:18:30,075 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2020-06-04 10:18:30,077 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2020-06-04 10:18:30,182 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2020-06-04 10:18:30,572 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 28] -> Start GetAllWareHouse
+2020-06-04 10:18:30,574 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 28] -> Finnish GetAllWareHouse
+2020-06-04 10:18:47,509 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:19:11,234 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:19:31,251 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:19:51,274 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:20:11,292 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:20:31,343 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:20:51,524 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:21:11,545 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:21:31,593 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:21:51,615 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:22:11,636 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:22:31,668 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:22:51,678 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:23:11,885 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:25:01,766 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:25:21,807 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:25:41,821 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:26:01,834 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:26:21,863 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:26:41,902 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:27:01,923 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:27:21,947 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:27:41,982 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:28:01,995 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:28:22,042 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:28:42,177 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:29:02,186 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:29:22,194 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:29:43,724 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:30:03,750 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:30:23,773 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:30:43,798 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:31:03,834 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:31:23,846 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:31:43,866 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:32:03,899 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:32:23,911 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:32:43,926 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:33:03,941 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:34:38,208 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 10:34:42,367 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 5] -> GetAllConfigArm
+2020-06-04 10:34:42,413 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 5] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:34:42,422 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 5] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:34:42,423 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 5] -> Start GetAllWareHouse
+2020-06-04 10:34:42,436 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 5] -> Finnish GetAllWareHouse
+2020-06-04 10:34:44,043 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 5] -> GetAllConfigArm
+2020-06-04 10:34:45,567 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 5] -> Start GetAllWareHouse
+2020-06-04 10:34:45,571 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 5] -> Finnish GetAllWareHouse
+2020-06-04 10:34:58,289 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 10:35:18,317 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 10:35:38,328 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 10:35:58,348 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 10:36:18,384 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 10:36:38,406 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 10:36:58,426 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 11] -> Execute CalculateV15
+2020-06-04 10:37:08,858 INFO  PetroBM.Web.Controllers.CommandController.RegisterCommand[thread: 15] -> Start controller Command RegisterCommand
+2020-06-04 10:37:09,329 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Start GetAllWareHouse
+2020-06-04 10:37:09,337 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 15] -> Finnish GetAllWareHouse
+2020-06-04 10:37:09,340 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 15] -> GetAllCustomer
+2020-06-04 10:37:09,456 INFO  PetroBM.Services.Services.DriverService.GetAllDriver[thread: 15] -> GetAllDriver
+2020-06-04 10:37:09,490 INFO  PetroBM.Web.Controllers.CommandController.RegisterCommand[thread: 15] -> Finish controller Command RegisterCommand
+2020-06-04 10:56:49,500 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:57:06,239 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 5] -> GetAllConfigArm
+2020-06-04 10:57:06,318 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 5] -> Start GetListWareHouse_ByUserName
+2020-06-04 10:57:06,337 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 5] -> Finish GetListWareHouse_ByUserName
+2020-06-04 10:57:06,340 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 5] -> Start GetAllWareHouse
+2020-06-04 10:57:06,379 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 5] -> Finnish GetAllWareHouse
+2020-06-04 10:57:09,547 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 5] -> GetAllConfigArm
+2020-06-04 10:57:09,701 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 10:57:11,842 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 6] -> Start GetAllWareHouse
+2020-06-04 10:57:11,844 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 6] -> Finnish GetAllWareHouse
+2020-06-04 13:47:42,277 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 13:47:42,597 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 7] -> View Login
+2020-06-04 13:47:46,364 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 5] -> post login
+2020-06-04 13:47:46,552 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 5] -> login success
+2020-06-04 13:47:49,037 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 13:47:49,072 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Start GetListWareHouse_ByUserName
+2020-06-04 13:47:49,081 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 7] -> Finish GetListWareHouse_ByUserName
+2020-06-04 13:47:49,083 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Start GetAllWareHouse
+2020-06-04 13:47:49,100 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 7] -> Finnish GetAllWareHouse
+2020-06-04 13:47:50,348 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 7] -> GetAllConfigArm
+2020-06-04 13:48:02,465 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 13:48:22,472 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 13:48:42,478 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 13:49:02,486 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 13:49:50,717 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 13:49:54,778 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 5] -> GetAllConfigArm
+2020-06-04 13:49:54,814 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 5] -> Start GetListWareHouse_ByUserName
+2020-06-04 13:49:54,822 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 5] -> Finish GetListWareHouse_ByUserName
+2020-06-04 13:49:54,823 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 5] -> Start GetAllWareHouse
+2020-06-04 13:49:54,836 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 5] -> Finnish GetAllWareHouse
+2020-06-04 13:49:56,145 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 5] -> GetAllConfigArm
+2020-06-04 13:50:10,823 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 13:50:30,832 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 13:50:50,841 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 17] -> Execute CalculateV15
+2020-06-04 13:51:35,357 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 13:51:39,694 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 13:51:39,734 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2020-06-04 13:51:39,743 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2020-06-04 13:51:39,744 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 13:51:39,758 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 13:51:41,248 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 13:51:55,441 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 13:52:15,470 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 13:52:35,477 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 13:52:55,496 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 13:53:15,695 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 13:53:35,703 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 13:54:11,381 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 13:54:15,805 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 13:54:15,845 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2020-06-04 13:54:15,856 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2020-06-04 13:54:15,857 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2020-06-04 13:54:15,871 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2020-06-04 13:54:17,477 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2020-06-04 13:54:31,496 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15
+2020-06-04 13:54:51,513 DEBUG PetroBM.Services.Services.CommandDetailService.CalculateV15[thread: 14] -> Execute CalculateV15

@@ -1,0 +1,178 @@
+﻿@model PetroBM.Web.Models.DensityModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh mục Tỉ trọng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Kho</label>
+            <div class="form-group col-xs-8">
+                @if (Model.ListWareHouse.Any())
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(Model.ListWareHouse, "WareHouseCode", "WareHouseName", "") as SelectList,
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(new List<string>()), "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Mã họng</label>
+            <div class="form-group col-xs-8">
+                @*@Html.EditorFor(model => model.ArmNo, new { htmlAttributes = new { @class = "form-control" } })*@
+
+
+                <select class="form-control" id="ArmNo" style="width:217px;" onchange="ReDirectUrl()" name="ArmNo">
+                    @if (Model.ArmNo == null)
+                    {
+                        <option value="" selected="selected">Tất cả</option>
+                    }
+                    else
+                    {
+                        <option value="">Tất cả</option>
+                    }
+
+                    @for (int i = 0; i < Model.ListConfigArm.Count(); i++)
+                    {
+                        if (Model.ArmNo == @Model.ListConfigArm[i].ArmNo)
+                        {
+                            <option value="@Model.ListConfigArm[i].ArmNo" selected="selected">@Model.ListConfigArm[i].ArmName</option>
+                        }
+                        else
+                        {
+                            <option value="@Model.ListConfigArm[i].ArmNo">@Model.ListConfigArm[i].ArmName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian cuối</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='col-sm-4 col-xs-6'>
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+    </div>
+    <table class="table" style="padding-top:2%">
+        <thead>
+            <tr>
+
+                <th>
+                    Kho
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Density.ArmNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Density.ProductCode)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Density.MixingRatio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Density.GasDensity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Density.AlcoholicDensity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Density.InsertDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Density.UpdateUser)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model.ListDensity)
+        {
+            <tr>
+                @foreach (var it in Model.ListWareHouse)
+                {
+                    if (it.WareHouseCode == item.WareHouseCode)
+                    {
+                        <td>
+                            @it.WareHouseName
+                        </td>
+                    }
+                }
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArmNo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MixingRatio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GasDensity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlcoholicDensity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsertDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsertUser)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+    <div class="text-center">
+        @Html.PagedListPager(Model.ListDensity, page => Url.Action("Index", new { page }))
+    </div>
+}
+<p>
+    <input type="button" value="Cập nhật" class="btn btn-primary" onclick="location.href='@Url.Action("Create")'" />
+</p>
+
+
+<script src="~/Scripts/jquery-2.2.4.min.js"></script>
+<script src="~/Scripts/Autocomplete/jquery.easy-autocomplete.js"></script>
+<link href="~/Scripts/Autocomplete/easy-autocomplete.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+    });
+</script>

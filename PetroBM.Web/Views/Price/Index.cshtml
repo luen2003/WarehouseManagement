@@ -1,0 +1,128 @@
+﻿@model PetroBM.Web.Models.PriceModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util;
+
+@{
+    ViewBag.Title = "Danh sách giá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Index", "Price", FormMethod.Post))
+{
+
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-5">Mã hàng hóa</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-5">Tên hàng hóa</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>
+    <input type="submit" value="Tìm Kiếm" class="btn btn-primary" />
+<table class="table">
+    <thead>
+        <tr>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.Price.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price.Abbreviations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price.ProductCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price.Unit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price.AreaPrice1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price.AreaPrice2)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.Price.EnvironmentTax) (Vnd/L)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+        @foreach (var item in Model.ListPrice)
+        {
+            <tr>
+           
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Abbreviations)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Unit)
+                </td>
+                <td>   
+                    @NumberUtil.FormatNumber(item.AreaPrice1, 1)              
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.AreaPrice2, 1)                    
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.EnvironmentTax, 1)
+                </td>
+                <td>
+                    @Html.ActionLink("Sửa", "Edit", new { id = item.ProduceId }) 
+                </td>
+                <td>
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.ProduceId }, new { @class = "delete-price" })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+<div class="text-center">
+    @Html.PagedListPager(Model.ListPrice, page => Url.Action("Index", new { page,productname =Model.ProductName,productcode =Model.ProductCode}))
+</div>
+}
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("Create")'" />
+
+    @using (Html.BeginForm("Import", "Price", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="submit" value="Nhập từ file Excel" class="btn btn-primary" />
+        <div class="btn btn-primary">
+            @Html.TextBoxFor(model => model.ImportFile,
+            new { type = "file", accept = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })
+        </div>
+
+    }
+</p>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-price').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}

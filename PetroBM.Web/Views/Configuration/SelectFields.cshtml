@@ -1,0 +1,87 @@
+﻿@model PetroBM.Web.Models.ConfigurationModel
+@using PetroBM.Common.Util
+
+@{
+    ViewBag.Title = "Chọn trường muốn hiển thị Bể";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-md-2"></label>
+            <div class="col-md-8">
+                <table class="table table-striped">
+                    @{
+
+                        foreach (var item in Enum.GetValues(typeof(PetroBM.Web.Models.ConfigurationModel.FieldNames)))
+                        {
+                            var name = EnumUtil<PetroBM.Web.Models.ConfigurationModel.FieldNames>.GetDisplayName((Enum)item);
+                            <tr>
+                                <td>
+                                    <strong>@name</strong>
+                                </td>
+                                <td>
+                                    <input data-val="true" id="@item" type="checkbox">
+                                    @Html.Hidden(@item.ToString(), (int)item)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Request.UrlReferrer'" />
+            </div>
+        </div>
+    </div>
+
+    @Html.HiddenFor(m => m.SelectedFieldsConfig, new { id = "SelectedFieldsConfig" });
+                        }
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var selectedIds = @Html.Raw(Json.Encode(Model.SelectedFieldsConfig.ToArray()));
+            
+            $("table tr").each(function (i, row) {
+                
+                var id = $(row).find('input[type="hidden"]').val();
+                selectedIds.forEach(function (entry) {
+                    if (entry == id) {
+                        $(row).find(':checkbox').attr('checked',true)
+                    }
+                });
+            });
+
+            $(document).on("submit", "form", function (e) {
+                var listId = [];
+                $("table tr").each(function (i, row) {
+                    var $actualrow = $(row);
+                    $checkbox = $actualrow.find(':checkbox:checked');
+                    if ($checkbox.length != 0) {
+                        var id = $(this).closest('tr').find('input[type="hidden"]').val();
+                        listId.push(id);
+                    }
+                });
+                $("#SelectedFieldsConfig").val(listId);
+            });
+        });
+    </script>
+}

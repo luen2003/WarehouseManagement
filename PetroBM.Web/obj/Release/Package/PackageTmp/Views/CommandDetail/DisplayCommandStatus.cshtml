@@ -1,0 +1,770 @@
+﻿@model PetroBM.Web.Models.CommandDetailModel
+@using PetroBM.Common.Util
+
+@{
+    ViewBag.Title = "Kho: " + @Session[Constants.Session_WareHouseName] + " > Họng > Theo trạng thái";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>
+    <b>Trạng thái họng xuất: </b>
+    <select id="Status" onchange="ReDirectUrl()">
+        <option value="" selected>Hiển thị tất cả trạng thái</option>
+        <option value="@Constants.Command_Flag_Register">Đã đăng ký lấy hàng</option>
+        <option value="@Constants.Command_Flag_Approved">Đã phê duyệt</option>
+        <option value="@Constants.Command_Flag_Exporting">Đang xuất hàng</option>
+        <option value="@Constants.Command_Flag_Exported">Đã xuất xong</option>
+        <option value="@Constants.Command_Flag_Seal">Chờ lấy hóa đơn</option>
+        <option value="@Constants.Command_Flag_Invoice">Đã lấy Hóa đơn và rời khỏi kho</option>
+    </select>
+</p>
+
+@if (Model.Status == Constants.Command_Flag_Register || Model.Status == null)
+{
+    <h5><b>Trạng thái: </b>Đã đăng ký lấy hàng</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    STT
+                </th>
+                <th>
+                    Mã lệnh
+                </th>
+                <th>
+                    Số phương tiện
+                </th>
+                <th>
+                    Tên lái xe
+                </th>
+                <th>
+                    Khách hàng
+                </th>
+                <th>
+                    Số thẻ
+                </th>
+                <th>
+                    Lượng đặt
+                </th>
+                <th>
+                    Lượng xuất
+                </th>
+                <th>
+                    Ngăn 1
+                </th>
+                <th>
+                    Ngăn 2
+                </th>
+                <th>
+                    Ngăn 3
+                </th>
+                <th>
+                    Ngăn 4
+                </th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model.ListCommandDetail_Register)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.No)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverName)
+                </td>
+                <td>
+                    @*@foreach (var customer in Model.ListCustomer)
+                    {
+                        if (item.CustomerCode == customer.CustomerCode)
+                        {
+                            @customer.CustomerName
+                        }
+                    }*@
+                    @foreach (var command in Model.ListCommand)
+                    {
+                        if (item.CommandID == command.CommandID)
+                        {
+                            foreach (var customer in Model.ListCustomer)
+                            {
+                                if (command.CustomerCode == customer.CustomerCode)
+                                {
+                                    @customer.CustomerName
+                                }
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardSerial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_Preset)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_Actual)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume4)
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@if (Model.Status == Constants.Command_Flag_Approved || Model.Status == null)
+{
+    <h5><b>Trạng thái: </b>Đã phê duyệt</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    STT
+                </th>
+                <th>
+                    Mã lệnh
+                </th>
+                <th>
+                    Số phương tiện
+                </th>
+                <th>
+                    Tên lái xe
+                </th>
+                <th>
+                    Khách hàng
+                </th>
+                <th>
+                    Số thẻ
+                </th>
+                <th>
+                    Lượng đặt
+                </th>
+                <th>
+                    Lượng xuất
+                </th>
+                <th>
+                    Ngăn 1
+                </th>
+                <th>
+                    Ngăn 2
+                </th>
+                <th>
+                    Ngăn 3
+                </th>
+                <th>
+                    Ngăn 4
+                </th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model.ListCommandDetail_Approved)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.No)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverName)
+                </td>
+                <td>
+                    @foreach (var command in Model.ListCommand)
+                    {
+                        if (item.CommandID == command.CommandID)
+                        {
+                            foreach (var customer in Model.ListCustomer)
+                            {
+                                if (command.CustomerCode == customer.CustomerCode)
+                                {
+                                    @customer.CustomerName
+                                }
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardSerial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_Preset)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_Actual)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume4)
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@if (Model.Status == Constants.Command_Flag_Exporting || Model.Status == null)
+{
+    <h5><b>Trạng thái:</b> Đang xuất hàng</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    STT
+                </th>
+                <th>
+                    Mã lệnh
+                </th>
+                <th>
+                    Số phương tiện
+                </th>
+                <th>
+                    Tên lái xe
+                </th>
+                <th>
+                    Khách hàng
+                </th>
+                <th>
+                    Số thẻ
+                </th>
+                <th>
+                    Lượng đặt
+                </th>
+                <th>
+                    Lượng xuất
+                </th>
+                <th>
+                    Ngăn 1
+                </th>
+                <th>
+                    Ngăn 2
+                </th>
+                <th>
+                    Ngăn 3
+                </th>
+                <th>
+                    Ngăn 4
+                </th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model.ListCommandDetail_Exporting)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.No)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverName)
+                </td>
+                <td>
+                    @foreach (var command in Model.ListCommand)
+                    {
+                        if (item.CommandID == command.CommandID)
+                        {
+                            foreach (var customer in Model.ListCustomer)
+                            {
+                                if (command.CustomerCode == customer.CustomerCode)
+                                {
+                                    @customer.CustomerName
+                                }
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardSerial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_Preset)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_Actual)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume4)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+}
+
+@if (Model.Status == Constants.Command_Flag_Exported || Model.Status == null)
+{
+    <h5><b>Trạng thái:</b> Đã xuất xong</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    STT
+                </th>
+                <th>
+                    Mã lệnh
+                </th>
+                <th>
+                    Số phương tiện
+                </th>
+                <th>
+                    Tên lái xe
+                </th>
+                <th>
+                    Khách hàng
+                </th>
+                <th>
+                    Số thẻ
+                </th>
+                <th>
+                    Lượng đặt
+                </th>
+                <th>
+                    Lượng xuất
+                </th>
+                <th>
+                    Ngăn 1
+                </th>
+                <th>
+                    Ngăn 2
+                </th>
+                <th>
+                    Ngăn 3
+                </th>
+                <th>
+                    Ngăn 4
+                </th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model.ListCommandDetail_Exported)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.No)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverName)
+                </td>
+                <td>
+                    @foreach (var command in Model.ListCommand)
+                    {
+                        if (item.CommandID == command.CommandID)
+                        {
+                            foreach (var customer in Model.ListCustomer)
+                            {
+                                if (command.CustomerCode == customer.CustomerCode)
+                                {
+                                    @customer.CustomerName
+                                }
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardSerial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_Preset)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_Actual)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume4)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+}
+
+@*@if (Model.Status == Constants.Command_Flag_StopPressing || Model.Status == null)
+    {
+        <h5><b>Trạng thái:</b> Chờ niêm chì</h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        STT
+                    </th>
+                    <th>
+                        Mã lệnh
+                    </th>
+                    <th>
+                        Số phương tiện
+                    </th>
+                    <th>
+                        Tên lái xe
+                    </th>
+                    <th>
+                        Số thẻ
+                    </th>
+                    <th>
+                        Ngăn 1
+                    </th>
+                    <th>
+                        Ngăn 2
+                    </th>
+                    <th>
+                        Ngăn 3
+                    </th>
+                    <th>
+                        Ngăn 4
+                    </th>
+                    <th>
+                        Ngăn 5
+                    </th>
+                    <th>
+                        Ngăn 6
+                    </th>
+                    <th>
+                        Ngăn 7
+                    </th>
+                    <th>
+                        Ngăn 8
+                    </th>
+                    <th>
+                        Ngăn 9
+                    </th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.ListCommandDetail_WaitSeal)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.No)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardSerial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume4)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume5)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume6)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume7)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume8)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume9)
+                </td>
+            </tr>
+            }
+
+        </table>
+
+    }
+
+
+    @if (Model.Status == Constants.Command_Flag_Seal || Model.Status == null)
+    {
+        <h5><b>Trạng thái:</b> Chờ lấy hóa đơn</h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        STT
+                    </th>
+                    <th>
+                        Mã lệnh
+                    </th>
+                    <th>
+                        Số phương tiện
+                    </th>
+                    <th>
+                        Tên lái xe
+                    </th>
+                    <th>
+                        Số thẻ
+                    </th>
+                    <th>
+                        Ngăn 1
+                    </th>
+                    <th>
+                        Ngăn 2
+                    </th>
+                    <th>
+                        Ngăn 3
+                    </th>
+                    <th>
+                        Ngăn 4
+                    </th>
+                    <th>
+                        Ngăn 5
+                    </th>
+                    <th>
+                        Ngăn 6
+                    </th>
+                    <th>
+                        Ngăn 7
+                    </th>
+                    <th>
+                        Ngăn 8
+                    </th>
+                    <th>
+                        Ngăn 9
+                    </th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.ListCommandDetail_Seal)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.No)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardSerial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume4)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume5)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume6)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume7)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume8)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume9)
+                </td>
+            </tr>
+            }
+
+        </table>
+
+    }*@
+
+
+@if (Model.Status == Constants.Command_Flag_Invoice || Model.Status == null)
+{
+    <h5><b>Trạng thái:</b> Đã lấy hóa đơn và ra khỏi kho</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    STT
+                </th>
+                <th>
+                    Mã lệnh
+                </th>
+                <th>
+                    Số phương tiện
+                </th>
+                <th>
+                    Tên lái xe
+                </th>
+                <th>
+                    Khách hàng
+                </th>
+                <th>
+                    Số thẻ
+                </th>
+                <th>
+                    Lượng đặt
+                </th>
+                <th>
+                    Lượng xuất
+                </th>
+                <th>
+                    Ngăn 1
+                </th>
+                <th>
+                    Ngăn 2
+                </th>
+                <th>
+                    Ngăn 3
+                </th>
+                <th>
+                    Ngăn 4
+                </th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model.ListCommandDetail_Invoice)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.No)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverName)
+                </td>
+                <td>
+                    @foreach (var command in Model.ListCommand)
+                    {
+                        if (item.CommandID == command.CommandID)
+                        {
+                            foreach (var customer in Model.ListCustomer)
+                            {
+                                if (command.CustomerCode == customer.CustomerCode)
+                                {
+                                    @customer.CustomerName
+                                }
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardSerial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_Preset)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_Actual)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume4)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+}
+
+@section scripts{
+    <script>
+		var status = @Html.Raw(Json.Encode(@Model.Status));
+
+		if (status !== null || status !== "null") {
+			$("#Status").val(status);
+        }
+        function loadLink() {
+            $("#mains").load(location.href + " #mains>*", "");
+        }
+
+        //setTimeout(function () {
+        //    location.reload();
+        //}, 10000);
+		function ReDirectUrl() {
+			window.location.href = "/CommandDetail/DisplayCommandStatus?status=" +  $("#Status").val();
+		}
+    </script>
+}
+
+

@@ -1,0 +1,483 @@
+﻿@model PetroBM.Web.Models.ReportModel
+
+@using PetroBM.Common.Util;
+@using System.Data;
+@{
+    ViewBag.Title = "Bảng kê chi tiết xuất hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4 col-xs-6'>
+
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian cuối</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Kho</label>
+            <div class="form-group col-xs-8">
+                <select name="WareHouseCode" id="WareHouseCode" class="form-control" onchange="OnchangeWareHouse()">
+                    @{
+                        foreach (var item in Model.ListWareHouse)
+                        {
+                            if (item.WareHouseCode == Model.WareHouseCode)
+                            {
+                                <option selected="selected" value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Khách hàng</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.Customer, new { htmlAttributes = new { @class = "form-control", @id = "IdCustomer" } })
+            </div>
+        </div>
+        @*<div class="row">
+                <label class="control-label col-xs-4">Bến xuất</label>
+                <div class="form-group col-xs-7">
+                    <select id="TypeExport" name="TypeExport" class="form-control" style="width:217px">
+                        @if (Model.TypeExport == 2)
+                        {
+                            <option selected="selected" value="2">Tất cả </option>
+                            <option value="0">Xuất thủy</option>
+                            <option value="1">Xuất bộ</option>
+                        }
+                        @if (Model.TypeExport == 0)
+                        {
+                            <option value="2">Tất cả </option>
+                            <option selected="selected" value="0">Xuất thủy</option>
+                            <option value="1">Xuất bộ</option>
+                        }
+
+                        @if (Model.TypeExport == 1)
+                        {
+                            <option value="2">Tất cả </option>
+                            <option value="0">Xuất thủy</option>
+                            <option selected="selected" value="1">Xuất bộ</option>
+                        }
+                    </select>
+                </div>
+            </div>*@
+    </div>
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-5">Tên mặt hàng</label>
+            <div class="form-group col-xs-7">
+
+                @*<select name="ProductName" id="ProductName" class="form-control">
+                        @{
+                            var chk = false;
+                            foreach (var item in Model.ListProduct)
+                            {
+                                if (item.ProductCode == Model.ProductCode)
+                                {
+                                    <option selected="selected" value="@item.ProductName">@item.ProductName</option>
+                                    chk = true;
+                                }
+                                else
+                                {
+                                    <option value="@item.ProductName">@item.ProductName</option>
+                                }
+                            }
+                            if (!chk)
+                            {
+                                <option selected="selected" value="">Tất cả</option>
+                            }
+                            else
+                            {
+                                <option value="">Tất cả</option>
+                            }
+                        }
+                    </select>*@
+
+                @if (Model.ListProduct.Any())
+                {
+                    @Html.DropDownListFor(model => model.ProductCode,
+            new SelectList(Model.ListProduct, "ProductCode", "ProductName", "") as SelectList, "Tất cả",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.ProductCode,
+            new SelectList(new List<string>()), "Tất cả ",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+
+
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-5">Số phương tiện</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.Vehicle, new { htmlAttributes = new { @class = "form-control", @id = "IdVehicle", @name = "ReportModel.Vehicle", @style = "width:217px" } })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-5">Họng</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.ArmNo, new { htmlAttributes = new { @class = "form-control", @id = "ArmNo", @name = "ReportModel.ArmNo", @style = "width:217px" } })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-5">Nhóm khách hàng</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.CustomerGroup, new { htmlAttributes = new { @class = "form-control", @id = "IdCustomerGroup", @name = "ReportModel.CustomerGroup", @style = "width:217px" } })
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-12' style="margin-bottom:10px;padding-left:5%">
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+        <input type="submit" fileType="PDF" formtarget="_blank" value="Xuất PDF" class="btn btn-primary" />
+        <input type="submit" fileType="EXCEL" value="Xuất EXCEL" class="btn btn-primary" />
+        <input style="margin-top:3px;" type="submit" fileType="PDF" formtarget="_blank" value="In" class="print btn btn-primary" />
+    </div>
+    @Html.HiddenFor(model => model.FileType);
+}
+<hr>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>
+                ĐIỂM CẤP - KHÁCH HÀNG
+            </th>
+            <th>
+                Đơn vị tính
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Ghi chú
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var i = 0;
+            var Cap1 = 0;
+            if (Model.BangKeTHTheoNhomKhach2_Total != null)
+            {
+                Double totalVPreset = 0;
+                Double totalVActual = 0;
+                Double totalVDeviation = 0;
+                foreach (System.Data.DataRow row in Model.BangKeTHTheoNhomKhach2_Total.Rows)
+                {
+                    var Cap2 = 0;
+                    Cap1++;
+                    totalVPreset += Convert.ToDouble(@row["V_Preset"]);
+                    totalVActual += Convert.ToDouble(@row["V_Actual"]);
+                    totalVDeviation += Convert.ToDouble(@row["V_Deviation"]);
+                    <tr>
+                        <td id="typeexportdata"><b>@Cap1</b></td>
+                        <td colspan="2"><b>@row["CustomerGroupName"]</b></td>
+                        <td style="text-align:right"><b>@NumberUtil.FormatNumber(Convert.ToDouble(row["V_Actual"]), 0)</b></td>
+                        <td></td>
+                    </tr>
+
+
+                    if (Model.BangKeTHTheoNhomKhach2 != null)
+                    {
+                        foreach (System.Data.DataRow row2 in Model.BangKeTHTheoNhomKhach2.Rows)
+                        {
+                            if (@row2["CustomerGroupName"].ToString() == @row["CustomerGroupName"].ToString())
+                            {
+                                Cap2++;
+                                <tr>
+                                    <td id="typeexportdata">@Cap1.@Cap2</td>
+                                    <td>@row2["CustomerName"]</td>
+                                    <td>Lít</td>
+                                    <td style="text-align:right">@NumberUtil.FormatNumber(Convert.ToDouble(row2["V_Actual"]), 0)</td>
+                                    <td></td>
+                                </tr>
+
+                            }
+                        }
+                    }
+                }
+
+                <tr>
+                    <td id="typeexportdata" colspan="3"><center><strong><b>Tổng</b></strong></center></td>
+                    <td class="text-right"><b>@NumberUtil.FormatNumber(totalVActual, 0)</b></td>
+                    <td></td>
+                </tr>
+            }
+        }
+    </tbody>
+
+</table>
+
+<!-- Button to Open the Modal -->
+@*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Open modal
+    </button>*@
+@{
+    //var i = 0;
+    if (Model.DataTable != null)
+    {
+
+        foreach (System.Data.DataRow row in Model.DataTable.Rows)
+        {
+
+            <!-- The Modal -->
+            <div class="modal" id="cm_@row["WorkOrder"]_@row["ExportNo"]">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Phương tiện @row["VehicleNumber"]</h4>
+                            @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Hàng hóa</th>
+                                        <th>Ngăn</th>
+                                        <th>Họng xuất</th>
+                                        <th>ĐVT</th>
+                                        <th>Thể tích đặt</th>
+                                        <th>Thể tích thực</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model.ListCommandDetailOfSearch)
+                                    {
+                                        var listvolume = row["ListVolume"].ToString();
+                                        int workorder = Convert.ToInt32(row["WorkOrder"]);
+                                        string str = item.CompartmentOrder.HasValue ? item.CompartmentOrder.Value.ToString() : string.Empty;
+                                        if (workorder == item.WorkOrder && listvolume.Contains(str))
+                                        {
+                                            <tr>
+                                                <td>@row["ProductName"]</td>
+                                                <td>@item.CompartmentOrder</td>
+                                                <td>@item.ArmNo</td>
+                                                <td>Lít</td>
+                                                @if (item.V_Preset.Equals(DBNull.Value))
+                                                {
+                                                    <td>0</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@NumberUtil.FormatNumber(Convert.ToDouble(item.V_Preset), 2)</td>
+
+                                                }
+                                                @if (item.V_Actual.Equals(DBNull.Value))
+                                                {
+                                                    <td>0</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@NumberUtil.FormatNumber(Convert.ToDouble(item.V_Actual), 2)</td>
+
+                                                }
+                                            </tr>
+                                            @*@NumberUtil.FormatNumber(Convert.ToDouble(@row["V_Preset"]), 2)</br>*@
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    }
+}
+
+<script src="~/Scripts/jquery-2.2.4.min.js"></script>
+<script src="~/Scripts/Autocomplete/jquery.easy-autocomplete.js"></script>
+<link href="~/Scripts/Autocomplete/easy-autocomplete.css" rel="stylesheet" />
+<script type="text/javascript">
+     $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+            $('.btn').on('click', function (e) {
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+            });
+
+            var isChrome = !!window.chrome && !!window.chrome.webstore;
+            if (!isChrome) {
+                $('.print').hide();
+            }
+
+            $('.print').on('click', function (e) {
+
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+
+                var http = new XMLHttpRequest();
+                var url = '@Url.Action("TankExport", "Report")';
+                var params = $('form').serialize();
+                http.responseType = "blob";
+                http.open("POST", url, true);
+
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                http.onreadystatechange = function () {
+                    if (http.readyState == 4 && http.status == 200) {
+                        var response = http.response;
+
+                        var blob = new Blob([response], { type: 'application/pdf' });
+                        var fileURL = URL.createObjectURL(blob);
+                        $('#print-frame').attr('src', fileURL);
+                        $('#print-frame').on('load', function () {
+                            $('#print-frame').get(0).contentWindow.document.execCommand("print", false, null);
+                        });
+                    }
+                }
+
+                http.send(params);
+
+                return false;
+            });
+        });
+
+    var initWarehouse = @Html.Raw(Json.Encode(@Model.WareHouseCode));
+    var initArmNo =  @Html.Raw(Json.Encode(@Model.ArmNo));
+
+    setOption();
+    function setOption() {
+
+        optionCustomer = {
+            data: @Html.Raw(Json.Encode(@Model.ListCustomer)),
+            getValue: "name",
+            template: {
+                type: "description",
+                fields: {
+                    description: "type"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                }
+            }
+        };
+        $("#IdCustomer").easyAutocomplete(optionCustomer);
+
+        optionCustomerGroup = {
+            data: @Html.Raw(Json.Encode(@Model.ListCustomerGroup)),
+            getValue: "name",
+            template: {
+                type: "description",
+                fields: {
+                    description: "type"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                }
+            }
+        };
+        $("#IdCustomerGroup").easyAutocomplete(optionCustomerGroup);
+
+        optionVehicle = {
+            data: @Html.Raw(Json.Encode(@Model.ListVehicleFillter)),
+            getValue: "name",
+            template: {
+                type: "description",
+                fields: {
+                    description: "type"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                }
+            }
+        };
+        $("#IdVehicle").easyAutocomplete(optionVehicle);
+    }
+
+    OnchangeWareHouse();
+
+    function OnchangeWareHouse() {
+        var warehouse = $("#WareHouseCode").val();
+
+        $.ajax({
+            url: '/Report/GetConfigArm/',
+            type: 'GET',
+            data: {
+                "wareHouseCode": warehouse
+            },
+            dataType: 'json',
+            success: function (data) {
+                var opt = "<select name='ArmNo' id='ArmNo' class='form-control'>";
+                var chk=false;
+                for (var i = 0; i < data.length; i++) {
+                    if (warehouse==initWarehouse && initArmNo == data[i].ArmNo)
+                    {
+                        opt += "<option selected='selected' value=" + data[i].ArmNo + ">" + data[i].ArmName + "</option>";
+                        chk =true;
+                    }
+                    else
+                    {
+                        opt += "<option value=" + data[i].ArmNo + ">" + data[i].ArmName + "</option>";
+                    }
+                }
+                if (!chk){
+
+                    opt += "<option  selected='selected'>Tất cả</option>";
+                }
+                else
+                {
+                    opt += "<option  value=''>Tất cả</option>";
+                }
+                opt += "</select>";
+                //document.getElementById("listArmNo").innerHTML = opt;
+            },
+            error: function (err) {
+                alert("Error: " + err.responseText);
+            }
+        });
+
+    }
+
+</script>

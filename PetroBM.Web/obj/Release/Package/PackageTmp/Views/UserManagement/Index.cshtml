@@ -1,0 +1,120 @@
+﻿@model PetroBM.Web.Models.UserModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util
+
+@{
+    ViewBag.Title = "Danh sách người dùng";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.User.UserName)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.User.FullName)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.User.Position)
+            </th>
+            @*<th>
+                @Html.LabelFor(Model => Model.User.MUserGrp.GrpName)
+            </th>*@
+            <th>
+                @Html.LabelFor(Model => Model.User.InsertDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.User.InsertUser)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.User.UpdateDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.User.UpdateUser)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    @{
+        var i = Constants.PAGE_SIZE * (Model.ListUser.PageNumber - 1);
+        foreach (var item in Model.ListUser)
+        {
+            i++;
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Position)
+                </td>
+                @*<td>
+                    @{ if (null != item.GrpId)
+                        {
+                            @Html.DisplayFor(modelItem => item.MUserGrp.GrpName)
+                        }
+                    }
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsertDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsertUser)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateUser)
+                </td>
+                <td>
+
+                    @Html.ActionLink("Sửa", "Edit", new { userName = item.UserName })
+                    @if (item.UserName!="ADMIN")
+                    {
+                        <span>|</span>
+                        @Html.ActionLink("Xóa", "Delete", new { userName = item.UserName }, new { @class = "delete-user" })
+                    }
+                </td>
+            </tr>
+                        }
+    }
+</table>
+<div class="text-center">
+    @Html.PagedListPager(Model.ListUser, page => Url.Action("Index", new { page }))
+</div>
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-primary" onclick="location.href='@Url.Action("Create")'" />
+</p>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-user').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}

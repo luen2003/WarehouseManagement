@@ -1,0 +1,115 @@
+﻿@model PetroBM.Web.Models.ProductModel
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Thông tin mặt hàng";
+}
+
+@using (Html.BeginForm("Index", "Product", FormMethod.Post))
+{
+
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>@alert</strong>
+            </div>
+        }
+        <div class='col-sm-4 col-xs-6'>
+            <div class="row">
+                <label class="control-label col-xs-5">Mã hàng hóa</label>
+                <div class="form-group col-xs-7">
+                    @Html.EditorFor(model => model.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-5">Tên hàng hóa</label>
+                <div class="form-group col-xs-7">
+                    @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <input type="submit" value="Tìm Kiếm" class="btn btn-primary" />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+
+                    <th>
+                        @Html.LabelFor(model => model.Product.ProductName)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Product.ProductCode)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Product.Abbreviations)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Product.ProductType)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Product.OriginalProductCode)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Product.MixProductCode)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Product.Color)
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.ListProduct)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Abbreviations)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OriginalProductCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MixProductCode)
+                    </td>
+                    <td>
+                        <div style="height:20px; width:45px; border: 3px solid white; background: @Html.DisplayFor(modelItem => item.Color)"></div>
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Sửa", "Edit", new { id = item.ProductId }) |
+                        @Html.ActionLink("Xóa", "Delete", new { id = item.ProductId }, new { @class = "delete-product" })
+                    </td>
+                </tr>
+            }
+        </table>
+        <div class="text-center">
+            @Html.PagedListPager(Model.ListProduct, page => Url.Action("Index", new {page,productcode = Model.ProductCode,productname=Model.ProductName}))
+        </div>
+
+        <p>
+            <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("Create")'" />
+        </p>
+
+        }
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-product').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}

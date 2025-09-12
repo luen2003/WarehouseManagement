@@ -1,0 +1,45 @@
+﻿@model PetroBM.Web.Models.ConfigurationModel
+
+@{
+    ViewBag.Title = "Đặt ảnh chính";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+@using (Html.BeginForm("SaveHomeImage", "Configuration", FormMethod.Post,
+                                                new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="file">Ảnh đang dùng:</label>
+            <div class="col-xs-9">
+                <img src="@Model.HomeImageConfig.Value" style="width: 80%" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="file">Tải ảnh:</label>
+            <div class="col-xs-9">
+                @Html.TextBoxFor(model => model.HomeImageFile, new { type = "file", accept = "image/*" })
+                @Html.ValidationMessageFor(model => model.HomeImageFile)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-9">
+                <input type="submit" value="Lưu" class="btn btn-success" id="home-image" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index","Home")'" />
+            </div>
+        </div>
+    </div>
+}

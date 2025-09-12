@@ -1,0 +1,48 @@
+﻿@model PetroBM.Web.Models.ConfigurationModel
+
+@{
+    ViewBag.Title = "Cấu hình âm thanh cảnh báo";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dixsissable">
+            <a href="#" class="close" data-dixsiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+@{
+    var i = 0;
+}
+@using (Html.BeginForm("SaveSoundAlarm", "Configuration", FormMethod.Post,
+    new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @foreach (var item in Model.AlarmType)
+        {
+            <div class="form-group">
+                @Html.HiddenFor(model => model.AlarmType[i].TypeId)
+                <label class="control-label col-xs-2">@item.TypeName</label>
+                <div class="col-xs-8">
+                    <audio id="@( "alarm-sound-" + item.TypeId)" src="@item.Sound"></audio>
+                    <button type="button" onclick="document.getElementById('@( "alarm-sound-" + item.TypeId)').play()">Play</button>
+                    @Html.TextBoxFor(model => model.SoundAlarmFile, new { type = "file", accept = "audio/*" })
+                    @Html.ValidationMessageFor(model => model.SoundAlarmFile)
+                </div>
+            </div>
+            i++;
+        }
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-8">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index","Home")'" />
+            </div>
+        </div>
+    </div>
+}

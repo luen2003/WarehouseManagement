@@ -1,0 +1,117 @@
+﻿@model PetroBM.Web.Models.ChartModel
+
+@{
+    ViewBag.Title = "Dashboard tỷ lệ hàng hóa";
+}
+
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class='col-sm-4'>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đầu</label>
+                <div class="form-group col-xs-8">
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian cuối</label>
+                <div class="form-group col-xs-8">
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Kho</label>
+                <div class="form-group col-xs-8">
+                    <select class="form-control" name="WareHouseCode" id="WareHouseCode" style="width:205px;" onchange="WareHouseChange()">
+                        @foreach (var item in Model.WareHouseList)
+                        {
+                            if (Model.WareHouseCode != item.WareHouseCode)
+                            {
+                                <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4"></label>
+                <div class="form-group col-xs-8">
+                    <input type="submit" value="Xác nhận" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+
+        <div class='col-sm-8'>
+            <div id="chartContainer" style="height: 600px; width: 100%;">
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/canvasjs")
+
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        });
+    </script>
+
+    @if (Model.CanDrawChart)
+    {
+        <script>
+            window.onload = function () {
+                var productsKPIData = @Html.Raw(Json.Encode(Model.ProductsKPIData));
+                var colors = [];
+
+                for(var item in productsKPIData) {
+                    colors.push(item.color);
+                }
+
+                CanvasJS.addColorSet("colorChart",colors);
+
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    colorSet: "colorChart",
+                    title: {
+                        text: "Tỷ lệ hàng hóa",
+                        fontFamily: "arial",
+                        fontSize: 20
+                    },
+                    animationEnabled: true,
+                    theme: "theme2",
+                    data: [{
+                        type: "pie",
+                        indexLabel: "{label}: {y}%",
+                        indexLabelFontFamily: "Garamond",  
+                        indexLabelFontSize: 16,
+                        toolTipContent:"{label}: {y}% <br/> Lượng xuất: {export} L",
+                        startAngle:-90,
+                        dataPoints: productsKPIData
+                    }]
+                });
+                chart.render();
+                $('.canvasjs-chart-credit').hide();
+            }
+        </script>
+    }
+}

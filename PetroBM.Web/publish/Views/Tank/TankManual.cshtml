@@ -1,0 +1,163 @@
+﻿@model PetroBM.Web.Models.TankModel
+@using PetroBM.Common.Util;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Kho: " + @Session[Constants.Session_WareHouseName] + " > Bể: " + Model.Tank.TankName + " > Danh sách thông số đo tay";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="col-xs-1" style="min-width: 138px;">
+                @Html.LabelFor(m => m.TankManual.InsertDate)
+            </th>
+            <th class="col-xs-1" style="min-width: 138px;">
+                @Html.LabelFor(m => m.TankManual.LogInsertDate)
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.WaterLevel)
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.LogWaterLevel)
+            </th>
+            <th class="col-xs-1">
+                Sai số
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.TotalLevel)
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.LogTotalLevel)
+            </th>
+            <th class="col-xs-1">
+                Sai số
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.AvgTemperature)
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.LogAvgTemperature)
+            </th>
+            <th class="col-xs-1">
+                Sai số
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.InsertUser)
+            </th>
+            <th style="min-width: 75px;"></thstyle="min-width:>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+            </td>
+            <td>
+                @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+            </td>
+            <td>
+                @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        @foreach (var item in Model.ListTankManual)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsertDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LogInsertDate)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.WaterLevel, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.LogWaterLevel, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.WaterLevel - item.LogWaterLevel, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.TotalLevel, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.LogTotalLevel, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.TotalLevel - item.LogTotalLevel, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.AvgTemperature, 1)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.LogAvgTemperature, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.AvgTemperature - item.LogAvgTemperature, 2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsertUser)
+                </td>
+                <td>
+                    @Html.ActionLink("Sửa", "EditTankManual", new { id = item.Id }) |
+                    @Html.ActionLink("Xóa", "DoDeleteTankManual", new { id = item.Id }, new { @class = "delete-tank-manual" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-center">
+    @Html.PagedListPager(Model.ListTankManual, page => Url.Action("TankManual", new { id = Model.TankId, page }))
+</div>
+
+<p>
+    <input type="button" value="Nhập mới" class="btn btn-primary"
+           onclick="location.href='@Url.Action("CreateTankManual",new { id = Model.TankId })'" />
+</p>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-tank-manual').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}

@@ -1,0 +1,166 @@
+﻿@model PetroBM.Web.Models.ChartModel
+@using PetroBM.Common.Util;
+
+@{
+    ViewBag.Title = "Đồ thị vòng quay bể và kho";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class='col-sm-5'>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đầu</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian cuối</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Kho</label>
+                <div class="form-group col-xs-8">
+                    <select class="form-control" name="WareHouseCode" id="WareHouseCode" style="width:205px;" onchange="WareHouseChange()">
+                        @foreach (var item in Model.WareHouseList)
+                        {
+                            if (Model.WareHouseCode != item.WareHouseCode)
+                            {
+                                <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                            }
+                        }
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Nhóm bể</label>
+                <div class="form-group col-xs-5" id="ListTankGroup">
+                    <select id="TankGroup" name="TankGroup" class="form-control" style="width:205px;"></select>
+                    @*<select name="TankGroupId" id="TankGroupId" class="form-control">
+                            @foreach (var item in Model.TankGroupTempList)
+                            {
+                                if (Model.TankGroupId != item.tankgrpid)
+                                {
+                                    <option value="@item.tankgrpid">@item.tankgrpname</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.tankgrpid" selected="selected">@item.tankgrpname</option>
+                                }
+                            }
+
+                        </select>*@
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4"></label>
+                <div class="form-group col-xs-8">
+                    <input type="submit" value="Xác nhận" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-7">
+            <div id="chartContainer" style="height: 300px; width: 100%;">
+            </div>
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/canvasjs")
+@section scripts{
+    <script>
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        });
+    </script>
+
+
+<script type="text/javascript">
+    var lstWareHouse = @Html.Raw(Json.Encode(@Model.WareHouseList)); //Lay cac kho
+    var lstTankGroup = @Html.Raw(Json.Encode(@Model.TankGroupTempList));
+    var TankGroupId = @Html.Raw(Json.Encode(@Model.TankGroupId));
+    WareHouseChange();
+
+    function WareHouseChange()
+    {
+        var selWareHouse = $("#WareHouseCode").val();
+        var opt ="<select class='form-control' id='TankGroup' name='TankGroupId' style='width:205px;'>";
+
+        for (var i = 0; i < lstTankGroup.length; i++) {
+            if (lstTankGroup[i].warehousecode ==selWareHouse)
+            {
+                if (TankGroupId==lstTankGroup[i].tankgrpid){
+                    opt += "<option selected='selected' value=" + lstTankGroup[i].tankgrpid  +">" + lstTankGroup[i].tankgrpname + "</option>";
+                }else{
+                    opt += "<option value=" + lstTankGroup[i].tankgrpid  +">" + lstTankGroup[i].tankgrpname + "</option>";
+                }
+
+            }
+        }
+        opt += "</select>";
+        document.getElementById("ListTankGroup").innerHTML = opt;
+    }
+
+</script>
+
+    @if (Model.CanDrawChart)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                var chart = new CanvasJS.Chart("chartContainer",
+                {
+                    title: {
+                        text: "Vòng quay bể và kho",
+                        fontFamily: "arial",
+                        fontSize: 18
+
+                    },
+                    animationEnabled: true,
+                    dataPointMaxWidth: 40,
+                    axisY: {
+                        title: "Số vòng quay",
+                        fontFamily: "arial",
+                        labelFontSize: 12,
+                        titleFontSize: 16,
+                        lineThickness: 2
+                    },
+                    data: [{
+                        type: "column",
+                        fillOpacity: .8,
+                        dataPoints:
+                            @Html.Raw(Json.Encode(@Model.DataList)),
+                    }]
+                });
+
+                chart.render();
+                $('.canvasjs-chart-credit').hide();
+            }
+
+        </script>
+
+    }
+
+}

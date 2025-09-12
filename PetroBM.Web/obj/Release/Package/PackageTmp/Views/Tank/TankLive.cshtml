@@ -1,0 +1,521 @@
+﻿@model PetroBM.Web.Models.TankModel
+@using PetroBM.Common.Util;
+
+@{
+    ViewBag.Title = "Kho: " + @Session[Constants.Session_WareHouseName] + " > Bể: " + Model.Tank.TankName + " > Thông số đo máy";
+}
+<div id="tank-live">
+    <div class="panel panel-primary col-lg-4">
+        <div class="panel-heading">
+            <h3 class="panel-title">Hình ảnh</h3>
+        </div>
+        <div class="panel-body">
+            @Html.Action("TankImage", "Tank", new { id = Model.Tank.TankId, ratio = 1 })
+        </div>
+    </div>
+
+    <div class="panel panel-primary col-lg-8">
+        <div class="panel-heading">
+            <h3 class="panel-title">Cấu hình bể</h3>
+        </div>
+        <div class="panel-body" style="min-height: 273px;">
+            <ul class="icon-alarm col-sm-2">
+                <li>
+                    <img src="~/Content/images/icon/ic-hh.png" />
+                    @(NumberUtil.FormatNumber(Model.Tank.HighHighLevel, 0) + Constants.DIMENSION_MM)
+                </li>
+                <li>
+                    <img src="~/Content/images/icon/ic-ha.png" />
+                    @(NumberUtil.FormatNumber(Model.Tank.HighLevel, 0) + Constants.DIMENSION_MM)
+                </li>
+                <li>
+
+                    <img src="~/Content/images/icon/ic-la.png" />
+                    @(NumberUtil.FormatNumber(Model.Tank.LowLevel, 0) + Constants.DIMENSION_MM)
+                </li>
+                <li>
+
+                    <img class="icon-alarm" src="~/Content/images/icon/ic-ll.png" />
+                    @(NumberUtil.FormatNumber(Model.Tank.LowLowLevel, 0) + Constants.DIMENSION_MM)
+                </li>
+            </ul>
+
+            <div class="col-sm-10">
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.TankId)
+                        </td>
+                        <td>
+                            @Model.Tank.TankId
+                        </td>
+                        <td></td>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.HighMax)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.HighMax, 0)
+                        </td>
+                        <td>
+                            @Constants.DIMENSION_MM
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.TankName)
+                        </td>
+                        <td>
+                            @Model.Tank.TankName
+                        </td>
+                        <td></td>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.HighMin)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.HighMin, 0)
+                        </td>
+                        <td>
+                            @Constants.DIMENSION_MM
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.MProduct.ProductName)
+                        </td>
+                        <td>
+                            @if (Model.Tank.MProduct != null)
+                            {
+                                @Model.Tank.MProduct.ProductName;
+                            }
+                        </td>
+                        <td></td>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.TemperatureHigh)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.TemperatureHigh, 1)
+                        </td>
+                        <td>
+                            @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.VolumeMax)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.VolumeMax, 2)
+                        </td>
+                        <td>
+                            @Constants.DIMENSION_L
+                        </td>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.TemperatureLow)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.TemperatureLow, 1)
+                        </td>
+                        <td>
+                            @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.ProductOffset)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.ProductOffset, 2)
+                        </td>
+                        <td>
+                            @Constants.DIMENSION_MM
+                        </td>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.HighFlow)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.HighFlow, 2)
+                        </td>
+                        <td>
+                            @Html.Raw(Constants.DIMENSION_FLOW)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.WaterOffset)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.WaterOffset, 2)
+                        </td>
+                        <td>
+                            @Constants.DIMENSION_MM
+                        </td>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.LowFlow)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.LowFlow, 2)
+                        </td>
+                        <td>
+                            @Html.Raw(Constants.DIMENSION_FLOW)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.TemperatureOffset)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.TemperatureOffset, 2)
+                        </td>
+                        <td>
+                            @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                        </td>
+                        <td>
+                            @Html.LabelFor(Model => Model.Tank.Density)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(Model.Tank.Density, 5)
+                        </td>
+                        <td>
+                            @Constants.DIMENSION_DENSITY
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.TankLive != null)
+    {
+        <div class="panel panel-primary col-md-6">
+            <div class="panel-heading">
+                <h3 class="panel-title">Thông số đo (@Html.DisplayFor(Model => Model.TankLive.InsertDate))</h3>
+            </div>
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.WaterLevel)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.WaterLevel, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_MM
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.LevelRate)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.LevelRate, 3)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_LEVEL_RATE
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.ProductLevel)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.ProductLevel, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_MM
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.FlowRate)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.FlowRate, 2)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_FLOW)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.TotalLevel)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.TotalLevel, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_MM
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Mass)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Mass, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_MASS
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.WaterVolume)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.WaterVolume, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_L
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.MassRate)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.MassRate, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_MASS_RATE
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.ProductVolume)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.ProductVolume, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_L
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.ProductVolume15)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.ProductVolume15, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_L
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.TotalVolume)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.TotalVolume, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_L
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.VCF)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.VCF, 5)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.AvailableVolume)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.AvailableVolume, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_L
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.WCF)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.WCF, 5)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.TankEmpty)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.TankEmpty, 2)
+                    </td>
+                    <td>
+                        @Constants.DIMENSION_L
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="panel panel-primary col-md-6">
+            <div class="panel-heading">
+                <h3 class="panel-title">Nhiệt độ</h3>
+            </div>
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.AvgTemperature)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.AvgTemperature, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Temperature6)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Temperature6, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Temperature1)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Temperature1, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Temperature7)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Temperature7, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Temperature2)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Temperature2, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Temperature8)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Temperature8, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Temperature3)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Temperature3, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Temperature9)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Temperature9, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Temperature4)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Temperature4, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Temperature10)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Temperature10, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.TankLive.Temperature5)
+                    </td>
+                    <td>
+                        @NumberUtil.FormatNumber(Model.TankLive.Temperature5, 1)
+                    </td>
+                    <td>
+                        @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    }
+    
+    <div class="clearfix"></div>
+</div>
+
+@section style
+{
+    <style>
+        .td-25 {
+            width: 25%;
+        }
+
+        .td-15 {
+            width: 15%;
+        }
+
+        .td-5 {
+            width: 10%;
+        }
+    </style>
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            UpdateTankLive();
+
+            setInterval(function () {
+                UpdateTankLive();
+            }, 5000); // every 5 sec
+        });
+
+        function UpdateTankLive() {
+            // Auto refresh Tank Live
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("TankLive", "Tank")',
+                data: { id : @Model.Tank.TankId},
+                success: function (data) {
+                    $('#tank-live').html($(data).find('#tank-live').html());
+                    $('tr td:nth-child(1)').addClass('td-25');
+                    $('tr td:nth-child(2)').addClass('td-15');
+                    $('tr td:nth-child(3)').addClass('td-5');
+                    $('tr td:nth-child(4)').addClass('td-25');
+                    $('tr td:nth-child(5)').addClass('td-15');
+                    $('tr td:nth-child(6)').addClass('td-5');
+                },
+                error: function () {
+                }
+            });
+        }
+    </script>
+}

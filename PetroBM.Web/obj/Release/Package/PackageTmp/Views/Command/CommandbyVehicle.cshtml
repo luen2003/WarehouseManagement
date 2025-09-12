@@ -1,0 +1,258 @@
+﻿@model PetroBM.Web.Models.CommandModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util;
+@using System.Data;
+@{
+	ViewBag.Title = "Kho " + Session[Constants.Session_WareHouseName] + " > Danh sách lệnh theo xe";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm("CommandbyVehicle", "Command", FormMethod.Post, new { @id = "CommandbyVehicle" }))
+{
+	<div class="container">
+		<div class='col-sm-4 col-xs-6'>
+			<div class="row">
+				<label class="control-label col-xs-4">Số chứng từ</label>
+				<div class="form-group col-xs-8">
+					@Html.EditorFor(model => model.CertificateNumber, new { htmlAttributes = new { @class = "form-control" } })
+				</div>
+			</div> 
+			<div class="row">
+				<label class="control-label col-xs-4">Card Serial</label>
+				<div class="form-group col-xs-8">
+					@Html.EditorFor(model => model.CardSerial, new { htmlAttributes = new { @class = "form-control" } })
+				</div>
+			</div>
+		</div>
+
+		<div class='col-sm-5 col-xs-6'>
+			<div class="row">
+				<label class="control-label col-xs-4">Thời gian đăng ký</label>
+				<div class="form-group col-xs-6">
+					<div class='input-group date' id='datetimepicker1'>
+						@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<label class="control-label col-xs-4">Phương tiện</label>
+				<div class="form-group col-xs-8">
+					<select style="width:200px" class="form-control" name="VehicleNumber">
+						@foreach (var item in Model.ListVehicle)
+						{
+							if (Model.VehicleNumber == item.VehicleNumber)
+							{
+								<option selected="selected" value="@item.VehicleNumber">@item.VehicleNumber</option>
+							}
+							else
+							{
+								<option value="@item.VehicleNumber">@item.VehicleNumber</option>
+							}
+						}
+						@if (Model.VehicleNumber == "")
+						{
+							<option selected="selected" value="">Tất cả</option>
+						}
+						else
+						{
+							<option value="">Tất cả</option>
+						}
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class='col-sm-3 col-xs-6'>
+			<div class="row">
+				<div class="form-group col-xs-10">
+					<div class='input-group date' id='datetimepicker2'>
+						@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				
+			</div>
+			<div class="row" style="padding-left:15px;padding-top:0px;">
+				<button type="submit" class='btn btn-success'>Tìm kiếm</button>
+			</div>
+		</div>
+		<table class="table" id="tablecommand">
+			<thead>
+                <tr>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.VehicleNumber)
+                    </th>
+                    <th>
+                        Lái xe
+                    </th>
+                    <th>
+                        Khách hàng
+                    </th>
+                    <th>
+                        Số chứng từ
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.CardSerial)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.TimeOrder)
+                    </th>
+                    <th>
+                        Tổng lượng đặt
+                    </th>
+                    <th>
+                        Tổng lượng xuất
+                    </th>
+                    <th>
+                        <label class="checkbox-inline"><input type="checkbox" value="" id="checkAllMoveDate">Chuyển ngày</label>
+                    </th>
+                </tr>
+			</thead>
+
+			@{ var i = 0;
+				foreach (var item in Model.ListIECommand)
+				{
+					i = i + 1;
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VehicleNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DriverName)
+                            </td>
+                            <td>
+                                @foreach (var customer in Model.ListCustomer)
+                                {
+                                    if (@item.CustomerCode == customer.CustomerCode)
+                                    {
+                                        @customer.CustomerName;
+                                    }
+                                }
+                                @Html.DisplayFor(modelItem => item.CustomerCode)
+                            </td>
+                            <td>
+                                <span><a href="CommandView/@item.CommandID">@Convert.ToInt32(item.CertificateNumber)</a></span><br />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CardSerial)
+                            </td>
+
+                            <td>
+                                @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
+                            </td>
+                            @{ var soluong_Preset = 0; var soluong_Acctual = 0;
+
+                                foreach (var item2 in Model.ListCommandDetail)
+                                {
+                                    if (item.CommandID == item2.CommandID && !string.IsNullOrEmpty(item2.V_Actual.ToString()))
+                                    {
+                                        soluong_Preset += int.Parse(item2.V_Preset.ToString());
+                                        soluong_Acctual += int.Parse(item2.V_Actual.ToString());
+
+
+                                    }
+                                }
+                            }
+                            <td>
+                                @soluong_Preset
+                            </td>
+                            <td>
+                                @soluong_Acctual
+                            </td>
+                            <td>
+                                @if (@item.Status != 1 && @item.Status != 2 && @item.Status != 3 && @item.Status != 4 && @item.Status != 5 && @item.Status != 8)
+                                {
+                                    <input type="checkbox" class="checkMoveDate" id="@item.CommandID">
+                                }
+                            </td>
+                        </tr>
+
+				}
+			}
+		</table>
+		<div class="text-center">
+			@Html.PagedListPager(Model.ListIECommand, page => Url.Action("CommandbyVehicle", new
+			{
+				certificateNumber = Model.CertificateNumber,
+				cardSerial = Model.CardSerial,
+				cardData = Model.CardData,
+				vehicleNumber = Model.VehicleNumber,
+				startDate = Model.StartDate,
+				endDate = Model.EndDate,
+				page
+			}))
+		</div>
+		<button id="Submit" class='btn btn-success' style="float:right">Lưu</button>
+	</div>
+}
+
+@section scripts{
+
+
+	<script>
+		$('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+		$('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+
+	</script>
+	<script>
+		$("#checkAllMoveDate").click(function () {
+			$('.checkMoveDate').not(this).prop('checked', this.checked);
+		});
+	</script>
+	<script>
+
+
+		$("#Submit").click(function () {
+			//Updatetime CheckBox
+			var selectedMoveDateIDs = new Array();
+			$('.checkMoveDate').each(function () {
+				if ($(this).prop('checked')) {
+					selectedMoveDateIDs.push($(this).attr("id"));
+				}
+			});
+			console.log(selectedMoveDateIDs);
+			if (selectedMoveDateIDs != null) {
+				$.post("/CommandDetail/Create", { lstCommandId: selectedMoveDateIDs })
+					.done(function (msg) { })
+					.fail(function (xhr, status, error) { });
+				setTimeout(function () {
+					window.location.reload();
+				}, 3000);
+			}
+		});
+
+	</script>
+	<script>
+		var selectedIdTable = new Array();
+		$('.idcommand').each(function () {
+			selectedIdTable.push($(this).attr("id"));
+
+		});
+
+		var selectedIdVehicle = new Array();
+		$('.vehiclecommand').each(function () {
+			selectedIdVehicle.push($(this).attr("id"));
+
+		});
+
+		for (var i = 0; i < selectedIdVehicle.length; i++) {
+			if (selectedIdTable[0] != selectedIdTable[i + 1] & selectedIdVehicle[0] == selectedIdVehicle[i + 1]) {
+				var b = Math.min.apply(Math, selectedIdTable);
+			}
+
+		}
+	</script>
+
+}

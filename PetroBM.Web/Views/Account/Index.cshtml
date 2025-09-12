@@ -1,0 +1,59 @@
+﻿@model PVOil.Models.AccountModel
+
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-primary" onclick="location.href='@Url.Action("Create")'" />
+</p>
+@{
+    ViewBag.Title = "Danh sách người dùng";
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>
+           Stt
+        </th>
+        <th>
+            User Name
+        </th>
+        <th>
+            Tên đầy đủ
+        </th>
+        <th>
+            Vị trí
+        </th>
+        <th>
+            Nhóm
+        </th>
+        <th>Edit</th>
+    </tr>
+
+    @{ 
+        var i = 0;
+        foreach (var item in Model.ListUser)
+        {
+            i++;
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GrpId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.UserName }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.UserName })
+            </td>
+        </tr>
+        }
+    }
+
+</table>

@@ -1,0 +1,99 @@
+﻿@model PetroBM.Web.Models.WareHouseModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách Kho";
+}
+@using (Html.BeginForm())
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+    @*<div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Tên kho </label>
+            <div class="form-group col-xs-8">
+                <input type="text" value="@ViewBag.warehousename" name="warehousename" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Mã kho</label>
+            <div class="form-group col-xs-8">
+                <input type="text" value="@ViewBag.warehousecode" name="warehousecode" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <input type="submit" value="Tìm kiếm" class="btn btn-primary"/>*@
+<table class="table table-striped">
+    <thead>
+        <tr>
+      
+            <th>
+                @Html.DisplayNameFor(model => model.WareHouse.WareHouseCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WareHouse.WareHouseName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WareHouse.WareHouseAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WareHouse.WareHousePNumber)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+
+
+@foreach (var item in Model.ListWareHouse)
+{
+    <tr>
+   
+        <td>
+            @Html.DisplayFor(modelItem => item.WareHouseCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WareHouseName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WareHouseAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WareHousePNumber)
+        </td>
+        <td>
+            @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Xóa", "Delete", new { id = item.Id },new { @class="delete-warehouse"})
+        </td>
+    </tr>
+}
+
+</table>
+<div class="text-center">
+    @Html.PagedListPager(Model.ListWareHouse, page => Url.Action("Index", new { page }))
+</div>
+
+<p>
+    <div class="col-sm-3">
+        <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("Create")'" />
+      
+    </div>
+  
+</p>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-warehouse').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}

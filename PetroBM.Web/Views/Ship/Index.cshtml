@@ -1,0 +1,113 @@
+﻿@model PetroBM.Web.Models.ShipModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách phương tiện thủy";
+}
+@using (Html.BeginForm())
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-5">@Html.DisplayNameFor(model => model.Ship.ShipCode)</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.ShipCode, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-5">@Html.DisplayNameFor(model => model.Ship.ShipName)</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.ShipName, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>
+    <input type="submit" value="Tìm Kiếm" class="btn btn-primary" />
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ship.ShipCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ship.ShipName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ship.NumberControl)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ship.ManagementUnit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ship.Note)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ship.ShipStatus)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+
+        @foreach (var item in Model.ListShip)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberControl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManagementUnit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipStatus)
+                </td>
+                <td>
+                    @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID }, new { @class = "delete-warehouse" })
+                </td>
+            </tr>
+        }
+
+    </table>
+    @*<div class="text-center">
+            @Html.PagedListPager(Model.ListShipPageList, page => Url.Action("Index", new { page }))
+        </div>*@
+
+    <div class="text-center">
+            @Html.PagedListPager(Model.ListShip, page => Url.Action("Index", new { page }))
+    </div>
+
+    <p>
+        <div class="col-sm-3">
+            <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("Create")'" />
+
+        </div>
+
+    </p>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-warehouse').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}

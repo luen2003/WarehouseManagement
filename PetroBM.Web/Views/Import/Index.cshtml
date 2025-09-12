@@ -1,0 +1,163 @@
+﻿@model PetroBM.Web.Models.ImportModel
+@using PetroBM.Common.Util
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Kho: " + @Session[Constants.Session_WareHouseName] + " > Nhập hàng > Danh sách nhập hàng";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+
+@using (Html.BeginForm())
+{
+        <div class="row">
+            <div class='col-sm-6 col-xs-4'>
+                <div class="row">
+                    <label class="control-label col-xs-4">Thời gian đầu</label>
+                    <div class="form-group col-xs-4">
+                        <div class='input-group date' id='datetimepicker1'>
+                            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class='col-sm-4 col-xs-4'>
+                        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="control-label col-xs-4">Thời gian cuối</label>
+                    <div class="form-group col-xs-4">
+                        <div class='input-group date' id='datetimepicker2'>
+                            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <br />
+
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Ngày chốt đầu
+            </th>
+            <th>
+                Ngày chốt cuối
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.ImportInfo.InsertDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.ImportInfo.InsertUser)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.ImportInfo.UpdateDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.ImportInfo.UpdateUser)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model.ImportInfoList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @if (item.StartFlag)
+                {
+                    var kt = false;
+                    for (int i = 0; i < Model.TankImports.Count; i++)
+                    {
+                        if (item.Id == Model.TankImports[i].ImportInfoId && (!kt))
+                        {
+                            @Model.TankImports[i].StartDate.Value
+                            kt = true;
+                        }
+                    }
+
+                }
+            </td>
+            <td>
+                @if (item.EndFlag)
+                {
+                    var kt = false;
+                    @*@Html.DisplayFor(modelItem => item.MTankImport.ElementAt(0).EndDate)*@
+                    for (int i = 0; i < Model.TankImports.Count; i++)
+                    {
+                        if (item.Id == Model.TankImports[i].ImportInfoId && (!kt))
+                        {
+                            @Model.TankImports[i].EndDate.Value
+                            kt = true;
+                        }
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsertDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsertUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateUser)
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, new { @class = "delete-import" })
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="text-center">
+    @Html.PagedListPager(Model.ImportInfoList, page => Url.Action("Index", new { startDate = Model.StartDate, endDate = Model.EndDate, page }))
+</div>
+
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-primary" onclick="location.href='@Url.Action("New")'" />
+</p>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+            $('.delete-import').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}
+

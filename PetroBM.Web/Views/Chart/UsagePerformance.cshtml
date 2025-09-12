@@ -1,0 +1,172 @@
+﻿@model PetroBM.Web.Models.ChartModel
+
+@{
+    ViewBag.Title = "Hiệu suất sử dụng";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class='col-sm-4'>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đầu</label>
+                <div class="form-group col-xs-8">
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian cuối</label>
+                <div class="form-group col-xs-8">
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Kho</label>
+                <div class="form-group col-xs-8">
+                    <select class="form-control" name="WareHouseCode" id="WareHouseCode" style="width:205px;" onchange="WareHouseChange()">
+                        @foreach (var item in Model.WareHouseList)
+                        {
+                            if (Model.WareHouseCode != item.WareHouseCode)
+                            {
+                                <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Nhóm bể</label>
+                <div class="form-group col-xs-8" id="ListTankGroup">
+                    <select id="TankGroup" name="TankGroup" class="form-control" style="width:205px;"></select>
+                    @*@if (Model.TankGroupList.Any())
+                {
+                        @Html.DropDownListFor(model => model.TankGroupId,
+                                new SelectList(Model.TankGroupList, "TankGrpId", "TanktGrpName", "") as SelectList,
+                                new { @class = "form-control", @style = "width:205px;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.TankGroupId,
+                                new SelectList(new List<string>()),
+                                new { @class = "form-control", @style = "width:205px;" })
+                    }*@
+                    
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4"></label>
+                <div class="form-group col-xs-8">
+                    <input type="submit" value="Xác nhận" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+
+        <div class='col-sm-8'>
+            <div id="chartContainer" style="height: 600px; width: 100%;">
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/canvasjs")
+
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        });
+    </script>
+
+<script type="text/javascript">
+    var lstWareHouse = @Html.Raw(Json.Encode(@Model.WareHouseList)); //Lay cac kho
+    var lstTankGroup = @Html.Raw(Json.Encode(@Model.TankGroupTempList));
+    var TankGroupId = @Html.Raw(Json.Encode(@Model.TankGroupId));
+    WareHouseChange();
+
+    function WareHouseChange()
+    {
+        var selWareHouse = $("#WareHouseCode").val();
+        var opt ="<select class='form-control' id='TankGroup' name='TankGroupId' style='width:205px;'>";
+
+        for (var i = 0; i < lstTankGroup.length; i++) {
+            if (lstTankGroup[i].warehousecode ==selWareHouse)
+            {
+                if (TankGroupId==lstTankGroup[i].tankgrpid){
+                    opt += "<option selected='selected' value=" + lstTankGroup[i].tankgrpid  +">" + lstTankGroup[i].tankgrpname + "</option>";
+                }else{
+                    opt += "<option value=" + lstTankGroup[i].tankgrpid  +">" + lstTankGroup[i].tankgrpname + "</option>";
+                }
+                
+            }
+        }
+        opt += "</select>";
+        document.getElementById("ListTankGroup").innerHTML = opt;
+    }
+
+</script>
+
+
+
+    @if (Model.CanDrawChart)
+    {
+        <script>
+            window.onload = function () {
+                var tankTurnOverData = @Html.Raw(Json.Encode(Model.TankTurnOverData));
+
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    title: {
+                        text: "Đồ thị hiệu suất sử dụng",
+                        fontFamily: "arial",
+                        fontSize: 20
+                    },
+                    animationEnabled: true,
+                    dataPointMaxWidth: 40,
+                    axisY: {
+                        title: 'Hiệu suất sử dụng',
+                        fontFamily: "arial",
+
+                        labelFontSize: 14,
+                        titleFontSize: 18,
+                        lineThickness: 2,
+                        suffix: "%"
+                    },
+                    axisX: {
+                        title: 'Bể',
+                        fontFamily: "arial",
+                        labelFontSize: 14
+                    },
+                    toolTip:{   
+                        content: "{y}%"      
+                    },
+                    data: [{
+                        type: "column",
+                        fillOpacity: .8,
+                        //toolTipContent:"{label}: {y}% <br/> Lượng hàng: {avgProduct} L <br/> Thể tích: {volume} L",
+                        dataPoints: 
+                            @Html.Raw(Json.Encode(@Model.DataList)),
+                    }]
+                });
+                chart.render();
+                $('.canvasjs-chart-credit').hide();
+            }
+        </script>
+    }
+}

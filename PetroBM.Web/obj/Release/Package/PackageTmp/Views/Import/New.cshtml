@@ -1,0 +1,286 @@
+﻿@model PetroBM.Web.Models.ImportModel
+@using PetroBM.Common.Util
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "Kho: " + @Session[Constants.Session_WareHouseName] + " > Nhập hàng > Tạo mới nhập hàng";
+}
+
+@using (Html.BeginForm("DoCreate", "Import", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.Vehicle)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ImportInfo.Vehicle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ImportInfo.Vehicle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.ProductId)
+            </label>
+            <div class="col-xs-8" id="Product-List">
+                <select name="ProductId" class="product-list form-control" id="ProductId" onchange="Init()">
+                    @foreach (var item in Model.ProductList)
+                    {
+                        <option value="@item.ProductId">@item.ProductName</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label  col-xs-4 col-sm-3">
+                Danh sách bể
+            </label>
+            <div class="tank-list col-xs-3" id="Tank-List">
+                <select multiple class="selectpicker form-control tank-list" name="ListTankId" id="tank-multiple" data-container="body" data-live-search="true" title="Chọn bể" data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label  col-xs-4 col-sm-3">
+                Họng xuất hàng
+            </label>
+            <div class="col-xs-3" id="ArmNo-List">
+                <select multiple class="selectpicker form-control armNo-list" name="ListArmNo" id="armNo-multiple" data-container="body" data-live-search="true" title="Chọn họng" data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.Export)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ImportInfo.Export, new { htmlAttributes = new { @class = "input-number form-control col-xs-8" } })
+                <span class="col-xs-2 import-dimension">@Constants.DIMENSION_L</span>
+                @Html.ValidationMessageFor(model => model.ImportInfo.Export, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.Vtt)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ImportInfo.Vtt, new { htmlAttributes = new { @class = "input-number form-control col-xs-8" } })
+                <span class="col-xs-2 import-dimension">@Constants.DIMENSION_L</span>
+                @Html.ValidationMessageFor(model => model.ImportInfo.Vtt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.V15)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ImportInfo.V15, new { htmlAttributes = new { @class = "input-number form-control col-xs-8" } })
+                <span class="col-xs-2 import-dimension">@Constants.DIMENSION_L</span>
+                @Html.ValidationMessageFor(model => model.ImportInfo.V15, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.Temperature)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ImportInfo.Temperature, new { htmlAttributes = new { @class = "input-number form-control col-xs-8" } })
+                <span class="col-xs-2 import-dimension">@Html.Raw(Constants.DIMENSION_TEMPERATURE)</span>
+                @Html.ValidationMessageFor(model => model.ImportInfo.Temperature, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.Density)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ImportInfo.Density, new { htmlAttributes = new { @class = "input-number form-control col-xs-8" } })
+                <span class="col-xs-2 import-dimension">@Html.Raw(Constants.DIMENSION_DENSITY)</span>
+                @Html.ValidationMessageFor(model => model.ImportInfo.Density, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.VCF)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ImportInfo.VCF, new { htmlAttributes = new { @class = "input-number form-control col-xs-8" } })
+                @Html.ValidationMessageFor(model => model.ImportInfo.VCF, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.InputWastageRate)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ImportInfo.InputWastageRate, new { htmlAttributes = new { @class = "input-number form-control col-xs-8", @id = "InputWastageRate" } })
+                @Html.ValidationMessageFor(model => model.ImportInfo.InputWastageRate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.VendorName)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ImportInfo.VendorName, new { htmlAttributes = new { @class = "form-control col-xs-8" } })
+                @Html.ValidationMessageFor(model => model.ImportInfo.VendorName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.CertificateNumber)
+            </label>
+            <div class="col-xs-8">
+                @Html.EditorFor(model => model.ImportInfo.CertificateNumber, new { htmlAttributes = new { @class = "input-number form-control col-xs-8" } })
+                @Html.ValidationMessageFor(model => model.ImportInfo.CertificateNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-4 col-sm-3">
+                @Html.LabelFor(Model => Model.ImportInfo.CertificateTime)
+            </label>
+            <div class="col-xs-3">
+                <div class='input-group date' id='jCertificateTime'>
+                    @Html.EditorFor(model => model.CertificateTime, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-offset-4 col-sm-offset-3 col-xs-8">
+                <input type="submit" value="Tạo mới" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+        @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+            <link href="~/Content/bootstrap-select.css" rel="stylesheet" />
+            <script src="~/Scripts/jquery-2.2.4.js"></script>
+            <script src="~/Scripts/bootstrap.min.js"></script>
+            <script src="~/Scripts/bootstrap-select.js"></script>*@
+    </div>
+}
+
+@section style{
+    @Styles.Render("~/Content/bootstrap-select")
+
+    <style>
+        .form-control {
+            display: inline;
+        }
+    </style>
+}
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-select")
+    @Scripts.Render("~/bundles/input-validate")
+
+
+    <script>
+        var listTank =@Html.Raw(Json.Encode(@Model.TankTemps));
+
+        $(document).ready(function () {
+
+            AddCommas();
+
+            $('.btn-success').click(function (e) {
+
+            var stCheck = ""
+
+             stCheck = document.getElementById("tank-multiple").value;
+            if (stCheck=="")
+            {
+                alert("Danh sách bể : đang bị trống, bạn hãy nhập bổ sung");
+                return false;
+            }
+            
+                stCheck = document.getElementById("armNo-multiple").value;
+            //if (stCheck=="")
+            //{
+            //    alert("Danh sách họng : đang bị trống, bạn hãy nhập bổ sung");
+            //    return false;
+            //}
+
+                $('.input-number').each(function (i, obj) {
+                    $(this).val($(this).val().replace(/,/g, ''));
+                });
+
+                if ($('form').valid()) {
+                    $('form').submit();
+                } else {
+                    AddCommas();
+                };
+            });
+        });
+
+        function AddCommas() {
+            $('.input-number').each(function (i, obj) {
+                setInputNumber(obj);
+            });
+        }
+
+
+        Init();
+		function Init() {
+			$('#jCertificateTime').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+            var productid =$("#ProductId").val();
+            if (productid!="" && productid!=null ){
+                var options = [], _options;
+                for (var i = 0; i < listTank.length; i++) {
+
+                    if (listTank[i].ProductId==productid)
+                    {
+                        var option = "<option value='" + listTank[i].TankId + "'>" + listTank[i].TankName + "</option>";
+                        options.push(option);
+                    }
+                }
+
+                _options = options.join('');
+                $('#tank-multiple')[0].innerHTML = _options;
+                $('.tank-list').selectpicker('refresh');
+
+            }
+
+            if (productid!="" && productid!=null ){
+                $.post("@Url.Action("GetConfigArm", "Import")", { productId: productid}, function (data) {
+                    if (data!=""){
+                        var options2 = [], _options2;
+                        for (var i = 0; i < data.length; i++) {
+
+                            var option = "<option value='" + data[i].ArmNo + "'>" + data[i].ArmName + "</option>";
+                            options2.push(option);
+                        }
+                        _options2 = options2.join('');
+                        $('#armNo-multiple')[0].innerHTML = _options2;
+                    }
+
+                    $('.armNo-list').selectpicker('refresh');
+
+                });
+            }
+
+            if (productid!="" && productid!=null ){
+
+                $.post("@Url.Action("GetProductById", "Import")", { productId: productid}, function (data) {
+                    if (data!=""){
+                        $("#InputWastageRate").val(data.InputWastageRate);
+                    }
+                });
+			}
+        }
+    </script>
+}

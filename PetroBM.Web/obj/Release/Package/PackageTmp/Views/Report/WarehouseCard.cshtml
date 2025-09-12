@@ -1,0 +1,511 @@
+﻿@model PetroBM.Web.Models.ReportModel
+@using PetroBM.Common.Util;
+
+@{
+	ViewBag.Title = "Thẻ kho theo tháng";
+}
+
+@using (Html.BeginForm())
+{
+	<div class='col-sm-4 col-xs-6'>
+		<div class="row">
+			<label class="control-label col-xs-4">Kho</label>
+			<div class="form-group col-xs-8">
+				@if (Model.ListWareHouse.Any())
+				{
+					@Html.DropDownListFor(model => model.WareHouseCode,
+					new SelectList(Model.ListWareHouse, "WareHouseCode", "WareHouseName", "") as SelectList, "Chọn... ",
+					new { @class = "form-control", @style = "width:217px;" })
+				}
+				else
+				{
+					@Html.DropDownListFor(model => model.WareHouseCode,
+					new SelectList(new List<string>()), "Chọn... ",
+					new { @class = "form-control", @style = "width:217px;" })
+				}
+			</div>
+		</div>
+		<div class="row">
+			<label class="control-label col-xs-4">Thời gian</label>
+			<div class="form-group col-xs-8">
+				<div class='input-group date' id='datetimepicker1'>
+					@Html.EditorFor(model => model.Month, new { htmlAttributes = new { @class = "form-control" } })
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class='col-sm-4 col-xs-6'>
+		<div class="row">
+			<label class="control-label col-xs-4">Tên mặt hàng</label>
+			<div class="form-group col-xs-8" id="productlist">
+				@if (Model.ListProduct.Any())
+				{
+					@Html.DropDownListFor(model => model.ProductId,
+					new SelectList(Model.ListProduct, "ProductId", "ProductName", "") as SelectList, "Chọn... ",
+					new { @class = "form-control", @style = "width:205px;" })
+				}
+				else
+				{
+					@Html.DropDownListFor(model => model.ProductId,
+					new SelectList(new List<string>()), "Chọn... ",
+					new { @class = "form-control", @style = "width:205px;" })
+				}
+			</div>
+		</div>
+	</div>
+
+	<div class='col-sm-4 col-xs-12' style="margin-bottom:10px;">
+		<input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+		<input type="submit" fileType="PDF" formtarget="_blank" value="Xuất PDF" class="btn btn-primary" />
+		<input type="submit" fileType="EXCEL" value="Xuất EXCEL" class="btn btn-primary" />
+		<input type="submit" fileType="PDF" formtarget="_blank" value="In" class="print btn btn-primary" />
+	</div>
+
+	@Html.HiddenFor(model => model.FileType)
+}
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th rowspan="2">Ngày N/X</th>
+            <th rowspan="2">Số phiếu xuất kho</th>
+			<th colspan="2">
+				Chứng từ
+			</th>
+			<th rowspan="2">
+				Diễn giải nội dung
+			</th>
+			<th rowspan="2">
+				Phương tiện
+			</th>
+			<th rowspan="2">
+				Nhiệt độ
+			</th>
+			<th rowspan="2">
+				Tỉ trọng
+			</th>
+			<th rowspan="2">
+				VCF(WCF)
+			</th>
+			<th colspan="2">
+				Nhập
+			</th>
+			<th colspan="2">
+				Xuất
+			</th>
+			<th colspan="2">
+				Hao hụt ĐM
+			</th>
+			<th>Tồn (Vtt)</th>
+			<th>Tồn (V15)</th>
+		</tr>
+		<tr>
+			<th>Số</th>
+			<th>
+				Ngày
+			</th>
+			<th>
+				Vtt
+			</th>
+			<th>
+				V15
+			</th>
+			<th>
+				Vtt
+			</th>
+			<th>
+				V15
+			</th>
+			<th>
+				Nhập
+			</th>
+			<th>
+				Xuất
+			</th>
+			<th>
+				TT
+			</th>
+			<th>
+				ĐM
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Tồn kho đầu kỳ</td>
+            <td></td>
+            <td>@Html.Raw(Constants.DIMENSION_TEMPERATURE)</td>
+            <td>@Constants.DIMENSION_DENSITY</td>
+            <td></td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            <td>@Constants.DIMENSION_L</td>
+            @if (Model.ListTankLog.Rows.Count != 0)
+            {
+                foreach (System.Data.DataRow row in Model.ListTankLog.Rows)
+                {
+                    <td>@((row["V"] == @DBNull.Value) ? "0" : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["V"]), 0))</td>
+                    <td>@((row["V15"] == @DBNull.Value) ? "0" : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["V15"]), 0))</td>
+
+                }
+            }
+            else
+            {
+                <td class="text-right">0</td>
+                <td class="text-right">0</td>
+            }
+        </tr>
+        @{double totalExport = 0; double totalImport = 0; }
+		@foreach (System.Data.DataRow row in Model.WarehouseCard.DT.Rows)
+		{
+        <tr>
+            @*<td>@((row["TimeOrder"] == @DBNull.Value) ? string.Empty : @Convert.ToDateTime(@row["TimeOrder"]).ToString(Constants.DATE_FORMAT_NEW))</td>*@
+            <td>@((row["TimeOrder"] == @DBNull.Value) ? string.Empty : @Convert.ToDateTime(@row["TimeOrder"]).ToString(Constants.DATE_FORMAT_NEW))</td>
+            <td>@((row["ExportNo"] == @DBNull.Value) ? string.Empty : @row["ExportNo"])</td>
+            <td>@((row["CertificateNumber"] == @DBNull.Value) ? string.Empty : @row["CertificateNumber"])</td>
+            <td>@((row["CertificateTime"] == @DBNull.Value) ? string.Empty : @Convert.ToDateTime(@row["CertificateTime"]).ToString(Constants.DATE_FORMAT_NEW))</td>
+            <td>@((row["VendorName"] == @DBNull.Value) ? string.Empty : row["VendorName"])</td>
+            <td>@((row["VehicleNumber"] == @DBNull.Value) ? string.Empty : row["VehicleNumber"])</td>
+            <td>@((row["AvgTemperature"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToSingle(@row["AvgTemperature"]), 1))</td>
+            <td>@((row["AvgDensity"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToSingle(@row["AvgDensity"]), 4))</td>
+            <td>@((row["VCF"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToSingle(@row["VCF"]), 4))</td>
+            <td class="text-right">@((row["InVtt"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["InVtt"]), 0))</td>
+            <td class="text-right">@((row["InV15"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["InV15"]), 0))</td>
+            <td class="text-right">@((row["OutVtt"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["OutVtt"]), 0))</td>
+            <td class="text-right">@((row["OutV15"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["OutV15"]), 0))</td>
+            @if (row["InVtt"] != @DBNull.Value)
+            {
+                <td class="text-right">@((row["Deviation"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["Deviation"]), 0))</td>
+                <td></td>
+                @*@totalImport += (row["Deviation"] == @DBNull.Value) ? 0 :(@Convert.ToDouble(@row["Deviation"]));*@
+                if (@row["Deviation"] != (DBNull.Value))
+                {
+                    totalImport += Convert.ToDouble(@row["Deviation"]);
+                }
+            }
+            else
+            {
+                <td></td>
+                <td class="text-right">@((row["Deviation"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["Deviation"]), 0))</td>
+
+                if (@row["Deviation"] != (DBNull.Value))
+                {
+                    totalExport += Convert.ToDouble(@row["Deviation"]);
+                }
+
+            }
+
+
+            <td class="text-right">@((row["TotalVtt"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["TotalVtt"]), 0))</td>
+            <td class="text-right">@((row["TotalV15"] == @DBNull.Value) ? string.Empty : @NumberUtil.FormatNumber(@Convert.ToDouble(@row["TotalV15"]), 0))</td>
+        </tr>
+		}
+		@if (Model.WarehouseCard.DT.Rows.Count > 0)
+		{
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@NumberUtil.FormatNumber(@Model.WarehouseCard.LastDensity, 4)</td>
+            <td>@NumberUtil.FormatNumber(@Model.WarehouseCard.LastVCF, 4)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="text-right">@NumberUtil.FormatNumber(@Model.WarehouseCard.LastOutV15, 0)</td>
+            @if (@Model.WarehouseCard.LastOutV15 != 0)
+            {
+                <td></td>
+                <td class="text-right">@NumberUtil.FormatNumber(@Model.WarehouseCard.LastDeviation, 0)</td>
+
+            }
+            else
+            {
+                <td class="text-right">@NumberUtil.FormatNumber(@Model.WarehouseCard.LastDeviation, 0)</td>
+                <td></td>
+
+            }
+
+            <td>@NumberUtil.FormatNumber(@Model.WarehouseCard.LastTotalVtt, 0)</td>
+            <td>@NumberUtil.FormatNumber(@Model.WarehouseCard.LastTotalV15, 0)</td>
+        </tr>
+        <tr style="background: #8FB5D9">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><i>Tồn bình quân trong kì</i></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@NumberUtil.FormatNumber(@Model.WarehouseCard.AvgTotalVtt, 0)</td>
+            <td>@NumberUtil.FormatNumber(@Model.WarehouseCard.AvgTotalV15, 0)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><i>Hao hụt vận tải (theo ĐM)</i></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><i>Hao hụt xuất(theo ĐM)</i></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            @if (@Model.WarehouseCard.LastOutV15 == 0)
+            {
+                <td>@(Model.WarehouseCard.DT.Compute("Sum(Deviation)", "") == @DBNull.Value ? String.Empty : NumberUtil.FormatNumber(double.Parse(Model.WarehouseCard.DT.Compute("Sum(Deviation)", "").ToString()), 0))</td>
+                <td></td>
+            }
+            else
+            {
+                <td></td>
+                <td>@(Model.WarehouseCard.DT.Compute("Sum(Deviation)", "") == @DBNull.Value ? String.Empty : NumberUtil.FormatNumber(double.Parse(Model.WarehouseCard.DT.Compute("Sum(Deviation)", "").ToString()), 0))</td>
+            }
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><i>Hao hụt tồn chứa(Theo ĐM)</i></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@NumberUtil.FormatNumber(Model.WarehouseCard.StoreWastageRate, 0)</td>
+            <td>@NumberUtil.FormatNumber(Model.WarehouseCard.StoreWastageRateVtt, 0)</td>
+            <td>@NumberUtil.FormatNumber(Model.WarehouseCard.StoreWastageRateV15, 0)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><i>Tồn kho cuối kỳ</i></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                @NumberUtil.FormatNumber(Model.WarehouseCard.LastTotalVtt
+                          - (Model.WarehouseCard.DT.Compute("Sum(Deviation)", "") == @DBNull.Value ? 0 : double.Parse(Model.WarehouseCard.DT.Compute("Sum(Deviation)", "").ToString())) - Model.WarehouseCard.StoreWastageRate, 0)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><i>Kiểm kê</i></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><i>Nhập thừa kiểm kê</i></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Tổng</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@(Model.WarehouseCard.DT.Compute("Sum(InVtt)", "") == @DBNull.Value ? String.Empty : NumberUtil.FormatNumber(double.Parse(Model.WarehouseCard.DT.Compute("Sum(InVtt)", "").ToString()), 0))</td>
+            <td>@(Model.WarehouseCard.DT.Compute("Sum(InV15)", "") == @DBNull.Value ? String.Empty : NumberUtil.FormatNumber(double.Parse(Model.WarehouseCard.DT.Compute("Sum(InV15)", "").ToString()), 0))</td>
+            <td>@(Model.WarehouseCard.DT.Compute("Sum(OutVtt)", "") == @DBNull.Value ? String.Empty : NumberUtil.FormatNumber(double.Parse(Model.WarehouseCard.DT.Compute("Sum(OutVtt)", "").ToString()), 0))</td>
+            <td>@(Model.WarehouseCard.DT.Compute("Sum(OutV15)", "") == @DBNull.Value ? String.Empty : NumberUtil.FormatNumber(double.Parse(Model.WarehouseCard.DT.Compute("Sum(OutV15)", "").ToString()), 0))</td>
+            <td>@totalImport</td>
+            @*<td>@(Model.WarehouseCard.DT.Compute("Sum(Deviation)", "") == @DBNull.Value ? String.Empty : NumberUtil.FormatNumber(double.Parse(Model.WarehouseCard.DT.Compute("Sum(Deviation)", "").ToString()), 0))</td>*@
+            <td>@totalExport</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Trong đó</td>
+            <td>Nhập, xuất Xe</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@(Model.WarehouseCard.DT.Compute("Sum(OutVtt)", "") == @DBNull.Value ? String.Empty : NumberUtil.FormatNumber(double.Parse(Model.WarehouseCard.DT.Compute("Sum(OutVtt)", "").ToString()), 0))</td>
+            <td>@(Model.WarehouseCard.DT.Compute("Sum(OutV15)", "") == @DBNull.Value ? String.Empty : NumberUtil.FormatNumber(double.Parse(Model.WarehouseCard.DT.Compute("Sum(OutV15)", "").ToString()), 0))</td>
+            <td>-</td>
+            <td>@(Model.WarehouseCard.DT.Compute("Sum(Deviation)", "") == @DBNull.Value ? String.Empty : NumberUtil.FormatNumber(double.Parse(Model.WarehouseCard.DT.Compute("Sum(Deviation)", "").ToString()), 0))</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Nhập kho thủ tục</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+		}
+	</tbody>
+</table>
+
+<iframe id="print-frame" src="" style="display:none"></iframe>
+
+@section style{
+	<style>
+		.table > thead > tr > th {
+			text-align: center;
+			border: 1px solid #ebebeb;
+		}
+	</style>
+}
+
+@section scripts{
+	<script>
+		$(function () {
+			$('#datetimepicker1').datetimepicker({
+				format: 'MM/YYYY',
+				viewMode: 'months'
+			});
+
+			$("#datetimepicker1").on("dp.show", function (e) {
+				$(e.target).data("DateTimePicker").viewMode("months");
+			});
+
+			$('.btn').on('click', function (e) {
+				var fileType = $(this).attr('fileType');
+				$('#FileType').val(fileType);
+			});
+
+		   $('.print').on('click', function (e) {
+				var fileType = $(this).attr('fileType');
+				$('#FileType').val(fileType);
+
+				var http = new XMLHttpRequest();
+				var url = '@Url.Action("WarehouseCard", "Report")';
+				var params = $('form').serialize();
+				http.responseType = "blob";
+				http.open("POST", url, true);
+
+				http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+				http.onreadystatechange = function () {
+					if (http.readyState == 4 && http.status == 200) {
+						var response = http.response;
+
+						var blob = new Blob([response], { type: 'application/pdf' });
+						var fileURL = URL.createObjectURL(blob);
+						$('#print-frame').attr('src', fileURL);
+						$('#print-frame').on('load', function () {
+							$('#print-frame').get(0).contentWindow.document.execCommand("print", false, null);
+						});
+					}
+				}
+
+				http.send(params);
+
+				return false;
+            });
+		})
+	</script>
+}

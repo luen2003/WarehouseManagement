@@ -1,0 +1,206 @@
+﻿@model PetroBM.Web.Models.LiveDataArmModel
+@using PetroBM.Common.Util
+@using PetroBM.Domain.Entities;
+@using PetroBM.Web.Models;
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Kho: " + @Session[Constants.Session_WareHouseName] + " > Họng > Dạng bảng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p>
+    <b>Họng </b>
+    <select id="ArmNo" onchange="ReDirectUrl()">
+        <option value="" selected="selected">Tất cả</option>
+        @for (int i = 0; i < Model.ListMConfigArm.Count(); i++)
+            {
+            <option value="@Model.ListMConfigArm[i].ArmNo">Họng @Model.ListMConfigArm[i].ArmNo</option>
+        }
+    </select>
+</p><br />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LiveDataArm.ArmNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LiveDataArm.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LiveDataArm.CardSerial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LiveDataArm.VehicleNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LiveDataArm.CompartmentOrder)
+            </th>
+
+            @foreach (var id in Model.ListSelectedField)
+            {
+                switch (int.Parse(id))
+                {
+                    case (int)ConfigurationModel.ConfigArmFieldNames.V_Preset:
+                        <th>
+                            @Html.DisplayNameFor(model => model.LiveDataArm.V_Preset)
+                        </th>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.V_Actual:
+                        <th>
+                            @Html.DisplayNameFor(model => model.LiveDataArm.V_Actual)
+                        </th>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.Flowrate:
+                        <th>
+                            @Html.DisplayNameFor(model => model.LiveDataArm.Flowrate)
+                        </th>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.CurrentTemperature:
+                        <th>
+                            @Html.DisplayNameFor(model => model.LiveDataArm.CurrentTemperature)
+                        </th>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.AvgTemperature:
+                        <th>
+                            @Html.DisplayNameFor(model => model.LiveDataArm.AvgTemperature)
+                        </th>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.V_Actual_Base:
+                        <th>
+                            @Html.DisplayNameFor(model => model.LiveDataArm.V_Actual_Base)
+                        </th>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.V_Actual_E:
+                        <th>
+                            @Html.DisplayNameFor(model => model.LiveDataArm.V_Actual_E)
+                        </th>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.Status:
+                        <th>
+                            @Html.DisplayNameFor(model => model.LiveDataArm.Status)
+                        </th>
+                        break;
+                }
+
+            }
+        </tr>
+    </thead>
+
+    @foreach (var item in Model.ListLiveDataArm)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArmNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CardSerial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompartmentOrder)
+            </td>
+            @foreach (var id in Model.ListSelectedField)
+            {
+                switch (int.Parse(id))
+                {
+                    case (int)ConfigurationModel.ConfigArmFieldNames.V_Preset:
+                        <td>
+                            @Html.DisplayFor(modelItem => item.V_Preset)
+                        </td>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.V_Actual:
+                        <td>
+                            @Html.DisplayFor(modelItem => item.V_Actual)
+                        </td>
+                        break;
+
+                    case (int)ConfigurationModel.ConfigArmFieldNames.Flowrate:
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Flowrate)
+                        </td>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.CurrentTemperature:
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CurrentTemperature)
+                        </td>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.AvgTemperature:
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AvgTemperature)
+                        </td>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.V_Actual_Base:
+                        <td>
+                            @Html.DisplayFor(modelItem => item.V_Actual_Base)
+                        </td>
+                        break;
+                    case (int)ConfigurationModel.ConfigArmFieldNames.V_Actual_E:
+                        <td>
+                            @Html.DisplayFor(modelItem => item.V_Actual_E)
+                        </td>
+                        break;
+
+                    case (int)ConfigurationModel.ConfigArmFieldNames.Status:
+                        switch (item.Status)
+                        {
+                            case 0:
+                                <td>Chờ đăng ký lấy hàng </td>
+                                break;
+                            case 1:
+                                <td>Đã quẹt thẻ </td>
+                                break;
+                            case 2:
+                                <td>Nhập ngăn </td>
+                                break;
+                            case 3:
+                                <td>Chuẩn bị xuất </td>
+                                break;
+                            case 4:
+                                <td> Đang xuất </td>
+                                break;
+                            case 5:
+                                <td> Kết thúc</td>
+                                break;
+                            case 6:
+                                <td>Dừng ép </td>
+                                break;
+                            case 7:
+                                <td> Nhập Serial </td>
+                                break;
+                            case 8:
+                                <td> Niêm chì</td>
+                                break;
+                            case 9:
+                                <td>Hóa đơn </td>
+                                break;
+                        }
+                        break;
+                }
+            }
+        </tr>
+    }
+
+</table>
+<script type="text/javascript">
+    var armNo =@Html.Raw(Json.Encode(@Model.ArmNo));
+    console.log(armNo);
+    InitPage();
+    function InitPage(){
+        if (armNo!=null){
+            $("#ArmNo").val(armNo);
+        }
+    }
+
+    function ReDirectUrl() {
+        window.location.href = "/LiveDataArm/IndexSearch?ArmNo=" +  $("#ArmNo").val();
+
+    }
+
+
+</script>

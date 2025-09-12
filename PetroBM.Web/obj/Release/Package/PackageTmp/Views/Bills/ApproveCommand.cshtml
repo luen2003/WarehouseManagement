@@ -1,0 +1,1133 @@
+﻿@model PetroBM.Web.Models.CommandModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util;
+@using Newtonsoft.Json
+@using System.Data;
+@{
+    ViewBag.Title = "Kho " + Session[Constants.Session_WareHouseName] + " > Phiếu xuất";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var listCommandDetail = JsonConvert.SerializeObject(Model.ListCommandDetail);
+
+    var ListIECommand = JsonConvert.SerializeObject(Model.ListIECommand);
+    var ListVehicleFillter = JsonConvert.SerializeObject(Model.LstVehicle);
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@using (Html.BeginForm("ApproveCommand", "Bills", FormMethod.Post, new { @id = "CommandbyVehicle" }))
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+    <div class="container">
+        <div class='col-sm-4 col-xs-6'>
+            <div class="row">
+                <label class="control-label col-xs-4">Card Serial</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.CardSerial, new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus" } })
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Phương tiện</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.VehicleNumber, new { htmlAttributes = new { @class = "form-control", @id = "IdVehicle", @name = "ReportModel.Vehicle", @style = "width:217px" } })
+                </div>
+
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Số chứng từ</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.CertificateNumber, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            @*<div class="row">
+                    <label class="control-label col-xs-4">Card Data</label>
+                    <div class="form-group col-xs-8">
+                        @Html.EditorFor(model => model.CardData, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>*@
+        </div>
+
+        <div class='col-sm-5 col-xs-6'>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đăng ký</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Trạng thái</label>
+                <div class="form-group col-xs-8" id="statuslist">
+                    @Html.DropDownListFor(model => model.Flag,
+           new SelectList(Model.LstStatus, "flag", "name", "") as SelectList,
+           new { @class = "form-control", @style = "width:208px;" })
+                </div>
+            </div>
+
+        </div>
+
+        <div class='col-sm-3 col-xs-6'>
+            <div class="row">
+                <div class="form-group col-xs-10">
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row" style="padding-left:15px;padding-top:30px;">
+                <button type="submit" class='btn btn-success'>Tìm kiếm</button>
+            </div>
+        </div>
+        <table class="table" id="tablecommand">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.TimeOrder)
+                    </th>
+                    <th>
+                        Khách hàng
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.VehicleNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.DriverName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.CertificateNumber)
+                    </th>
+                    <th>
+                        Họng
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.CardData)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.CardSerial)
+                    </th>
+                    <th>
+                        Tổng lượng đặt
+                    </th>
+                    <th>
+                        Tổng lượng xuất
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Command.Status)
+                    </th>
+                    <th>
+                        Chức năng
+                    </th>
+                </tr>
+            </thead>
+
+            @{ var i = 0; var hong = "";
+                foreach (var item in Model.ListIECommand)
+                {
+                    i = i + 1;
+
+                    <tr>
+                        <td>
+                            @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
+                        </td>
+                        <td>
+                            @foreach (var customer in Model.ListCustomer)
+                            {
+                                if (item.CustomerCode == customer.CustomerCode)
+                                {
+                                    @customer.CustomerName
+                                }
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VehicleNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DriverName)
+                        </td>
+                        <td>
+                            <span><a href="../Command/CommandView/@item.CommandID">@item.CertificateNumber</a></span><br />
+                        </td>
+                        @{ var soluongXuat = 0;
+                            foreach (var item2 in Model.ListCommandDetail)
+                            {
+                                if (item.CommandID == item2.CommandID && !string.IsNullOrEmpty(item2.V_Actual.ToString()))
+                                {
+                                    soluongXuat += int.Parse(item2.V_Actual.ToString());
+                                    hong = item2.ArmNo.ToString();
+                                }
+                            }
+                        }
+                        <td>
+                            @hong
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CardData)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CardSerial)
+                        </td>
+                        @{ var soluong = 0;
+                            foreach (var item2 in Model.ListCommandDetail)
+                            {
+                                if (item.CommandID == item2.CommandID)
+                                {
+                                    soluong += int.Parse(item2.V_Preset.ToString());
+                                }
+                            }
+                        }
+                        <td style="text-align:center">
+                            @NumberUtil.FormatNumber(Convert.ToDouble(soluong), 0)
+                        </td>
+                        <td style="text-align:center">
+                            @NumberUtil.FormatNumber(Convert.ToDouble(soluongXuat), 0)
+                        </td>
+                        @if (item.Status == Constants.Command_Flag_Register)
+                        {
+                            <td class="text-center">Đăng ký lệnh</td>
+                        }
+                        else if (item.Status == Constants.Command_Flag_Approved)
+                        {
+                            <td class="text-center">Đã duyệt</td>
+                        }
+                        else if (item.Status == Constants.Command_Flag_PrepareExport)
+                        {
+                            <td class="text-center">Chuẩn bị xuất</td>
+                        }
+                        else if (item.Status == Constants.Command_Flag_Exported)
+                        {
+                            <td class="text-center">Xuất xong</td>
+                        }
+                        else if (item.Status == Constants.Command_Flag_Invoice)
+                        {
+                            <td class="text-center">Đã in</td>
+                        }
+                        else if (item.Status == Constants.Command_Flag_InputCancel)
+                        {
+                            <td class="text-center">Huỷ lệnh</td>
+                        }
+                        else if (item.Status == Constants.Command_Flag_InputHand)
+                        {
+                            <td class="text-center">Nhập tay</td>
+                        }
+                        else if (item.Status == Constants.Command_Flag_StopPressing)
+                        {
+                            <td class="text-center">Dừng ép</td>
+                        }
+                        else if (item.Status == Constants.Command_Flag_ChangeDate)
+                        {
+                            <td class="text-center">Chuyển ngày</td>
+                        }
+                        else if (item.Status == Constants.Command_Flag_Exporting)
+                        {
+                            <td class="text-center">Đang xuất</td>
+                        }
+                        else if (item.Status == Constants.Command_Flag_Complete)
+                        {
+                            <td class="text-center">Hoàn thành</td>
+                        }
+                        else
+                        {
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.Status)</td>
+                        }
+
+                        <td class="text-center">
+                            <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.CommandID);" src='/Content/images/print.png' />
+                        </td>
+                    </tr>
+
+                }
+            }
+        </table>
+        <div class="text-center">
+            @Html.PagedListPager(Model.ListIECommand, page => Url.Action("ApproveCommand", new
+       {
+           certificateNumber = Model.CertificateNumber,
+           cardSerial = Model.CardSerial,
+           cardData = Model.CardData,
+           vehicleNumber = Model.VehicleNumber,
+           startDate = Model.StartDate,
+           endDate = Model.EndDate,
+           flag = Model.Flag,
+                page
+
+            }))
+        </div>
+        @*<button id="Submit" class='btn btn-success' style="float:right">Lưu</button>
+            <input type="button" value="In phiếu xuất kho" class="btn btn-primary" onclick="PrintInventoryOutput()" />*@
+    </div>
+}
+<div id="commandInphieuxuatkho" style="visibility:hidden">
+
+</div>
+@section scripts{ 
+    <script src="~/Scripts/Autocomplete/jquery.easy-autocomplete.js"></script>
+    <link href="~/Scripts/Autocomplete/easy-autocomplete.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        var objInvoice; //Hiển thị lưới danh mục hóa đơn //Hóa đơn gốc
+        var objListInvoiceDetail; //Khởi tạo toàn bộ danh mục giá chung
+        var objListWarehouse = @Html.Raw(Json.Encode(@Model.ListWareHouse)); //danh sách kho hàng
+        var objListCommand = @Html.Raw(ListIECommand);
+        var objListCommandDetail = @Html.Raw(listCommandDetail); //Chi tiết lệnh
+        var objListProduct = @Html.Raw(Json.Encode(@Model.ListProductTemp)); //danh sách hàng hóa
+        var objListVehicle = @Html.Raw(Json.Encode(@Model.ListVehicle)); //danh sách phương tiện
+        var objListCustomer = @Html.Raw(Json.Encode(@Model.ListCustomer)); //danh sách khách hàng
+        var objMaster; //thông tin về lệnh
+        var objListDriver ; //thông tin về lái xe
+
+        var titleWareHouseName = '@Session[Constants.Session_WareHouseName]';
+        var titleCompanyName = '@Session[Constants.Session_TitleReportCompanyName]';
+        var titleCompanyAddress = '@Session[Constants.Session_TitleCompanyAddress]';
+        var titleCompanyPhone = '@Session[Constants.Session_TitleCompanyPhone]';
+        var titleCompanyFax  = '@Session[Constants.Session_TitleCompanyFax] ';
+        var titleIdentificationNumber  = '@Session[Constants.Session_TitleIdentificationNumber] ';
+        var selectedIdTable = new Array();
+
+        setOption();
+        function setOption() {
+
+            optionVehicle = {
+                data: @Html.Raw(ListVehicleFillter),
+                getValue: "name",
+                template: {
+                    type: "description",
+                    fields: {
+                        description: "type"
+                    }
+                },
+                list: {
+                    match: {
+                        enabled: true
+                    }
+                }
+            };
+            $("#IdVehicle").easyAutocomplete(optionVehicle);
+        }
+
+        $('.idcommand').each(function () {
+            selectedIdTable.push($(this).attr("id"));
+
+        });
+
+        var selectedIdVehicle = new Array();
+        $('.vehiclecommand').each(function () {
+            selectedIdVehicle.push($(this).attr("id"));
+
+        });
+
+        for (var i = 0; i < selectedIdVehicle.length; i++) {
+            if (selectedIdTable[0] != selectedIdTable[i + 1] & selectedIdVehicle[0] == selectedIdVehicle[i + 1]) {
+                var b = Math.min.apply(Math, selectedIdTable);
+            }
+
+        }
+
+        function formatNumber(number, decimalPlace) {
+            if (number === null || number === undefined) {
+                return '';
+            }
+
+            let formatOptions = {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: decimalPlace
+            };
+
+            return number.toLocaleString('en-US', formatOptions);
+        }
+
+        function formatNumberV2(number, decimalPlace) {
+            if (number === null || number === undefined) {
+                return '';
+            }
+
+            let format = '#,##0';
+            if (decimalPlace > 0) {
+                format += '.';
+                for (let i = 0; i < decimalPlace; i++) {
+                    format += '#';
+                }
+            } else {
+                return number.toLocaleString('en-US').replace(/,/g, '.');
+            }
+
+            return number.toLocaleString('en-US', {
+                minimumFractionDigits: decimalPlace,
+                maximumFractionDigits: decimalPlace
+            });
+        }
+
+        function PrintInventoryOutput(CommandID) {
+            var stt = '';
+            $.ajax({
+                url: '/Bills/UpdateFlagCommandDetail/',
+                type: 'POST',
+                data: {
+                    "invoiceDetailId": CommandID
+                },
+                dataType: 'bool',
+                success: function (result) {
+                    if (result = true) {
+                        update = 1;
+                        console.log(update);
+                    }
+                }
+            });
+            var total_Acctual = 0;
+            var total_preset = 0;
+            var total_remain = 0;
+            var total_AvgTem = 0;
+            var count = 1;
+            var volume = listVolume.split("");
+
+            stt = stt.substring(stt.length - 3, stt.length);
+            //var outtime =document.getElementById('OutTime').value;
+
+            var content = "";
+            content += "<table style='width: 100%;border:1px' cellspacing='0'>";
+            content += "    <tbody>";
+            content += "        <tr>";
+            content += "            <td width=38% style='text-align: center;' ><p><strong>CÔNG TY CỔ PHẦN VẬT TƯ - TKV</strong></p> ";
+            content += "            <td width=32% >";
+            content += "            <td width=10% >";
+            content += "            <td width=20% rowspan=2 style='text-align: center;' ><p><strong>Số CT: [=B]</strong></p><p><strong>Ng&agrave;y xuất [=Date]</strong></p>";
+            content += "        <tr><td style='text-align: center;'><img style ='max-width: 100px; height:60px;' src='/Content/images/logoTKV.png'/>";
+            content += "            <td><p><strong><center><h2>PHIẾU XUẤT HOÀN CHỈNH</h2></center></strong></p> ";
+            content += "            <td>";
+            content += "    </tbody>";
+            content += "</table>";
+
+            content += "<div>";
+            content += "<table style='width: 100%;border:1px;line-height: 30px;' cellspacing='0'>";
+            content += "    <tbody>";
+            content += "        <tr>";
+            for (var j = 0; j < objListCommand.length; j++) {
+                if (objListCommand[j].CommandID == CommandID) {
+
+                    content = content.replaceAll("[=B]", objListCommand[j].CertificateNumber);
+                    content = content.replaceAll("[=Date]", formatTimestamp2(objListCommand[j].TimeOrder));
+
+                    // Kho xuất
+                    content += "            <td width=33% ><p><strong>Kho xuất</strong>: Kho dầu Vũng Hoa</p>";
+
+                    // Phương tiện
+                    content += "            <td width=34% ><p><strong>Phương tiện</strong>: ";
+                    for (var k = 0; k < objListVehicle.length; k++)
+                    {
+                        if (objListVehicle[k].VehicleNumber == objListCommand[j].VehicleNumber)
+                            content += objListVehicle[k].VehicleNumber + "</p>";
+                    }
+
+                    content += "            <td width=33%>";
+                    content += "        <tr>";
+                    content += "            <td><p><strong>L&aacute;i xe</strong>: " + objListCommand[j].DriverName +"</p>";  
+                    // Khách hàng
+                    content += "            <td colspan=2 ><p><strong>Điểm cấp/Khách hàng</strong>: ";
+                    for (var k = 0; k < objListCustomer.length; k++) {
+                        if (objListCustomer[k].CustomerCode == objListCommand[j].CustomerCode)
+                            content += objListCustomer[k].CustomerName + "</p>";
+                    }
+                    content += "    </tbody>";
+                    content += "</table>";
+
+                    content += "<br>";
+                    content += "<table class='table pxk' style='width:100% ' cellpadding='1' cellspacing='0' border='1'>";
+                    content += "<thead>";
+                    content += "<tr>";
+                    content += "<th>STT</th>";
+                    content += "<th>Họng xuất</th>";
+                    content += "<th>Mã ngăn</th>";
+                    content += "<th>Loại hàng</th>";
+                    content += "<th>Lượng đặt (lít)</th>";
+                    content += "<th>Lượng xuất (lít)</th>";
+                    content += "<th>Chênh lệch (lít)</th>";
+                    content += "<th>Nhiệt độ (℃)</th>";
+                    content += "<th>Thời gian bắt đầu</th>";
+                    content += "<th>Thời gian kết thúc</th>";
+                    content += "</tr>";
+                    content += "</thead>";
+                    content += "<tbody>";
+
+                    var SoNgan = 0;
+                    for (var j = 0; j < objListCommandDetail.length; j++) {
+                        if (objListCommandDetail[j].CommandID == CommandID) {
+                            content += "<tr>";
+                            content += "<td align='center'>" + count + "</td>";
+                            content += "<td align='center'>" + objListCommandDetail[j].ArmNo + "</td>";
+                            content += "<td align='center'>" + objListCommandDetail[j].CompartmentOrder + "</td>";
+                            for (var k = 0; k < objListProduct.length; k++) {
+                                if (objListProduct[k].ProductCode == objListCommandDetail[j].ProductCode) {
+                                    {
+                                        content += "<td>" + objListProduct[k].ProductName + "</td>";
+                                    }
+                                }
+                            }
+                            content += "<td align='center'>" + formatNumberV2(objListCommandDetail[j].V_Preset) + "</td>";
+                            content += "<td align='center'>" + formatNumberV2(objListCommandDetail[j].V_Actual) + "</td>";
+                            content += "<td align='center'>" + formatNumberV2(objListCommandDetail[j].V_Deviation) + "</td>";
+                            content += "<td align='center'>" + (objListCommandDetail[j].AvgTemperature).toFixed(2).toLocaleString("de-DE").replace(".", ",") + "</td>";
+                            content += "<td align='center'>" + formatTimestamp(objListCommandDetail[j].TimeStart) + "</td>";
+                            content += "<td align='center'>" + formatTimestamp(objListCommandDetail[j].TimeStop) + "</td>";
+                            content += "</tr>";
+
+                            total_Acctual += objListCommandDetail[j].V_Actual;
+                            total_preset += objListCommandDetail[j].V_Preset;
+                            total_remain += objListCommandDetail[j].V_Deviation;
+                            total_AvgTem += objListCommandDetail[j].AvgTemperature;
+                            count++;
+                            SoNgan++;
+                        }
+
+                    }
+                    content += "    <tr>";
+                    content += "        <td>&nbsp;</td>";
+                    content += "        <th>Tổng Cộng</th>";
+                    content += "        <td>&nbsp;</td>";
+                    content += "        <td>&nbsp;</td>";
+                    content += "        <td align='center'><b>" + formatNumberV2(total_preset) + "</b></td>";
+                    content += "        <td align='center'><b>" + formatNumberV2(total_Acctual) + "</b></td>";
+                    content += "        <td align='center'><b>" + formatNumberV2(total_remain) + "</b></td>";
+                    content += "        <td align='center'><b>" + formatNumberV2(total_AvgTem / SoNgan).replace(".", ",") + "</b></td>";
+                    content += "        <td>&nbsp;</td>";
+                    content += "        <td>&nbsp;</td>";
+                    content += "    </tr>";
+                    content += "</table>";
+                    content += "</tbody>";
+                    content += "<br>";
+                    content += "<tfoot>";
+                    content += "    <tr>";
+                    content += "        <td>&nbsp;</td>";
+                    content += "        <th>Thời gian in " + getDateNow() + " " + getTimeNow() +  "</th>";
+                    content += "        <td>&nbsp;</td>";
+                    content += "        <td align='right'></td>";
+                    content += "        <td align='right'></td>";
+                    content += "        <td align='right'></td>";
+                    content += "        <td>&nbsp;</td>";
+                    content += "        <td>&nbsp;</td>";
+                    content += "        <td>&nbsp;</td>";
+                    content += "    </tr>";
+                    content += "</tfoot>";
+                    content += "</table>";
+                    content += "</div>";
+                    content += "<br>";
+                    content += "<div style='padding-top:2%'>";
+                    content += "    <div style='width:33%;float:left;padding-top: 16px; '>";
+                    content += "        <center>";
+                    content += "            <b>NGƯỜI LẬP PHIẾU</b><br />";
+                    content += "        </center>";
+                    content += "    </div>";
+                    content += "    <div style='width:34%;float:left;padding-top: 16px; '>";
+                    content += "        <center>";
+                    content += "            <b>NGƯỜI XUẤT HÀNG</b><br />";
+                    content += "        </center>";
+                    content += "    </div>";
+                    content += "    <div style='width:33%;float:left;padding-top: 16px; '>";
+                    content += "        <center>";
+                    content += "            <b>NGƯỜI NHẬN</b><br />";
+                    content += "        </center>";
+                    content += "    </div>";
+                    content += "</div>";
+
+                    var newWin = window.open('', 'Print-Window');
+                    newWin.document.open();
+                    newWin.document.write('<html><head></head><body onload="window.print()">' + content + '</body></html>');
+                    newWin.document.close();
+                    setTimeout(function () { newWin.close(); }, 10);
+                }
+            }
+            setTimeout(function () {
+                window.location.reload();
+            }, 3000);
+        }
+
+
+
+        function DocSo3ChuSo(baso) {
+            var tram;
+            var chuc;
+            var donvi;
+            var KetQua = "";
+            tram = parseInt(baso / 100);
+            chuc = parseInt((baso % 100) / 10);
+            donvi = baso % 10;
+            if (tram == 0 && chuc == 0 && donvi == 0) return "";
+            if (tram != 0) {
+                KetQua += ChuSo[tram] + " trăm ";
+                if ((chuc == 0) && (donvi != 0)) KetQua += " linh ";
+            }
+            if ((chuc != 0) && (chuc != 1)) {
+                KetQua += ChuSo[chuc] + " mươi";
+                if ((chuc == 0) && (donvi != 0)) KetQua = KetQua + " linh ";
+            }
+            if (chuc == 1) KetQua += " mười ";
+            switch (donvi) {
+                case 1:
+                    if ((chuc != 0) && (chuc != 1)) {
+                        KetQua += " mốt ";
+                    }
+                    else {
+                        KetQua += ChuSo[donvi];
+                    }
+                    break;
+                case 5:
+                    if (chuc == 0) {
+                        KetQua += ChuSo[donvi];
+                    }
+                    else {
+                        KetQua += " lăm ";
+                    }
+                    break;
+                default:
+                    if (donvi != 0) {
+                        KetQua += ChuSo[donvi];
+                    }
+                    break;
+            }
+            return KetQua;
+        }
+
+        //2. Hàm đọc số thành chữ (Sử dụng hàm đọc số có ba chữ số)
+
+        function DocTienBangChu(SoTien) {
+            var lan = 0;
+            var i = 0;
+            var so = 0;
+            var KetQua = "";
+            var tmp = "";
+            var ViTri = new Array();
+            if (SoTien < 0) return "Số tiền âm !";
+            if (SoTien == 0) return "Không đồng !";
+            if (SoTien > 0) {
+                so = SoTien;
+            }
+            else {
+                so = -SoTien;
+            }
+            if (SoTien > 8999999999999999) {
+                //SoTien = 0;
+                return "Số quá lớn!";
+            }
+            ViTri[5] = Math.floor(so / 1000000000000000);
+            if (isNaN(ViTri[5]))
+                ViTri[5] = "0";
+            so = so - parseFloat(ViTri[5].toString()) * 1000000000000000;
+            ViTri[4] = Math.floor(so / 1000000000000);
+            if (isNaN(ViTri[4]))
+                ViTri[4] = "0";
+            so = so - parseFloat(ViTri[4].toString()) * 1000000000000;
+            ViTri[3] = Math.floor(so / 1000000000);
+            if (isNaN(ViTri[3]))
+                ViTri[3] = "0";
+            so = so - parseFloat(ViTri[3].toString()) * 1000000000;
+            ViTri[2] = parseInt(so / 1000000);
+            if (isNaN(ViTri[2]))
+                ViTri[2] = "0";
+            ViTri[1] = parseInt((so % 1000000) / 1000);
+            if (isNaN(ViTri[1]))
+                ViTri[1] = "0";
+            ViTri[0] = parseInt(so % 1000);
+            if (isNaN(ViTri[0]))
+                ViTri[0] = "0";
+            if (ViTri[5] > 0) {
+                lan = 5;
+            }
+            else if (ViTri[4] > 0) {
+                lan = 4;
+            }
+            else if (ViTri[3] > 0) {
+                lan = 3;
+            }
+            else if (ViTri[2] > 0) {
+                lan = 2;
+            }
+            else if (ViTri[1] > 0) {
+                lan = 1;
+            }
+            else {
+                lan = 0;
+            }
+            for (i = lan; i >= 0; i--) {
+                tmp = DocSo3ChuSo(ViTri[i]);
+                KetQua += tmp;
+                if (ViTri[i] > 0) KetQua += Tien[i];
+                if ((i > 0) && (tmp.length > 0)) KetQua += ',';//&& (!string.IsNullOrEmpty(tmp))
+            }
+            if (KetQua.substring(KetQua.length - 1) == ',') {
+                KetQua = KetQua.substring(0, KetQua.length - 1);
+            }
+            KetQua = KetQua.substring(1, 2).toUpperCase() + KetQua.substring(2);
+            return KetQua;//.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
+        }
+
+
+        function getDateNow() {
+            var strFormat = "";
+            var strDate = new Date();
+
+            strFormat += ("00" + strDate.getDate()).toString().slice(-2);
+            strFormat += "/" + ("00" + (strDate.getMonth() + 1)).toString().slice(-2);
+            strFormat += "/" + strDate.getFullYear();
+            return strFormat;
+        }
+
+        function getDayNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += ("00" + strDate.getDate()).toString().slice(-2);
+            return strFormat;
+        }
+
+        function getMonthNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += ("00" + (strDate.getMonth() + 1)).toString().slice(-2);
+            return strFormat;
+        }
+
+        function getYearNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += strDate.getFullYear();
+            return strFormat;
+        }
+
+        function getTimeNow() {
+            var strFormat = "";
+            var strDate = new Date();
+
+            strFormat += " " + ("00" + strDate.getHours()).toString().slice(-2);
+            strFormat += ":" + ("00" + strDate.getMinutes()).toString().slice(-2);
+
+            return strFormat;
+        }
+
+        function formatTimestamp(timestamp) {
+            // Create a new Date object from the timestamp
+            const date = new Date(timestamp);
+
+            // Format the date to dd/MM/yyyy HH:mm
+            const formattedDate = ('0' + date.getDate()).slice(-2) + '/' +
+                ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+                date.getFullYear() + ' ' +
+                ('0' + date.getHours()).slice(-2) + ':' +
+                ('0' + date.getMinutes()).slice(-2);
+
+            return formattedDate;
+        }
+
+        function formatTimestamp2(timestamp) {
+            // Create a new Date object from the timestamp
+            const date = new Date(timestamp);
+
+            // Format the date to dd/MM/yyyy HH:mm
+            const formattedDate = ('0' + date.getDate()).slice(-2) + '/' +
+                ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+                date.getFullYear() ;
+
+            return formattedDate;
+        }
+
+        function formatDateVN(date) {
+
+            var strFormat = "";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate() < 10) {
+                strFormat += "0" + datetimeorder.getDate();
+            }
+            else {
+                strFormat += datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth() < 9) {//bij hao 1 thang ko hieu kieu gi
+                strFormat += "/0" + (datetimeorder.getMonth() + 1);
+            }
+            else {
+                strFormat += "/" + (datetimeorder.getMonth() + 1);
+            }
+
+            strFormat += "/" + datetimeorder.getFullYear();
+
+            strFormat += " " + ("00" + datetimeorder.getHours()).toString().slice(-2);
+            strFormat += ":" + ("00" + datetimeorder.getMinutes()).toString().slice(-2);
+            return strFormat;
+
+        }
+
+        function formatDateOnlyVN(date) {
+
+            var strFormat = "";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate() < 10) {
+                strFormat += "0" + datetimeorder.getDate();
+            }
+            else {
+                strFormat += datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth() < 9) {//bij hao 1 thang ko hieu kieu gi
+                strFormat += "/0" + (datetimeorder.getMonth() + 1);
+            }
+            else {
+                strFormat += "/" + (datetimeorder.getMonth() + 1);
+            }
+
+            strFormat += "/" + datetimeorder.getFullYear();
+            return strFormat;
+
+        }
+
+        function formatCharacterDate(date) {
+
+            var strFormat = "";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate() < 10) {
+                strFormat += "Ngày 0" + datetimeorder.getDate();
+            }
+            else {
+                strFormat += "Ngày" + datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth() < 11) {//bij hao 1 thang ko hieu kieu gi
+                strFormat += " tháng 0" + (datetimeorder.getMonth() + 1);
+            }
+            else {
+                strFormat += " tháng " + (datetimeorder.getMonth() + 1);
+            }
+
+            strFormat += " năm" + datetimeorder.getFullYear();
+            return strFormat;
+
+        }
+
+        var objListSeal = @Html.Raw(Json.Encode(@Model.ListSeal)); //Chi tiết lệnh
+        var ChuSo=new Array(" không "," một "," hai "," ba "," bốn "," năm "," sáu "," bảy "," tám "," chín ");
+        var Tien=new Array( "", " nghìn", " triệu", " tỷ", " nghìn tỷ", " triệu tỷ");
+
+        var listVolume ="";
+        var tTb = 0 ;
+        var dTb = 0 ;
+        var wcfTb = 0 ;
+        var vcfTb = 0 ;
+        var ltt = 0 ;
+        var l15 = 0 ;
+        var kg = 0 ;
+        var objInvoiceDetailId = 0;
+        var noteStored = "";
+
+        $(document).ready(function () {
+            $('input:checkbox').click(function () {
+                $('input:checkbox').not(this).prop('checked', false);
+            });
+        });
+
+        function  ReDirectUrl(){
+            window.location.href = "/Bills/Index";
+            };
+
+        function CheckedCheckBox() {
+            document.getElementById("note").innerHTML = "";
+            //for (var i = 0; i < objListInvoiceDetail.length; i++) {
+            //    if (document.getElementById(objListInvoiceDetail[i].ListVolume).checked == true) {
+            //        document.getElementById("note").innerHTML = objListInvoiceDetail[i].Note;
+            //    }
+            //}
+        };
+
+        function DocSo3ChuSo(baso)
+        {
+            var tram;
+            var chuc;
+            var donvi;
+            var KetQua="";
+            tram=parseInt(baso/100);
+            chuc=parseInt((baso%100)/10);
+            donvi=baso%10;
+            if(tram==0 && chuc==0 && donvi==0) return "";
+            if(tram!=0)
+            {
+                KetQua += ChuSo[tram] + " trăm ";
+                if ((chuc == 0) && (donvi != 0)) KetQua += " linh ";
+            }
+            if ((chuc != 0) && (chuc != 1))
+            {
+                KetQua += ChuSo[chuc] + " mươi";
+                if ((chuc == 0) && (donvi != 0)) KetQua = KetQua + " linh ";
+            }
+            if (chuc == 1) KetQua += " mười ";
+            switch (donvi)
+            {
+                case 1:
+                    if ((chuc != 0) && (chuc != 1))
+                    {
+                        KetQua += " mốt ";
+                    }
+                    else
+                    {
+                        KetQua += ChuSo[donvi];
+                    }
+                    break;
+                case 5:
+                    if (chuc == 0)
+                    {
+                        KetQua += ChuSo[donvi];
+                    }
+                    else
+                    {
+                        KetQua += " lăm ";
+                    }
+                    break;
+                default:
+                    if (donvi != 0)
+                    {
+                        KetQua += ChuSo[donvi];
+                    }
+                    break;
+            }
+            return KetQua;
+        }
+
+        //2. Hàm đọc số thành chữ (Sử dụng hàm đọc số có ba chữ số)
+
+        function DocTienBangChu(SoTien)
+        {
+            var lan=0;
+            var i=0;
+            var so=0;
+            var KetQua="";
+            var tmp="";
+            var ViTri = new Array();
+            if(SoTien<0) return "Số tiền âm !";
+            if(SoTien==0) return "Không đồng !";
+            if(SoTien>0)
+            {
+                so=SoTien;
+            }
+            else
+            {
+                so = -SoTien;
+            }
+            if (SoTien > 8999999999999999)
+            {
+                //SoTien = 0;
+                return "Số quá lớn!";
+            }
+            ViTri[5] = Math.floor(so / 1000000000000000);
+            if(isNaN(ViTri[5]))
+                ViTri[5] = "0";
+            so = so - parseFloat(ViTri[5].toString()) * 1000000000000000;
+            ViTri[4] = Math.floor(so / 1000000000000);
+            if(isNaN(ViTri[4]))
+                ViTri[4] = "0";
+            so = so - parseFloat(ViTri[4].toString()) * 1000000000000;
+            ViTri[3] = Math.floor(so / 1000000000);
+            if(isNaN(ViTri[3]))
+                ViTri[3] = "0";
+            so = so - parseFloat(ViTri[3].toString()) * 1000000000;
+            ViTri[2] = parseInt(so / 1000000);
+            if(isNaN(ViTri[2]))
+                ViTri[2] = "0";
+            ViTri[1] = parseInt((so % 1000000) / 1000);
+            if(isNaN(ViTri[1]))
+                ViTri[1] = "0";
+            ViTri[0] = parseInt(so % 1000);
+            if(isNaN(ViTri[0]))
+                ViTri[0] = "0";
+            if (ViTri[5] > 0)
+            {
+                lan = 5;
+            }
+            else if (ViTri[4] > 0)
+            {
+                lan = 4;
+            }
+            else if (ViTri[3] > 0)
+            {
+                lan = 3;
+            }
+            else if (ViTri[2] > 0)
+            {
+                lan = 2;
+            }
+            else if (ViTri[1] > 0)
+            {
+                lan = 1;
+            }
+            else
+            {
+                lan = 0;
+            }
+            for (i = lan; i >= 0; i--)
+            {
+                tmp = DocSo3ChuSo(ViTri[i]);
+                KetQua += tmp;
+                if (ViTri[i] > 0) KetQua += Tien[i];
+                if ((i > 0) && (tmp.length > 0)) KetQua += ',';//&& (!string.IsNullOrEmpty(tmp))
+            }
+            if (KetQua.substring(KetQua.length - 1) == ',')
+            {
+                KetQua = KetQua.substring(0, KetQua.length - 1);
+            }
+            KetQua = KetQua.substring(1,2).toUpperCase()+ KetQua.substring(2);
+            return KetQua;//.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
+        }
+
+
+        function getDateNow(){
+            var strFormat ="";
+            var strDate = new Date();
+
+            strFormat +=("00" + strDate.getDate()).toString().slice(-2);
+            strFormat += "/" + ("00" + (strDate.getMonth()+1)).toString().slice(-2);
+            strFormat += "/" + strDate.getFullYear();
+            return strFormat;
+        }
+
+        function getDayNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += ("00" + strDate.getDate()).toString().slice(-2);
+            return strFormat;
+        }
+
+        function getMonthNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += ("00" + (strDate.getMonth() + 1)).toString().slice(-2);
+            return strFormat;
+        }
+
+        function getYearNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += strDate.getFullYear();
+            return strFormat;
+        }
+
+        function getTimeNow() {
+            var strFormat = "";
+            var strDate = new Date();
+
+            strFormat += " " + ("00" + strDate.getHours()).toString().slice(-2);
+            strFormat += ":" + ("00" + strDate.getMinutes()).toString().slice(-2);
+
+            return strFormat;
+        }
+
+        function formatDateVN(date) {
+
+            var strFormat ="";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate()<10){
+                strFormat += "0" + datetimeorder.getDate();
+            }
+            else
+            {
+                strFormat += datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth()<9){//bij hao 1 thang ko hieu kieu gi
+                strFormat += "/0" + (datetimeorder.getMonth()+1);
+            }
+            else
+            {
+                strFormat += "/" +  (datetimeorder.getMonth()+1);
+            }
+
+            strFormat += "/" + datetimeorder.getFullYear();
+
+            strFormat += " " + ("00" + datetimeorder.getHours()).toString().slice(-2);
+            strFormat += ":" + ("00" + datetimeorder.getMinutes()).toString().slice(-2);
+            return strFormat;
+
+        }
+
+        function formatDateOnlyVN(date) {
+
+            var strFormat = "";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate() < 10) {
+                strFormat += "0" + datetimeorder.getDate();
+            }
+            else {
+                strFormat += datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth() < 9) {//bij hao 1 thang ko hieu kieu gi
+                strFormat += "/0" + (datetimeorder.getMonth() + 1);
+            }
+            else {
+                strFormat += "/" + (datetimeorder.getMonth() + 1);
+            }
+
+            strFormat += "/" + datetimeorder.getFullYear();
+            return strFormat;
+
+        }
+
+        function formatCharacterDate(date) {
+
+            var strFormat ="";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate()<10){
+                strFormat += "Ngày 0" + datetimeorder.getDate();
+            }
+            else
+            {
+                strFormat += "Ngày" + datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth()<11){//bij hao 1 thang ko hieu kieu gi
+                strFormat += " tháng 0" + (datetimeorder.getMonth()+1);
+            }
+            else
+            {
+                strFormat += " tháng " +  (datetimeorder.getMonth()+1);
+            }
+
+            strFormat += " năm" + datetimeorder.getFullYear();
+            return strFormat;
+
+        }
+
+        Number.prototype.pad = function (size) {
+            var s = String(this);
+            while (s.length < (size || 2)) { s = "0" + s; }
+            return s;
+        }
+    </script>
+
+}

@@ -1,0 +1,107 @@
+2025-01-15 23:46:59,692 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 11] -> View Login
+2025-01-15 23:47:09,966 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 10] -> post login
+2025-01-15 23:47:10,290 INFO  PetroBM.Web.Controllers.AccountController.Login[thread: 10] -> login success
+2025-01-15 23:47:12,263 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 16] -> GetAllConfigArm
+2025-01-15 23:47:12,430 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 16] -> Start GetListWareHouse_ByUserName
+2025-01-15 23:47:12,540 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 16] -> Finish GetListWareHouse_ByUserName
+2025-01-15 23:47:12,541 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 16] -> Start GetAllWareHouse
+2025-01-15 23:47:12,562 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 16] -> Finnish GetAllWareHouse
+2025-01-15 23:47:14,252 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 16] -> GetAllConfigArm
+2025-01-15 23:47:43,635 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 17] -> GetAllConfigArmOrderByName
+2025-01-15 23:47:45,126 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 17] -> GetAllConfigArmOrderByName
+2025-01-15 23:47:52,674 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 17] -> GetAllCustomer
+2025-01-15 23:47:52,827 INFO  PetroBM.Services.Services.CustomerGroupService.GetAllCustomerGroup[thread: 17] -> GetAllCustomerGroup
+2025-01-15 23:47:57,776 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 17] -> GetAllConfigArm
+2025-01-15 23:47:57,796 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 17] -> Start GetListWareHouse_ByUserName
+2025-01-15 23:47:57,803 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 17] -> Finish GetListWareHouse_ByUserName
+2025-01-15 23:47:57,804 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 17] -> Start GetAllWareHouse
+2025-01-15 23:47:57,812 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 17] -> Finnish GetAllWareHouse
+2025-01-15 23:47:58,181 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 17] -> GetAllConfigArm
+2025-01-15 23:47:58,463 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 18] -> GetAllConfigArmOrderByName
+2025-01-15 23:48:06,004 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:48:07,016 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:48:07,091 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:48:08,714 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:48:16,087 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 10] -> GetAllCustomer
+2025-01-15 23:48:16,135 INFO  PetroBM.Services.Services.CustomerGroupService.GetAllCustomerGroup[thread: 10] -> GetAllCustomerGroup
+2025-01-15 23:48:16,964 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2025-01-15 23:48:16,985 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2025-01-15 23:48:16,992 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2025-01-15 23:48:16,992 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2025-01-15 23:48:17,000 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2025-01-15 23:48:17,310 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2025-01-15 23:48:17,499 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:48:22,630 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:48:23,311 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:48:23,387 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:48:24,618 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:48:33,348 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 10] -> GetAllCustomer
+2025-01-15 23:48:33,363 INFO  PetroBM.Services.Services.CustomerGroupService.GetAllCustomerGroup[thread: 10] -> GetAllCustomerGroup
+2025-01-15 23:48:37,463 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2025-01-15 23:48:37,478 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2025-01-15 23:48:37,485 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2025-01-15 23:48:37,486 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2025-01-15 23:48:37,495 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2025-01-15 23:48:37,813 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2025-01-15 23:48:52,803 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:49:01,125 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:49:03,040 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:49:03,170 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:49:04,100 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:49:10,509 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 10] -> GetAllCustomer
+2025-01-15 23:49:10,541 INFO  PetroBM.Services.Services.CustomerGroupService.GetAllCustomerGroup[thread: 10] -> GetAllCustomerGroup
+2025-01-15 23:49:11,294 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2025-01-15 23:49:11,313 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Start GetListWareHouse_ByUserName
+2025-01-15 23:49:11,328 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 10] -> Finish GetListWareHouse_ByUserName
+2025-01-15 23:49:11,329 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Start GetAllWareHouse
+2025-01-15 23:49:11,351 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 10] -> Finnish GetAllWareHouse
+2025-01-15 23:49:11,707 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 10] -> GetAllConfigArm
+2025-01-15 23:49:11,998 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:49:28,119 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:49:29,558 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:53:11,920 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2025-01-15 23:53:12,023 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2025-01-15 23:53:12,035 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2025-01-15 23:53:12,037 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2025-01-15 23:53:12,061 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2025-01-15 23:53:13,586 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2025-01-15 23:53:20,797 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 9] -> GetAllConfigArmOrderByName
+2025-01-15 23:53:21,549 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2025-01-15 23:53:21,582 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 9] -> GetAllConfigArmOrderByName
+2025-01-15 23:53:21,713 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 9] -> GetAllCustomer
+2025-01-15 23:53:21,807 INFO  PetroBM.Services.Services.CustomerGroupService.GetAllCustomerGroup[thread: 9] -> GetAllCustomerGroup
+2025-01-15 23:53:23,360 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2025-01-15 23:53:36,056 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 8] -> GetAllCustomer
+2025-01-15 23:53:36,077 INFO  PetroBM.Services.Services.CustomerGroupService.GetAllCustomerGroup[thread: 8] -> GetAllCustomerGroup
+2025-01-15 23:53:42,354 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2025-01-15 23:53:42,355 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2025-01-15 23:53:42,375 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2025-01-15 23:53:42,375 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Start GetListWareHouse_ByUserName
+2025-01-15 23:53:42,383 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 9] -> Finish GetListWareHouse_ByUserName
+2025-01-15 23:53:42,384 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Start GetAllWareHouse
+2025-01-15 23:53:42,384 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2025-01-15 23:53:42,386 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2025-01-15 23:53:42,391 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 9] -> Finnish GetAllWareHouse
+2025-01-15 23:53:42,413 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2025-01-15 23:53:42,721 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 9] -> GetAllConfigArm
+2025-01-15 23:53:42,802 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2025-01-15 23:53:43,001 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 10] -> GetAllConfigArmOrderByName
+2025-01-15 23:53:55,662 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2025-01-15 23:53:56,380 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2025-01-15 23:53:56,461 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2025-01-15 23:53:58,070 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2025-01-15 23:54:02,929 INFO  PetroBM.Services.Services.CustomerService.GetAllCustomer[thread: 8] -> GetAllCustomer
+2025-01-15 23:54:02,949 INFO  PetroBM.Services.Services.CustomerGroupService.GetAllCustomerGroup[thread: 8] -> GetAllCustomerGroup
+2025-01-15 23:54:03,723 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2025-01-15 23:54:03,739 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Start GetListWareHouse_ByUserName
+2025-01-15 23:54:03,747 INFO  PetroBM.Services.Services.WareHouseService.GetListWareHouse_ByUserName[thread: 8] -> Finish GetListWareHouse_ByUserName
+2025-01-15 23:54:03,748 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Start GetAllWareHouse
+2025-01-15 23:54:03,755 INFO  PetroBM.Services.Services.WareHouseService.GetAllWareHouse[thread: 8] -> Finnish GetAllWareHouse
+2025-01-15 23:54:04,029 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArm[thread: 8] -> GetAllConfigArm
+2025-01-15 23:54:04,354 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2025-01-15 23:54:15,349 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2025-01-15 23:54:16,674 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 8] -> GetAllConfigArmOrderByName
+2025-01-15 23:59:51,221 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 9] -> GetAllConfigArmOrderByName
+2025-01-15 23:59:52,136 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 9] -> GetAllConfigArmOrderByName
+2025-01-15 23:59:52,188 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 9] -> GetAllConfigArmOrderByName
+2025-01-15 23:59:53,261 INFO  PetroBM.Services.Services.ConfigArmService.GetAllConfigArmOrderByName[thread: 9] -> GetAllConfigArmOrderByName

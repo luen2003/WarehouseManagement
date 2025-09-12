@@ -1,0 +1,780 @@
+﻿@model PetroBM.Web.Models.CommandModel
+@using PetroBM.Common.Util;
+@using System
+@using PetroBM.Common.Util
+@{
+    ViewBag.Title = "Xem lệnh đăng ký";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@using (Html.BeginForm("CommandView", "Command", FormMethod.Post))
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    var JsonMaster = @Html.Raw(Json.Encode(@Model.Command));
+    var JsonDetail = @Html.Raw(Json.Encode(@Model.ListCommandDetail));
+    var titleCompanyName = '@Session[Constants.Session_TitleReportCompanyName]';
+    var titleCompanyAddress = '@Session[Constants.Session_TitleCompanyAddress]';
+    var titleCompanyPhone = '@Session[Constants.Session_TitleCompanyPhone]';
+    var titleCompanyFax  = '@Session[Constants.Session_TitleCompanyFax] ';
+    var titleIdentificationNumber  = '@Session[Constants.Session_TitleIdentificationNumber] ';
+    var lstSeal = @Html.Raw(Json.Encode(@Model.ListSeal));
+    var lstProduct = @Html.Raw(Json.Encode(@Model.ListTemProduct)); //Mượn lớp DataValue do Entity có vấn đề
+
+        function ReturnCommandList()
+        {
+            window.location.href = "/Command/CommandbyVehicle";
+        }
+
+        function ReturnCommandAdd() {
+            window.location.href = "/Command/RegisterCommand";
+        }
+
+
+        function Print2() {
+
+            var Inttotal =0;
+            var stt = document.getElementById('WorkOrder').value;
+            stt=stt.substring(stt.length-3,stt.length);
+            var div = "";
+            div += "<div style='width:100%'>";
+            div += "<table style='width: 100%;border:1px' cellspacing='0'>";
+            div += "<colgroup>";
+            div += " <col style='width: 20%;' />";
+            div += "   <col style='width: 60%;' />";
+            div += "   <col style='width: 20%;' />";
+            div += "</colgroup>";
+            div += "<tr>";
+            div += "    <td style='border:1px solid'>";
+            div += "      <img style ='max-width: 150px' src='/Content/images/logoTKV.png'/>";
+            div += "   </td>";
+            div += "    <td style='border-bottom: 1px solid; border-top: 1px solid;'>";
+            div += "        <center>";
+            div += "           <b>CÔNG TY CỔ PHẦN VẬT TƯ - TKV</b><br/>";
+            div += "           <b>Kho xăng dầu Vũng Hoa</b><br/><br/>";
+            div += "           Địa chỉ: Tổ 9- khu 8 phường Mông Dương thành phố Cẩm Phả tỉnh Quảng Ninh";
+            div += "         </center>";
+            div += "    </td> ";
+            div += "    <td style='border:1px solid'>";
+            div += "        <b>Biểu mẫu : </b><br />";
+            div += "       <b>Ký hiệu : </b><br />";
+            div += "    </td>";
+            div += " </tr>";
+            div += " </table>";
+            div += " </div>";
+            div += " <div style='width:100%'>";
+            div += " <div style='padding-top:2%'>";
+            div += "   &nbsp;";
+            div += "  </div>";
+            div += " <div>";
+            div += "      <center>";
+            div += "         <h4>LỆNH XUẤT HÀNG</h4>";
+            div += "     </center>";
+            div += "  </div>";
+            div += "  <div style='width:25%;float:left'>Ngày giờ: " + formatDateVN(JsonMaster.TimeOrder) ;
+            div += "    </div> ";
+            div += "   <div style='width:30%;float:left'>Số thứ tự: " + stt;
+            div += "    </div> ";
+            div += "    <div style='width:25%;float:left'>Số thẻ: "+ JsonMaster.CardSerial;
+            div += "    </div>";
+            div += "    <div style='width:20%;float:left'>Mã lệnh: " + JsonMaster.WorkOrder;
+            div += "     </div>";
+            div += " </div>";
+            div += " <div style='width:100%'>";
+            div += "    <div style='width:25%;float:left'>Số xe: " + JsonMaster.VehicleNumber;
+            div += "    </div>";
+            div += "    <div style='width:30%;float:left'>Lái xe: " + JsonMaster.DriverName;
+            div += "</div>";
+            div += "<div style='width:25%;float:left'> Số CMND:" + titleIdentificationNumber ;
+            div += "</div>";
+            div += "<div style='width:10%;float:left'>";
+            div += "       &nbsp;";
+            div += "</div>";
+            div += "</div>";
+            div += " <div style='width:100%'>";
+            div += "    <div style='width:25%;float:left'>Số chứng từ: " + JsonMaster.CertificateNumber;
+            div += "    </div>";
+            div += "    <div style='width:75%;float:left'>Tên đơn vị: " + "@Model.CustomerName";
+            div += "</div>";
+            div += "<div style='width:15%;float:left'> "
+            div += "       &nbsp;";
+            div += "</div>";
+            div += "<div style='width:10%;float:left'>";
+            div += "       &nbsp;";
+            div += "</div>";
+            div += "</div>";
+
+            div += "<div style='padding-top:2%;'>";
+            div += "<table style='width:100% ' cellpadding='1' cellspacing='0' border='1'>";
+            div += "<thead>";
+            div += "<tr>";
+            div += "    <th>Ngăn</th>";
+            div += "    <th>Tên hàng hóa</th>";
+            div += "    <th>Lượng hàng</th>";
+            div += "    <th>Người cấp hàng</th>";
+
+            div += "</tr>";
+            div += "</thead>";
+            div += "   <tbody>";
+            //Vòng lập các ngăn tại đây ***********************************************
+
+            for (var m = 0; m < JsonDetail.length ; m++) {
+                div += "<tr>";
+                div += "<td align='center'>" + JsonDetail[m].CompartmentOrder + "</td>";
+                for (var n = 0; n < lstProduct.length; n++)
+                        {
+                    if (JsonDetail[m].ProductCode == lstProduct[n].Code)
+                            {
+                        div += "<td>" + lstProduct[n].Name+ "</td>";
+                            }
+                        }
+
+                //div += "<td align='right'>" + JsonDetail[m].V_Preset.toLocaleString("de-DE") + "</td>";
+                div += "<td align='right'>" + JsonDetail[m].V_Preset + "</td>";
+                div += "<td></td>";
+                div += "</tr>";
+                Inttotal +=eval(JsonDetail[m].V_Preset)
+            }
+            //*************************************************************************
+            div += "    </tbody>";
+
+            div += "   <tfoot>";
+            div += "        <tr>";
+            div += "            <td>&nbsp;</td>";
+            div += "           <th>Tổng</th>";
+            div += "           <td  align='right'>" + Inttotal.toLocaleString("de-DE")+ "</td>";
+            div += "            <td>&nbsp;</td>";
+            div += "       </tr>";
+            div += "   </tfoot>";
+
+            div += "</table>";
+            div += "</div>";
+
+            //Tổng từng loại hàng
+            div += " <div style='width:100%'>";
+            div += "    <div style='width:80%;float:left'>" + "@Model.TotalCommand";
+            div += "    </div>";
+            div += "    <div style='width:5%;float:left'>  &nbsp;";
+            div += "</div>";
+            div += "<div style='width:5%;float:left'> "
+            div += "       &nbsp;";
+            div += "</div>";
+            div += "<div style='width:10%;float:left'>";
+            div += "       &nbsp;";
+            div += "</div>";
+            div += "</div>";
+
+
+
+
+            div += "<div style='padding-top:2%'>";
+            div += "   <i>Ghi chú :....................................................................................................................................................</i>";
+            div += " </div>";
+
+            div += " <div style='padding-top:2%'>";
+            div += "  <div style='width:25%;float:left'>";
+            div += "     <center>";
+            div += "        <b>Thủ trưởng</b><br />";
+            div += "        <i>(Ký, ghi rõ họ,tên)</i>";
+            div += "   </center>";
+            div += "</div>";
+            div += "<div style='width:25%;float:left'>";
+            div += "     <center>";
+            div += "       <b>Bảo vệ</b><br />";
+            div += "        <i>(Ký, ghi rõ họ,tên)</i>";
+            div += "    </center>";
+            div += "</div>";
+            div += "<div style='width:25%;float:left'>";
+            div += "    <center>";
+            div += "        <b>Lái xe</b><br />";
+            div += "        <i>(Ký, ghi rõ họ,tên)</i>";
+            div += "    </center>";
+            div += "</div>";
+            div += "<div style='width:25%;float:left'>";
+            div += "    <center>";
+            div += "        <b>Người lập</b><br />";
+            div += "       <i>(Ký, ghi rõ họ,tên)</i>";
+            div += "    </center>";
+            div += "</div>";
+            div += "</div>";
+
+            document.getElementById("commandoutput").innerHTML = div;
+
+            var divToPrint = document.getElementById('commandoutput');
+
+            var newWin = window.open('', 'Print-Window');
+
+            newWin.document.open();
+
+            newWin.document.write('<html><head></head><body onload="window.print()">' + commandoutput.innerHTML + '</body></html>');
+
+            newWin.document.close();
+
+            setTimeout(function () { newWin.close(); }, 10);
+        }
+
+
+        function PrintInventoryOutput() {
+            var stt = document.getElementById('WorkOrder').value;
+            stt=stt.substring(stt.length-3,stt.length);
+            var content = "";
+            content +="<div style='width:100%'>";
+            content +="<span>UBND THÀNH PHỐ HẢI PHÒNG</span><br />";
+            content +="<span>CÔNG TY TNHH MTV DẦU KHÍ HẢI LINH HẢI PHÒNG</span>";
+            content +=" </div>";
+
+            content +="<div>";
+            content +="<center>";
+            content +="<h3>PHIẾU XUẤT KHO</h3>";
+            content +="</center>";
+            content +="<center><b>Ngày: " + formatDateVN(JsonMaster.TimeOrder) + "</b></center>";
+            content +="<center><b>Số: " + stt +"</b></center>";
+            content +="</div>";
+
+            content +="<span><b>Họ tên người nhận:" + JsonMaster.DriverName + "- " +  titleCompanyName  + "</b></span><br />";
+            content +="<span><b>Lý do xuất:</b></span><br />";
+            content +="<span><b>Xuất tại kho:</b></span><br />"
+
+            content +="<div>";
+            content +="<table style='width:100% ' cellpadding='1' cellspacing='0' border='1'>";
+            content +="<thead>";
+            content +="<tr>";
+            content +="<th rowspan='2'>STT</th>";
+            content +="<th rowspan='2'>Tên sản phẩm, hàng hóa</th>";
+            content +="<th rowspan='2'>Khoang hàng</th>";
+            content +="<th colspan='3'>Số lượng</th>";
+            content +="<th rowspan='2'>Nhiệt độ</th>";
+            content +="<th rowspan='2'>Tỷ trọng</th>";
+            content +="<th rowspan='2'>VCF</th>";
+            content +="</tr>";
+            content +="<tr>";
+            content +="<th>Ltt</th>";
+            content +="<th>L15</th>";
+            content +="<th>Kg</th>";
+            content +="</tr>";
+            content +="</thead>";
+            content +="<tbody>";
+
+            var totalLtt =0;
+            var total =0;
+            var totalKg =0;
+
+
+            for (var i = 1; i < JsonDetail.length + 1; i++) {
+                content +="<tr>";
+                content +="<td>" + i + "</td>";
+                for (var j = 0; j < lstProduct.length; j++) {
+                    if (JsonDetail[i-1].ProductCode == lstProduct[j].Code){
+                        content +="<td>" + lstProduct[j].Name + "</td>";
+                    }
+                }
+                content +="<td>" + JsonDetail[i-1].CompartmentOrder + "</td>";
+                content +="<td>" + JsonDetail[i-1].V_Actual + "</td>";
+                content +="<td>" + JsonDetail[i-1].V_Actual_15 + "</td>";
+                content +="<td>" + JsonDetail[i-1].Wcf * JsonDetail[i-1].V_Actual_15 + "</td>";
+                content +="<td>" + JsonDetail[i-1].AvgTemperature + "</td>";
+                content +="<td>" + JsonDetail[i-1].AvgDensity + "</td>";
+                content +="<td>" + JsonDetail[i-1].Wcf + "</td>";
+                content +="</tr>";
+                totalLtt += JsonDetail[i-1].V_Actual;
+                total += JsonDetail[i-1].V_Actual_15;
+                totalKg +=JsonDetail[i-1].Wcf * JsonDetail[i-1].V_Actual_15;
+
+            }
+
+            content +="</tbody>";
+            content +="<tfoot>";
+            content +="<tr>";
+            content +="<td>&nbsp;</td>";
+            content +="<th>Tổng</th>";
+            content +="<td>&nbsp;</td>";
+            content +="<td>" + totalLtt  +"</td>";
+           // content +="<td></td>";
+            content +="<td>" + total + "</td>";
+            content +="<td>" + totalKg + "</td>";
+            content +="<td>&nbsp;</td>";
+            content +="<td>&nbsp;</td>";
+            content +="<td>&nbsp;</td>";
+            content +="</tr>";
+            content +="<tr>";
+
+            var strnote ="" // ghi chú
+            for (var i = 1; i < lstSeal.length + 1; i++) {
+                strnote += ",K" + i +" =" + lstSeal[i-1].Ratio;
+            }
+            if (strnote.length>0){
+                strnote = strnote.substring(1,strnote.length);
+            }
+
+            content +="<td colspan='9' rowspan='2'>Ghi chú : " + strnote + "</td>";
+            content +="</tr>";
+            content +="</tfoot>";
+            content +="</table>";
+            content +="</div>";
+
+            content +="<div style='padding-top:2%'>";
+            content +="<div style='width:20%;float:left'>";
+            content +="<center>";
+            content +="<b>NGƯỜI LẬP PHIẾU</b><br />";
+            content +="</center>";
+            content +="</div>";
+            content +="<div style='width:20%;float:left'>";
+            content +="<center>";
+            content +="<b>NGƯỜI NHẬN HÀNG</b><br />";
+            content +="</center>";
+            content +="</div>";
+            content +="<div style='width:20%;float:left'>";
+            content +="<center>";
+            content +="<b>THỦ KHO</b><br />";
+            content +="</center>";
+            content +="</div>";
+            content +="<div style='width:20%;float:left'>";
+            content +="<center>";
+            content +="<b>BẢO VỆ</b><br />";
+            content +="</center>";
+            content +="</div>";
+            content +="<div style='width:20%;float:left'>";
+            content +="<center>";
+            content +="<b>Ngày : </b><br />";
+            content +="<b>GIÁM ĐỐC </b>";
+            content +="</center>";
+            content +="</div>";
+            content +="</div>";
+
+            document.getElementById("commandInphieuxuatkho").innerHTML = content;
+            var divToPrint = document.getElementById('commandInphieuxuatkho');
+            var newWin = window.open('', 'Print-Window');
+            newWin.document.open();
+            newWin.document.write('<html><head></head><body onload="window.print()">' + commandInphieuxuatkho.innerHTML + '</body></html>');
+            newWin.document.close();
+            setTimeout(function () { newWin.close(); }, 10);
+        }
+
+
+        function formatDateVN(date) {
+
+            var strFormat ="";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate()<10){
+                strFormat += "0" + datetimeorder.getDate();
+            }
+            else
+            {
+                strFormat += datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth()<9){//bij hao 1 thang ko hieu kieu gi
+                strFormat += "/0" + (datetimeorder.getMonth()+1);
+            }
+            else
+            {
+                strFormat += "/" +  (datetimeorder.getMonth()+1);
+            }
+
+            strFormat += "/" + datetimeorder.getFullYear();
+            return strFormat;
+
+        }
+
+
+        function formatDateTimeVN(date) {
+
+            var strFormat ="";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(daytimeorder);
+
+            if (datetimeorder.getDate()<10){
+                strFormat += "0" + datetimeorder.getDate();
+            }
+            else
+            {
+                strFormat += datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth()<11){//bij hao 1 thang ko hieu kieu gi
+                strFormat += "/0" + (datetimeorder.getMonth()+1);
+            }
+            else
+            {
+                strFormat += "/" +  (datetimeorder.getMonth()+1);
+            }
+
+            strFormat += "/" + datetimeorder.getFullYear() + " " + datetimeorder.getHours() + ": "  + datetimeorder.getMinutes()  + ":"  + datetimeorder.getMilliseconds() ;
+            return strFormat;
+
+        }
+
+</script>
+
+<div>
+    <div class="container">
+        <div class='col-sm-3 col-xs-6'>
+            <div class="row">
+                <label class="control-label col-xs-5">Mã lệnh</label>
+                <div class="form-group col-xs-7">
+                    <input type="text" value="@Convert.ToInt32(@Model.Command.WorkOrder)" class="form-control" readonly="readonly" id="WorkOrder" />
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-5">@Html.LabelFor(model => model.Command.CardSerial, htmlAttributes: new { @class = "control-label" })</label>
+                <div class="form-group col-xs-7">
+                    @Html.EditorFor(model => model.Command.CardSerial, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-5">@Html.LabelFor(model => model.Command.CardData, htmlAttributes: new { @class = "control-label" })</label>
+                <div class="form-group col-xs-7">
+                    @Html.EditorFor(model => model.Command.CardData, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+        </div>
+
+        <div class='col-sm-4 col-xs-6'>
+            <div class="row">
+                <label class="control-label col-xs-4">Số xe</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.Command.VehicleNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">@Html.LabelFor(model => model.Command.DriverName, htmlAttributes: new { @class = "control-label" })</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.Command.DriverName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">@Html.LabelFor(model => model.Command.CustomerCode, htmlAttributes: new { @class = "control-label" })</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.Command.CustomerCode, new { htmlAttributes = new { @class = "form-control", @id = "IdCustomer" } })
+                </div>
+            </div>
+        </div>
+
+        <div class='col-sm-5 col-xs-6'>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đăng ký</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker'>
+                        @Html.EditorFor(model => model.TimeOrder, new { htmlAttributes = new { @class = "form-control", @id = "TimeOrder", @readonly = "readonly" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian chứng từ</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='jCertificateTime'>
+                        @Html.EditorFor(model => model.Command.CertificateTime, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">@Html.LabelFor(model => model.Command.CertificateNumber, htmlAttributes: new { @class = "control-label" })</label>
+                <div class="form-group col-xs-6">
+                    @Html.EditorFor(model => model.Command.CertificateNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Lệnh
+                    </th>
+                    <th>
+                        Thời gian đặt lệnh
+                    </th>
+                    <th>
+                        Ngăn
+                    </th>
+                    <th>
+                        Hàng hóa
+                    </th>
+                    <th>
+                        Họng
+                    </th>
+                    <th>
+                        Dung tích ngăn
+                    </th>
+                    <th>
+                        Lượng đặt
+                    </th>
+                    <th>
+                        Lượng xuất
+                    </th>
+                    @*<th>
+                            Kho
+                        </th>*@
+                    <th>
+                        Trạng thái
+                    </th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.ListCommandDetail)
+            {
+                <tr>
+                    <td>
+                        @item.CommandID
+                    </td>
+                    <td>
+                        @Convert.ToInt32(item.WorkOrder)
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(@item.TimeOrder).ToString(Constants.DATE_FORMAT)
+                    </td>
+                    <td>
+                        @item.CompartmentOrder
+                    </td>
+                    <td>
+                        @foreach (var product in Model.ListTemProduct)
+                        {
+                            if (@item.ProductCode == product.Code)
+                            {
+                                @product.Name;
+                            }
+                        }
+
+                    </td>
+                    <td>
+                        @item.ArmNo
+                    </td>
+                    <td>
+                        @foreach (var vehicle in Model.ListVehicle)
+                        {
+                            if (@item.Vehicle.Trim(' ') == vehicle.VehicleNumber.Trim(' '))
+                            {
+                                if (item.CompartmentOrder == 1)
+                                {
+                                    @vehicle.Volume1 ;
+                                }
+                                else if (item.CompartmentOrder == 2)
+                                {
+                                    @vehicle.Volume2;
+                                }
+                                else if (item.CompartmentOrder == 3)
+                                {
+                                    @vehicle.Volume3;
+                                }
+                                else if (item.CompartmentOrder == 4)
+                                {
+                                    @vehicle.Volume4;
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        @item.V_Preset
+                    </td>
+                    <td>
+                        @item.V_Actual
+                    </td>
+
+                    @if (item.Flag == Constants.Command_Flag_Register)
+                    {
+                        <td class="text-center">Đăng ký lệnh</td>
+                    }
+                    else if (item.Flag == Constants.Command_Flag_Approved)
+                    {
+                        <td class="text-center">Đã duyệt</td>
+                    }
+                    else if (item.Flag == Constants.Command_Flag_PrepareExport)
+                    {
+                        <td class="text-center">Chuẩn bị xuất</td>
+                    }
+                    else if (item.Flag == Constants.Command_Flag_Exported)
+                    {
+                        <td class="text-center">Xuất xong</td>
+                    }
+                    else if (item.Flag == Constants.Command_Flag_Invoice)
+                    {
+                        <td class="text-center">Đã in</td>
+                    }
+                    else if (item.Flag == Constants.Command_Flag_InputCancel)
+                    {
+                        <td class="text-center">Huỷ lệnh</td>
+                    }
+                    else if (item.Flag == Constants.Command_Flag_InputHand)
+                    {
+                        <td class="text-center">Nhập tay</td>
+                    }
+                    else if (item.Flag == Constants.Command_Flag_StopPressing)
+                    {
+                        <td class="text-center">Dừng ép</td>
+                    }
+                    else if (item.Flag == Constants.Command_Flag_ChangeDate)
+                    {
+                        <td class="text-center">Chuyển ngày</td>
+                    }
+                    else if (item.Flag == Constants.Command_Flag_Exporting)
+                    {
+                        <td class="text-center">Đang xuất</td>
+                    }
+                    else if (item.Flag == Constants.Command_Flag_Complete)
+                    {
+                        <td class="text-center">Hoàn thành</td>
+                    }
+                    else
+                    {
+                        <td class="text-center">@Html.DisplayFor(modelItem => item.Flag)</td>
+                    }
+                </tr>
+
+            }
+
+        </table>
+    </div>
+
+    <div>
+        <table class="table table-striped" border="1">
+            <thead>
+                <tr>
+                    <th width="25%" style="text-align:center">Lái xe quẹt thẻ vào</th>
+                    <th width="25%" style="text-align:center">Lái xe quẹt thẻ ra</th>
+                    <th width="25%" style="text-align:center">Xe vào</th>
+                    <th width="25%" style="text-align:center">Xe ra</th>
+            </thead>
+            <tr style="height:100px">
+                <td><img src="/Content/images/@Model.Command.Image1" style="width: 100%; height: 100%; ">
+                <td><img src="/Content/images/@Model.Command.Image2" style="width: 100%; height: 100%; ">
+                <td><img src="/Content/images/@Model.Command.Image3" style="width: 100%; height: 100%; ">
+                <td><img src="/Content/images/@Model.Command.Image4" style="width: 100%; height: 100%; ">
+            </tr>
+        </table>
+    </div>
+    <div>
+        <p>
+            <input type="button" value="Về Danh Mục" class="btn btn-primary" onclick="ReturnCommandList()" />
+            @*<input type="button" value="In lệnh" class="btn btn-primary" onclick="Print2()" />*@
+            <input type="button" value="Thêm lệnh" class="btn btn-primary" onclick="ReturnCommandAdd()" />
+            <input type="button" value="Lưu" class="btn btn-success" id="save" onclick="UpdateCustomer(@Model.Command.CommandID);" />
+        </p>
+    </div>
+    <div id="commandoutput" style="visibility:hidden"> </div>
+    <div id="commandInphieuxuatkho" style="visibility:hidden"> </div>
+</div>
+
+<script src="~/Scripts/Autocomplete/jquery.easy-autocomplete.js"></script>
+<link href="~/Scripts/Autocomplete/easy-autocomplete.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#jCertificateTime').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+    });
+
+    var TimeOrder = '@Convert.ToString(@Model.TimeOrder)';
+    TimeOrder = TimeOrder.split(' ')[0];
+    var currentDate = new Date().toLocaleDateString('vi-VN', options = {year: "numeric", month: "2-digit", day: "2-digit"});
+    if (TimeOrder == currentDate) {} else {
+        //document.getElementById('Command_CustomerCode').setAttribute('readonly', 'readonly');
+        //document.getElementById('save').style.display = 'none';
+    }
+    console.log(TimeOrder);
+    console.log(currentDate);
+</script>
+
+<script type="text/javascript">
+
+
+    setOption();
+    function setOption() {
+
+        optionCustomer = {
+            data: @Html.Raw(Json.Encode(@Model.LstCustomer)),
+            getValue: "name",
+            template: {
+                type: "description",
+                fields: {
+                    description: "type"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+
+                onHideListEvent: function () {
+                    //    //var selectedItemValue = $("#inputOne").getSelectedItemData().realName;
+
+                    //    //$("#inputTwo").val(selectedItemValue).trigger("change");
+                    var itemList = @Html.Raw(Json.Encode(@Model.LstCustomer));
+                    for (var i = 0; i < itemList.length; i += 1) {
+
+                        //alert(itemList[i].name);
+                        if (itemList[i].name === document.getElementById("IdCustomer").value) {
+                            $("#certificateNumber").focus();
+                        }
+
+                    };
+                },
+
+            }
+        };
+        $("#IdCustomer").easyAutocomplete(optionCustomer);
+    }
+
+    function UpdateCustomer(CommandID) {
+        var update = true;
+        var customer = '';
+        if (document.getElementById("IdCustomer").value != "") {
+            customer = document.getElementById("IdCustomer").value.split(" - ")[0];
+        }
+        else {
+            alert("Vui lòng chọn khách hàng");
+        }
+        console.log(customer);
+        $.ajax({
+            url: '/Command/UpdateCustomerCommand/',
+            type: 'POST',
+            data: {
+                "commandId": CommandID,
+                "customerCode": customer,
+                "user": ""
+            },
+            dataType: 'bool',
+            success: function (result) {
+                if (result = true) {
+                    alert("cập nhật khách hàng thành công");
+                }
+                else {
+                    alert("Lỗi");
+                }
+            }
+        });
+        window.location.reload();
+    }
+</script>
+
+
+
+
+
+
+
+
+

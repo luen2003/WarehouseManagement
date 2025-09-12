@@ -1,0 +1,865 @@
+﻿@model PetroBM.Web.Models.DispatchModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util;
+@using Newtonsoft.Json
+@using System.Data;
+@{
+    ViewBag.Title = "Kho " + Session[Constants.Session_WareHouseName] + " > Danh sách lệnh điều vận";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var listIEDispatch = JsonConvert.SerializeObject(Model.ListIEDispatch); 
+
+    var ListVehicleFillter = JsonConvert.SerializeObject(Model.LstVehicle);
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@using (Html.BeginForm("DispatchDetail", "Dispatch", FormMethod.Post))
+{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+<div class="container">
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Số chứng từ</label>
+            <div class="form-group col-xs-8">
+                @Html.EditorFor(model => model.CertificateNumber, new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus" } })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Phương tiện</label>
+            <div class="form-group col-xs-8">
+                @Html.EditorFor(model => model.VehicleNumber, new { htmlAttributes = new { @class = "form-control", @id = "IdVehicle", @name = "ReportModel.Vehicle", @style = "width:217px" } })
+            </div>
+
+        </div>
+        
+        @*<div class="row">
+                <label class="control-label col-xs-4">Card Data</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.CardData, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>*@
+    </div>
+
+    <div class='col-sm-5 col-xs-6'>
+
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đăng ký</label>
+            <div class="form-group col-xs-6">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Lái xe</label>
+            <div class="form-group col-xs-6">
+                @Html.EditorFor(model => model.DriverName1, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+    </div>
+
+    <div class='col-sm-3 col-xs-6'>
+        <div class="row">
+            <div class="form-group col-xs-10">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row" style="padding-left:15px;padding-top:20px;">
+            <button type="submit" class='btn btn-success' style=" vertical-align: text-bottom;">Tìm kiếm</button>
+        </div>
+    </div>
+    <br>
+    <table class="table" id="tabledispatch">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.CertificateNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.TimeOrder)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.VehicleNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.DriverName1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.DriverName2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.ProductCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.Department)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.DstPickup1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dispatch.DstPickup2)
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+
+        @{ var i = 0; var hong = "";
+            foreach (var item in Model.ListIEDispatch)
+            {
+                i = i + 1;
+                <tr>
+                    <td class="text-center">
+                        <a href="../Dispatch/DispatchView/@item.DispatchID">@Html.DisplayFor(modelItem => item.CertificateNumber)</a>
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VehicleNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DriverName1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DriverName2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DstPickup1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DstPickup2)
+                    </td>
+                    <td class="text-center">
+                        <img style='max-width: 30px' src='/Content/images/send-message.png' />
+                    </td>
+                    <td class="text-center">
+                        <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.DispatchID);" src='/Content/images/print.png' />
+                    </td>
+                    <td class="text-center">
+                        <img style='max-width: 30px' onclick="DeleteDispatch(@item.DispatchID);" src='/Content/images/Delete.png' />
+                    </td>
+                </tr> 
+            }
+        }
+    </table>
+    <div class="text-center">
+        @Html.PagedListPager(Model.ListIEDispatch, page => Url.Action("DispatchDetail", new
+        {
+            certificateNumber = Model.CertificateNumber,
+            dstPickup1 = Model.DstPickup1,
+            dstPickup2 = Model.DstPickup2,
+            dstReceive = Model.DstReceive,
+            startDate = Model.StartDate,
+            endDate = Model.EndDate, 
+                page
+
+        }))
+    </div>
+    @*<button id="Submit" class='btn btn-success' style="float:right">Lưu</button>
+        <input type="button" value="In phiếu xuất kho" class="btn btn-primary" onclick="PrintInventoryOutput()" />*@
+</div>
+}
+<div id="commandInphieuxuatkho" style="visibility:hidden">
+
+</div>
+@section scripts{ 
+    <script src="~/Scripts/Autocomplete/jquery.easy-autocomplete.js"></script>
+    <link href="~/Scripts/Autocomplete/easy-autocomplete.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        var objInvoice; //Hiển thị lưới danh mục hóa đơn //Hóa đơn gốc
+        var objListInvoiceDetail; //Khởi tạo toàn bộ danh mục giá chung
+        var objListWarehouse = @Html.Raw(Json.Encode(@Model.ListWareHouse)); //danh sách kho hàng
+        var objListDispatch = @Html.Raw(listIEDispatch); //Chi tiết lệnh điều vận
+        var objListProduct = @Html.Raw(Json.Encode(@Model.ListTemProduct)); //danh sách hàng hóa
+        var objListVehicle = @Html.Raw(Json.Encode(@Model.ListVehicle)); //danh sách phương tiện
+        var objListCustomer = @Html.Raw(Json.Encode(@Model.ListCustomer)); //danh sách khách hàng
+        var objMaster; //thông tin về lệnh
+        var objListDriver ; //thông tin về lái xe
+
+        var titleWareHouseName = '@Session[Constants.Session_WareHouseName]';
+        var titleCompanyName = '@Session[Constants.Session_TitleReportCompanyName]';
+        var titleCompanyAddress = '@Session[Constants.Session_TitleCompanyAddress]';
+        var titleCompanyPhone = '@Session[Constants.Session_TitleCompanyPhone]';
+        var titleCompanyFax  = '@Session[Constants.Session_TitleCompanyFax] ';
+        var titleIdentificationNumber  = '@Session[Constants.Session_TitleIdentificationNumber] ';
+        var selectedIdTable = new Array();
+
+        //setOption();
+        function setOption() {
+
+            optionVehicle = {
+                data: @Html.Raw(ListVehicleFillter),
+                getValue: "name",
+                template: {
+                    type: "description",
+                    fields: {
+                        description: "type"
+                    }
+                },
+                list: {
+                    match: {
+                        enabled: true
+                    }
+                }
+            };
+            $("#IdVehicle").easyAutocomplete(optionVehicle);
+        }
+
+        $('.idcommand').each(function () {
+            selectedIdTable.push($(this).attr("id"));
+
+        });
+
+        var selectedIdVehicle = new Array();
+        $('.vehiclecommand').each(function () {
+            selectedIdVehicle.push($(this).attr("id"));
+
+        });
+
+        for (var i = 0; i < selectedIdVehicle.length; i++) {
+            if (selectedIdTable[0] != selectedIdTable[i + 1] & selectedIdVehicle[0] == selectedIdVehicle[i + 1]) {
+                var b = Math.min.apply(Math, selectedIdTable);
+            }
+
+        }
+
+        function formatNumber(number, decimalPlace) {
+            if (number === null || number === undefined) {
+                return '';
+            }
+
+            let formatOptions = {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: decimalPlace
+            };
+
+            return number.toLocaleString('en-US', formatOptions);
+        }
+
+        function formatNumberV2(number, decimalPlace) {
+            if (number === null || number === undefined) {
+                return '';
+            }
+
+            let format = '#,##0';
+            if (decimalPlace > 0) {
+                format += '.';
+                for (let i = 0; i < decimalPlace; i++) {
+                    format += '#';
+                }
+            } else {
+                return number.toLocaleString('en-US').replace(/,/g, '.');
+            }
+
+            return number.toLocaleString('en-US', {
+                minimumFractionDigits: decimalPlace,
+                maximumFractionDigits: decimalPlace
+            });
+        }
+
+        function DeleteDispatch(dispatchID) {
+            var stt = '';
+            $.ajax({
+                url: '/Dispatch/DeleteDispatch/',
+                type: 'POST',
+                data: {
+                    "DispatchID": dispatchID
+                },
+                dataType: 'bool',
+                success: function (result) {
+                    if (result = true) {
+                        update = 1;
+                        console.log(update);
+                    }
+                }
+            });
+            setTimeout(function () {
+                window.location.reload();
+            }, 500);
+        }
+
+        function PrintInventoryOutput(dispatchID) {
+            var stt = '';
+            var count = 1;
+
+            //var outtime =document.getElementById('OutTime').value;
+
+            var content = "";
+
+
+            for (var j = 0; j < objListDispatch.length; j++) {
+                if (objListDispatch[j].DispatchID == dispatchID) {
+
+                    content += "<table style='width: 100%;border:1px' cellspacing='0'>";
+                    content += "    <tbody>";
+                    content += "        <tr>";
+                    content += "            <td width=40% style='text-align: center;' > ";
+                    content += "            <td width=10% >";
+                    content += "            <td width=50% style='text-align: center;' >";
+                    content += "        <tr>";
+                    content += "            <td style='text-align: center;' ><p><strong>CÔNG TY CỔ PHẦN VẬT TƯ - TKV</strong><br><u><b>" + objListDispatch[j].Department +"</b></u></p> ";
+                    content += "            <td width=10% >";
+                    content += "            <td style='text-align: center;' ><p><strong>CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong><br><u><b>Độc lập - Tự do - Hạnh phúc</b></u></p>";
+                    content += "    </tbody>";
+                    content += "</table>";
+
+                    content += "<table style='width: 100%;border:1px' cellspacing='0'>";
+                    content += "    <tbody>";
+                    content += "        <tr style='height: 30px;'>";
+                    content += "            <td width=30%>";
+                    content += "            <td width=40%>";
+                    content += "            <td width=20%>";
+                    content += "            <td width=10%>";
+                    content += "        <tr><td style='text-align: center;'>";
+                    content += "            <td ><p><strong><center><h2>LỆNH ĐIỀU VẬN</h2></center></strong></p> ";
+                    content += "            <td>";
+                    content += "            <td style='text-align: center;'><p><strong>Số : " + objListDispatch[j].CertificateNumber +"</strong></p>";
+                    content += "        <tr><td colspan=4 style='text-align: center;'>(Dùng cho xe vận chuyển hàng hoá của Công ty cổ phần Vật tư - TKV)";
+                    content += "    </tbody>";
+                    content += "</table>";
+
+                    content += "<div>";
+                    content += "<table style='width: 100%;border:1px;line-height: 30px;' cellspacing='0'>";
+                    content += "    <tbody>";
+                    content += "        <tr>";
+                    content += "            <td width=10% >";
+                    content += "            <td width=20% ><p><strong>Thời gian thực hiện</p>";
+                    content += "            <td width=70% ><p><strong>: " + GenTime("Từ ", objListDispatch[j].TimeStart.toString()) + "</p>";
+                    content += "        <tr>";
+                    content += "            <td>";
+                    content += "            <td>";
+                    content += "            <td><p><strong>  " + GenTime("Đến ", objListDispatch[j].TimeStop.toString()) + "</p>";
+                    content += "        <tr>";
+                    content += "            <td colspan=3 >Căn cứ yêu cầu vận chuyển hàng hoá của Công ty ";
+                    content += "        <tr>";
+                    content += "            <td colspan=3 >Lệnh cho xe số đăng ký : <b> " + objListDispatch[j].VehicleNumber +"  </b>";
+                    content += "        <tr>";
+                    content += "            <td colspan=3 >Họ và tên lái xe (1) : <b> " + objListDispatch[j].DriverName1 +"  </b>";
+                    content += "        <tr>";
+                    content += "            <td colspan=3 >Họ và tên lái xe (2) : <b> " + objListDispatch[j].DriverName2 +"  </b>";
+                    content += "        <tr>";
+
+                    let mangProduct = objListDispatch[j].ProductCode.split(',');
+                    var strProduct = "";
+                    for (let i = 0; i < mangProduct.length; i++) {
+                        for (var k = 0; k < objListProduct.length; k++) {
+                            if (objListProduct[k].Code == mangProduct[i]) {
+                                strProduct += " " + objListProduct[k].Name + ",";
+                            }
+                        }
+                    } 
+                    content += "            <td colspan=3 >Tên hàng : <b> " + strProduct.substring(0, strProduct.length - 1) + "  </b>"; 
+
+                    content += "        <tr><td colspan=3 >Điểm lấy hàng :";
+                    for (var k = 0; k < objListWarehouse.length; k++) {
+                        if (objListWarehouse[k].WareHouseCode == objListDispatch[j].DstPickup1) {
+                            content += " <b> Kho " + objListWarehouse[k].WareHouseName + "  </b>";
+                        }
+                    }
+
+                    content += "        <tr><td colspan=3 >Điểm khác (nếu có) :"; 
+                    for (var k = 0; k < objListWarehouse.length; k++) {
+                        if (objListWarehouse[k].WareHouseCode == objListDispatch[j].DstPickup2) {
+                            content += " <b> Kho " + objListWarehouse[k].WareHouseName + "  </b>";
+                        }
+                    }
+                    content += "        <tr>";
+
+                    let mangDstReceive = objListDispatch[j].DstReceive.split(',');
+                    var strDstReceive = "";
+                    for (let i = 0; i < mangDstReceive.length; i++) {
+                        for (var k = 0; k < objListCustomer.length; k++) {
+                            if (objListCustomer[k].CustomerCode == mangDstReceive[i]) {
+                                strDstReceive += " " + objListCustomer[k].CustomerName + ",";
+                            }
+                        }
+                    }
+                    content += "            <td colspan=3 >Điểm trả hàng : <b> " + strDstReceive.substring(0, strDstReceive.length - 1) +"  </b>";
+                    content += "        <tr>";
+                    content += "            <td colspan=3 >Nguyên tắc giao hàng : <b> " + objListDispatch[j].Note1 + "  </b>";
+                    content += "        <tr>";
+                    content += "            <td colspan=3 >Ghi chú : <b> " + objListDispatch[j].Remark + "  </b>";
+                    content += "        <tr>";
+                    content += "            <td colspan=3  style='text-align: center;'>(Kèm theo phiếu xuất kho kiêm vận chuyển nội bộ hoặc hoá đơn của bên bán)";
+                    content += "        <tr>";
+                    content += "            <td colspan=3  style='text-align: right;'>" + GenTimeNow("Hạ long") +"";
+                    content += "</table>";
+                    content += "<div style='padding-top:2%'>";
+                    content += "    <div style='width:33%;float:left;padding-top: 16px; '>";
+                    content += "        <center>";
+                    content += "            <b>TL Giám đốc</b><br> Trưởng phòng KHĐT";
+                    content += "        </center>";
+                    content += "    </div>";
+                    content += "    <div style='width:34%;float:left;padding-top: 16px; '>";
+                    content += "        <center>";
+                    content += "            <b>Quản đốc PXVTB</b><br><i>(ký ghi rõ họ tên)</i>";
+                    content += "        </center>";
+                    content += "    </div>";
+                    content += "    <div style='width:33%;float:left;padding-top: 16px; '>";
+                    content += "        <center>";
+                    content += "            <b>Lái Xe</b><br><i>(ký ghi rõ họ tên)</i>";
+                    content += "        </center>";
+                    content += "    </div>";
+                    content += "</div>";
+                    content += "<br><br><br><br><br><br><br><br><br><br><br><br>";
+                    content += "<div>* <b>Biện pháp an toàn</b></div>";
+                    content += "<div>1/ Thực hiện nghiêm túc các quy trình kỹ thuật an toàn và các biện pháp cụ thể phòng ngừa TNLĐ, TNGT, PCCN trong quy trình vận chuyển hàng hoá</div>";
+                    content += "<div>2/ Chấp hành nghiêm chỉnh các luật giao thông đường bộ và các nội quy, quy định, quy chế hoạt động kinh doanh xăng dầu của Công ty đã ban hành</div>";
+                    content += "<div>* Ghi chú: Lệnh điều vận chỉ sử dụng trong ngày. trừ vận chuyển cấp lễ trên công trường. Không tẩy xoá, sửa chữa Lệnh và nộp lại phân xưởng ngay sau khi hoàn thành công việc</div>";
+
+                    content += "<div id='Page2' class='page-break-before' > ";
+                    content += "  <div style='text-align: center;' ><h3>QUÁ TRÌNH THỰC HIỆN VẬN CHUYỂN</h3></div>";
+                    content += "    <table style='width: 100%;' cellspacing='0' border=1  >";
+                    content += "        <thead>";
+                    content += "            <tr>";
+                    content += "                <td style='text-align: center;' rowspan=3>STT"; 
+                    content += "                <td style='text-align: center;' rowspan=3>Địa điểm<br>nhận hàng"; 
+                    content += "                <td style='text-align: center;' rowspan=3>Thời gian<br>rời cảng";
+                    content += "                <td style='text-align: center;' rowspan=3>Địa điểm<br>trả hàng";
+                    content += "                <td style='text-align: center;' rowspan=3>Tên hàng<br>vận chuyển";
+                    content += "                <td style='text-align: center;' colspan=3>Xác nhận nơi nhận hàng";
+                    content += "                <td style='text-align: center;' colspan=2>Km xe chạy";
+                    content += "                <td style='text-align: center;'>Km"; 
+                    content += "            </tr>";
+                    content += "            <tr>";
+                    content += "                <td rowspan=2 style='text-align: center;width: 50px;'>  Giờ  <td rowspan=2 style='text-align: center;' >Khối lượng<td style='text-align: center;' >Ký nhận<td colspan=2 style='text-align: center;'>Theo định mức<td style='text-align: center;'>GPS";
+                    content += "            </tr>";
+                    content += "            <tr>";
+                    content += "                <td style='text-align: center;'>Ghi rõ họ tên<td style='text-align: center;'>Có hàng<td style='text-align: center;'>K/hàng<td>";
+                    content += "            </tr>";
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td style='text-align: center;'>1<td style='text-align: center;'>2<td style='text-align: center;'>3<td style='text-align: center;'>4<td style='text-align: center;'>5<td style='text-align: center;'>6<td style='text-align: center;'>7<td style='text-align: center;'>8<td style='text-align: center;'>9<td style='text-align: center;'>10<td style='text-align: center;'>11";
+                    content += "            </tr>";
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td><td><td><td><td><td><td><td><td><td><td>"; 
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td><td><td><td><td><td><td><td><td><td><td>"; 
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td><td><td><td><td><td><td><td><td><td><td>"; 
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td><td><td><td><td><td><td><td><td><td><td>"; 
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td><td><td><td><td><td><td><td><td><td><td>"; 
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td><td><td><td><td><td><td><td><td><td><td>"; 
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td><td><td><td><td><td><td><td><td><td><td>"; 
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td><td><td><td><td><td><td><td><td><td><td>"; 
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td><td><td><td><td><td><td><td><td><td><td>"; 
+                    content += "            <tr style='height:30px'>";
+                    content += "                <td><td><td><td><td><td><td><td><td><td><td>"; 
+                    content += "        </thead>";
+                    content += "        <tbody>"; 
+                    content += "        </tbody>";
+                    content += "    </table>";
+                    content += "  <div ><p>* Ý kiến kiến nghị nơi nhận hàng, nếu có biến động về số lượng, chất lượng, Ghi rõ chuyến số máy theo điểm</p></div>";
+                    content += "  <div ><p>...................................................................................................................................</p></div>";
+                    content += "  <div ><p>Hoặc nếu cần giải trình, kiến nghị xin ghi ngắn gọn dưới đây:</p></div>";
+                    content += "  <div ><p>...................................................................................................................................</p></div>";
+                    content += "  <div ><p>* Ghi chú: Ghi thứ tự từng chuyến. Nếu có thay đổi có thể gạch vào giữa và điền vào ngay dưới cho sạch</p></div>";
+                    content += "  <div ><p>Tình trạng kỹ thuật xe sau khi kết thúc Lệnh điều vận</p></div>";
+                    content += "  <div ><p>...................................................................................................................................</p></div>";
+                    content += "  <div style='padding-top:2%'>";
+                    content += "      <div style='width:33%;float:left;padding-top: 16px; '>";
+                    content += "          <center>";
+                    content += "              <b>Lái Xe</b>";
+                    content += "          </center>";
+                    content += "      </div>";
+                    content += "      <div style='width:34%;float:left;padding-top: 16px; '>";
+                    content += "          <center>";
+                    content += "              <b>NVKT</b>";
+                    content += "          </center>";
+                    content += "      </div>";
+                    content += "      <div style='width:33%;float:left;padding-top: 16px; '>";
+                    content += "          <center>";
+                    content += "              <b>Quản đốc PXVTB</b>";
+                    content += "          </center>";
+                    content += "      </div>";
+                    content += "  </div>";
+                    content += "</div>";
+                    
+
+
+                }
+            }
+            var newWin = window.open('', 'Print-Window');
+            newWin.document.open();
+            newWin.document.write('<html><head><style>.page-break-before {page-break-before: always;}</style></head><body onload="window.print()">' + content + '</body></html>');
+            newWin.document.close();
+            //setTimeout(function () {
+            //    window.location.reload();
+            //}, 3000);
+        }
+
+        function GenTime(text, datetime) {
+            if (datetime == "") {
+                return "";
+            }
+            // Tạo đối tượng Date
+            const date = new Date(datetime.toString());
+
+            // Lấy thông tin năm, tháng, ngày, giờ, phút
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1; // getMonth() trả về tháng từ 0-11, nên cần +1
+            const day = date.getDate();
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+
+            return text + hours + " giờ " + minutes + " phút, ngày " + day + " tháng " + month + " năm " + year;
+        }
+
+        function GenTimeNow(text) {
+            // Tạo đối tượng Date
+            const date = new Date();
+
+            // Lấy thông tin năm, tháng, ngày, giờ, phút
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1; // getMonth() trả về tháng từ 0-11, nên cần +1
+            const day = date.getDate();
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+
+            return text + ", ngày " + day + " tháng " + month + " năm " + year;
+        }
+
+        function DocSo3ChuSo(baso) {
+            var tram;
+            var chuc;
+            var donvi;
+            var KetQua = "";
+            tram = parseInt(baso / 100);
+            chuc = parseInt((baso % 100) / 10);
+            donvi = baso % 10;
+            if (tram == 0 && chuc == 0 && donvi == 0) return "";
+            if (tram != 0) {
+                KetQua += ChuSo[tram] + " trăm ";
+                if ((chuc == 0) && (donvi != 0)) KetQua += " linh ";
+            }
+            if ((chuc != 0) && (chuc != 1)) {
+                KetQua += ChuSo[chuc] + " mươi";
+                if ((chuc == 0) && (donvi != 0)) KetQua = KetQua + " linh ";
+            }
+            if (chuc == 1) KetQua += " mười ";
+            switch (donvi) {
+                case 1:
+                    if ((chuc != 0) && (chuc != 1)) {
+                        KetQua += " mốt ";
+                    }
+                    else {
+                        KetQua += ChuSo[donvi];
+                    }
+                    break;
+                case 5:
+                    if (chuc == 0) {
+                        KetQua += ChuSo[donvi];
+                    }
+                    else {
+                        KetQua += " lăm ";
+                    }
+                    break;
+                default:
+                    if (donvi != 0) {
+                        KetQua += ChuSo[donvi];
+                    }
+                    break;
+            }
+            return KetQua;
+        }
+
+        //2. Hàm đọc số thành chữ (Sử dụng hàm đọc số có ba chữ số)
+
+        function DocTienBangChu(SoTien) {
+            var lan = 0;
+            var i = 0;
+            var so = 0;
+            var KetQua = "";
+            var tmp = "";
+            var ViTri = new Array();
+            if (SoTien < 0) return "Số tiền âm !";
+            if (SoTien == 0) return "Không đồng !";
+            if (SoTien > 0) {
+                so = SoTien;
+            }
+            else {
+                so = -SoTien;
+            }
+            if (SoTien > 8999999999999999) {
+                //SoTien = 0;
+                return "Số quá lớn!";
+            }
+            ViTri[5] = Math.floor(so / 1000000000000000);
+            if (isNaN(ViTri[5]))
+                ViTri[5] = "0";
+            so = so - parseFloat(ViTri[5].toString()) * 1000000000000000;
+            ViTri[4] = Math.floor(so / 1000000000000);
+            if (isNaN(ViTri[4]))
+                ViTri[4] = "0";
+            so = so - parseFloat(ViTri[4].toString()) * 1000000000000;
+            ViTri[3] = Math.floor(so / 1000000000);
+            if (isNaN(ViTri[3]))
+                ViTri[3] = "0";
+            so = so - parseFloat(ViTri[3].toString()) * 1000000000;
+            ViTri[2] = parseInt(so / 1000000);
+            if (isNaN(ViTri[2]))
+                ViTri[2] = "0";
+            ViTri[1] = parseInt((so % 1000000) / 1000);
+            if (isNaN(ViTri[1]))
+                ViTri[1] = "0";
+            ViTri[0] = parseInt(so % 1000);
+            if (isNaN(ViTri[0]))
+                ViTri[0] = "0";
+            if (ViTri[5] > 0) {
+                lan = 5;
+            }
+            else if (ViTri[4] > 0) {
+                lan = 4;
+            }
+            else if (ViTri[3] > 0) {
+                lan = 3;
+            }
+            else if (ViTri[2] > 0) {
+                lan = 2;
+            }
+            else if (ViTri[1] > 0) {
+                lan = 1;
+            }
+            else {
+                lan = 0;
+            }
+            for (i = lan; i >= 0; i--) {
+                tmp = DocSo3ChuSo(ViTri[i]);
+                KetQua += tmp;
+                if (ViTri[i] > 0) KetQua += Tien[i];
+                if ((i > 0) && (tmp.length > 0)) KetQua += ',';//&& (!string.IsNullOrEmpty(tmp))
+            }
+            if (KetQua.substring(KetQua.length - 1) == ',') {
+                KetQua = KetQua.substring(0, KetQua.length - 1);
+            }
+            KetQua = KetQua.substring(1, 2).toUpperCase() + KetQua.substring(2);
+            return KetQua;//.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
+        }
+
+
+        function getDateNow() {
+            var strFormat = "";
+            var strDate = new Date();
+
+            strFormat += ("00" + strDate.getDate()).toString().slice(-2);
+            strFormat += "/" + ("00" + (strDate.getMonth() + 1)).toString().slice(-2);
+            strFormat += "/" + strDate.getFullYear();
+            return strFormat;
+        }
+
+        function getDayNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += ("00" + strDate.getDate()).toString().slice(-2);
+            return strFormat;
+        }
+
+        function getMonthNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += ("00" + (strDate.getMonth() + 1)).toString().slice(-2);
+            return strFormat;
+        }
+
+        function getYearNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += strDate.getFullYear();
+            return strFormat;
+        }
+
+        function getTimeNow() {
+            var strFormat = "";
+            var strDate = new Date();
+
+            strFormat += " " + ("00" + strDate.getHours()).toString().slice(-2);
+            strFormat += ":" + ("00" + strDate.getMinutes()).toString().slice(-2);
+
+            return strFormat;
+        }
+
+        function formatTimestamp(timestamp) {
+            // Create a new Date object from the timestamp
+            const date = new Date(timestamp);
+
+            // Format the date to dd/MM/yyyy HH:mm
+            const formattedDate = ('0' + date.getDate()).slice(-2) + '/' +
+                ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+                date.getFullYear() + ' ' +
+                ('0' + date.getHours()).slice(-2) + ':' +
+                ('0' + date.getMinutes()).slice(-2);
+
+            return formattedDate;
+        }
+
+        function formatTimestamp2(timestamp) {
+            // Create a new Date object from the timestamp
+            const date = new Date(timestamp);
+
+            // Format the date to dd/MM/yyyy HH:mm
+            const formattedDate = ('0' + date.getDate()).slice(-2) + '/' +
+                ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+                date.getFullYear() ;
+
+            return formattedDate;
+        }
+
+        function formatDateVN(date) {
+            var strFormat = "";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate() < 10) {
+                strFormat += "0" + datetimeorder.getDate();
+            }
+            else {
+                strFormat += datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth() < 9) {//bij hao 1 thang ko hieu kieu gi
+                strFormat += "/0" + (datetimeorder.getMonth() + 1);
+            }
+            else {
+                strFormat += "/" + (datetimeorder.getMonth() + 1);
+            }
+
+            strFormat += "/" + datetimeorder.getFullYear();
+            strFormat += " " + ("00" + datetimeorder.getHours()).toString().slice(-2);
+            strFormat += ":" + ("00" + datetimeorder.getMinutes()).toString().slice(-2);
+            return strFormat;
+        }
+
+        function formatDateOnlyVN(date) {
+
+            var strFormat = "";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate() < 10) {
+                strFormat += "0" + datetimeorder.getDate();
+            }
+            else {
+                strFormat += datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth() < 9) {//bij hao 1 thang ko hieu kieu gi
+                strFormat += "/0" + (datetimeorder.getMonth() + 1);
+            }
+            else {
+                strFormat += "/" + (datetimeorder.getMonth() + 1);
+            }
+
+            strFormat += "/" + datetimeorder.getFullYear();
+            return strFormat;
+
+        }
+
+        function formatCharacterDate(date) {
+
+            var strFormat = "";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate() < 10) {
+                strFormat += "Ngày 0" + datetimeorder.getDate();
+            }
+            else {
+                strFormat += "Ngày" + datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth() < 11) {//bij hao 1 thang ko hieu kieu gi
+                strFormat += " tháng 0" + (datetimeorder.getMonth() + 1);
+            }
+            else {
+                strFormat += " tháng " + (datetimeorder.getMonth() + 1);
+            }
+
+            strFormat += " năm" + datetimeorder.getFullYear();
+            return strFormat;
+
+        }
+
+        var objListSeal = @Html.Raw(Json.Encode(@Model.ListSeal)); //Chi tiết lệnh
+        var ChuSo=new Array(" không "," một "," hai "," ba "," bốn "," năm "," sáu "," bảy "," tám "," chín ");
+        var Tien=new Array( "", " nghìn", " triệu", " tỷ", " nghìn tỷ", " triệu tỷ");
+
+        var listVolume ="";
+        var tTb = 0 ;
+        var dTb = 0 ;
+        var wcfTb = 0 ;
+        var vcfTb = 0 ;
+        var ltt = 0 ;
+        var l15 = 0 ;
+        var kg = 0 ;
+        var objInvoiceDetailId = 0;
+        var noteStored = "";
+
+        $(document).ready(function () {
+            $('input:checkbox').click(function () {
+                $('input:checkbox').not(this).prop('checked', false);
+            });
+        });
+
+        function  ReDirectUrl(){
+            window.location.href = "/Bills/Index";
+            };
+
+        function CheckedCheckBox() {
+            document.getElementById("note").innerHTML = "";
+            //for (var i = 0; i < objListInvoiceDetail.length; i++) {
+            //    if (document.getElementById(objListInvoiceDetail[i].ListVolume).checked == true) {
+            //        document.getElementById("note").innerHTML = objListInvoiceDetail[i].Note;
+            //    }
+            //}
+        };
+
+        Number.prototype.pad = function (size) {
+            var s = String(this);
+            while (s.length < (size || 2)) { s = "0" + s; }
+            return s;
+        }
+    </script>
+
+}

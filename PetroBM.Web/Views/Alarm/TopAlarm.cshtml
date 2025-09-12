@@ -1,0 +1,191 @@
+﻿@model PetroBM.Web.Models.AlarmModel
+@using PetroBM.Common.Util
+
+<div class="bottom-right-box col-md-12 col-xs-12">
+    <div class="box-content">
+        <ul class="tbl-header">
+            <li class="col-xs-6">
+                <div id="alarm-toggle" data-toggle="collapse" data-target="#top-alarm" style="display:inline-block;">
+                    <div id="alarm-collapse" class="col-md-1 glyphicon glyphicon-chevron-up"></div>
+                    Cảnh báo
+                    <img id="alert-alarm" src="~/Content/images/icon/alert.gif" style="display:none; height: 14px;" />
+                </div>
+            </li>
+            <li class="col-xs-6 text-right">@Html.ActionLink("Tất cả", "Index", "Alarm")</li>
+        </ul>
+        <section class="collapse" id="top-alarm">
+            <ul class="tbl-subheader">
+                <li class="col-xs-3">Ngày</li>
+                <li class="col-xs-2">Loại cảnh báo</li>
+                <li class="col-xs-2">Bể</li>
+                <li class="col-xs-2">Vấn đề</li>
+                <li class="col-xs-1">G.Trị</li>
+                <li class="col-xs-1">Tr.Thái</li>
+                <li class="col-xs-1">ID</li>
+            </ul>
+            <div class="info" id="info">
+                @foreach (var item in Model.AlarmList)
+                {
+                    if (item.TypeId == Constants.ALARM_TYPE_ERROR)
+                    {
+                        <ul class="error-record">
+                            <li class="col-xs-3">@Html.DisplayFor(m => item.InsertDate)</li>
+                            <li class="col-xs-2">
+                            @foreach (var it in Model.AlarmTypeList)
+                            {
+                                if (it.TypeId == item.TypeId)
+                                {
+                                    @it.TypeName
+                                }
+                            }
+                            </li>
+                           <li class="col-xs-2">
+                               @foreach (var it in Model.TankList)
+                               {
+                                   if (it.TankId == item.TankId && it.WareHouseCode== item.WareHouseCode)
+                                   {
+                                       @it.TankName
+                                   }
+                               }  
+                           </li>
+
+                            <li class="col-xs-2">@item.Issue</li>
+                            <li class="col-xs-1">@item.Value</li>
+                            <li class="col-xs-1 text-center">
+                                @if (!item.ConfirmFlag)
+                                {
+                                    <img class="confirm-alarm" src="~/Content/images/icon/alert.gif"
+                                         data-toggle="modal" data-target="#CommentModal" style="height: 14px;" />
+                                }
+                                else
+                                {
+                                    if (!item.SolveFlag)
+                                    {
+                                        <img class="solve-alarm" src="~/Content/images/icon/fix.png"
+                                             data-toggle="modal" data-target="#CommentModal" style="height: 14px;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/images/icon/tick.png" style="height: 14px;" />
+                                    }
+                                }
+                                @Html.Hidden("AlarmId", item.AlarmId.ToString())
+                            </li>
+                            <li class="col-xs-1">@item.AlarmId</li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="alarm-record">
+                            <li class="col-xs-3">@Html.DisplayFor(m => item.InsertDate)</li>
+
+                            <li class="col-xs-2">
+                                @foreach (var it in Model.AlarmTypeList)
+                                {
+                                    if (it.TypeId == item.TypeId)
+                                    {
+                                        @it.TypeName
+                                    }
+                                }
+                            </li>
+
+                            <li class="col-xs-2">
+                                @foreach (var it in Model.TankList)
+                                {
+                                    if (it.TankId == item.TankId && it.WareHouseCode == item.WareHouseCode)
+                                    {
+                                        @it.TankName
+                                    }
+                                }
+                            </li>
+
+                            <li class="col-xs-2">@item.Issue</li>
+                            <li class="col-xs-1">@item.Value</li>
+                            <li class="col-xs-1 text-center">
+                                @if (!item.ConfirmFlag)
+                                {
+                                    <img class="confirm-alarm" src="~/Content/images/icon/alert.gif"
+                                         data-toggle="modal" data-target="#CommentModal" style="height: 14px;" />
+                                }
+                                else
+                                {
+                                    if (!item.SolveFlag)
+                                    {
+                                        <img class="solve-alarm" src="~/Content/images/icon/fix.png"
+                                             data-toggle="modal" data-target="#CommentModal" style="height: 14px;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/images/icon/tick.png" style="height: 14px;" />
+                                    }
+                                }
+                                @Html.Hidden("AlarmId", item.AlarmId.ToString())
+                            </li>
+                            <li class="col-xs-1">@item.AlarmId</li>
+                        </ul>
+                    }
+                }
+            </div>
+        </section>
+    </div>
+</div>
+
+<div id="ConfirmModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Nhập mật mã để xác nhận</h4>
+            </div>
+            <div class="modal-body">
+                <input type="password" id="confirm-password" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirm-ok" class="btn btn-success" data-dismiss="modal">Xác nhận</button>
+                <button type="button" id="confirm-close" class="btn btn-primary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="CommentModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Nhập ghi chú cho cảnh báo</h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="alarm-comment" rows="5"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="comment-ok" class="btn btn-success"
+                        data-toggle="modal" data-target="#ConfirmModal" data-dismiss="modal">
+                    Xác nhận
+                </button>
+                <button type="button" id="comment-close" class="btn btn-primary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="AlertModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông báo</h4>
+            </div>
+            <div class="modal-body">
+                <p id="alert-result"></p>
+            </div>
+            <div class="modal-footer">              
+                <button type="button" id="alert-close" class="btn btn-primary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+
+    </div>
+</div>

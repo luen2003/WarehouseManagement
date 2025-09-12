@@ -1,0 +1,284 @@
+﻿@model PetroBM.Web.Models.ReportModel
+@using PetroBM.Common.Util;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Báo cáo cân đối nhập xuất tồn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4 col-xs-6'>
+
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian cuối</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Kho</label>
+            <div class="form-group col-xs-8">
+                @if (Model.ListWareHouse.Any())
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(Model.ListWareHouse, "WareHouseCode", "WareHouseName", "") as SelectList, "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(new List<string>()), "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Tên mặt hàng</label>
+            <div class="form-group col-xs-8" id="productlist">
+                @if (Model.ListProduct.Any())
+                {
+                    @Html.DropDownListFor(model => model.ProductId,
+new SelectList(Model.ListProduct, "ProductId", "ProductName", "") as SelectList, "Chọn... ",
+new { @class = "form-control", @style = "width:217px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.ProductId,
+new SelectList(new List<string>()),
+new { @class = "form-control", @style = "width:217px;" })
+                }
+            </div>
+        </div>
+    </div>
+        <div class='col-sm-4 col-xs-12' style="margin-bottom:10px;">
+            <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+            <input type="submit" fileType="PDF" formtarget="_blank" value="Xuất PDF" class="btn btn-primary" />
+            <input type="submit" fileType="EXCEL" value="Xuất EXCEL" class="btn btn-primary" />
+            <input type="submit" fileType="PDF" formtarget="_blank" value="In" class="print btn btn-primary" />
+        </div>
+    @Html.HiddenFor(model => model.FileType);
+    @Html.HiddenFor(model => model.TankName);
+
+}
+
+
+<table class="table table-striped" id="DifferenceTank" border="1">
+    <thead>
+        <tr>
+            <th>
+                Loại hàng
+            </th>
+            <th>
+                Tồn đầu kỳ
+            </th>
+            <th>
+                Trống kỳ đầu
+            </th>
+            <th>
+                Nhập trong kỳ
+            </th>
+            <th colspan="2" style="text-align:center">
+                Xuất trong kỳ
+            </th>
+            <th>
+                Tồn cuối kỳ
+            </th>
+            <th>
+                Trống kỳ cuối
+            </th>
+            <th>
+                Chênh lệch thừa thiếu
+            </th>
+
+        </tr>
+    </thead>
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Xuất trên bể</th>
+            <th>Xuất từ bến xuất</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var i = 0;
+            if (Model.DataTable != null)
+            {
+                foreach (System.Data.DataRow row in Model.DataTable.Rows)
+                {
+                    i++;
+                    <tr>
+                        <td>@row["ProductName"] </td>
+                        <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["StartExits"].ToString()),2)</td>
+                        @if (@row["EmtyExits"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["EmtyExits"]), 2)</td>
+                        }
+                        @if (@row["InputPeroid"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["InputPeroid"]), 2)</td>
+                        }
+                        @if (@row["ExportOnTank"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["ExportOnTank"]), 2)</td>
+                        }
+                        @if (@row["ExportFromStop"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["ExportFromStop"]), 2)</td>
+                        }
+                        @if (@row["EndExits"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["EndExits"]), 2)</td>
+                        }
+                        @if (@row["EndEmtyExits"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["EndEmtyExits"]), 2)</td>
+                        }
+
+                        @if (@row["Deviation"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["Deviation"]), 2)</td>
+                        }
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+
+</table>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+            $('.btn').on('click', function (e) {
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+            });
+
+            var isChrome = !!window.chrome && !!window.chrome.webstore;
+            if (!isChrome) {
+                $('.print').hide();
+            }
+
+            $('.print').on('click', function (e) {
+
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+
+                var http = new XMLHttpRequest();
+                var url = '@Url.Action("BalanceTank", "Report")';
+                var params = $('form').serialize();
+                http.responseType = "blob";
+                http.open("POST", url, true);
+
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                http.onreadystatechange = function () {
+                    if (http.readyState == 4 && http.status == 200) {
+                        var response = http.response;
+
+                        var blob = new Blob([response], { type: 'application/pdf' });
+                        var fileURL = URL.createObjectURL(blob);
+                        $('#print-frame').attr('src', fileURL);
+                        $('#print-frame').on('load', function () {
+                            $('#print-frame').get(0).contentWindow.document.execCommand("print", false, null);
+                        });
+                    }
+                }
+
+                http.send(params);
+
+                return false;
+            });
+        });
+
+        //$("#Id").on('change', function () {
+        //    var warehouseid = ($(this).find(":selected").val());
+        //    if (warehouseid != "")
+
+
+        //        $.ajax({
+        //            url: '/WareHouse/GetProductByWareHouseId/',
+        //            type: 'GET',
+        //            data: {
+        //                "warehouseid": warehouseid
+        //            },
+        //            dataType: 'json',
+        //            success: function (data) {
+
+        //                var tr = "";
+        //                tr += " <select name='ProductId' id='ProductId' class='form-control' style='width:217px;'>";
+        //                tr += " <option value=''>Chọn tất cả</option>";
+        //                for (var i = 0; i < data.length; i++) {
+        //                    if (data[i].productname != null) {
+        //                        tr += " <option value=" + data[i].productid + ">" + data[i].productname + "</option>";
+        //                    }
+
+        //                }
+        //                tr += " </select>";
+        //                document.getElementById('productlist').innerHTML = tr;
+        //            },
+        //            error: function (err) {
+        //                alert("GetTankbyWareHouseId Error: " + err.responseText);
+        //            }
+        //        });
+
+        //});
+    </script>
+}

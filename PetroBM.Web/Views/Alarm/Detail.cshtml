@@ -1,0 +1,105 @@
+﻿@model PetroBM.Web.Models.AlarmModel
+
+@{
+    ViewBag.Title = "Thông tin cảnh báo";
+}
+
+<div class="form-horizontal">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label col-md-4">Id</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.AlarmId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Loại cảnh báo</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.MAlarmType.TypeName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Ngày</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.InsertDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Bể</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.MTank.TankName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Vấn đề</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.Issue, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Giá trị</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.Value, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label col-md-4">Trạng thái</label>
+            <div class="col-md-8">
+                @if (!Model.Alarm.ConfirmFlag)
+                {
+                    <img class="confirm-alarm" onClick="window.location.reload()" src="~/Content/images/icon/alert.gif" style="height: 14px;" />
+                }
+                else
+                {
+                    if (!Model.Alarm.SolveFlag)
+                    {
+                        <img class="solve-alarm" onClick="window.location.reload()" src="~/Content/images/icon/fix.png" style="height: 14px;" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/icon/tick.png" style="height: 14px;" />
+                    }
+                }
+                @Html.Hidden("AlarmId", Model.Alarm.AlarmId.ToString())
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Ngày xác nhận</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.ConfirmDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Người xác nhận</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.ConfirmUser, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Ghi chú</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.ConfirmComment, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Ngày xử lý</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.SolveDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Người xử lý</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.SolveUser, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">Ghi chú</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Alarm.SolveComment, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+﻿@model PetroBM.Web.Models.DensityModel
+
+@{
+    ViewBag.Title = "Sửa Tỉ trọng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ 
+ <h3>THÔNG TIN TỈ TRỌNG</h3><br />
+
+<label style="color:red">(* Bắt buộc điền)</label>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+
+        @Html.HiddenFor(model => model.Density.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.WareHouseCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Density.WareHouseCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Density.WareHouseCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.ArmNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Density.ArmNo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Density.ArmNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Density.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Density.ProductCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.MixingRatio, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Density.MixingRatio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Density.MixingRatio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.GasDensity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Density.GasDensity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Density.GasDensity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Density.AlcoholicDensity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Density.AlcoholicDensity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Density.AlcoholicDensity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                  <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" /> 
+                <input type="submit" value="Lưu" class="btn btn-default" />
+              
+            </div>
+     
+        </div>
+    </div>
+}
+

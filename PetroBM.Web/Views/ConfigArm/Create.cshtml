@@ -1,0 +1,177 @@
+﻿@model PetroBM.Web.Models.ConfigArmModel
+@using PetroBM.Common.Util
+
+@{
+    ViewBag.Title = "Tạo mới Họng xuất";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.Label("Kho", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="ConfigArm.WareHouseCode" id="WareHouseCode" class="form-control">
+                    @foreach (var item in Model.ListWareHouse)
+                    {
+                        <option value="@item.WareHouseCode"> @item.WareHouseName</option>
+                    }                  
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ArmNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ConfigArm.ArmNo, new { htmlAttributes = new { @class = "form-control", @id = "ArmNo", @onchange = "OnchangeArmNo()" } })
+                @Html.ValidationMessageFor(model => model.ConfigArm.ArmNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ArmName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ConfigArm.ArmName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ConfigArm.ArmName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ProductCode_1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="ConfigArm.ProductCode_1" id="ConfigArm.ProductCode_1" class="form-control">
+                    @foreach (var item in Model.ListProduct)
+                    {
+                        <option value="@item.ProductCode"> @item.ProductName </option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ProductCode_2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" >
+                <select name="ConfigArm.ProductCode_2" id="ConfigArm.ProductCode_2" class="form-control">
+                    @foreach (var item in Model.ListProduct)
+                    {
+                        <option value="@item.ProductCode"> @item.ProductName </option>
+                    }
+                    <option value="" selected="selected">Chọn... </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ProductCode_3, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="ConfigArm.ProductCode_3" id="ConfigArm.ProductCode_3" class="form-control" >
+                    @foreach (var item in Model.ListProduct)
+                    {
+                        <option value="@item.ProductCode"> @item.ProductName </option>
+                    }
+                    <option value="" selected="selected">Chọn... </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Bể", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" id="list-Tank">
+                <select class='form-control' name='ConfigArm.TankID' id="TankID">
+                    @foreach (var item in Model.ListTankTemps)
+                    {
+                        <option value='@item.TankId'>@item.TankName</option>
+                    }      
+                 </select>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.TypeExport, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select class='form-control' name='ConfigArm.ActiveStatus' id="ActiveStatus">
+                    <option value='1'>Xuất bộ</option>
+                    <option value='0'>Xuất thủy</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfigArm.ActiveStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select class='form-control' name='ConfigArm.ActiveStatus' id="ActiveStatus">
+                    <option value='1'>Kích hoạt</option>
+                    <option value='0'>Chưa kích hoạt</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10" >
+                <h4 id="ErrorMessage" style="color:red"></h4>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Tạo mới" class="btn btn-success" onclick="return CheckValidate();" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+}
+<script>
+    var lstConfigArm = @Html.Raw(Json.Encode(@Model.ListCheckConfigArm));
+    var listWareHouse = @Html.Raw(Json.Encode(@Model.ListWareHouse));
+    var lstTank = @Html.Raw(Json.Encode(@Model.ListTankTemps));
+    Init();
+
+    function Init(){
+        var warehousecode = $('#WareHouseCode').val();
+        var str="<select class='form-control' name='ConfigArm.TankID' id='TankID'>";
+        for (var i = 0; i < lstTank.length; i++) {
+            if (lstTank[i].WareHouseCode==warehousecode){
+                str += "<option value=" + lstTank[i].TankId + ">" + lstTank[i].TankName + "</option>";
+            }
+        }
+        document.getElementById("list-Tank").innerHTML=str;
+    }
+    function WareHouseChange(){
+        var warehousecode = $("#WareHouseCode").val();
+        var str="<select class='form-control' name='ConfigArm.TankID' id='TankID'>";
+        for (var i = 0; i < lstTank.length; i++) {
+            if (lstTank[i].WareHouseCode==warehousecode){
+                str += "<option value=" + lstTank[i].TankId + ">" + lstTank[i].TankName + "</option>";
+            }
+        }
+        document.getElementById("list-Tank").innerHTML=str;
+    }
+
+    function CheckValidate(){
+
+        var warehouse = $('#WareHouseCode').val();
+        var armno =document.getElementById('ArmNo').value;
+
+        for (var i = 0; i < lstConfigArm.length; i++) {
+
+            if (lstConfigArm[i].ArmNo==armno &&  lstConfigArm[i].WareHouseCode ==warehouse)
+            {
+                document.getElementById("ErrorMessage").innerHTML ="Đã tồn tại mã họng trong kho!";
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function OnchangeArmNo(){
+
+        document.getElementById("ErrorMessage").innerHTML ="";
+    }
+
+
+
+</script>

@@ -1,0 +1,351 @@
+﻿@model PetroBM.Web.Models.ReportModel
+@using PetroBM.Common.Util;
+
+@{
+    ViewBag.Title = "Báo cáo thông số đo tay";
+}
+
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4'>
+        <div class="row">
+            <label class="control-label col-md-4">Thời gian đầu</label>
+            <div class="form-group col-md-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-md-4">Thời gian cuối</label>
+            <div class="form-group col-md-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4'>
+
+        <div class="row">
+            <label class="control-label col-md-4">Kho</label>
+            <div class="form-group col-md-8">
+                @*<select name="WareHouseCode" id="WareHouseCode" class="form-control" onchange="OnchangeWareHouse()">
+                    @foreach (var item in Model.ListWareHouse)
+                    {
+                        if (item.WareHouseCode == Model.WareHouseCode)
+                        {
+                            <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                        }
+                    }
+                    <option value="">Tất cả</option>
+                </select>*@
+                @if (Model.ListWareHouse.Any())
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(Model.ListWareHouse, "WareHouseCode", "WareHouseName", "") as SelectList, "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;",onchange = "OnchangeWareHouse()" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(new List<string>()), "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+
+
+                @*@if (Model.ListWareHouse.Any())
+        {
+            @Html.DropDownListFor(model => model.WareHouseCode,
+               new SelectList(Model.ListWareHouse, "WareHouseCode", "WareHouseName", "") as SelectList, "Tất cả",
+               new { @class = "form-control", @style = "width:205px;", @onchange="OnchangeWareHouse()",@id = "WareHouseCode" })
+        }
+        else
+        {
+            @Html.DropDownListFor(model => model.WareHouseCode,
+               new SelectList(new List<string>()), "Chọn... ",
+               new { @class = "form-control", @style = "width:205px;" })
+        }*@
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="control-label col-md-4">Bể</label>
+            <div class="form-group col-md-8" id="Tank-List">
+                <select class="form-control" id="TankId" name="TankId">
+
+                </select>
+
+
+                @*@if (Model.TankList.Any())
+                {
+                    @Html.DropDownListFor(model => model.TankId,
+                       new SelectList(Model.TankList, "TankId", "TankName", "") as SelectList, "Tất cả",
+                       new { @class = "form-control", @style = "width:205px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.TankId,
+                       new SelectList(new List<string>()), "Chọn... ",
+                       new { @class = "form-control", @style = "width:205px;" })
+                }*@
+            </div>
+        </div>
+
+    </div>
+
+    <div class='col-sm-4'>
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+        <input type="submit" fileType="PDF" formtarget="_blank" value="Xuất PDF" class="btn btn-primary" />
+        <input type="submit" fileType="EXCEL" value="Xuất EXCEL" class="btn btn-primary" />
+        <input type="submit" fileType="PDF" formtarget="_blank" value="In" class="print btn btn-primary" />
+    </div>
+
+    @Html.HiddenFor(model => model.FileType);
+    @Html.HiddenFor(model => model.TankName);
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.MTank.TankName)
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.InsertDate)
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.LogInsertDate)
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.WaterLevel)
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.LogWaterLevel)
+            </th>
+            <th class="col-xs-1">
+                Sai số
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.TotalLevel)
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.LogTotalLevel)
+            </th>
+            <th class="col-xs-1">
+                Sai số
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.AvgTemperature)
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.LogAvgTemperature)
+            </th>
+            <th class="col-xs-1">
+                Sai số
+            </th>
+            <th class="col-xs-1">
+                @Html.LabelFor(m => m.TankManual.InsertUser)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+            </td>
+            <td>
+                @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+            </td>
+            <td>
+                @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+            </td>
+            <td></td>
+        </tr>
+        @foreach (var item in Model.ListTankManual)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MTank.TankName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsertDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LogInsertDate)
+                </td>
+                <td class="text-right">
+                    @NumberUtil.FormatNumber(item.WaterLevel, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.LogWaterLevel, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.WaterLevel - item.LogWaterLevel, 2)
+                </td>
+                <td class="text-right">
+                    @NumberUtil.FormatNumber(item.TotalLevel, 2)
+                </td>
+                <td class="text-right">
+                    @NumberUtil.FormatNumber(item.LogTotalLevel, 2)
+                </td>
+                <td class="text-right">
+                    @NumberUtil.FormatNumber(item.TotalLevel - item.LogTotalLevel, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.AvgTemperature, 1)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.LogAvgTemperature, 2)
+                </td>
+                <td>
+                    @NumberUtil.FormatNumber(item.AvgTemperature - item.LogAvgTemperature, 2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsertUser)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<iframe id="print-frame" src="" style="display:none"></iframe>
+@section scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+            $('.btn').on('click', function (e) {
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+                $('#TankName').val($('#TankId :selected').text());
+            });
+
+            var isChrome = !!window.chrome && !!window.chrome.webstore;
+            if (!isChrome) {
+                $('.print').hide();
+            }
+
+            $('.print').on('click', function (e) {
+
+                var fileType = $(this).attr('fileType');
+                $('#FileType').val(fileType);
+                $('#TankName').val($('#TankId :selected').text());
+
+                var http = new XMLHttpRequest();
+                var url = '@Url.Action("TankManual", "Report")';
+                var params = $('form').serialize();
+                http.responseType = "blob";
+                http.open("POST", url, true);
+
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                http.onreadystatechange = function () {
+                    if (http.readyState == 4 && http.status == 200) {
+                        var response = http.response;
+
+                        var blob = new Blob([response], { type: 'application/pdf' });
+                        var fileURL = URL.createObjectURL(blob);
+                        $('#print-frame').attr('src', fileURL);
+                        $('#print-frame').on('load', function () {
+                            $('#print-frame').get(0).contentWindow.document.execCommand("print", false, null);
+                        });
+                    }
+                }
+
+                http.send(params);
+
+                return false;
+            });
+        });
+
+        var initWarehouse = @Html.Raw(Json.Encode(@Model.WareHouseCode));
+        var initTankId =  @Html.Raw(Json.Encode(@Model.TankId));
+        OnchangeWareHouse();
+
+
+        function OnchangeWareHouse()
+        {
+            var warehouse = $("#WareHouseCode").val();
+            if (warehouse == '' || warehouse == null)
+            {
+                var strOption ="";
+                strOption += "<select class='form-control' id='TankId' name='TankId'>";
+                strOption += "</select>";
+                document.getElementById("Tank-List").innerHTML = strOption;
+            }
+            else
+            {
+                $.ajax({
+                    url: '/Report/GetListTank/',
+                    type: 'GET',
+                    data: {
+                        "wareHouseCode": warehouse
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var opt = "<select name='TankId' id='TankId' class='form-control'>";
+                        var chk = false;
+                        if (!chk) {
+
+                            opt += "<option  selected='selected'>Tất cả</option>";
+                        }
+                        else {
+                            opt += "<option  value=''>Tất cả</option>";
+                        }
+                        for (var i = 0; i < data.length; i++) {
+                            if (warehouse == initWarehouse && initTankId == data[i].TankId) {
+                                opt += "<option selected='selected' value=" + data[i].TankId + ">" + data[i].TankName + "</option>";
+                                chk = true;
+                            }
+                            else {
+                                opt += "<option value=" + data[i].TankId + ">" + data[i].TankName + "</option>";
+                            }
+                        }
+                        opt += "</select>";
+                        document.getElementById("Tank-List").innerHTML = opt;
+                    },
+                    error: function (err) {
+                        alert("Error: " + err.responseText);
+                    }
+                });
+
+            }
+
+        }
+
+    </script>
+    }

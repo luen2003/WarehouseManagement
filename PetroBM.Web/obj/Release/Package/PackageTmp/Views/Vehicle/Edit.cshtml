@@ -1,0 +1,264 @@
+﻿@model PetroBM.Web.Models.VehicleModel
+
+@{
+    ViewBag.Title = "Cập nhật phương tiện";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+    @Html.HiddenFor(model => model.Vehicle.ID)
+
+    <div class="col-lg-6">
+        <div class="form-group">
+            @Html.Label("Số phương tiện(*)", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Vehicle.VehicleNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Vehicle.VehicleNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Số giấy đăng ký(*)", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Vehicle.RegisterNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Vehicle.RegisterNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.ExpireDate, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-4">
+                <div class='input-group date' id='jExpireDate'>
+                    @Html.EditorFor(model => model.ExpireDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.AccreditationNumber, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Vehicle.AccreditationNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Vehicle.AccreditationNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.AccreditationExpire, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-4">
+                <div class='input-group date' id='jAccreditationExpire'>
+                    @Html.EditorFor(model => model.AccreditationExpire, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.Driverdefault, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Vehicle.Driverdefault, new { htmlAttributes = new { @class = "form-control", @id = "DriverName" } })
+                @Html.ValidationMessageFor(model => model.Vehicle.Driverdefault, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.FirePreventLicense, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Vehicle.FirePreventLicense, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Vehicle.FirePreventLicense, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.FirePreventExpire, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-4">
+                <div class='input-group date' id='jFirePrevenExpire'>
+                    @Html.EditorFor(model => model.FirePreventExpire, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Loại phương tiện</label>
+            <div class="col-md-8">
+                <select id="CommandType" name="Vehicle.CommandType" class="form-control">
+                    @if (Model.Vehicle.CommandType == 0)
+                    {
+                        <option value="0" selected="selected">Xuất thủy</option>
+                        <option value="1">Xuất bộ</option>
+                    }
+                    else
+                    {
+                        <option value="0">Xuất thủy</option>
+                        <option value="1" selected="selected">Xuất bộ</option>
+                    }
+
+
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    
+
+    <div class="col-lg-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.CardID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="Vehicle.CardID" id="Vehicle.CardID" class="form-control">
+                    @{
+                        foreach (var item in Model.Card)
+                        {
+                            if (item.ID == Model.Vehicle.CardID)
+                            {
+                                <option value="@item.ID" selected="selected"> @item.CardSerial - @item.CardData </option>
+                            }
+                            else
+                            {
+                                <option value="@item.ID"> @item.CardSerial - @item.CardData </option>
+                            }
+                        }
+                    }
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.Volume1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Vehicle.Volume1, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Vehicle.Volume1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.Volume2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Vehicle.Volume2, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Vehicle.Volume2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.Volume3, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Vehicle.Volume3, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Vehicle.Volume3, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Vehicle.Volume4, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Vehicle.Volume4, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Vehicle.Volume4, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Vehicle_Volume5">Tổng</label>
+            <div class="col-md-10">
+                @{
+                    var SL = 0;
+                    var volum1 = 0;
+                    var volum2 = 0;
+                    var volum3 = 0;
+                    var volum4 = 0;
+                    if (string.IsNullOrEmpty(Model.Vehicle.Volume1.ToString()))
+                    {
+                        volum1 = int.Parse(Model.Vehicle.Volume1.ToString());
+                    }
+
+                    if (Model.Vehicle.Volume2.ToString() != "")
+                    {
+                        volum2 = int.Parse(Model.Vehicle.Volume2.ToString());
+                    }
+
+                    if (Model.Vehicle.Volume3.ToString() != "")
+                    {
+                        volum3 = int.Parse(Model.Vehicle.Volume3.ToString());
+                    }
+
+                    if (Model.Vehicle.Volume4.ToString() != "")
+                    {
+                        volum4 = int.Parse(Model.Vehicle.Volume4.ToString());
+                    }
+
+                    SL = volum1 + volum2 + volum3 + volum4;
+                }
+                <input class="form-control text-box single-line valid"  value="@SL" >
+                
+            </div>
+        </div>
+
+        
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Lưu" class="btn btn-success" />
+            <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+        </div>
+    </div>
+</div>
+}
+
+<script src="~/Scripts/jquery-2.2.4.min.js"></script>
+<script src="~/Scripts/Autocomplete/jquery.easy-autocomplete.js"></script>
+<link href="~/Scripts/Autocomplete/easy-autocomplete.css" rel="stylesheet" />
+@section scripts{
+    <script>
+        var optionDriver;
+        function getCalendar(callback) {
+            $('#jFireDate').datetimepicker({ format: 'DD/MM/YYYY' });
+            $('#jExpireDate').datetimepicker({ format: 'DD/MM/YYYY' });
+            $('#jAccreditationExpire').datetimepicker({ format: 'DD/MM/YYYY' });
+            $('#jFirePrevenExpire').datetimepicker({ format: 'DD/MM/YYYY' });
+            //callback(setOption);
+        }
+            function setOption() {
+                optionDriver = {
+                    data: @Html.Raw(Json.Encode(@Model.LstDriver)),
+                    getValue: "name",
+                    template: {
+                        type: "description",
+                        fields: {
+                            description: "type"
+                        }
+                    },
+                    list: {
+                        match: {
+                            enabled: true
+                        },
+                        onHideListEvent: function () {
+                        },
+                    }
+                };
+                $("#DriverName").easyAutocomplete(optionDriver);
+                
+        }
+
+        getCalendar(setOption);
+
+    </script>
+}
+
+
+
+

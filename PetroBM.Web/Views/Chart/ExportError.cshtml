@@ -1,0 +1,217 @@
+﻿@model PetroBM.Web.Models.ChartModel
+@using PetroBM.Common.Util;
+@using System.Data;
+@{
+    ViewBag.Title = "Đồ thị sai số mẻ";
+}
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class='col-sm-5'>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đầu</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian cuối</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Kho</label>
+                <div class="form-group col-xs-8">
+                    <select class="form-control" name="WareHouseCode" id="WareHouseCode" style="width:205px;" onchange="WareHouseChange()">
+                        @foreach (var item in Model.WareHouseList)
+                        {
+                            if (Model.WareHouseCode != item.WareHouseCode)
+                            {
+                                <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Họng</label>
+                <div class="form-group col-xs-8" id="ListArmNo">
+                    <select id="ArmNo" name="ArmNo" class="form-control" style="width:205px;"></select>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Chênh lệch</label>
+                <div class="form-group col-xs-2">
+                    <select id="Deviation" name="Deviation">
+                        <option value="100000">Tất cả</option>
+                        <option>4</option>
+                        <option>3</option>
+                        <option>2</option>
+                        <option>1</option>
+                        <option>0</option>
+                        <option>-1</option>
+                        <option>-2</option>
+                        <option>-3</option>
+                        <option>-4</option>
+                    </select>
+                </div>
+                <div id="error-export-val col-xs-3">
+                </div>
+                @if (Model.CanDrawChart)
+                {
+                    <label class="col-xs-3">
+                        Max : @NumberUtil.FormatNumber(Model.DiffMax, 2) L<br />
+                        Min : @NumberUtil.FormatNumber(Model.DiffMin, 2) L<br />
+                        Avg : @NumberUtil.FormatNumber(Model.Avg, 2) L<br />
+                        Abs-Avg: @NumberUtil.FormatNumber(Model.AvgAbs, 2) L<br />
+                    </label>
+                }
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4"></label>
+                <div class="form-group col-xs-8">
+                    <input type="submit" value="Xác nhận" class="btn btn-primary" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-7">
+            <div id="chartContainer" style="height: 300px; width: 100%;">
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+        </div>
+        <div class="col-sm-7">
+            <div id="chartPieContainer" style="height: 500px; width: 100%;">
+            </div>
+        </div>
+    </div>
+}
+@Scripts.Render("~/bundles/canvasjs")
+@section scripts{
+    <script>
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        });
+    </script>
+
+    <script type="text/javascript">
+        var lstWarHouse = @Html.Raw(Json.Encode(@Model.WareHouseList)); //Lay cac kho
+        var listArmNo = @Html.Raw(Json.Encode(@Model.ConfigArmTempList));//Lay danh sach cac họng
+        var ArmNo = @Html.Raw(Json.Encode(@Model.ArmNo)); //Lay ArmNo
+        var Deviation = @Html.Raw(Json.Encode(@Model.Deviation));
+        WareHouseChange();
+
+        function WareHouseChange()
+        {
+            var selWareHouse = $("#WareHouseCode").val();
+            var opt ="<select class='form-control' id='ArmNo' name='ArmNo' style='width:205px;'>";
+            var deviation = "";
+            for (var i = 0; i < listArmNo.length; i++) {
+                if (listArmNo[i].WareHouseCode ==selWareHouse)
+                {
+                    if (ArmNo==listArmNo[i].ArmNo)
+                    {
+                        opt += "<Option selected='selected' value=" + listArmNo[i].ArmNo  +">" + listArmNo[i].ArmName + "</option>";
+                    }
+                    else
+                    {
+                        opt += "<Option value=" + listArmNo[i].ArmNo  +">" + listArmNo[i].ArmName + "</option>";
+                    }
+                }
+            }
+            opt += "</select>";
+            document.getElementById("ListArmNo").innerHTML = opt;
+        }
+
+    </script>
+@if (Model.CanDrawChart)
+    {
+    <script type="text/javascript">
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainer",
+            {
+                title: {
+                    text: "Đồ thị sai số mẻ xuất",
+                    fontFamily: "arial",
+                    fontSize: 20
+
+                },
+                animationEnabled: true,
+                dataPointMaxWidth: 40,
+                axisY: {
+                    title: "Sai số (L)",
+                    fontFamily: "arial",
+                    labelFontSize: 14,
+                    titleFontSize: 18,
+                    lineThickness: 2,
+                },
+                axisX: {
+                    title: "Thời gian",                    
+                    fontFamily: "arial",
+                    labelFontSize: 14
+                },
+                data: [{
+                    type: "column",
+                    fillOpacity: .8,
+                    dataPoints:
+                        @Html.Raw(Json.Encode(@Model.DataList)),
+                    }]
+            });
+            chart.render();
+            $('.canvasjs-chart-credit').hide();
+
+
+            var chartPie = new CanvasJS.Chart("chartPieContainer",
+          {
+              title: {
+                  text: "Sai số mẻ xuất",
+                  fontFamily: "arial",
+                  fontSize: 20
+              },
+              animationEnabled: true,
+              legend: {
+                  maxWidth: 700,
+                  itemWidth: 200
+              },
+              data: [
+              {
+                  type: "pie",
+                  showInLegend: true,
+                  percentFormatString: "#0.##",
+                  toolTipContent: "{y} Mẻ </br> Tỷ lệ : #percent%",
+                  legendText: "{indexLabel} L",
+                  fillOpacity: .8,
+                  dataPoints:
+                    @Html.Raw(Json.Encode(@Model.DataList2)),
+              }
+              ]
+          });
+            chartPie.render();
+            $('.canvasjs-chart-credit').hide();
+        }
+
+    </script>
+    }
+}

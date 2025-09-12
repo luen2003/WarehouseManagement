@@ -1,0 +1,356 @@
+﻿@model PetroBM.Web.Models.ImportModel
+@using PetroBM.Common.Util
+
+@{
+    ViewBag.Title = "Số liệu đo tính trước khi nhập";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+@if (!Model.ImportInfo.StartFlag)
+{
+    using (Html.BeginForm("GetStartHandleInfo", "Import", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ImportInfo.Id)
+
+            <div class='col-sm-4 col-xs-6'>
+                <div class="row">
+                    <label class="control-label col-xs-5">
+                        @Html.LabelFor(Model => Model.ImportInfo.MTankImport[0].StartDate)
+                    </label>
+                    <div class="col-xs-7">
+                        <div class='input-group date' id='datetimepicker1'>
+                            @Html.EditorFor(model => model.HandleDate, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            @Html.ValidationMessageFor(model => model.HandleDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class='col-sm-8 col-xs-6'>
+                <input type="button" value="Lấy số liệu" class="btn btn-primary" id="btn-get-val" />
+            </div>
+        </div>
+    }
+}
+
+@using (Html.BeginForm("DoStartHandle", "Import", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ImportInfo.Id)
+            @Html.HiddenFor(model => model.HandleDate)
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td style="min-width:140px;">
+                            Ngày chốt đầu
+                        </td>
+                        <td>
+                            Tên bể
+                        </td>
+                        <td>
+                            Nhiệt độ
+                        </td>
+                        <td>
+                            Chiều cao hàng
+                        </td>
+                        <td>
+                            Thể tích hàng (Vtt)
+                        </td>
+                        <td>
+                            Tỉ trọng
+                        </td>
+                        <td>
+                            StartVCF
+                        </td>
+                        <td>
+                            Thể tích hàng(V15)
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+                        </td>
+                        <td>
+                            @Constants.DIMENSION_MM
+                        </td>
+                        <td>
+                            @Constants.DIMENSION_L
+                        </td>
+                        <td>
+                            @Constants.DIMENSION_DENSITY
+                        </td>
+                        <td></td>
+                        <td>
+                            @Constants.DIMENSION_L
+                        </td>
+                    </tr>
+                    @{
+                        for (int i = 0; i < Model.TankImports.Count; i++)
+                        {
+                            <tr>
+                                @if (!Model.ImportInfo.StartFlag)
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.HandleDate)
+                                    </td>
+                                    <td>
+                                        @foreach (var item in Model.TankList)
+                                        {
+                                            if (Model.TankImports[i].TankId == item.TankId)
+                                            {
+                                                @item.TankName
+                                            }
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @if (Model.TankImports[i].TankId != Constants.TEC_CC_ID)
+                                        {
+                                            @Html.EditorFor(modelItem => Model.TankImports[i].StartTemperature, new { htmlAttributes = new { @class = "input-val" } })
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => Model.TankImports[i].StartProductLevel, new { htmlAttributes = new { @class = "input-val" } })
+                                    </td>
+                                    <td>
+                                        @NumberUtil.FormatNumber(Model.TankImports[i].StartProductVolume, 2)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => Model.TankImports[i].StartDensity, new { htmlAttributes = new { @class = "input-val" } })
+                                    </td>
+                                    <td>
+                                        @NumberUtil.FormatNumber(Model.TankImports[i].StartVCF, 5)
+                                    </td>
+                                    <td>
+                                        @NumberUtil.FormatNumber(Model.TankImports[i].StartProductVolume15, 2)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => Model.TankImports[i].StartDate)
+                                    </td>
+                                    <td>
+                                        @foreach (var item in Model.TankList)
+                                        {
+                                            if (Model.TankImports[i].TankId == item.TankId)
+                                            {
+                                                @item.TankName
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (Model.TankImports[i].TankId != Constants.TEC_CC_ID)
+                                        {
+                                            @NumberUtil.FormatNumber(Model.TankImports[i].StartTemperature, 1)
+                                        }
+                                    </td>
+                                    <td>
+                                        @NumberUtil.FormatNumber(Model.TankImports[i].StartProductLevel, 0)
+                                    </td>
+                                    <td>
+                                        @NumberUtil.FormatNumber(Model.TankImports[i].StartProductVolume, 2)
+                                    </td>
+                                    <td>
+                                        @NumberUtil.FormatNumber(Model.TankImports[i].StartDensity, 5)
+                                    </td>
+                                    <td>
+                                        @NumberUtil.FormatNumber(Model.TankImports[i].StartVCF, 5)
+                                    </td>
+                                    <td>
+                                        @NumberUtil.FormatNumber(Model.TankImports[i].StartProductVolume15, 2)
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            @if (Model.ListExportArmImport.Count > 0)
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td style="min-width:140px;">
+                                Họng
+                            </td>
+                            <td>
+                                Chỉ số đầu Xăng
+                            </td>
+                            <td>
+                                Chỉ số đầu Xăng gốc
+                            </td>
+                            <td>
+                                Chỉ số đầu Ethanol
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            for (int i = 0; i < Model.ListExportArmImport.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @foreach (var item in Model.ListConfigArm)
+                                        {
+                                            if (Model.ListExportArmImport[i].ArmNo == item.ArmNo && Model.ListExportArmImport[i].WareHouseCode == item.WareHouseCode)
+                                            {
+                                                @item.ArmName
+                                            }
+                                        }
+                                        @Html.HiddenFor(modelItem => Model.ListExportArmImport[i].ArmNo)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => Model.ListExportArmImport[i].StartTotal)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => Model.ListExportArmImport[i].StartTotalBase)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => Model.ListExportArmImport[i].StartTotalE)
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+
+
+
+            <div class='col-sm-8 col-xs-6'>
+                @if (!Model.ImportInfo.StartFlag)
+                {
+                    <input type="button" id="btn-manual-input" value="Nhập Tay" name="submitUpdate" class="btn btn-success" />
+                    <input type="button" value="Chốt đầu" id="btn-finish" name="submitFinish" class="btn btn-success" />
+                }
+                <input type="button" value="Quay lại" class="btn btn-primary"
+                       onclick="location.href='@Url.Action("Edit",new { id = Model.ImportInfo.Id })'" />
+            </div>
+        </div>
+
+    <div id="NoteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Ghi chú khi nhập tay số liệu</h4>
+                </div>
+                <div class="modal-body">
+                    @*<input type="text" id="note-content" />*@
+                    @Html.EditorFor(modelItem => Model.ManualMessage, new { htmlAttributes = new { @style = "width:500px" } })
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="note-ok" class="btn btn-success" data-dismiss="modal">Xác nhận</button>
+                    <button type="button" id="note-close" class="btn btn-primary" data-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.StartDate);
+                    @Html.HiddenFor(model => model.ManualInput);
+                    }
+
+@section style{
+    <style>
+        .form-control {
+            display: inline;
+        }
+    </style>
+}
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+            $(".input-val").prop("disabled", true);
+
+            if ('@Model.ManualInput' == 'True') {
+                $(".input-val").prop("disabled", false);
+                $("#btn-manual-input").val("Cập nhật");
+            }
+
+
+            //handle button event
+            $("#btn-manual-input").on("click", function () {
+                if ($(".input-val").is('[disabled=disabled]')) {
+                    $(".input-val").prop("disabled", false);
+                    $("#btn-finish").prop("disabled", true);
+                    $("#btn-manual-input").val("Cập nhật");
+                }
+                else {
+
+                    var tempElement = $("<input type='hidden'/>");
+                    tempElement.attr("name", "submitUpdate");
+                    $(this).parents('form').append(tempElement).submit();
+                }
+            });
+
+            $("#btn-finish").on("click", function () {
+                var form = $(this).parents('form');
+                var tempElement = $("<input type='hidden'/>");
+                tempElement.attr("name", "submitFinish");
+                if ('@Model.ManualInput' == 'True') {
+                    $('#NoteModal').modal('show');
+
+                    $("#note-ok").click(function () {
+                        var noteStr = $('#note-content').val();
+
+                        $('#note-content').val("");
+
+                        var tempElement2 = $("<input type='hidden'/>");
+                        tempElement2.attr("name", "HandleDate")
+                                    .val($('#HandleDate').val());
+
+
+                        form.append(tempElement).append(tempElement2).submit();
+                    });
+                    $("#note-close").click(function () {
+                        $('#note-content').val("");
+                    });
+
+                } else {
+
+                    form.append(tempElement).submit();
+                }
+
+            });
+
+
+            $("#btn-get-val").on("click", function () {
+                $(".input-val").prop("disabled", true);
+                $(this).parents('form').submit();
+            });
+
+        });
+
+
+    </script>
+}
+

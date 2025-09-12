@@ -1,0 +1,138 @@
+﻿@model PetroBM.Web.Models.DriverModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách Lái xe";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+@using (Html.BeginForm("Index","Driver",FormMethod.Post))
+{
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-5">Tên lái xe</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model=>model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-5">Số CMND/căn cước</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.IdentificationNumber, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>
+    <input type="submit" value="Tìm Kiếm" class="btn btn-primary" />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Driver.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Driver.BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Driver.IdentificationNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Driver.DriversLicense)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Driver.DriversLicenseExpire)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Driver.SavetyCertificates)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Driver.SavetyCertificatesExpire)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Driver.PhoneNumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+        @foreach (var item in Model.ListDriver)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdentificationNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriversLicense)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriversLicenseExpire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SavetyCertificates)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SavetyCertificatesExpire)
+                </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID }, new { @class = "delete-driver" })
+                </td>
+            </tr>
+        }
+
+</table>
+<div class="text-center">
+    @Html.PagedListPager(Model.ListDriver, page => Url.Action("Index", new { page , name = Model.Name, identificationNumber = Model.IdentificationNumber }))
+</div>
+
+}
+
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("Create")'" />
+
+    @using (Html.BeginForm("Import", "Driver", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="submit" value="Nhập từ file Excel" class="btn btn-primary" />
+        <div class="btn btn-primary">
+            @Html.TextBoxFor(model => model.ImportFile,
+            new { type = "file", accept = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })
+        </div>
+
+    }
+</p>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-driver').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+
+
+
+}
+
+
+
+
+

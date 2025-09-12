@@ -1,0 +1,365 @@
+﻿@model PetroBM.Web.Models.ReportModel
+@using Newtonsoft.Json
+@using PetroBM.Common.Util;
+@using System.Data;
+@{
+    ViewBag.Title = "Báo cáo Sai số mẻ, chênh lệch lượng hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4 col-xs-6'>
+
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian cuối</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Kho</label>
+            <div class="form-group col-xs-8">
+                @*<select class="form-control" id="WareHouseCode"  name="WareHouseCode" onchange="ChangeWareHouse()">
+            @foreach (var item in Model.ListWareHouse)
+            {
+                if (item.WareHouseCode == Model.WareHouseCode)
+                {
+                    <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                }
+                else
+                {
+                    <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                }
+            }
+        </select>*@
+                @Html.DropDownListFor(model => model.WareHouseCode, new SelectList(Model.ListWareHouse, "WareHouseCode", "WareHouseName", "") as SelectList, "Chọn... ", new { @class = "form-control", @style = "width:217px;" })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Họng</label>
+            <div class="form-group col-xs-8" id="ListConfigArm">
+                @Html.DropDownListFor(model => model.ArmNo, new SelectList(Model.ListConfigArm, "ArmNo", "ArmName", "") as SelectList, "Tất cả", new { @class = "form-control", @style = "width:217px;" })
+            </div>
+        </div>
+
+    </div>
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-5">Tên mặt hàng</label>
+            <div class="form-group col-xs-7">
+                @if (Model.ListProduct.Any())
+                {
+                    @Html.DropDownListFor(model => model.ProductCode,new SelectList(Model.ListProduct, "ProductCode", "ProductName", "") as SelectList, "Tất cả", new { @class = "form-control", @style = "width:217px;" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.ProductCode,new SelectList(new List<string>()), "Chọn... ", new { @class = "form-control", @style = "width:217px;" })
+                }
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-5">Số phương tiện</label>
+            <div class="form-group col-xs-7">
+                @Html.EditorFor(model => model.Vehicle, new { htmlAttributes = new { @class = "form-control", @id = "Vehicle", @name = "ReportModel.Vehicle", @style = "width:217px" } })
+            </div>
+        </div>
+        @*<div class="row">
+            <label class="control-label col-xs-5">Sai số từng mẻ</label>
+            <div class="form-group col-xs-7">
+
+                @if (Model.Deviation == null)
+                {
+                    <input type="text" class="form-control" name="Deviation" id="Deviation" onchange="DisplayHiden()" />
+                }
+                else
+                {
+                    <input type="text" class="form-control" name="Deviation" id="Deviation" onchange="DisplayHiden()" value="@Model.Deviation" />
+                }
+
+                <div id="Error">
+                </div>
+            </div>
+        </div>*@
+
+    </div>
+
+    <div class='col-sm-4 col-xs-12' style="margin-bottom:10px;">
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+        <input type="submit" fileType="PDF" formtarget="_blank" value="Xuất PDF" class="btn btn-primary" />
+        <input type="submit" fileType="EXCEL" value="Xuất EXCEL" class="btn btn-primary" />
+        <input type="submit" fileType="PDF" formtarget="_blank" value="In" class="print btn btn-primary" />
+    </div>
+    @Html.HiddenFor(model => model.FileType);   
+}
+<div class='col-sm-12 col-xs-12'>
+    <p><b>Bảng chi tiết</b></p>
+</div>
+
+<table class="table table-striped" id="DifferenceTank">
+    <thead>
+        <tr>
+            <th>No</th>
+
+            <th>
+                Kho
+            </th>
+            <th>
+                Họng xuất
+            </th>
+            <th>
+                Hàng hóa
+            </th>
+            <th>
+                Số phương tiện
+            </th>
+            <th>
+                Ngăn
+            </th>
+            <th>
+                Lượng đặt(L Đặt)
+            </th>
+            <th>
+                Lượng xuất(Ltt)
+            </th>
+            <th>
+                Sai số từng mẻ = Ltt - LĐặt
+            </th>
+            <th>
+                Thời gian xuất
+            </th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            double totalVPreset = 0;
+            double totalVActual = 0;
+            double totalDeviation = 0;
+            var i = 0;
+            if (Model.DataTable != null)
+            {
+                foreach (System.Data.DataRow row in Model.DataTable.Rows)
+                {
+                    i++;
+                    <tr>
+                        <td class="stt">@i</td>
+                        <td>@row["WareHouseName"]</td>
+                        <td>@row["ArmName"]</td>
+                        <td>@row["ProductName"]</td>
+                        <td>@row["Vehicle"]</td>
+                        <td>@row["CompartmentOrder"]</td>
+                        @if (@row["V_Preset"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td  class="v_preset text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["V_Preset"]), 2)</td>
+                            totalVPreset += Convert.ToDouble(@row["V_Preset"]);
+                        }
+                        @if (@row["V_Actual"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="v_actual text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["V_Actual"]), 2)</td>
+                            totalVActual += Convert.ToDouble(@row["V_Actual"]);
+                        }
+                        @if (@row["V_Deviation"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="v_deviation text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["V_Deviation"]), 2)</td>
+                            totalDeviation += Convert.ToDouble(@row["V_Deviation"]);
+                        }
+                        <td>@row["TimeStart"]</td>
+                    </tr>
+
+                }
+
+                <tr>
+                    <td>
+                        Tổng
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td class="text-right">@NumberUtil.FormatNumber(totalVPreset, 2)</td>
+                    <td class="text-right">@NumberUtil.FormatNumber(totalVActual, 2)</td>
+                    <td class="text-right">@NumberUtil.FormatNumber(totalDeviation, 2)</td>
+                    <td>&nbsp;</td>
+                </tr>
+            }
+        }
+    </tbody>
+
+</table>
+
+<p><b>Bảng tổng hợp</b></p>
+<table class="table table-striped" id="DifferenceTank">
+    <thead>
+        <tr>
+            <th>No</th>
+
+            <th>
+                Sai số mẻ
+            </th>
+            <th>
+                Số mẻ
+            </th>
+            <th>
+                % Sai số mẻ
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var totalExport = 0;
+            var j = 0;
+            if (Model.DataTable2 != null)
+            {
+                foreach (System.Data.DataRow row in Model.DataTable2.Rows)
+                {
+                    j++;
+                    totalExport = Convert.ToInt32(@row["totalcount"]);
+                    var per = @NumberUtil.FormatNumber(Convert.ToDouble(@row["NumberExport"]) / totalExport * 100,2);
+                    <tr>
+                        <td class="stt">@j</td>
+                        <td>@row["Deviation"]</td>
+                        <td class="text-right">@row["NumberExport"]</td>
+                        <td>@per</td>
+                    </tr>
+
+                }
+
+                j++;
+                <tr>
+                    <td>
+                        @j
+                    </td>
+                    <td>Tổng số mẻ</td>
+                    <td class="text-right">@totalExport</td>
+                    <td>&nbsp;</td>
+                </tr>
+            }
+        }
+    </tbody>
+
+</table>
+
+@section scripts{
+
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        });
+
+        $('.btn').on('click', function (e) {
+            var fileType = $(this).attr('fileType');
+            $('#FileType').val(fileType);
+        });
+
+        var isChrome = !!window.chrome && !!window.chrome.webstore;
+        if (!isChrome) {
+            $('.print').hide();
+        }
+
+        $('.print').on('click', function (e) {
+
+            var fileType = $(this).attr('fileType');
+            $('#FileType').val(fileType);
+
+            var http = new XMLHttpRequest();
+            var url = '@Url.Action("DifferenceTank", "Report")';
+            var params = $('form').serialize();
+            http.responseType = "blob";
+            http.open("POST", url, true);
+
+            http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            http.onreadystatechange = function () {
+                if (http.readyState == 4 && http.status == 200) {
+                    var response = http.response;
+
+                    var blob = new Blob([response], { type: 'application/pdf' });
+                    var fileURL = URL.createObjectURL(blob);
+                    $('#print-frame').attr('src', fileURL);
+                    $('#print-frame').on('load', function () {
+                        $('#print-frame').get(0).contentWindow.document.execCommand("print", false, null);
+                    });
+                }
+            }
+
+            http.send(params);
+
+            return false;
+        });
+
+        function submitcontrol() {
+            var deviation = $("#Deviation").val();
+            if (deviation.length > 0) {
+                if (isNaN(deviation)) {
+                    document.getElementById("Error").innerHTML = "Bạn nhập sai số không phải là số";
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function DisplayHiden() {
+            document.getElementById("Error").innerHTML = "";
+            return;
+        }
+
+        var wareHouseCode = @Html.Raw(Json.Encode(@Model.WareHouseCode)); //lấy mã kho khởi tạo
+        var armNo = @Html.Raw(Json.Encode(@Model.ArmNo)); // Lấy số họng
+        var listConfigArm  =  @Html.Raw(Json.Encode(@Model.ListConfigArm));//tất cả các họng ở các kho
+        ChangeWareHouse();
+
+        function ChangeWareHouse(){
+            @*var selwareHouseCode =$("#WareHouseCode").val();
+            //var str="<select class='form-control' id='ArmNo' name='ArmNo'>";
+            var str;
+            for (var i = 0; i < listConfigArm.length; i++) {
+                if (listConfigArm[i].WareHouseCode == selwareHouseCode) {
+                    document.getElementById("ListConfigArm").innerHTML = '@Html.DropDownListFor(model => model.ArmNo, new SelectList(Model.ListConfigArm, "ArmNo", "ArmName", "") as SelectList, "Chọn... ", new { @class = "form-control", @style = "width:217px;" })';
+                    //if (listConfigArm[i].ArmNo == armNo){
+                    //    str += "<option value='" + listConfigArm[i].ArmNo + "' selected='selected' >" + listConfigArm[i].ArmName + "</option>";     
+                    //}
+                    //else
+                    //{
+                    //    str += "<option value='" + listConfigArm[i].ArmNo + "' >" + listConfigArm[i].ArmName + "</option>";        
+                    //}
+                }
+            }*@
+            //str +="</select>";
+            //document.getElementById("ListConfigArm").innerHTML = str;
+        }
+
+    </script>
+
+
+}

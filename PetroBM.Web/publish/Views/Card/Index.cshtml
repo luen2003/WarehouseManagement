@@ -1,0 +1,248 @@
+﻿@model PetroBM.Web.Models.CardModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách thẻ";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+@using (Html.BeginForm("Index", "Card", FormMethod.Post))
+{
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Kho</label>
+            <div class="form-group col-xs-8">
+                @if (Model.ListWareHouse.Any())
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(Model.ListWareHouse, "WareHousecode", "WareHouseName", "") as SelectList,
+            new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(new List<string>()), "Chọn... ",
+            new { @class = "form-control" })
+                }
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Card Serial</label>
+            <div class="form-group col-xs-8">
+                @Html.EditorFor(model => model.CardSerial, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>
+    <div class='col-sm-5 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Trạng thái kích hoạt</label>
+            <div class="form-group col-xs-8">
+                <select id="ActiveStatus" name="ActiveStatus" class="form-control">
+                    @if (Model.ActiveStatus == 2)
+                    {
+                        <option value="1">Kích hoạt</option>
+                            <option value="0">Chưa kích hoạt</option>
+                            <option value="2" selected="selected">Tất cả </option>
+                    }
+                    @if (Model.ActiveStatus == 1)
+                    {
+                        <option value="1" selected="selected">Kích hoạt</option>
+                            <option value="0">Chưa kích hoạt</option>
+                            <option value="2">Tất cả </option>
+                    }
+                    @if (Model.ActiveStatus == 0)
+                    {
+                        <option value="1" selected="selected">Kích hoạt</option>
+                            <option value="0">Chưa kích hoạt</option>
+                            <option value="2">Tất cả </option>
+                    }
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <label class="control-label col-xs-4">&nbsp;</label>
+            <div class="form-group col-xs-8">
+                <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+
+                    <th>
+                        @Html.LabelFor(model => model.Card.WareHouseCode)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Card.CardData)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Card.CardSerial)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Card.ActiveStatus)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Card.UseStatus)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Card.UseUser)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Card.UseDate)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.ListCard)
+            {
+
+                <tr>
+                    @foreach (var it in Model.ListWareHouse)
+                    {
+                        if ((byte.Parse(item.WareHouseCode) == it.WareHouseCode))
+                        {
+                            <td>
+                                @it.WareHouseName
+                            </td>
+                        }
+                    }
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CardData)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CardSerial)
+                    </td>
+                    @if (item.DeleteFlg == true)
+                    {
+                        <td style="color: red;">
+                            Đã xoá
+                        </td>
+                    }
+                    else
+                    {
+                        if (item.ActiveStatus == 1)
+                        {
+                            <td style="color: blue;">
+                                Kích hoạt
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                Chưa kích hoạt
+                            </td>
+                        }
+                    }
+                    @switch (item.UseStatus)
+                    {
+                        case 0:
+                            <td>Đăng ký</td>
+                            break;
+                        case 1:
+                            <td>Chuẩn bị xuất</td>
+                            break;
+                        case 2:
+                            <td>Đang xuất</td>
+                            break;
+                        case 3:
+                            <td>Xuất xong</td>
+                            break;
+                        case 4:
+                            <td>Dừng ép</td>
+                            break;
+                        case 5:
+                            <td>Hủy lệnh</td>
+                            break;
+                        case 6:
+                            <td>Nhập tay</td>
+                            break;
+                        case 7:
+                            <td>Niêm chì</td>
+                            break;
+                        case 8:
+                            <td>Đã in phiếu</td>
+                            break;
+                        case 9:
+                            <td>Chuyển ngày</td>
+                            break;
+                        default:
+                            <td>Chờ sử dụng</td>
+                            break;
+
+                    }
+                    @if (item.UseStatus == -1)
+                    {
+                        <td></td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UseUser)
+                        </td>
+                    }
+
+                    @if (item.UseStatus != 8)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UseDate)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
+
+                    <td>
+                        @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Xóa", "Delete", new { id = item.ID }, new { @class = "delete-card" })
+                    </td>
+                </tr>
+            }
+        </table>
+        <div class="text-center">
+            @Html.PagedListPager(Model.ListCard, page => Url.Action("Index", new { page, cardSerial = Model.CardSerial, activeStatus = Model.ActiveStatus, warehousecode = Model.WareHouseCode }))
+        </div>
+        @Html.HiddenFor(model => model.WareHouseCode);
+}
+
+<p>
+    <input type="button" value="Tạo mới" class="btn btn-success" onclick="location.href='@Url.Action("Create")'" />
+
+    @using (Html.BeginForm("Import", "Card", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="submit" value="Nhập từ file Excel" class="btn btn-primary" />
+        <div class="btn btn-primary">
+            @Html.TextBoxFor(model => model.CardFile,
+            new { type = "file", accept = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })
+        </div>
+
+    }
+</p>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.delete-card').click(function () {
+                var r = confirm("Bạn chắc chắn muốn xóa bản ghi này?");
+                return r;
+            });
+        });
+    </script>
+}

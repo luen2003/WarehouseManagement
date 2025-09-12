@@ -1,0 +1,1433 @@
+﻿@media print {
+    @page {
+        size: 8.5in 5.5in;
+        size: portrait;
+        margin: 0;
+    }
+}
+
+body {
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #FAF8D9;
+}
+
+.table-striped tbody tr:nth-child(even) {
+    background-color: #EFF1F1;
+}
+
+.table > thead {
+    background: #8FB5D9;
+    vertical-align: top;
+}
+
+    .table > thead > tr > th {
+        vertical-align: top !important;
+    }
+
+tr.total-row {
+    color: red;
+}
+
+.table > tbody > tr > td {
+    padding: 3px;
+    border: 1px solid #C0C0C0;
+}
+
+/*.table > tbody > tr > td:last-child {
+        border-right: none;
+    }*/
+
+.pagination {
+    margin: 0px 0px;
+}
+
+input[type="radio"], input[type="checkbox"] {
+    margin: 0px 0 0;
+}
+
+.btn {
+    min-width: 85px !important;
+}
+
+body {
+    background-color: #FFFFFF;
+    padding: 0 20px 20px 20px;
+}
+
+header {
+    font-size: xx-large;
+    color: #01419B;
+    font-weight: bold;
+    padding: 0px 10px 0px 10px;
+}
+
+    header img {
+        height: 75px;
+    }
+
+section {
+    clear: both;
+}
+
+.nav-right {
+    float: right;
+}
+
+
+ul li {
+    list-style: none;
+}
+
+.nav-top {
+    padding: 10px 10px 10px 10px !important;
+    text-transform: uppercase;
+}
+
+    .nav-top a {
+        color: white;
+        text-decoration: none;
+        padding-right: 15px;
+        padding-left: 5px;
+    }
+
+.nav-menu-down {
+    float: right;
+    font-size: smaller;
+    padding-right: 10px;
+}
+
+.banner {
+    border: 1px solid #B7B7B7;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.banner-header {
+    display: inline-block;
+    width: 100%;
+    background: #E67614;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-height: 30px;
+    padding-top: 5px;
+    padding-left: 0px;
+    margin-bottom: 0 !important;
+}
+
+    .banner-header li {
+        display: inline;
+        color: white;
+    }
+
+.mains {
+    font-size: 13px;
+    padding: 10px 10px;
+    min-height: 650px;
+}
+
+.content {
+    border: solid 1px #B7B7B7;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+header {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.tbl-header {
+    font-weight: bold;
+    font-size: 12px;
+    background: #C0C0C0;
+    color: #01419B;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+.tbl-subheader {
+    font-weight: bold;
+    font-size: 12px;
+    background: #8FB5D9;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.box-content {
+    font-size: 13px;
+    background: white;
+    border: solid 1px #B7B7B7;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-top: 15px;
+}
+
+    .box-content ul {
+        margin: 0;
+        padding: 0;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        overflow: hidden;
+    }
+
+        .box-content ul li {
+            float: left;
+        }
+
+            .box-content ul li a {
+                color: #01419B;
+                text-align: center;
+                padding: 16px;
+                text-decoration: none;
+            }
+
+.bottom-right-box {
+    position: fixed;
+    bottom: 0px;
+    margin-right: -14px;
+    padding-right: 50px;
+    right: 0px;
+    z-index: 9999;
+}
+
+.bottom-left-box {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    z-index: 9999;
+}
+
+.info ul:nth-child(odd) {
+    background-color: #FAF8D9;
+}
+
+.info ul:nth-child(even) {
+    background-color: #EFF1F1;
+}
+
+.info ul:last-child {
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+.info ul.alarm-record, tr.alarm-record {
+    background-color: #FFFFB9 !important;
+    color: #FF0200;
+}
+
+.info ul.error-record, tr.error-record {
+    background-color: #FFAAAA !important;
+    color: blue;
+}
+
+.grad {
+    background: #1BA2E6; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#1BA2E6, #0D7FBD); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#1BA2E6, #0D7FBD); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#1BA2E6, #0D7FBD); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#1BA2E6, #0D7FBD); /* Standard syntax (must be last) */
+}
+
+.menu {
+    /*border: 1px solid #B7B7B7;
+    border-radius: 8px;*/
+    padding-left: -30px !important;
+    background: #F8F8F8;
+    margin-top: 10px;
+    color: #3A3A3A;
+    max-height: 530px;
+    overflow-y: auto;
+}
+
+.list {
+    text-transform: uppercase;
+}
+
+.menu-list {
+    margin-left: 0;
+    padding-left: 0;
+    margin-bottom: 0;
+    color: #3A3A3A;
+}
+
+    .menu-list li {
+        border-bottom: 1px solid #B7B7B7;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+    }
+
+    .menu-list ul {
+        font-size: 12px;
+        padding-left: 15px;
+    }
+
+.list li {
+    list-style: none;
+}
+
+.list a {
+    color: #1169be;
+}
+
+.list ul .active,
+.list li .active {
+    background: #1EA4EB;
+    color: white;
+}
+
+.menu-list li:last-child {
+    border-bottom: none;
+}
+
+.float-right {
+    float: right;
+}
+
+.collapse li a {
+    text-decoration: none;
+}
+
+.tbl {
+    padding-bottom: 20px;
+}
+
+.arrow-up {
+    margin-left: -20px;
+    width: 25px;
+    display: inline-block;
+}
+
+.arrow-down {
+    margin-left: -20px;
+    width: 25px;
+    display: inline-block;
+}
+
+.option-heading, #top-collapse, #error-collapse, #alarm-collapse, #alarm-toggle {
+    cursor: pointer;
+}
+
+.input-group-addon {
+    width: 0%;
+}
+
+.control-label {
+    line-height: 30px;
+}
+
+.panel {
+    margin: 10px 0px 10px 0px;
+}
+
+.panel-primary {
+    border: none;
+}
+
+.panel-body {
+    border: 1px solid #337ab7;
+}
+
+.tank-image {
+    float: left;
+    background-image: url('/Content/images/tank.png');
+    background-size: 100%;
+    height: 240px;
+    width: 240px;
+    position: relative;
+}
+
+    .tank-image img {
+        position: absolute;
+        width: 18px;
+        display: none;
+    }
+
+    .tank-image .product-up {
+        bottom: 90px;
+        left: 60px;
+    }
+
+    .tank-image .product-down {
+        bottom: 75px;
+        left: 60px;
+    }
+
+    .tank-image .product-hh, .tank-image .product-ha, .tank-image .product-la, .tank-image .product-ll {
+        left: 110px;
+        bottom: 15px;
+    }
+
+    .tank-image .tank-barem {
+        position: absolute;
+        border: 1px solid black;
+        width: 20px;
+        height: 145px;
+        bottom: 15px;
+        left: 80px;
+        overflow: hidden;
+    }
+
+        .tank-image .tank-barem .tank-product {
+            position: absolute;
+            width: 18px;
+            max-height: 145px;
+        }
+
+        .tank-image .tank-barem .tank-water {
+            position: absolute;
+            bottom: 0px;
+            background: #279FDC;
+            width: 18px;
+            max-height: 145px;
+        }
+
+.icon-alarm li {
+    margin-bottom: 20px;
+}
+
+.icon-alarm img {
+    height: 25px;
+    width: 25px;
+}
+
+.check-data-server {
+    font-weight: bold;
+    font-size: 18px;
+    -webkit-animation: fadi 1s infinite;
+}
+
+.text-alarm {
+    color: red;
+    font-weight: bold;
+    -webkit-animation: fadi 1s infinite;
+}
+
+@keyframes fadi {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.icon-bar {
+    background-color: white;
+}
+
+.navbar-toggle {
+    border-color: #ddd;
+}
+
+.list:first-child {
+    border-top: solid 1px #e7e7e7;
+}
+
+#alarm-comment, #confirm-password {
+    min-width: 100% !important;
+}
+
+.table-visual {
+    width: auto !important;
+    margin-left: 12px;
+}
+
+
+.config-arm {
+    width: 100%;
+    top: -49px;
+    position: absolute;
+}
+
+.arm-display {
+    display: inline-block;
+    height: 180px;
+    border: solid 1px #d8d8d8;
+    margin-top: 5px;
+}
+
+.pump {
+    /*background-image: url(images/icon/u323.png);*/
+    /* height: 100px; */
+    /* width: 230px; */
+    top: 150px;
+    left: 26px;
+    position: absolute;
+}
+
+.pipe-line-active {
+    background-image: url(images/icon/pipe-line-active-new.gif);
+    height: 20px;
+    width: 601px;
+    top: 173px;
+    left: 172px;
+    position: absolute;
+    z-index: -1;
+}
+
+.pipe-line-inactive {
+    background-image: url(images/icon/pipe-line-inactive-new.gif);
+    height: 20px;
+    width: 601px;
+    top: 173px;
+    left: 172px;
+    position: absolute;
+    z-index: -1;
+}
+
+.flowmeter {
+    top: 100px;
+    left: 437px;
+    position: absolute;
+}
+
+.flowmeter-small {
+    top: 230px;
+    left: 167px;
+    position: absolute;
+}
+
+.temp-meter {
+    top: 43px;
+    left: 540px;
+    position: absolute;
+}
+
+.temp-meter-small {
+    top: 216px;
+    left: 233px;
+    position: absolute;
+}
+
+.valve {
+    top: 101px;
+    left: 655px;
+    position: absolute;
+}
+
+.valve-small {
+    z-index: 1;
+    top: 213px;
+    left: 305px;
+    position: absolute;
+}
+
+.multiload {
+    top: 85px;
+    left: 326px;
+    position: absolute;
+}
+
+.loading-arm {
+    top: 51px;
+    left: 778px;
+    position: absolute;
+}
+
+.pipe-corner {
+    top: 159px;
+    left: 772px;
+    position: absolute;
+}
+
+.tanker-truck {
+    top: 137px;
+    width: 224px;
+    height: 68px;
+    left: 830px;
+    position: absolute;
+    background-image: url(images/icon/tanker-truck-new.gif);
+}
+
+.tanker-ship {
+    top: 94px;
+    width: 228px;
+    height: 111px;
+    left: 830px;
+    position: absolute;
+    background-image: url(images/icon/tanker-ship.gif);
+}
+
+.connecter {
+    top: 172px;
+    left: 352px;
+    position: absolute;
+}
+
+.pipe-line-active-small {
+    background-image: url(images/icon/pipe-line-active-small-new.gif);
+    height: 10px;
+    width: 219px;
+    top: 266px;
+    left: 140px;
+    position: absolute;
+    z-index: -1;
+}
+
+.pipe-line-inactive-small {
+    background-image: url(images/icon/pipe-line-inactive-small-new.gif);
+    height: 10px;
+    width: 219px;
+    top: 266px;
+    left: 140px;
+    position: absolute;
+    z-index: -1;
+}
+
+.pump-small {
+    background-image: url(images/icon/pump-small-new.png);
+    height: 51px;
+    width: 90px;
+    top: 238px;
+    left: 50px;
+    position: absolute;
+}
+
+.pump-2 {
+    background-image: url(images/icon/pump-middle.png);
+    height: 28px;
+    width: 57px;
+    top: 73px;
+    position: absolute;
+    margin-left: -66px;
+}
+
+.pipe-line-active-2 {
+    background-image: url(images/icon/pipe-line-active-small.gif);
+    height: 16px;
+    width: 262px;
+    top: 77px;
+    left: -9px;
+    position: absolute;
+    z-index: -1;
+}
+
+.pipe-line-inactive-2 {
+    background-image: url(images/icon/pipe-line-inactive-small.gif);
+    height: 16px;
+    width: 262px;
+    top: 77px;
+    left: -9px;
+    position: absolute;
+    z-index: -1;
+}
+
+.flowmeter-2 {
+    left: 108px;
+    top: 52px;
+    z-index: 1;
+    position: absolute;
+}
+
+.temp-meter-2 {
+    top: 46px;
+    left: 165px;
+    position: absolute;
+}
+
+.valve-2 {
+    top: 49px;
+    left: 198px;
+    position: absolute;
+}
+
+
+.valve-small-2 {
+    top: 180px;
+    left: 150px;
+    position: absolute;
+}
+
+.loading-arm-2 {
+    top: 22px;
+    left: 254px;
+    position: absolute;
+}
+
+.pipe-corner-2 {
+    top: 66px;
+    left: 251px;
+    position: absolute;
+}
+
+.tanker-truck-2 {
+    top: 66px;
+    left: 313px;
+    width: 99px;
+    height: 31px;
+    position: absolute;
+    background-image: url(images/icon/tanker-truck-2-small-new.gif);
+}
+
+.tanker-ship-2 {
+    top: 48px;
+    left: 312px;
+    width: 100px;
+    height: 49px;
+    position: absolute;
+    background-image: url(images/icon/tanker-ship-small.gif);
+}
+.connecter-2 {
+    top: 77px;
+    left: 84px;
+    position: absolute;
+}
+
+.pipe-line-active-small-2 {
+    background-image: url(images/icon/pipe-line-active-small-2.gif);
+    height: 7px;
+    width: 117px;
+    top: 149px;
+    left: -23px;
+    position: absolute;
+    z-index: -1;
+}
+
+.pipe-line-inactive-small-2 {
+    background-image: url(images/icon/pipe-line-inactive-small-2.gif);
+    height: 7px;
+    width: 117px;
+    top: 149px;
+    left: -23px;
+    position: absolute;
+    z-index: -1;
+}
+
+.pump-small-2 {
+    background-image: url(images/icon/pump-small-2.gif);
+    height: 33px;
+    width: 48px;
+    top: 135px;
+    left: -71px;
+    position: absolute;
+}
+
+.flowmeter-small-2 {
+    top: 124px;
+    left: -22px;
+    position: absolute;
+}
+
+.valve-small-2 {
+    z-index: 1;
+    top: 122px;
+    left: 41px;
+    position: absolute;
+}
+
+.temp-meter-small-2 {
+    top: 123px;
+    left: 26px;
+    position: absolute;
+}
+
+.visual-ware-house {
+    min-width: 100%;
+    display: inline-block;
+    max-height: 594px;
+    overflow: auto;
+}
+
+.arm-info {
+    margin-left: 91px;
+}
+
+.arm-info-2 {
+    margin-top: 111px;
+    margin-left: 94px;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 100%;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    font-size: small;
+    font-weight: bold;
+}
+
+.tool-tip:hover > .tooltip-text {
+    visibility: visible;
+}
+
+.cur-temp {
+    position: absolute;
+    color: red;
+    top: 7px;
+    left: 20px;
+    width: 55px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.avg-temp {
+    position: absolute;
+    color: red;
+    top: 29px;
+    left: 20px;
+    width: 55px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.cur-temp-small {
+    position: absolute;
+    color: red;
+    top: 0px;
+    left: 4px;
+    width: 33px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.avg-temp-small {
+    position: absolute;
+    color: red;
+    top: 11px;
+    left: 4px;
+    width: 33px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.flowrate {
+    position: absolute;
+    top: -30px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.flowrate-e {
+    top: -10px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.valve-status {
+    position: absolute;
+    top: -25px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.valve-txt {
+    position: absolute;
+    top: -27px;
+    left: 29px;
+    font-weight: bold;
+    font-size: 20px;
+    width: 65px;
+    text-align: center;
+}
+
+.comment {
+    vertical-align: middle;
+}
+
+.flowmeter-2-txt {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.temp-2-txt {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.flowmeter-small-2-txt {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.temp-small-txt {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.temp-small-2-txt {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.progress-bar-truck {
+    text-align: center;
+    left: 8%;
+    position: absolute;
+    top: 10px;
+    font-weight: bold;
+    font-size: 24px;
+    max-width: 135px;
+    height: 26px;
+    background-color: #bdcedd;
+    border-radius: 6px;
+}
+
+.progress-bar-ship {
+    text-align: center;
+    left: 18%;
+    position: absolute;
+    top: 78px;
+    font-weight: bold;
+    font-size: 24px;
+    max-width: 135px;
+    height: 26px;
+    background-color: #bdcedd;
+    border-radius: 6px;
+}
+
+.progress-bar-truck-2 {
+ text-align: center;
+    left: 7%;
+    position: absolute;
+    top: 3px;
+    max-width: 61px;
+    height: 13px;
+    background-color: #bdcedd;
+    border-radius: 6px;
+}
+
+.progress-bar-ship-2 {
+   text-align: center;
+    left: 15%;
+    position: absolute;
+    top: 30px;
+    max-width: 70px;
+    height: 13px;
+    background-color: #bdcedd;
+    border-radius: 6px;
+}
+
+.tanker-truck-text {
+    font-weight: bold;
+    font-size: 20px;
+    z-index: 3;
+    margin-top: 10px;
+    margin-left: 69px;
+    position: relative;
+}
+
+.tanker-ship-text {
+    font-weight: bold;
+    font-size: 20px;
+    z-index: 3;
+    margin-top: 77px;
+    margin-left: 91px;
+    position: relative;
+    color:white;
+}
+
+
+.tanker-truck-text-2{
+    width: 70%;
+    text-align: center;
+    position: relative;
+    margin-left: 9%;
+    font-weight: bold;
+    margin-top:1%;
+    z-index: 3;
+}
+
+.tanker-ship-text-2{
+    width: 70%;
+    text-align: center;
+    position: relative;
+    margin-left: 17%;
+    font-weight: bold;
+    margin-top: 28%;    
+    z-index: 3;
+}
+
+
+
+.dsc {
+    position: absolute;
+    left: 702px;
+    top: 14px;
+}
+
+.dsc-2 {
+    position: absolute;
+    left: 154px;
+    top: 9px;
+}
+
+.flowrate-b {
+    top: -15px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.v-actual-e {
+    top: -25px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.v-actual {
+    top: -30px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.table-info {
+    right: 20%;
+    position: absolute;
+    top: 380px;
+}
+
+    .table-info > table > tbody > tr > td:first-child, .table-info > table > tbody > tr > td:nth-child(3) {
+        font-weight: bold;
+        background: #ddd;
+        border-top: solid thin #ddd;
+    }
+
+    .table-info > table > tbody > tr > td:last-child {
+        border-right: solid thin #ddd;
+    }
+
+.info-warehouse {
+    position: absolute;
+    margin-left: 136px;
+    margin-top: -31px;
+}
+
+.info-txt {
+    position: absolute;
+    margin-top: -15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+}
+
+.status-2 {
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.logo-image{
+    max-width: 120px;
+}
+.invoice {
+    width: 1240px;
+    height: 1620px;
+    font-size: 24px;
+    background-image: url(/Content/images/hd.jpg);
+}
+
+.invoice-day {
+    position: absolute;
+    top: 277px;
+    left: 536px;
+}
+
+.invoice-month {
+    position: absolute;
+    top: 277px;
+    left: 660px;
+}
+
+.invoice-year {
+    position: absolute;
+    top: 277px;
+    left: 785px;
+}
+.invoice-customername {
+    position: absolute;
+    top: 499px;
+    left: 407px;
+}
+
+.invoice-unitname {
+    position: absolute;
+    top: 531px;
+    left: 287px;
+}
+
+.invoice-customeraddress {
+    position: absolute;
+    top: 563px;
+    left: 277px;
+}
+
+.invoice-cusomteraccount {
+    position: absolute;
+    top: 590px;
+    left: 332px;
+}
+
+.invoice-paymentmethod {
+    position: absolute;
+    top: 620px;
+    left: 399px;
+}
+
+.invoice-taxcode {
+    position: absolute;
+    top: 610px;
+    left: 761px;
+}
+
+.invoice-productname {
+    position: absolute;
+    top: 782px;
+    left: 208px;
+}
+
+.invoice-unitproduct {
+    position: absolute;
+    top: 782px;
+    left: 629px;
+}
+
+.invoice-quantity {
+    position: absolute;
+    top: 782px;
+    left: 718px;
+}
+
+.invoice-unitprice {
+    position: absolute;
+    top: 782px;
+    left: 862px;
+}
+
+.invoice-amount {
+    position: absolute;
+    top: 782px;
+    left: 1000px;
+}
+
+.invoice-totalamount {
+    position: absolute;
+    font-weight: bold;
+    top: 1189px;
+    left: 865px;
+    width: 300px;
+    text-align: right;
+}
+
+.invoice-tax {
+    position: absolute;
+    top: 1231px;
+    left: 437px;
+}
+
+.invoice-amounttax {
+    position: absolute;
+    font-weight: bold;
+    top: 1222px;
+    left: 865px;
+    width: 300px;
+    text-align: right;
+}
+
+.invoice-totalfullnumber {
+    position: absolute;
+    font-weight: bold;
+    top: 1287px;
+    left: 865px;
+    width: 300px;
+    text-align: right;
+}
+
+.invoice-totalfulltext {
+    font-size: 19px;
+    position: absolute;
+    top: 1343px;
+    left: 415px;
+    height: 40px;
+    width: 745px;
+}
+
+.invoice-detail {
+    position: absolute;
+    font-size: 17px;
+    top: 841px;
+    left: 195px;
+    width: 936px;
+}
+
+
+/*.export-receiver {
+    top: 414px;
+    left: 350px;
+    position: absolute;
+    font-weight: bold;
+}
+
+.export-receiver2 {
+    position: absolute;
+    top: 517px;
+    left: 773px;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.export-warehouse {
+    position: absolute;
+    top: 591px;
+    left: 357px;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.export-tank {
+    position: absolute;
+    top: 283px;
+    left: 357px;
+}
+
+.export-product {
+    position: absolute;
+    top: 770px;
+    left: 138px;
+    width: 101px;
+    height: 116px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.export-unit {
+    position: absolute;
+    top: 770px;
+    left: 516px;
+    height: 100px;
+    width: 33px;
+    font-size: 22px;
+}
+
+.export-vtt {
+    position: absolute;
+    top: 770px;
+    left: 639px;
+    font-size: 22px;
+    /* width: 48px; */
+    /* height: 104px; 
+}
+
+.export-time {
+    position: absolute;
+    top: 1082px;
+    left: 154px;
+    font-weight: bold;
+}
+
+.export-date {
+    position: absolute;
+    top: 1082px;
+    left: 402px;
+    font-weight: bold;
+}
+
+.export-vehiclenumber {
+    position: absolute;
+    top: 1118px;
+    left: 446px;
+    font-weight: bold;
+}
+
+.export-driver {
+    position: absolute;
+    top: 1148px;
+    left: 287px;
+    font-weight: bold;
+}
+
+.export-driverid {
+    position: absolute;
+    top: 1179px;
+    left: 258px;
+    font-weight: bold;
+}
+
+.export-driveridlics {
+    position: absolute;
+    top: 1177px;
+    left: 524px;
+    font-weight: bold;
+}
+
+.export-products {
+    position: absolute;
+    top: 1236px;
+    left: 345px;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.export-vtt2 {
+    position: absolute;
+    top: 1082px;
+    left: 960px;
+    font-weight: bold;
+}
+
+.export-temp {
+    position: absolute;
+    top: 1118px;
+    left: 791px;
+    font-weight: bold;
+}
+
+.export-density {
+    position: absolute;
+    top: 1118px;
+    left: 993px;
+    font-weight: bold;
+}
+
+.export-vcf {
+    position: absolute;
+    top: 1150px;
+    left: 755px;
+    font-weight: bold;
+}
+
+.export-wcf {
+    position: absolute;
+    top: 1150px;
+    left: 1016px;
+    font-weight: bold;
+}
+
+.export-kg {
+    position: absolute;
+    top: 1190px;
+    left: 1040px;
+    font-weight: bold;
+}
+
+.export-v15 {
+    position: absolute;
+    top: 1191px;
+    left: 898px;
+    font-weight: bold;
+}
+
+.export-Number {
+    position: absolute;
+    top: 137px;
+    left: 1073px;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.export-day {
+    position: absolute;
+    top: 332px;
+    left: 512px;
+}
+
+.export-month {
+    position: absolute;
+    top: 332px;
+    left: 587px;
+}
+
+.export-year {
+    position: absolute;
+    top: 332px;
+    left: 647px;
+}
+
+.export-certificatenumber {
+    position: absolute;
+    top: 517px;
+    left: 433px;
+}
+
+.export-certificatetime {
+    position: absolute;
+    top: 517px;
+    left: 601px;
+}
+
+.export {
+    width: 1240px;
+    height: 1620px;
+    top: 30px;
+    font-size: 20px;
+    background-image: url(/Content/images/pxk.jpg);
+}*/
+
+.import-dimension{
+    font-size:15px;
+    padding-top:7px;
+}
+
+a{
+    cursor:pointer;
+}
+
+.pxk > td th{
+    padding:5px;
+}
+
+th{    
+    vertical-align:middle !important;
+}

@@ -1,0 +1,135 @@
+﻿@model PetroBM.Web.Models.InvoiceModel
+@using PetroBM.Common.Util
+
+@{
+    ViewBag.Title = "Kho " + Session[Constants.Session_WareHouseName] + " > Nhập thông tin xuất hàng bằng tay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("RegisterBills", "Bills", FormMethod.Post, new { @id = "Form1" }))
+{
+    <div class="container">
+
+        <div class="col-md-5" id="commanddtail">
+            <h3>Thông tin lấy hàng</h3>
+            <div>
+                <div class="col-md-6">
+                    <label>Thời gian đăng ký lệnh</label>
+                </div>
+                <div class="col-md-6">
+                    <div class='input-group date' id='datetimepicker'>
+                        <input type="text" class="form-control" id="timebillcheckout" readonly="readonly">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Card Data</label>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="cardData" readonly="readonly">
+                </div>
+            </div>
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Card Serial</label>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="cardSerial" onchange="getCommandByCardSerial()" tabindex="1">
+                </div>
+            </div>
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Mã lệnh</label>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" disabled="disabled" id="commandcode" onchange="getCommandByCommandCode()">
+                </div>
+            </div>
+
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Số phương tiện</label>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="vehiclenumber" readonly="readonly">
+                </div>
+            </div>
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Tên tài xế</label>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="drivername" readonly="readonly">
+                </div>
+            </div>
+
+            <div style="padding-top:10%">
+                <div class="col-md-6">
+                    <label>Ghi chú</label>
+                </div>
+                <div class="col-md-6">
+                    <textarea class="form-control" style="text-align:left" tabindex="5"></textarea>
+                </div>
+            </div>
+            <div style="padding-top:10%">
+                <h3 id="warningbill" style="color:red"></h3>
+            </div>
+            <div style="padding-top:2%">
+                <button type="submit" class="btn btn-primary" onclick="return ValidateData();" tabindex="6" id="buttonsubmit">  Lưu</button>
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("CreateInvoice","Bills")'" id="billredirectaction">Hủy</button>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+
+            <h3>Nhập thông tin xuất hàng bằng tay</h3>
+            <div id="divSeal">
+                <table style="width:90% " class="table table-striped table-bordered" id="listCommandDetail">
+                    <thead>
+                        <tr>
+                            <th style="display:none">ID</th>
+                            <th>Mã ngăn</th>
+                            <th>V đặt</th>
+                            <th>Hàng hóa</th>
+                            <th>VTT</th>
+                            <th>Nhiệt độ trung bình</th>
+                            <th>Tỷ trọng</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>@Html.Label("Tổng", new { @id = "lblTotal" })</th>
+                            <th id="lvlTotalV_Actual"> </th>
+                            <th></th>
+                            <th></th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </tfoot>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script type="text/javascript">
+		$(function () {
+			$('#datetimepicker').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+			$("#cardSerial").focus();
+			if (@Model.ExportMode == @Constants.EXPORT_MODE_WORKORDER) {
+				$("#commandcode").prop("disabled", false);
+				$("#commandcode").focus();
+				$("#cardSerial").prop("disabled", true);
+			}
+		});
+    </script>
+
+    <script src="~/Scripts/Billist.js"></script>
+}
+

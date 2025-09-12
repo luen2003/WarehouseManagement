@@ -1,0 +1,222 @@
+﻿@model PetroBM.Web.Models.CommandModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách lệnh theo xe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class='col-sm-4 col-xs-6'>
+    <div class="row">
+        <label class="control-label col-xs-4">Mã lệnh</label>
+        <div class="form-group col-xs-8">
+            <input type="text" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <label class="control-label col-xs-4">Card data</label>
+        <div class="form-group col-xs-8">
+            <input type="text" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <label class="control-label col-xs-4">Card serial</label>
+        <div class="form-group col-xs-8">
+            <input type="text" class="form-control">
+        </div>
+    </div>
+</div>
+
+<div class='col-sm-5 col-xs-6'>
+    <div class="row">
+        <label class="control-label col-xs-4">Thời gian đăng ký</label>
+        <div class="form-group col-xs-6">
+            <div class='input-group date' id='datetimepicker1'>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <label class="control-label col-xs-4">Phương tiện</label>
+        <div class="form-group col-xs-8">
+            <select style="width:200px">
+                @foreach (var item in Model.ListCommand)
+                {
+                    <option>@Html.DisplayFor(modelItem => item.VehicleNumber)</option>
+                }
+            </select>
+
+        </div>
+    </div>
+    <div class="row">
+        <label class="control-label col-xs-4">Trạng thái ngăn</label>
+        <div class="form-group col-xs-6">
+            @*@foreach (var item in Model.listflag)
+                {
+                   @Html.DropDownList(item.Text)
+                }*@
+        </div>
+    </div>
+
+</div>
+<div class='col-sm-3 col-xs-6'>
+    <div class="row">
+        <div class="form-group col-xs-10">
+            <div class='input-group date' id='datetimepicker2'>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row" style="padding-left:15px;padding-top:30px;">
+        <button type="button" class='btn btn-success'>Tìm kiếm</button>
+    </div>
+</div>
+<table class="table" id="tablecommand">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Command.VehicleNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Command.WorkOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Command.CardData)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Command.CardSerial)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Command.TimeOrder)
+            </th>
+            <th>
+                <label class="checkbox-inline"><input type="checkbox" value="" id="checkAllDelete">Hủy</label>
+            </th>
+            <th>
+                <label class="checkbox-inline"><input type="checkbox" value="" id="checkAllMoveDate">Chuyển ngày</label>
+            </th>
+        </tr>
+    </thead>
+
+    @{   var i = 0;
+        foreach (var item in Model.ListCommand)
+        {
+            i = i + 1;
+            <tr>
+
+         
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardData)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardSerial)
+                </td>
+     
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeOrder)
+                </td>
+                <td>
+                    <input type="checkbox" class="checkIdDelete" id="@item.CommandID">
+                </td>
+                <td>
+                    <input type="checkbox" class="checkMoveDate" id="@item.CommandID">
+                </td>
+            </tr>
+        }
+    }
+</table>
+<button id="Submit" class='btn btn-success' style="float:right">Lưu</button>
+<div class="text-center">
+    @Html.PagedListPager(Model.ListCommand, page => Url.Action("Index", new { page }))
+</div>
+
+</div>
+@section scripts{
+
+    <script>
+        $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+    </script>
+    <script>
+        $("#checkAllDelete").click(function () {
+            $('.checkIdDelete').not(this).prop('checked', this.checked);
+        });
+        $("#checkAllMoveDate").click(function () {
+            $('.checkMoveDate').not(this).prop('checked', this.checked);
+        });
+    </script>
+    <script>
+
+
+        $("#Submit").click(function () {
+
+            // Delete checkbox
+            var selectedIDs = new Array();
+            $('.checkIdDelete').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).attr("id"));
+                }
+            });
+            $.post("/CommandDetail/Edit", { id: selectedIDs })
+                .done(function (msg) { })
+                .fail(function (xhr, status, error) { });
+
+
+            //Updatetime CheckBox
+            var selectedMoveDateIDs = new Array();
+            $('.checkMoveDate').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedMoveDateIDs.push($(this).attr("id"));
+                }
+            });
+            console.log(selectedMoveDateIDs);
+            $.post("/CommandDetail/Create", { idcommanddetail: selectedMoveDateIDs })
+                    .done(function (msg) { })
+                    .fail(function (xhr, status, error) { });
+            setTimeout(function () {
+                window.location.reload();
+            }, 3000);
+        });
+
+
+
+
+
+    </script>
+    <script>
+        var selectedIdTable = new Array();
+        $('.idcommand').each(function () {
+            selectedIdTable.push($(this).attr("id"));
+            
+        });
+
+        var selectedIdVehicle = new Array();
+        $('.vehiclecommand').each(function () {
+            selectedIdVehicle.push($(this).attr("id"));
+
+        });
+        
+        for (var i = 0; i < selectedIdVehicle.length; i++) {
+            if (selectedIdTable[0] != selectedIdTable[i+1] & selectedIdVehicle[0] == selectedIdVehicle[i+1]) {
+                var b = Math.min.apply(Math, selectedIdTable);
+            }
+           
+        }
+    </script>
+
+}

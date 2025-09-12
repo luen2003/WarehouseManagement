@@ -1,0 +1,304 @@
+﻿@model PetroBM.Web.Models.ChartModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util;
+
+@{
+    ViewBag.Title = "Bảng dữ liệu lịch sử đo bể";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class='col-sm-4 col-xs-4'>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đầu</label>
+                <div class="form-group col-xs-8">
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian cuối</label>
+                <div class="form-group col-xs-8">
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class='col-sm-3 col-xs-3'>
+            <div class="row">
+                <label class="control-label col-xs-2">Kho</label>
+                <div class="form-group col-xs-10">
+                    @*<select id="WareHouseCode" name="WareHouseCode" class="form-control" onchange="ChangeWareHouse()">
+                        @foreach (var item in Model.WareHouseList)
+                        {
+                            if (item.WareHouseCode == Model.WareHouseCode)
+                            {
+                                <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                        }
+                    </select>*@
+                    @if (Model.WareHouseList.Any())
+                    {
+                        @Html.DropDownListFor(model => model.WareHouseCode,
+                new SelectList(Model.WareHouseList, "WareHouseCode", "WareHouseName", "") as SelectList, "Chọn... ",
+                new { @class = "form-control", @style = "width:217px;",onchange = "ChangeWareHouse()" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.WareHouseCode,
+                new SelectList(new List<string>()), "Chọn... ",
+                new { @class = "form-control", @style = "width:217px;" })
+                    }
+                </div>
+
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-2">Bể</label>
+                <div class="form-group col-xs-8" id="ListTank">
+                    <select id="TankId" name="TankId">
+                    </select>
+                </div>
+            </div>
+            
+        </div>
+        <div class='col-sm-4 col-xs-4'>
+            <div class="row">
+                <label class="control-label col-xs-2"></label>
+                <div class="form-group col-xs-8">
+                    <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<table class="table table-striped" style="overflow-x: auto;width: 100%;display: block;">
+    <thead>
+        <tr>
+            <th style="min-width:80px;">
+                @Html.LabelFor(Model => Model.TankLogList[0].MTank.TankName)
+            </th>
+            <th style="min-width:140px;">
+                @Html.LabelFor(Model => Model.TankLogList[0].InsertDate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].WaterLevel)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].ProductLevel)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].TotalLevel)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].WaterVolume)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].ProductVolume)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].TotalVolume)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].TankEmpty)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].AvgTemperature)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].LevelRate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].FlowRate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].AvailableVolume)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].Mass)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].MassRate)
+            </th>
+            <th>
+                @Html.LabelFor(Model => Model.TankLogList[0].ProductVolume15)
+            </th>
+            <th style="min-width:60px;">
+                @Html.LabelFor(Model => Model.TankLogList[0].VCF)
+            </th>
+            <th style="min-width:60px;">
+                @Html.LabelFor(Model => Model.TankLogList[0].WCF)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_MM
+            </td>
+            <td>
+                @Constants.DIMENSION_L
+            </td>
+            <td>
+                @Constants.DIMENSION_L
+            </td>
+            <td>
+                @Constants.DIMENSION_L
+            </td>
+            <td>
+                @Constants.DIMENSION_L
+            </td>
+            <td>
+                @Html.Raw(Constants.DIMENSION_TEMPERATURE)
+            </td>
+            <td>
+                @Constants.DIMENSION_LEVEL_RATE
+            </td>
+            <td>
+                @Html.Raw(Constants.DIMENSION_FLOW)
+            </td>
+            <td>
+                @Constants.DIMENSION_L
+            </td>
+            <td>
+                @Constants.DIMENSION_MASS
+            </td>
+            <td>
+                @Constants.DIMENSION_MASS_RATE
+            </td>
+            <td>
+                @Constants.DIMENSION_L
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        @{
+            if (Model.TankLogList != null)
+            {
+                foreach (var item in Model.TankLogList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MTank.TankName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InsertDate)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.WaterLevel, 2)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.ProductLevel, 2)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.TotalLevel, 2)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.WaterVolume, 2)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.ProductVolume, 2)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.TotalVolume, 2)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.TankEmpty, 2)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(item.AvgTemperature, 1)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.LevelRate, 3)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.FlowRate, 2)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.AvailableVolume, 2)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.Mass, 2)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.MassRate, 2)
+                        </td>
+                        <td class="text-right">
+                            @NumberUtil.FormatNumber(item.ProductVolume15, 2)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(item.VCF, 5)
+                        </td>
+                        <td>
+                            @NumberUtil.FormatNumber(item.WCF, 5)
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+@* Edit 05/11/2018 : Bỏ đi phần hiển thị phân trang
+    @if (Model.TankLogList != null)
+{
+    <div class="text-center">
+        @Html.PagedListPager(Model.TankLogList, page => Url.Action("HistoricalDataTable",
+       new { tankId = Model.TankId, startDate = Model.StartDate, endDate = Model.EndDate, page }))
+    </div>
+}*@
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+            $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        });
+        var wareHouseCode = @Html.Raw(Json.Encode(@Model.WareHouseCode)); //lấy mã kho khởi tạo
+        var tankid = @Html.Raw(Json.Encode(@Model.TankId)); // Lấy số họng
+        var listTank = @Html.Raw(Json.Encode(@Model.TankTempList));//tất cả các họng ở các kho
+        ChangeWareHouse();
+
+        function ChangeWareHouse(){
+            var selwareHouseCode =  $("#WareHouseCode").val();
+            var str="<select class='form-control' id='TankId' name='TankId'>";
+
+            for (var i = 0; i < listTank.length; i++) {
+                if (listTank[i].WareHouseCode ==selwareHouseCode){
+                    if (listTank[i].TankId == tankid){
+                        str += "<option value=" + listTank[i].TankId + " selected='selected'>" + listTank[i].TankName + "</option>";
+                    }
+                    else
+                    {
+                        str += "<option value=" + listTank[i].TankId + " >" + listTank[i].TankName + "</option>";
+                    }
+                }
+            }
+            str +="</select>";
+            document.getElementById("ListTank").innerHTML =str;
+        }
+
+    </script>
+}
+

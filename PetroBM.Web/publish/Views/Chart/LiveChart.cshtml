@@ -1,0 +1,436 @@
+﻿@model PetroBM.Web.Models.ChartModel
+@using PetroBM.Common.Util;
+
+@{
+    ViewBag.Title = "Thời gian thực đo bể";
+}
+<div class="row">
+    <div class='col-sm-4'>
+        <form id="live-chart">
+            <div class="row">
+                <label class="control-label col-xs-4">Khoảng thời gian</label>
+                <div class="form-group col-xs-8">
+                    @if (Model.DurationList.Any())
+                    {
+                        @Html.DropDownListFor(model => model.Duration,
+                       new SelectList(Model.DurationList, "Value", "Text", "") as SelectList, "Chọn... ",
+                       new { @class = "form-control", @style = "width:205px;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.Duration,
+                       new SelectList(new List<string>()), "Chọn... ",
+                       new { @class = "form-control", @style = "width:205px;" })
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-xs-4">Kho</label>
+                <div class="form-group col-xs-8">
+                    <select class="form-control" name="WareHouseCode" id="WareHouseCode" style = "width:205px;" onchange="WareHouseChange()">
+                        @foreach (var item in Model.WareHouseList)
+                        {
+                            if (Model.WareHouseCode != item.WareHouseCode)
+                            {
+                                <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                            }
+                        }
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Bể</label>
+                <div class="form-group col-xs-8" id="ListTank">
+                    <select class="form-control" name="TankId" style="width:205px;">
+                    </select>
+                    @*@if (Model.TankList.Any())
+                    {
+                        @Html.DropDownListFor(model => model.TankId,
+                       new SelectList(Model.TankList, "TankId", "TankName", "") as SelectList, "Chọn... ",
+                       new { @class = "form-control", @style = "width:205px;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.TankId,
+                       new SelectList(new List<string>()), "Chọn... ",
+                       new { @class = "form-control", @style = "width:205px;" })
+                    }*@
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label col-xs-4">
+                        @Html.LabelFor(Model => Model.TankLogList[0].TotalLevel, new { @class = "lb-total-level" })
+                    </label>
+                    <div class="col-xs-3">
+                        <input class="total-level-color" />
+                        @Html.HiddenFor(model => model.TotalLevelColor)
+                        @Html.CheckBoxFor(model => model.IsTotalLevel)
+                    </div>
+                    <div class="total-level-val col-xs-5">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label col-xs-4">
+                        @Html.LabelFor(Model => Model.TankLogList[0].ProductVolume, new { @class = "lb-product-volume" })
+                    </label>
+                    <div class="col-xs-3">
+                        <input class="product-volume-color" />
+                        @Html.HiddenFor(model => model.ProductVolumeColor)
+                        @Html.CheckBoxFor(model => model.IsProductVolume)
+                    </div>
+                    <div class="product-volume-val col-xs-5">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label col-xs-4">
+                        @Html.LabelFor(Model => Model.TankLogList[0].FlowRate, new { @class = "lb-flow-rate" })
+                    </label>
+                    <div class="col-xs-3">
+                        <input class="flow-rate-color" />
+                        @Html.HiddenFor(model => model.FlowRateColor)
+                        @Html.CheckBoxFor(model => model.IsFlowRate)
+                    </div>
+                    <div class="flow-rate-val col-xs-5">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label col-xs-4">
+                        @Html.LabelFor(Model => Model.TankLogList[0].AvgTemperature, new { @class = "lb-avg-temperature" })
+                    </label>
+                    <div class="col-xs-3">
+                        <input class="avg-temperature-color" />
+                        @Html.HiddenFor(model => model.AvgTemperatureColor)
+                        @Html.CheckBoxFor(model => model.IsAvgTemperature)
+                    </div>
+                    <div class="avg-temperature-val col-xs-5">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <label class="control-label col-xs-4"></label>
+            <div class="form-group col-xs-8">
+                <input type="button" value="Chạy" class="btn-run btn btn-success" style="width:70px;" />
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-8'>
+        <div id="chartContainer" style="height: 600px; width: 100%;">
+        </div>
+    </div>
+</div>
+
+@section style{
+    @Styles.Render("~/Content/spectrum")
+    <style>
+        .color-picker {
+            display: inline-block;
+            width: 228px;
+        }
+    </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/canvasjs")
+    @Scripts.Render("~/bundles/spectrum")
+
+    <script>
+        var isRunning = false;
+        var chart;
+        var totalLevelData = [];
+        var productVolumeData = [];
+        var flowRateData = [];
+        var avgTemperatureData = [];
+
+        $(function () {
+            InitColorPicker($('.total-level-color'), $('#TotalLevelColor').val());
+            InitColorPicker($('.product-volume-color'), $('#ProductVolumeColor').val());
+            InitColorPicker($('.flow-rate-color'), $('#FlowRateColor').val());
+            InitColorPicker($('.avg-temperature-color'), $('#AvgTemperatureColor').val());
+        });
+
+        function InitColorPicker(elem, color) {
+            elem.spectrum({
+                showPaletteOnly: true,
+                togglePaletteOnly: true,
+                togglePaletteMoreText: 'more',
+                togglePaletteLessText: 'less',
+                color: color,
+                palette: [
+                    ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
+                    ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
+                    ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
+                    ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
+                    ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0"],
+                    ["#c00", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79"],
+                    ["#900", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47"],
+                    ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"]
+                ],
+                change: function (color) {
+                    $(this).next().next().val(color.toHexString());
+                }
+            });
+        }
+
+        $(function () {
+            setInterval(function () { DrawChart() }, 2500);
+
+            $('.btn-run').click(function () {
+                if (isRunning) {
+                    isRunning = false;
+                    $(this).removeClass("btn-danger");
+                    $(this).addClass('btn-success');
+                    $(this).val("Chạy");
+                }
+                else {
+                    InitChart();
+                    DrawChart();
+
+                    isRunning = true;
+                    $(this).removeClass("btn-success");
+                    $(this).addClass('btn-danger');
+                    $(this).val("Dừng");
+                }
+            });
+        });
+
+        function InitChart() {
+            chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                    text: "Đồ thị thời gian thực",
+                    fontFamily: "arial",
+                    fontSize: 20
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisY: [{
+                    title: $('.lb-total-level').text(),
+                    includeZero: false,
+                    labelFontSize: 14,
+                    titleFontSize: 18,
+                    labelFontColor: $('#TotalLevelColor').val(),
+                    titleFontColor: $('#TotalLevelColor').val(),
+                    lineColor: $('#TotalLevelColor').val(),
+                    lineThickness: 2,
+                },
+                {
+                    title: $('.lb-product-volume').text(),
+                    includeZero: false,
+                    labelFontSize: 14,
+                    titleFontSize: 18,
+                    labelFontColor: $('#ProductVolumeColor').val(),
+                    titleFontColor: $('#ProductVolumeColor').val(),
+                    lineColor: $('#ProductVolumeColor').val(),
+                    lineThickness: 2,
+                }],
+                toolTip: {
+                    shared: true
+                },
+                axisY2: [{
+                    title: $('.lb-flow-rate').text(),
+                    includeZero: false,
+                    labelFontSize: 14,
+                    titleFontSize: 18,
+                    labelFontColor: $('#FlowRateColor').val(),
+                    titleFontColor: $('#FlowRateColor').val(),
+                    lineColor: $('#FlowRateColor').val(),
+                    lineThickness: 2,
+                },
+               {
+                   title: $('.lb-avg-temperature').text(),
+                   includeZero: false,
+                   labelFontSize: 14,
+                   titleFontSize: 18,
+                   labelFontColor: $('#AvgTemperatureColor').val(),
+                   titleFontColor: $('#AvgTemperatureColor').val(),
+                   lineColor: $('#AvgTemperatureColor').val(),
+                   lineThickness: 2,
+               }],
+                axisX: {
+                    lineThickness: 2,
+                    labelFontSize: 14,
+                    labelFormatter: function (e) {
+                        return CanvasJS.formatDate(e.value, "DD-MM-YY HH:mm:ss");
+                    }
+                },
+                data: [{
+                    type: "stepLine",
+                    markerSize: 0,
+                    name: "Chiều cao chung",
+                    lineThickness: 2,
+                    lineColor: $('#TotalLevelColor').val(),
+                    color: $('#TotalLevelColor').val(),
+                    xValueType: "dateTime",
+                    dataPoints: totalLevelData
+                },
+                {
+                    type: "stepLine",
+                    markerSize: 0,
+                    name: "Thể tích hàng(Vtt)",
+                    axisYIndex: 1,
+                    lineThickness: 2,
+                    lineColor: $('#ProductVolumeColor').val(),
+                    color: $('#ProductVolumeColor').val(),
+                    xValueType: "dateTime",
+                    dataPoints: productVolumeData
+                },
+                {
+                    type: "stepLine",
+                    markerSize: 0,
+                    name: "Flow Rate",
+                    axisYType: "secondary",
+                    lineThickness: 2,
+                    lineColor: $('#FlowRateColor').val(),
+                    color: $('#FlowRateColor').val(),
+                    xValueType: "dateTime",
+                    dataPoints: flowRateData
+                },
+                {
+                    type: "stepLine",
+                    markerSize: 0,
+                    name: "Nhiệt độ trung bình",
+                    axisYType: "secondary",
+                    axisYIndex: 1,
+                    lineThickness: 2,
+                    lineColor: $('#AvgTemperatureColor').val(),
+                    color: $('#AvgTemperatureColor').val(),
+                    xValueType: "dateTime",
+                    dataPoints: avgTemperatureData
+                }]
+            });
+        }
+
+        function DrawChart() {
+            if (isRunning) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetLiveTotalLevel", "Chart")',
+                    data: $("#live-chart").serialize(),
+                    success: function (data) {
+                        var html = '';
+                        if (data.max) {
+                            html += '<div><strong>Max: </strong>' + data.max + ' @Constants.DIMENSION_MM' + '</div>';
+                        }
+                        if (data.min) {
+                            html += '<div><strong>Min: </strong>' + data.min + ' @Constants.DIMENSION_MM' + '</div>';
+                        }
+                        $('.total-level-val').html(html);
+
+                        chart.options.data[0].dataPoints = data.data;
+                        chart.render();
+                        $('.canvasjs-chart-credit').hide();
+                    },
+                    error: function () {
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetLiveProductVolume", "Chart")',
+                    data: $("#live-chart").serialize(),
+                    success: function (data) {
+                        var html = '';
+                        if (data.max) {
+                            html += '<div><strong>Max: </strong>' + data.max + ' @Constants.DIMENSION_L' + '</div>';
+                        }
+                        if (data.min) {
+                            html += '<div><strong>Min: </strong>' + data.min + ' @Constants.DIMENSION_L' +'</div>';
+                        }
+                        $('.product-volume-val').html(html);
+
+                        chart.options.data[1].dataPoints = data.data;
+                        chart.render();
+                        $('.canvasjs-chart-credit').hide();
+                    },
+                    error: function () {
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetLiveFlowRate", "Chart")',
+                    data: $("#live-chart").serialize(),
+                    success: function (data) {
+                        var html = '';
+                        if (data.max) {
+                            html += '<div><strong>Max: </strong>' + data.max + ' @Html.Raw(Constants.DIMENSION_FLOW)' + '</div>';
+                        }
+                        if (data.min) {
+                            html += '<div><strong>Min: </strong>' + data.min + ' @Html.Raw(Constants.DIMENSION_FLOW)' + '</div>';
+                        }
+                        $('.flow-rate-val').html(html);
+
+                        chart.options.data[2].dataPoints = data.data;
+                        chart.render();
+                        $('.canvasjs-chart-credit').hide();
+                    },
+                    error: function () {
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetLiveAvgTemperature", "Chart")',
+                    data: $("#live-chart").serialize(),
+                    success: function (data) {
+                        var html = '';
+                        if (data.max) {
+                            html += '<div><strong>Max: </strong>' + data.max + ' @Html.Raw(Constants.DIMENSION_L)' + '</div>';
+                        }
+                        if (data.min) {
+                            html += '<div><strong>Min: </strong>' + data.min + ' @Html.Raw(Constants.DIMENSION_TEMPERATURE)' + '</div>';
+                        }
+                        $('.avg-temperature-val').html(html);
+
+                        chart.options.data[3].dataPoints = data.data;
+                        chart.render();
+                        $('.canvasjs-chart-credit').hide();
+                    },
+                    error: function () {
+                    }
+                });
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        var lstWarHouse = @Html.Raw(Json.Encode(@Model.WareHouseList)); //Lay cac kho
+        var listTank = @Html.Raw(Json.Encode(@Model.TankTempList));//Lay danh sach cac be
+        WareHouseChange();
+
+        function WareHouseChange()
+        {
+            var selWareHouse = $("#WareHouseCode").val();
+            var opt ="<select class='form-control' name='TankId' style='width:205px;'>";
+
+            for (var i = 0; i < listTank.length; i++) {
+                if (listTank[i].WareHouseCode ==selWareHouse)
+                {
+                    opt += "<Option value=" + listTank[i].TankId  +">" + listTank[i].TankName + "</option>";
+                }
+            }
+            opt += "</select>";
+            document.getElementById("ListTank").innerHTML = opt;
+        }
+
+
+
+    </script>
+
+}
+

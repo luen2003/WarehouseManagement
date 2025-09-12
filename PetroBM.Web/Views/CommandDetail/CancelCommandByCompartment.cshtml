@@ -1,0 +1,513 @@
+﻿@model PetroBM.Web.Models.CommandDetailModel
+@using PagedList.Mvc;
+@using PetroBM.Common.Util;
+@{
+	ViewBag.Title = "Kho " + Session[Constants.Session_WareHouseName] + " > Hủy lệnh theo ngăn";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("CancelCommandByCompartment", "CommandDetail", FormMethod.Post, new { @id = "Form1" }))
+{
+	<div class="container">
+		<div class='col-sm-4 col-xs-6'>
+			<div class="row">
+				<label class="control-label col-xs-4">Mã lệnh</label>
+				<div class="form-group col-xs-8">
+					@Html.EditorFor(model => model.WorkOrder, new { htmlAttributes = new { @class = "form-control" } })
+				</div>
+			</div>
+			<div class="row">
+				<label class="control-label col-xs-4">Card data</label>
+				<div class="form-group col-xs-8">
+					@Html.EditorFor(model => model.CardData, new { htmlAttributes = new { @class = "form-control" } })
+				</div>
+			</div>
+			<div class="row">
+				<label class="control-label col-xs-4">Card serial</label>
+				<div class="form-group col-xs-8">
+					@Html.EditorFor(model => model.CardSerial, new { htmlAttributes = new { @class = "form-control" } })
+				</div>
+			</div>
+		</div>
+
+		<div class='col-sm-5 col-xs-6'>
+			<div class="row">
+				<label class="control-label col-xs-4">Thời gian đăng ký</label>
+				<div class="form-group col-xs-6">
+					<div class='input-group date' id='datetimepicker1'>
+						@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<label class="control-label col-xs-4">Phương tiện</label>
+				<div class="form-group col-xs-8">
+					<select style="width:200px" class="form-control" name="VerhicleNumber">
+						@foreach (var item in Model.ListVehicle)
+						{
+							if (Model.VerhicleNumber == item.VehicleNumber)
+							{
+								<option selected="selected" value="@item.VehicleNumber">@item.VehicleNumber</option>
+							}
+							else
+							{
+								<option value="@item.VehicleNumber">@item.VehicleNumber</option>
+							}
+						}
+						@if (Model.VerhicleNumber == "")
+						{
+							<option selected="selected" value="">Tất cả</option>
+						}
+						else
+						{
+							<option value="">Tất cả</option>
+						}
+					</select>
+
+				</div>
+			</div>
+			<div class="row">
+				<label class="control-label col-xs-4">Trạng thái ngăn</label>
+				<div class="form-group col-xs-6">
+					<select id="Flag" class="form-control" name="Status">
+						@switch (Model.Status)
+						{
+							case null:
+								<option value="" selected="selected">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 99:
+								<option value="">Tất cả</option>
+								<option value="99" selected="selected">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 0:
+								<option value="">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0" selected="selected">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 1:
+								<option value="">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1" selected="selected">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 2:
+								<option value="">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2" selected="selected">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 3:
+								<option value="">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3" selected="selected">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 4:
+								<option value="">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4" selected="selected">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 5:
+								<option value="">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5" selected="selected">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 6:
+								<option value="">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6" selected="selected">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 7:
+								<option value="">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7" selected="selected">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 8:
+								<option value="">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8" selected="selected">Xuất hóa đơn</option>
+								<option value="9">Chuyển ngày</option>
+								break;
+							case 9:
+								<option value="">Tất cả</option>
+								<option value="99">Đăng ký lệnh</option>
+								<option value="0">Đã duyệt lệnh</option>
+								<option value="1">Chuẩn bị xuất</option>
+								<option value="2">Đang xuất hàng</option>
+								<option value="3">Xuất xong</option>
+								<option value="4">Dừng ép</option>
+								<option value="5">Hủy lệnh</option>
+								<option value="6">Nhập tay</option>
+								<option value="7">Niêm chì</option>
+								<option value="8">Xuất hóa đơn</option>
+								<option value="9" selected="selected">Chuyển ngày</option>
+								break;
+						}
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class='col-sm-3 col-xs-6'>
+			<div class="row">
+				<div class="form-group col-xs-10">
+					<div class='input-group date' id='datetimepicker2'>
+						@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				&nbsp;
+			</div>
+			<div class="row" style="padding-left:15px;padding-top:30px;">
+				<button type="submit" class='btn btn-success'>Tìm kiếm</button>
+			</div>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.Vehicle)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.WorkOrder)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.CardData)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.CardSerial)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.ProductName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.CompartmentOrder)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.V_Preset)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.V_Actual)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.AvgTemperature)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.Flag)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CommandDetail.CommandType)
+					</th>
+					<th>
+						<label class="checkbox-inline"><input type="checkbox" value="" id="checkAllCancel">Hủy</label>
+					</th>
+				</tr>
+			</thead>
+
+			@foreach (var item in Model.ListCommandDetail)
+			{
+				<tr>
+
+					<td>
+						@Html.DisplayFor(modelItem => item.Vehicle)
+					</td>
+					<td>
+						@Convert.ToInt32(item.WorkOrder)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.CardData)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.CardSerial)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.ProductName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.CompartmentOrder)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.V_Preset)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.V_Actual)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.AvgTemperature)
+					</td>
+
+
+
+					@if (item.Flag == 99)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.Flag)
+							</div>
+							Đăng ký lệnh
+
+						</td>
+					}
+					else if (item.Flag == 0)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.Flag)
+							</div>
+							Đã duyệt lệnh
+						</td>
+					}
+					else if (item.Flag == 1)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.Flag)
+							</div>
+							Chuẩn bị xuất
+						</td>
+					}
+					else if (item.Flag == 2)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.Flag)
+							</div>
+							Đang xuất
+						</td>
+					}
+					else if (item.Flag == 3)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.Flag)
+							</div>
+							Xuất xong
+						</td>
+					}
+					else if (item.Flag == 4)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.Flag)
+							</div>
+							Dừng ép
+						</td>
+					}
+					else if (item.Flag == 5)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.Flag)
+							</div>
+							Hủy lệnh
+						</td>
+					}
+					else if (item.Flag == 6)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.Flag)
+							</div>
+							Nhập tay
+						</td>
+					}
+					else if (item.Flag == 7)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.Flag)
+							</div>
+							Niêm chì
+						</td>
+					}
+					else if (item.Flag == 8)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.Flag)
+							</div>
+							Hóa đơn
+						</td>
+					}
+					@if (item.CommandType == 0)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.CommandType)
+							</div>
+							Lệnh cập nhật
+
+						</td>
+					}
+					else if (item.CommandType == 1)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.CommandType)
+							</div>
+
+						</td>
+					}
+					else if (item.CommandType == null)
+					{
+						<td>
+							<div style="display:none">
+								@Html.DisplayFor(modelItem => item.CommandType)
+							</div>
+							&nbsp;
+						</td>
+					}
+					<td>
+						<input type="checkbox" class="checkIdCancel" id="@item.ID">
+					</td>
+				</tr>
+			}
+		</table>
+		<div class="text-center">
+			@Html.PagedListPager(Model.ListCommandDetail, page => Url.Action("CancelCommandByCompartment", new
+			{
+				workOrder = Model.WorkOrder,
+				cardSerial = Model.CardSerial,
+				cardData = Model.CardData,
+				verhicleNumber = Model.VerhicleNumber,
+				startDate = Model.StartDate,
+				endDate = Model.EndDate,
+				page
+			}))
+		</div>
+		<button id="Submit" class='btn btn-success' style="float:right">Lưu</button>
+	</div>
+}
+
+@section scripts{
+	<script>
+		$('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+		$('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+
+		$("#checkAllCancel").click(function () {
+			$('.checkIdCancel').not(this).prop('checked', this.checked);
+		});
+	</script>
+	<script>
+
+		$("#Submit").click(function () {
+			// Cancel checkbox
+			var selectedIDs = new Array();
+			$('.checkIdCancel').each(function () {
+				if ($(this).prop('checked')) {
+					selectedIDs.push($(this).attr("id"));
+				}
+			});
+			if (selectedIDs != null) {
+				$.post("/CommandDetail/CancelCompartment", { lstId: selectedIDs })
+					.done(function (msg) { })
+					.fail(function (xhr, status, error) { });
+			}
+		});
+	</script>
+}

@@ -1,0 +1,276 @@
+﻿@model PetroBM.Web.Models.ChartModel
+@using PetroBM.Common.Util;
+
+@{
+    ViewBag.Title = "Đồ thị chênh lệch lượng xuất theo ngày";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class='col-sm-5'>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đầu</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian cuối</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Kho</label>
+                <div class="form-group col-xs-8">
+                    @*<select class="form-control" name="WareHouseCode" id="WareHouseCode" style="width:205px;" onchange="WareHouseChange()">
+                        @foreach (var item in Model.WareHouseList)
+                        {
+                            if (Model.WareHouseCode != item.WareHouseCode)
+                            {
+                                <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.WareHouseCode" selected="selected">@item.WareHouseName</option>
+                            }
+                        }
+                    </select>*@
+                    @if (Model.WareHouseList.Any())
+                    {
+                        @Html.DropDownListFor(model => model.WareHouseCode,
+                new SelectList(Model.WareHouseList, "WareHouseCode", "WareHouseName", "") as SelectList, "Chọn... ",
+                new { @class = "form-control", @style = "width:217px;",onchange = "WareHouseChange()" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.WareHouseCode,
+                new SelectList(new List<string>()), "Chọn... ",
+                new { @class = "form-control", @style = "width:217px;" })
+                    }
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-xs-4">Tên mặt hàng</label>
+                <div class="form-group col-xs-6">
+                    @*<select name="ProductCode" id="ProductCode" class="form-control">
+                        @if (Model.ProductCode == "")
+                        {
+                            <option value="">Tất cả</option>
+                        }
+                        else
+                        {
+                            <option value="" selected="selected">Tất cả</option>
+                        }
+                        @foreach (var item in Model.ProductList)
+                        {
+                            if (Model.ProductCode == item.ProductCode)
+                            {
+                                <option value="@item.ProductCode" selected="selected">@item.ProductName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.ProductCode">@item.ProductName</option>
+                            }
+                        }
+                    </select>*@
+
+                    @if (Model.ProductList.Any())
+                    {
+                        @Html.DropDownListFor(model => model.ProductCode,
+                new SelectList(Model.ProductList, "ProductCode", "ProductName", "") as SelectList, "Chọn... ",
+                new { @class = "form-control", @style = "width:217px;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.ProductCode,
+                new SelectList(new List<string>()), "Chọn... ",
+                new { @class = "form-control", @style = "width:217px;" })
+                    }
+                </div>
+            </div>
+
+            @*<div class="row">
+                <label class="control-label col-xs-4">Chênh lệch</label>
+                <div class="form-group col-xs-6">
+                    <select id="Deviation" name="Deviation" class="form-control">
+                        @if (Model.Deviation != null)
+                        {
+                            <option value="">All</option>
+                            for (int i = -10; i < 11; i++)
+                            {
+                                if (int.Parse(Model.Deviation.ToString()) == i)
+                                {
+                                    <option value="@i" selected="selected">@i</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <option value="" selected="selected">Tất cả</option>
+                            for (int i = -10; i < 11; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>*@
+
+            <div class="row">
+                <label class="control-label col-xs-4">Chênh lệch</label>
+                <div class="form-group col-xs-2">
+                    <select id="Deviation" name="Deviation">
+                        <option value="100000">Tất cả</option>
+                        <option>4</option>
+                        <option>3</option>
+                        <option>2</option>
+                        <option>1</option>
+                        <option>0</option>
+                        <option>-1</option>
+                        <option>-2</option>
+                        <option>-3</option>
+                        <option>-4</option>
+                    </select>
+                </div>
+                <div class="diff-export-val col-xs-3">
+                </div>
+
+            </div>
+            <div class="row ">
+                <label class="control-label col-xs-4"></label>
+                <div class="form-group col-xs-8">
+                    <input type="submit" value="Xác nhận" onclick="GenerateTable" class="btn btn-primary" />
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-sm-7">
+            <div id="chartContainer" style="height: 300px; width: 100%;">
+            </div>
+        </div>
+        <div class="col-sm-5">
+        </div>
+            <div class="col-sm-7">
+                <div id="chartPieContainer" style="height: 500px; width: 100%;">
+                </div>
+            </div>
+        </div>
+}
+@Scripts.Render("~/bundles/canvasjs")
+
+@section scripts{
+<script>
+
+    $(function () {
+        $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+    });
+</script>
+@if (Model.CanDrawChart)
+{
+<script type="text/javascript">
+
+    window.onload =
+        function GenerateTable() {
+
+        var chart = new CanvasJS.Chart("chartContainer",
+        {
+            title: {
+                text: "Đồ thị chênh lệch lượng xuất theo ngày",
+                fontFamily: "arial",
+                fontSize: 20
+            },
+            animationEnabled: true,
+            dataPointMaxWidth: 40,
+            axisY: {
+            title: "Chênh lệch"
+            },
+            axisX: {
+            title: "Ngày"
+            },
+            data: [{
+                type: "column",
+                fillOpacity: .8,
+                dataPoints:
+                     @Html.Raw(Json.Encode(@Model.DataList)),
+            }]
+        });
+
+        chart.render();
+
+
+        var chartPie = new CanvasJS.Chart("chartPieContainer",
+          {
+              title: {
+                  text: "Chênh lệch lượng xuất theo ngày",
+                  fontFamily: "arial",
+                  fontSize: 20
+              },
+              animationEnabled: true,
+              legend: {
+                  maxWidth: 700,
+                  itemWidth: 200
+              },
+              data: [
+              {
+                  type: "pie",
+                  showInLegend: true,
+                  percentFormatString: "#0.##",
+                  toolTipContent: "{y} (#percent%)",
+                  legendText: "{indexLabel}",
+                  fillOpacity: .8,
+                  dataPoints:
+                    @Html.Raw(Json.Encode(@Model.DataList2)),
+              }
+              ]
+          });
+        chartPie.render();
+        $('.canvasjs-chart-credit').hide();
+
+        var StartDate =$("#StartDate").val();
+        var EndDate =$("#EndDate").val();
+        var WareHouseCode =$("#WareHouseCode").val();
+        var Deviation =$("#Deviation").val();
+        $.post("@Url.Action("GetDiffExportData", "Chart")",{startdate :StartDate,enddate:EndDate, wareHouseCode: WareHouseCode,productCode:ProductCode,deviation:Deviation}, function (data) {
+
+            if (data!=""){
+
+                var html = '';
+                //if (data.max) {
+                    html += '<div><strong>Max : </strong>' + data.max + ' @Constants.DIMENSION_L' + '</div>';
+                //}
+                //if (data.min) {
+                    html += '<div><strong>Min : </strong>' + data.min + ' @Constants.DIMENSION_L' + '</div>';
+                //}
+                    html += '<div><strong>Avg : </strong>' + data.davg + ' @Constants.DIMENSION_L' + '</div>';
+                html += '<div><strong>Abs-Avg : </strong>' + data.absavg + ' @Constants.DIMENSION_L' + '</div>';
+                $('.diff-export-val').html(html);
+
+            }
+        });
+    }
+
+</script>
+    }
+}

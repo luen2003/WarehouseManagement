@@ -1,0 +1,359 @@
+﻿@model PetroBM.Web.Models.ReportModel
+
+@using PetroBM.Common.Util;
+@using System.Data;
+@{
+    ViewBag.Title = "Bảng dữ liệu lịch sử bến xuất";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class='col-sm-4 col-xs-6'>
+
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian đầu</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Thời gian cuối</label>
+            <div class="form-group col-xs-8">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="control-label col-xs-4">Kho</label>
+            <div class="form-group col-xs-8">
+                @*<select name="WareHouseCode" id="WareHouseCode" class="form-control" onchange="OnchangeWareHouse()">
+                    @{
+                        foreach (var item in Model.ListWareHouse)
+                        {
+                            if (item.WareHouseCode == Model.WareHouseCode)
+                            {
+                                <option selected="selected" value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                            }
+                        }
+                    }
+                </select>*@
+                @if (Model.ListWareHouse.Any())
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(Model.ListWareHouse, "WareHouseCode", "WareHouseName", "") as SelectList, "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;", @onchange = "OnchangeWareHouse()" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.WareHouseCode,
+            new SelectList(new List<string>()), "Chọn... ",
+            new { @class = "form-control", @style = "width:217px;" })
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class='col-sm-4 col-xs-6'>
+        <div class="row">
+            <label class="control-label col-xs-4">Họng</label>
+                <div class="form-group col-xs-8" id="listArmNo">
+                    <select name="ArmNo" id="ArmNo" class="form-control"></select>
+                </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Mã lệnh</label>
+            <div class="form-group col-xs-8">
+                @Html.EditorFor(model => model.WorkOrder, new { htmlAttributes = new { @class = "form-control", @id = "WorkOrder", @name = "ReportModel.WorkOrder" } })
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-xs-4">Card serial</label>
+            <div class="form-group col-xs-8">
+                @Html.EditorFor(model => model.CardSerial, new { htmlAttributes = new { @class = "form-control", @id = "CardSerial", @name = "ReportModel.CardSerial" } })
+            </div>
+        </div>
+    </div>
+
+    <div class='col-sm-4 col-xs-12' style="margin-bottom:10px;">
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" onclick="GetTypeExport()" />
+    </div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Ngày
+            </th>
+            <th>
+                Lệnh
+            </th>
+            <th>
+                Card serial
+            </th>
+            <th>
+                Card data
+            </th>
+            <th>
+                Mã họng
+            </th>
+            <th>
+                Mã ngăn
+            </th>
+            <th>
+                Mã hàng hóa
+            </th>
+            <th>
+                V đặt
+            </th>
+            <th>
+                Vtt
+            </th>
+            <th>
+                Vtt xăng gốc
+            </th>
+            <th>
+                Vtt E
+            </th>
+            <th>
+                Lưu lượng
+            </th>
+            <th>
+                Lưu lượng xăng gốc
+            </th>
+            <th>
+                Lưu lượng E
+            </th>
+            <th>
+                Nhiệt độ TB
+            </th>
+            <th>
+                Nhiệt độ tức thời
+            </th>
+            <th>
+                Tỷ lệ trộn
+            </th>
+            <th>
+                Tỷ lệ TT
+            </th>
+            <th>
+                Trạng thái dừng sự cố
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @{
+            var i = 0;
+            if (Model.DataTable != null)
+            {
+                foreach (System.Data.DataRow row in Model.DataTable.Rows)
+                {
+                    i++;
+                    <tr>
+                        <td>@Convert.ToDateTime(@row["TimeLog"]).ToString(Constants.DATE_FORMAT)</td>
+                        <td>@Convert.ToInt32(@row["WorkOrder"])</td>
+                        <td>@row["CardSerial"]</td>
+                        <td>@row["CardData"]</td>
+                        <td>@row["ArmNo"]</td>
+                        <td>@row["CompartmentOrder"]</td>
+                        <td>@row["ProductCode"]</td>
+                        @if (@row["V_Preset"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right" >0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["V_Preset"]), 2)</td>
+                        }
+
+                        @if (@row["V_Actual"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["V_Actual"]), 2)</td>
+                        }
+
+                        @if (@row["V_Actual_Base"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["V_Actual_Base"]), 2)</td>
+                        }
+
+                        @if (@row["V_Actual_E"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["V_Actual_E"]), 2)</td>
+                        }
+
+
+                        @if (@row["Flowrate"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["Flowrate"]), 2)</td>
+                        }
+
+                        @if (@row["Flowrate_Base"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["Flowrate_Base"]), 2)</td>
+                        }
+
+                        @if (@row["Flowrate_E"].Equals(DBNull.Value))
+                        {
+                            <td class="text-right">0</td>
+                        }
+                        else
+                        {
+                            <td class="text-right">@NumberUtil.FormatNumber(Convert.ToDouble(@row["Flowrate_E"]), 2)</td>
+                        }
+
+                        @if (@row["AvgTemperature"].Equals(DBNull.Value))
+                        {
+                            <td>0</td>
+                        }
+                        else
+                        {
+                            <td>@NumberUtil.FormatNumber(Convert.ToDouble(@row["AvgTemperature"]), 2)</td>
+                        }
+
+                        @if (@row["CurrentTemperature"].Equals(DBNull.Value))
+                        {
+                            <td>0</td>
+                        }
+                        else
+                        {
+                            <td>@NumberUtil.FormatNumber(Convert.ToDouble(@row["CurrentTemperature"]), 2)</td>
+                        }
+
+                        @if (@row["MixingRatio"].Equals(DBNull.Value))
+                        {
+                            <td>0</td>
+                        }
+                        else
+                        {
+                            <td>@NumberUtil.FormatNumber(Convert.ToDouble(@row["MixingRatio"]), 2)</td>
+                        }
+
+                        @if (@row["ActualRatio"].Equals(DBNull.Value))
+                        {
+                            <td>0</td>
+                        }
+                        else
+                        {
+                            <td>@NumberUtil.FormatNumber(Convert.ToDouble(@row["ActualRatio"]), 2)</td>
+                        }
+                        @if (@row["ESD"].Equals(DBNull.Value))
+                        {
+                            <td>không</td>
+                        }
+                        else
+                        {
+                            if (@row["ESD"].ToString() == "1")
+                            {
+                                <td>Có</td>
+                            }
+                            else
+                            {
+                                <td>Không</td>
+                            }
+
+                        }
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+
+</table>
+<script src="~/Scripts/jquery-2.2.4.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+    });
+
+    var initWarehouse = @Html.Raw(Json.Encode(@Model.WareHouseCode));
+    var initArmNo =  @Html.Raw(Json.Encode(@Model.ArmNo));
+
+    OnchangeWareHouse();
+
+    function OnchangeWareHouse() {
+        var warehouse = $("#WareHouseCode").val();
+        if (!warehouse) {
+            warehouse = 0;
+        };
+        $.ajax({
+            url: '/Report/GetConfigArm/',
+            type: 'GET',
+            data: {
+                "wareHouseCode": warehouse
+            },
+            dataType: 'json',
+            success: function (data) {
+                var opt = "<select name='ArmNo' id='ArmNo' class='form-control'>";
+                var chk = false;
+                opt += "<option  selected='selected'>Tất cả</option>";
+                
+                for (var i = 0; i < data.length; i++) {
+                    if (warehouse==initWarehouse && initArmNo == data[i].ArmNo)
+                    {
+                        opt += "<option selected='selected' value=" + data[i].ArmNo + ">" + data[i].ArmName + "</option>";
+                        chk =true;
+                    }
+                    else
+                    {
+                        opt += "<option value=" + data[i].ArmNo + ">" + data[i].ArmName + "</option>";
+                    }
+                }
+                //if (!chk){
+
+                //    opt += "<option  selected='selected'>Tất cả</option>";
+                //}
+                //else
+                //{
+                //    opt += "<option  value=''>Tất cả</option>";
+                //}
+                opt += "</select>";
+                document.getElementById("listArmNo").innerHTML = opt;
+            },
+            error: function (err) {
+                alert("Error: " + err.responseText);
+            }
+        });
+
+    }
+
+</script>
+
+
+

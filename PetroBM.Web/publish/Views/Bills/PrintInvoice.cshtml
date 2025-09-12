@@ -1,0 +1,1119 @@
+﻿@model PetroBM.Web.Models.InvoiceModel
+@using System;
+@using PetroBM.Common.Util;
+@*@using Newtonsoft.Json*@
+@{
+    ViewBag.Title = "In hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="col-md-5">
+        <h4><b>Thông tin lấy hàng</b></h4>
+        <div>
+            <div class="col-md-6">
+                <label>Thời gian xuất HĐ</label>
+            </div>
+            <div class="col-md-6">
+                <div class='input-group date' id='datetimepicker'>
+                    @Html.EditorFor(model => model.OutTime, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @name = "InvoiceModel.OutTime" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Card Data</label>
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Invoice.CardData, new { htmlAttributes = new { @class = "form-control", @id = "CardData", @onchange = "ChangeCardData()", @name = "InvoiceModel.Invoice.CardData", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Data Serial</label>
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Invoice.CardSerial, new { htmlAttributes = new { @class = "form-control", @id = "SerialNumber", @onchange = "ChangeSerialNumber()", @name = "InvoiceModel.Invoice.CardSerial", @readonly = "readonly" } })
+            </div>
+        </div>
+
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Mã lệnh</label>
+            </div>
+            <div class="col-md-6">
+                <input value="@Convert.ToInt32(Model.Invoice.WorkOrder)" id="WorkOrder" readonly="readonly" class="form-control" />
+                <div style="display:none;">
+                    @Html.EditorFor(model => model.Invoice.CommandID, new { htmlAttributes = new { @class = "form-control", @id = "CommandID" } })
+                </div>
+
+            </div>
+        </div>
+
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Ngày đăng ký</label>
+            </div>
+            <div class="col-md-6">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.EditorFor(model => model.InTime, new { htmlAttributes = new { @class = "form-control", @id = "InTime", @readonly = "readonly", @name = "InvoiceModel.InTime" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Số phương tiện</label>
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Invoice.VehicleNumber, new { htmlAttributes = new { @class = "form-control", @id = "VehicleNumber", @name = "InvoiceModel.Invoice.VehicleNumber", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:10%">
+            <div class="col-md-6">
+                <label>Tên tài xế</label>
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Invoice.DriverName, new { htmlAttributes = new { @class = "form-control", @id = "DriverName", @name = "InvoiceModel.Invoice.DriverName", @readonly = "readonly" } })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div>
+            <h4><b>Thông tin khách hàng</b></h4>
+        </div>
+        <div>
+            <div class="col-md-4">
+                <label>Họ tên người MH</label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.BuyerName, new { htmlAttributes = new { @class = "form-control", @id = "BuyerName", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Tên đơn vị : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.CompanyName, new { htmlAttributes = new { @class = "form-control", @id = "CompanyName", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Địa chỉ : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.Address, new { htmlAttributes = new { @class = "form-control", @id = "Address", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Số điện thoại : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @id = "PhoneNumber", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Số tài khoản : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.AccountCustomNo, new { htmlAttributes = new { @class = "form-control", @id = "AccountCustomNo", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div style="padding-top:7%">
+            <div class="col-md-4">
+                <label>Mã số thuế : </label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoice.TaxCode, new { htmlAttributes = new { @class = "form-control", @id = "TaxCode", @readonly = "readonly" } })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="width:100%" class="container">
+    <h4><b>Danh sách hóa đơn</b></h4>
+    <div id="billlist">
+    </div>
+    <div style="float:right">
+        <input type="button" value="Về DM hóa đơn" class="btn btn-primary" onclick="ReDirectUrl()" />
+        <button type="button" class="btn btn-primary" onclick="ShowBill()">In hóa đơn</button>
+        <input type="button" value="In phiếu xuất kho" class="btn btn-primary" onclick="PrintInventoryOutput()" />
+    </div>
+
+</div>
+<div class="container" style="width:100%" id="bill">
+    <div>
+        <h4><b>Chi tiết hóa đơn</b></h4>
+    </div>
+    <div>
+        <div class="col-md-8" id="InvoiceDetail">
+            <table style='width:90%' class='table table-striped table-bordered'>
+                <thead>
+                    <tr>
+                        <td>Chọn</td>
+                        <td>STT</td>
+                        <td>Hàng hóa</td>
+                        <td>Ngăn</td>
+                        <td>Đơn vị tính</td>
+                        <td>Thể tích</td>
+                        <td>Mức giá</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (var i = 0; i < Model.ListInvoiceDetail.Count(); i++)
+                    {
+                        var count = i + 1;
+                        <tr>
+                            <td><input class="radio" type='checkbox' name='invoiceCheckBox' onchange="CheckedCheckBox()" value='' id='@Model.ListInvoiceDetail[i].ListVolume'></td>
+                            <td>@count</td>
+                            @for (var j = 0; j < Model.ListProductTemp.Count(); j++)
+                            {
+                                if (Model.ListProductTemp[j].ProductCode == Model.ListInvoiceDetail[i].ProductCode)
+                                {
+                                    {
+                                        <td>@Model.ListProductTemp[j].ProductName</td>
+                                    }
+                                }
+                            }
+                            <td>@Model.ListInvoiceDetail[i].ListVolume</td>
+                            <td>@Model.Invoice.Unit</td>
+                            <td>@Model.ListInvoiceDetail[i].Quantity</td>
+                            <td>@(Model.ListInvoiceDetail[i].Unit - Model.ListInvoiceDetail[i].Discount) </td>
+                            @*<td></td>*@
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <h4><b>Ghi chú</b></h4>
+            </div>
+            <div>
+                @Html.TextArea("note", new { @class = "form-control", @rows = "5" })
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ShowInvoice" style="display:none">
+</div>
+<div id="divprint">
+</div>
+
+<div id="commandInphieuxuatkho" style="visibility:hidden">
+
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $('#datetimepicker').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+        $('#datetimepicker2').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+    </script>
+
+
+    <script type="text/javascript">
+    var objInvoice = @Html.Raw(Json.Encode(@Model.Invoice)); //Hiển thị lưới danh mục hóa đơn //Hóa đơn gốc
+    var objListInvoiceDetail = @Html.Raw(Json.Encode(@Model.ListInvoiceDetail)); //Khởi tạo toàn bộ danh mục giá chung
+    var objListCommandDetail = @Html.Raw(Json.Encode(@Model.ListCommandDetail)); //Chi tiết lệnh
+    var objListProduct = @Html.Raw(Json.Encode(@Model.ListProductTemp)); //danh sách hàng hóa
+    var objMaster = @Html.Raw(Json.Encode(@Model.Command)); //thông tin về lệnh
+    var objListDriver = @Html.Raw(Json.Encode(Model.ListDriver)); //thông tin về lái xe
+
+
+    var titleWareHouseName = '@Session[Constants.Session_WareHouseName]';
+    var titleCompanyName = '@Session[Constants.Session_TitleReportCompanyName]';
+    var titleCompanyAddress = '@Session[Constants.Session_TitleCompanyAddress]';
+    var titleCompanyPhone = '@Session[Constants.Session_TitleCompanyPhone]';
+    var titleCompanyFax  = '@Session[Constants.Session_TitleCompanyFax] ';
+    var titleIdentificationNumber  = '@Session[Constants.Session_TitleIdentificationNumber] ';
+
+
+    var objListSeal = @Html.Raw(Json.Encode(@Model.ListSeal)); //Chi tiết lệnh
+    var ChuSo=new Array(" không "," một "," hai "," ba "," bốn "," năm "," sáu "," bảy "," tám "," chín ");
+    var Tien=new Array( "", " nghìn", " triệu", " tỷ", " nghìn tỷ", " triệu tỷ");
+
+    var listVolume ="";
+    var tTb = 0 ;
+    var dTb = 0 ;
+    var wcfTb = 0 ;
+    var vcfTb = 0 ;
+    var ltt = 0 ;
+    var l15 = 0 ;
+    var kg = 0 ;
+    var objInvoiceDetailId = 0;
+    var noteStored = "";
+
+    $(document).ready(function () {
+        $('input:checkbox').click(function () {
+             $('input:checkbox').not(this).prop('checked', false);
+        });
+     });
+
+    function PrintInvoiceOld() {
+
+        //Kiểm tra xem có check box giá trị checkbox
+        var chk =false;
+        var objInvoiceDetailID=""
+        var objInvoiceID=""
+
+        for (var i = 0; i < objListInvoiceDetail.length; i++) {
+
+            if (document.getElementById(objListInvoiceDetail[i].ListVolume).checked==true)
+            {
+                objInvoiceDetailID=objListInvoiceDetail[i].ID;
+                objInvoiceID=objListInvoiceDetail[i].InvoiceID;
+                chk=true;
+            }
+
+        }
+
+        if (chk==false){
+            alert('Bạn chưa chọn hóa đơn in!. Đề ghị bạn chọn hóa đơn');
+            return;
+        }
+        window.open("/Report/WebForm.aspx?InvoiceID=" + objInvoiceID +  "&InvoicedDetailID=" + objInvoiceDetailID,'In hóa đơn' );
+    };
+
+    function  ReDirectUrl(){
+        window.location.href = "/Bills/Index";
+        };
+
+    function CheckedCheckBox() {
+        document.getElementById("note").innerHTML = "";
+        for (var i = 0; i < objListInvoiceDetail.length; i++) {
+            if (document.getElementById(objListInvoiceDetail[i].ListVolume).checked == true) {
+                document.getElementById("note").innerHTML = objListInvoiceDetail[i].Note;
+            }
+        }
+    };
+
+    function PrintInvoice() {
+            listVolume = "";
+            objInvoiceDetailID = 0;
+            var objInvoiceID = "";
+            var incount = 0;
+
+        for (var i = 0; i < objListInvoiceDetail.length; i++) {
+
+            if (document.getElementById(objListInvoiceDetail[i].ListVolume).checked==true)
+            {
+                objInvoiceDetailID=objListInvoiceDetail[i].ID;
+                objInvoiceID=objListInvoiceDetail[i].InvoiceID;
+                listVolume = objListInvoiceDetail[i].ListVolume;
+                noteStored = objListInvoiceDetail[i].Note;
+                incount += 1;
+            }
+
+            }
+
+
+        if (incount==0){
+            alert('Bạn chưa chọn hóa đơn !. Đề nghị bạn chọn hóa đơn');
+            return false;
+        }
+
+        if (incount>1){
+            alert('Bạn chỉ được chọn 1 hóa đơn !');
+            return false;
+        }
+
+        return true;
+    };
+
+    function ShowBill() {
+
+        if (PrintInvoice()==false) return;
+
+        var objectTaxRate= eval(objInvoice.TaxRate);
+
+        //listVolume=JSON.stringify(listVolume);
+        var indexInvoice =0;
+
+        var totalAmount =0;
+
+        var totalQuantity =0;
+        var et = 0;
+        var numRow =1;
+        var dvtinh = "";
+        var total = 0;
+
+        document.getElementById("ShowInvoice").innerHTML = "";
+
+        var tr = "";
+        tr += "<link rel='stylesheet' type='text/css' href='/Content/Site.css'>";
+        tr += "<div class='invoice'>";
+        tr += "<div class='invoice-day'>" + (new Date(parseInt(objInvoice.OutTime.substr(6)))).getDate();
+        tr += "</div>";
+        tr += "<div class='invoice-month'>" + (new Date(parseInt(objInvoice.OutTime.substr(6))).getMonth() + 1);
+        tr += "</div>";
+        tr += "<div class='invoice-year'>" + (new Date(parseInt(objInvoice.OutTime.substr(6))).getFullYear()).toString().substring(2,4);
+        tr += "</div>";
+        tr += "<div class='invoice-customername'>" + objInvoice.DriverName;
+        tr += "</div>";
+        tr += "<div class='invoice-unitname'>" + objInvoice.BuyerName;
+        tr += "</div>";
+        tr += "<div class='invoice-customeraddress'>" + objInvoice.Address;
+        tr += "</div>";
+        tr += "<div class='invoice-cusomteraccount'>" + objInvoice.AccountCustomNo;
+        tr += "</div>";
+        tr += "<div class='invoice-paymentmethod'>" + objInvoice.PaymentType;
+        tr += "</div>";
+        tr += "<div class='invoice-taxcode'>" + objInvoice.TaxCode;
+        tr += "</div>";
+        for (var j = 0; j < objListInvoiceDetail.length; j++) {
+            if (objListInvoiceDetail[j].ListVolume == listVolume) {
+                if (objListInvoiceDetail[j].EnvironmentTax > 0) {
+                    var et = 1;
+                }
+                //tr = tr + " <div style = 'position: absolute;top:373px;left:60px;'></div>";
+                for (var k = 0; k < objListProduct.length; k++) {
+                    if (objListProduct[k].ProductCode == objListInvoiceDetail[j].ProductCode) {
+                        tr = tr + " <div class='invoice-productname'>" + objListProduct[k].ProductName + "</div>";
+                    }
+                }
+
+                tr = tr + "<div class='invoice-unitproduct'>" + objInvoice.Unit + "</div>";
+
+                //Vì thay đổi theo hướng dùng ltt nên thêm điều kiện Ltt vào if
+                if ((objInvoice.Unit == "Ltt") || (objInvoice.Unit == "Kg") || (objInvoice.Unit == "L15"))
+                {
+                    total = eval(objListInvoiceDetail[j].Quantity).toFixed(0)
+                    tr += "<div class='invoice-quantity'>" + eval(objListInvoiceDetail[j].Quantity).toFixed(0).toLocaleString("de-DE"); //Số lượng
+                    tr += "</div>";
+                    tr += "<div class='invoice-unitprice'>" + eval(objListInvoiceDetail[j].Unit).toLocaleString("de-DE"); //Đơn giá
+                    tr += "</div>";
+                    tr += "<div class='invoice-amount'>" + Math.round(objListInvoiceDetail[j].Amount,0).toLocaleString("de-DE"); //Thành tiền
+                    tr += "</div>";
+                    totalAmount=parseInt(objListInvoiceDetail[j].Amount);
+                }
+                else
+                {
+                    // tính toán lại số lượng, thành tiền
+
+                    for (var k = 0; k < objListCommandDetail.length; k++) {
+                        for (var h = 0; h < listVolume.length; h++) {
+                            if (listVolume[h]==objListCommandDetail[k].CompartmentOrder)
+                            {
+                                if (objInvoice.Unit=="L15")
+                                {
+                                    if (objListCommandDetail[k].V_Actual_15 != null) {
+                                        totalQuantity += objListCommandDetail[k].V_Actual_15.toFixed(0);
+                                    }
+                                }
+                                else
+                                {
+                                    totalQuantity += eval((objListCommandDetail[k].Vcf * objListCommandDetail[k].V_Actual).toFixed(0));
+                                }
+                            }
+                        }
+                    }
+                    tr += "<div class='invoice-quantity'>" + eval(objListInvoiceDetail[j].Quantity).toFixed(0).toLocaleString("de-DE");//Số lượng
+                    tr += "</div>";
+                    tr += "<div class='invoice-unitprice'>" + eval(objListInvoiceDetail[j].Unit - objListInvoiceDetail[j].Discount).toLocaleString("de-DE"); //Đơn giá
+                    tr += "</div>";
+                    tr += "<div class='invoice-amount'>" + Math.round(objListInvoiceDetail[j].Amount, 0).toLocaleString("de-DE"); //Thành tiền
+                    tr += "</div>";
+                    //tr = tr + " <td>" + totalQuantity.toLocaleString("de-DE") + "</td>";
+                    //tr = tr + " <td>" + eval(objListInvoiceDetail[j].Unit).toLocaleString("de-DE") + "</td>";
+                    //tr = tr + " <td>" + eval(objListInvoiceDetail[j].Discount).toLocaleString("de-DE") + "</td>"; //Chiết khấu
+                    //tr = tr + " <td>" + eval(objListInvoiceDetail[j].EnvironmentTax).toLocaleString("de-DE") + "</td>"; //Thuế môi trường
+                    //tr = tr + " <td>" + eval((totalQuantity*objListInvoiceDetail[j].Unit).toFixed(0)).toLocaleString("de-DE")  + "</td>";
+                    totalAmount = eval((totalQuantity * (objListInvoiceDetail[j].Unit - objListInvoiceDetail[j].Discount).toFixed(0)));
+                }
+
+
+                //tr = tr + "</tr>";
+                indexInvoice=j;
+                numRow +=1;
+            }
+        }
+        var strtb = "";
+        var str2 = "";
+        var Ltttb = 0;
+        var L15tb = 0;
+        var kgTb = 0;
+        var tTotal = 0;
+        var totalDensity = 0;
+        numRow = 0;
+        strtb += "<div class='invoice-detail'>";
+        for (var i = 0; i < listVolume.length; i++) {
+            for (var j = 0; j < objListCommandDetail.length; j++) {
+                if (listVolume[i] == objListCommandDetail[j].CompartmentOrder) {
+                    //ghi dữ liệu ở đây chi tiết tại đây
+                    str2 += formatDateVN(objListCommandDetail[j].TimeStart) + " Ngăn: " + objListCommandDetail[j].CompartmentOrder + " N.Độ: ";
+                    if (objListCommandDetail[j].AvgTemperature == null) {
+                        str2 += "Null" + " Tỷ trọng: ";
+                    }
+                    else {
+                        str2 += objListCommandDetail[j].AvgTemperature.toFixed(2) + " Tỷ trọng: ";
+                        tTotal += objListCommandDetail[j].AvgTemperature * objListCommandDetail[j].V_Actual;
+                    }
+
+                    if (objListCommandDetail[j].AvgDensity == null) {
+                        str2 += "Null" + " WCF: ";
+                    }
+                    else {
+                        //str2 += objListCommandDetail[j].GasDensity.toLocaleString("de-DE") + " WCF: ";
+                        str2 += objListCommandDetail[j].AvgDensity.toFixed(4) + " WCF: ";
+                        totalDensity += eval(objListCommandDetail[j].AvgDensity * objListCommandDetail[j].V_Actual);
+                    }
+
+                    if (objListCommandDetail[j].Wcf == null) {
+                        str2 += "Null" + " VCF: ";
+                    }
+                    else {
+                        str2 += (objListCommandDetail[j].Wcf).toFixed(4) + " VCF: ";
+                    }
+
+                    if (objListCommandDetail[j].Vcf == null) {
+                        str2 += "Null" + " Ltt: "
+                    }
+                    else {
+                        //str2 +=  objListCommandDetail[j].Vcf.toLocaleString("de-DE") + " Ltt: ";
+                        str2 += (objListCommandDetail[j].Vcf).toFixed(4) + " Ltt: ";
+                    }
+
+                    if (objListCommandDetail[j].V_Actual == null) {
+                        str2 += "Null" + " L15:"
+                    }
+                    else {
+                        str2 += objListCommandDetail[j].V_Actual.toFixed(0).toLocaleString("de-DE") + " L15:";
+                        Ltttb += objListCommandDetail[j].V_Actual;
+                    }
+
+                    if ((objListCommandDetail[j].V_Actual * objListCommandDetail[j].Vcf) == null) {
+                        str2 += "Null" + " Kg:"
+                    }
+                    else {
+                        str2 += (objListCommandDetail[j].V_Actual * objListCommandDetail[j].Vcf).toFixed(0).toLocaleString("de-DE") + " Kg:";
+                        L15tb += (objListCommandDetail[j].V_Actual * objListCommandDetail[j].Vcf)
+                    }
+
+                    if (objListCommandDetail[j].Wcf == null || objListCommandDetail[j].V_Actual == null) {
+                        str2 += "0";
+                    }
+                    else {
+                        str2 = str2 + parseFloat(objListCommandDetail[j].Wcf * (objListCommandDetail[j].V_Actual * objListCommandDetail[j].Vcf)).toFixed(0).toLocaleString("de-DE");
+                        kgTb += parseFloat(objListCommandDetail[j].Wcf * (objListCommandDetail[j].V_Actual * objListCommandDetail[j].Vcf));
+                    }
+
+                    str2 = str2 + "</br>";
+                    numRow += 1;
+                }
+            }
+        }
+        str2 += "</div>";
+
+        tTb = ((tTotal / total).toFixed(1));
+        dTb = ((totalDensity / total).toFixed(4));
+        wcfTb = (kgTb / L15tb).toFixed(4);
+        vcfTb = (L15tb / total).toFixed(4);
+        l15 = (L15tb.toFixed(0));
+        kg = (kgTb.toFixed(0))
+
+
+        strtb += "Nhiệt độ: " + tTb + " Tỷ trọng: " + dTb + " WCF: " + wcfTb + " VCF: " + vcfTb + " Ltt: " + (Ltttb.toFixed(0))                                                                 + " L15: " + l15.toLocaleString("de-DE") + " Kg: " + kg.toLocaleString("de-DE") + "</br></br>";
+        tr += strtb;
+        tr += str2;
+
+        var totalAmountTax = eval((eval(totalAmount) * eval(objectTaxRate) / 100).toFixed(0));
+
+        tr += "<div class='invoice-totalamount'>" + totalAmount.toLocaleString("de-DE");
+        tr += "</div>";
+        tr += "<div class='invoice-tax'>" + objectTaxRate;
+        tr += "</div>";
+        tr += "<div class='invoice-amounttax'>" + totalAmountTax.toLocaleString("de-DE");
+        tr += "</div>";
+        var TongTienTT = totalAmount + totalAmountTax;
+        tr += "<div class='invoice-totalfullnumber'>" + TongTienTT.toLocaleString("de-DE");
+        tr += "</div>";
+        tr += "<div class='invoice-totalfulltext'>" + DocTienBangChu(TongTienTT)+ " đồng";
+        tr += "</div>";
+        tr += "</div>";
+
+        document.getElementById("ShowInvoice").innerHTML = tr;
+
+        var divToPrint = document.getElementById('ShowInvoice');
+
+        var newWin = window.open('', 'Print-Window');
+
+        newWin.document.open();
+
+        newWin.document.write('<html><head></head><body onload="window.print()" style="font-size:20px">' + ShowInvoice.innerHTML + '</body></html>');
+
+        newWin.document.close();
+
+        setTimeout(function () { newWin.close(); }, 10);
+
+    }
+
+
+    function DocSo3ChuSo(baso)
+    {
+        var tram;
+        var chuc;
+        var donvi;
+        var KetQua="";
+        tram=parseInt(baso/100);
+        chuc=parseInt((baso%100)/10);
+        donvi=baso%10;
+        if(tram==0 && chuc==0 && donvi==0) return "";
+        if(tram!=0)
+        {
+            KetQua += ChuSo[tram] + " trăm ";
+            if ((chuc == 0) && (donvi != 0)) KetQua += " linh ";
+        }
+        if ((chuc != 0) && (chuc != 1))
+        {
+            KetQua += ChuSo[chuc] + " mươi";
+            if ((chuc == 0) && (donvi != 0)) KetQua = KetQua + " linh ";
+        }
+        if (chuc == 1) KetQua += " mười ";
+        switch (donvi)
+        {
+            case 1:
+                if ((chuc != 0) && (chuc != 1))
+                {
+                    KetQua += " mốt ";
+                }
+                else
+                {
+                    KetQua += ChuSo[donvi];
+                }
+                break;
+            case 5:
+                if (chuc == 0)
+                {
+                    KetQua += ChuSo[donvi];
+                }
+                else
+                {
+                    KetQua += " lăm ";
+                }
+                break;
+            default:
+                if (donvi != 0)
+                {
+                    KetQua += ChuSo[donvi];
+                }
+                break;
+        }
+        return KetQua;
+    }
+
+    //2. Hàm đọc số thành chữ (Sử dụng hàm đọc số có ba chữ số)
+
+    function DocTienBangChu(SoTien)
+    {
+
+
+        var lan=0;
+        var i=0;
+        var so=0;
+        var KetQua="";
+        var tmp="";
+        var ViTri = new Array();
+        if(SoTien<0) return "Số tiền âm !";
+        if(SoTien==0) return "Không đồng !";
+        if(SoTien>0)
+        {
+            so=SoTien;
+        }
+        else
+        {
+            so = -SoTien;
+        }
+        if (SoTien > 8999999999999999)
+        {
+            //SoTien = 0;
+            return "Số quá lớn!";
+        }
+        ViTri[5] = Math.floor(so / 1000000000000000);
+        if(isNaN(ViTri[5]))
+            ViTri[5] = "0";
+        so = so - parseFloat(ViTri[5].toString()) * 1000000000000000;
+        ViTri[4] = Math.floor(so / 1000000000000);
+        if(isNaN(ViTri[4]))
+            ViTri[4] = "0";
+        so = so - parseFloat(ViTri[4].toString()) * 1000000000000;
+        ViTri[3] = Math.floor(so / 1000000000);
+        if(isNaN(ViTri[3]))
+            ViTri[3] = "0";
+        so = so - parseFloat(ViTri[3].toString()) * 1000000000;
+        ViTri[2] = parseInt(so / 1000000);
+        if(isNaN(ViTri[2]))
+            ViTri[2] = "0";
+        ViTri[1] = parseInt((so % 1000000) / 1000);
+        if(isNaN(ViTri[1]))
+            ViTri[1] = "0";
+        ViTri[0] = parseInt(so % 1000);
+        if(isNaN(ViTri[0]))
+            ViTri[0] = "0";
+        if (ViTri[5] > 0)
+        {
+            lan = 5;
+        }
+        else if (ViTri[4] > 0)
+        {
+            lan = 4;
+        }
+        else if (ViTri[3] > 0)
+        {
+            lan = 3;
+        }
+        else if (ViTri[2] > 0)
+        {
+            lan = 2;
+        }
+        else if (ViTri[1] > 0)
+        {
+            lan = 1;
+        }
+        else
+        {
+            lan = 0;
+        }
+        for (i = lan; i >= 0; i--)
+        {
+            tmp = DocSo3ChuSo(ViTri[i]);
+            KetQua += tmp;
+            if (ViTri[i] > 0) KetQua += Tien[i];
+            if ((i > 0) && (tmp.length > 0)) KetQua += ',';//&& (!string.IsNullOrEmpty(tmp))
+        }
+        if (KetQua.substring(KetQua.length - 1) == ',')
+        {
+            KetQua = KetQua.substring(0, KetQua.length - 1);
+        }
+        KetQua = KetQua.substring(1,2).toUpperCase()+ KetQua.substring(2);
+        return KetQua;//.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
+    }
+
+
+    function getDateNow(){
+        var strFormat ="";
+        var strDate = new Date();
+
+        strFormat +=("00" + strDate.getDate()).toString().slice(-2);
+        strFormat += "/" + ("00" + (strDate.getMonth()+1)).toString().slice(-2);
+        strFormat += "/" + strDate.getFullYear();
+        return strFormat;
+        }
+
+        function getDayNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += ("00" + strDate.getDate()).toString().slice(-2);
+            return strFormat;
+        }
+
+        function getMonthNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += ("00" + (strDate.getMonth() + 1)).toString().slice(-2);
+            return strFormat;
+        }
+
+        function getYearNow() {
+            var strFormat = "";
+            var strDate = new Date();
+            strFormat += strDate.getFullYear();
+            return strFormat;
+        }
+
+        function getTimeNow() {
+            var strFormat = "";
+            var strDate = new Date();
+
+            strFormat += " " + ("00" + strDate.getHours()).toString().slice(-2);
+            strFormat += ":" + ("00" + strDate.getMinutes()).toString().slice(-2);
+
+            return strFormat;
+        }
+
+    function formatDateVN(date) {
+
+        var strFormat ="";
+        var nowtimeorder = new Date(parseInt(date.substring(6)));
+        //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+        var datetimeorder = new Date(nowtimeorder);
+
+        if (datetimeorder.getDate()<10){
+            strFormat += "0" + datetimeorder.getDate();
+        }
+        else
+        {
+            strFormat += datetimeorder.getDate();
+        }
+
+        if (datetimeorder.getMonth()<9){//bij hao 1 thang ko hieu kieu gi
+            strFormat += "/0" + (datetimeorder.getMonth()+1);
+        }
+        else
+        {
+            strFormat += "/" +  (datetimeorder.getMonth()+1);
+        }
+
+        strFormat += "/" + datetimeorder.getFullYear();
+
+        strFormat += " " + ("00" + datetimeorder.getHours()).toString().slice(-2);
+        strFormat += ":" + ("00" + datetimeorder.getMinutes()).toString().slice(-2);
+        return strFormat;
+
+        }
+
+    function formatDateOnlyVN(date) {
+
+            var strFormat = "";
+            var nowtimeorder = new Date(parseInt(date.substring(6)));
+            //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+            var datetimeorder = new Date(nowtimeorder);
+
+            if (datetimeorder.getDate() < 10) {
+                strFormat += "0" + datetimeorder.getDate();
+            }
+            else {
+                strFormat += datetimeorder.getDate();
+            }
+
+            if (datetimeorder.getMonth() < 9) {//bij hao 1 thang ko hieu kieu gi
+                strFormat += "/0" + (datetimeorder.getMonth() + 1);
+            }
+            else {
+                strFormat += "/" + (datetimeorder.getMonth() + 1);
+            }
+
+            strFormat += "/" + datetimeorder.getFullYear();
+            return strFormat;
+
+        }
+
+    function formatCharacterDate(date) {
+
+        var strFormat ="";
+        var nowtimeorder = new Date(parseInt(date.substring(6)));
+        //var daytimeorder = new Date(nowtimeorder).toLocaleString();
+        var datetimeorder = new Date(nowtimeorder);
+
+        if (datetimeorder.getDate()<10){
+            strFormat += "Ngày 0" + datetimeorder.getDate();
+        }
+        else
+        {
+            strFormat += "Ngày" + datetimeorder.getDate();
+        }
+
+        if (datetimeorder.getMonth()<11){//bij hao 1 thang ko hieu kieu gi
+            strFormat += " tháng 0" + (datetimeorder.getMonth()+1);
+        }
+        else
+        {
+            strFormat += " tháng " +  (datetimeorder.getMonth()+1);
+        }
+
+        strFormat += " năm" + datetimeorder.getFullYear();
+        return strFormat;
+
+        }
+
+
+
+    function PrintInventoryOutput() {
+        if (PrintInvoice() == false) return;
+        var stt = document.getElementById('WorkOrder').value;
+        var note = document.getElementById('note').value;
+        var update = 0;
+        $.ajax({
+            url: '/Bills/UpdateNoteInvoiceDetail/',
+            type: 'POST',
+            data: {
+                "invoiceDetailId": objInvoiceDetailID ,
+                "note": note
+            },
+            dataType: 'bool',
+            success: function (result) {
+                if (result = true) {
+                    update = 1;
+                }
+            }
+        });
+                var total = 0;
+                var Ltttb = 0;
+                var L15tb = 0;
+                var kgTb = 0;
+                var tTotal = 0;
+                var densityTotal = 0;
+                var totalLtt = 0;
+                var total = 0;
+                var totalKg = 0;
+                var count = 1;
+                var volume = listVolume.split("");
+
+                stt = stt.substring(stt.length - 3, stt.length);
+                //var outtime =document.getElementById('OutTime').value;
+
+        var content = "";
+        content += "<table style='width: 100%;border:1px' cellspacing='0'>";
+                    content += "<colgroup>";
+            content += " <col style='width: 10%;' />";
+            //content += "   <col style='width: 10%;' />";
+            content += "   <col style='width: 90%;' />";
+        content += "</colgroup>";
+        content += "<tr>";
+        content += "<td>";
+        content += "<img style ='max-width: 50px' src='/Content/images/logo_ptbm.jpg'/>";
+        content += "</td>";
+        //content += "<td></td>";
+        content += "<td>";
+        content += "<span><b>CÔNG TY TNHH PETRO BÌNH MINH</span><br/>";
+        content += "<span>TỔNG KHO XĂNG DẦU MÔNG DƯƠNG</b></span>";
+        content += "</td>";
+        content += "</tr>";
+        content += "</table>";
+        //content += "<div style='width:100%'>";
+        //content += "<div style='width:30%'>";
+        //content += "<img style ='max-width: 100px' src='/Content/images/logo_ptbm.jpg'/>";
+        //        content += " </div>";
+        //        content += "<div style='width:70%; float:left;'>";
+        //content += "<span>CÔNG TY TNHH PETRO BÌNH MINH</span><br/>";
+        //content += "<span>Tổng kho xăng dầu Mông Dương</span>";
+        //        content += " </div>";
+        //        content += " </div>";
+                content += "<div>";
+                content += "<center>";
+                content += "<h3>PHIẾU XUẤT KHO</h3>";
+                content += "</center>";
+        content += "<center><b>Ngày: " + getDateNow() + getTimeNow() + " </b></center>";
+
+        for (var j = 0; j < objListInvoiceDetail.length; j++) {
+            if (listVolume == objListInvoiceDetail[j].ListVolume) {
+                var exp = new Date(parseInt(objMaster.InsertDate)).getMonth();
+                content += "<center><b>Số: " + objListInvoiceDetail[j].ExportNo + "  </b></center>";
+                break;
+            }
+        }
+                //content += "<center><b>Số: " + objListInvoiceDetail[0].ExportNo + "  </b></center>";
+                content += "</div>";
+                content += "<div>";
+                if (objInvoice.BuyerName == null) {
+                    content += "<span><b>Họ tên người nhận:</b> " + objMaster.DriverName + "- <b>Đơn vị</b>:</b></span><br />";
+                }
+                else {
+                    content += "<span><b>Họ tên người nhận:</b> " + objMaster.DriverName + "- <b>Đơn vị</b> :  " + objInvoice.BuyerName + "</b></span><br />";
+                }
+
+                if (objMaster.ExportReason == null) {
+                    content += "<span><b>Lý do xuất: </b>Xuất hàng gửi kho</span><br />";
+                } else {
+                    content += "<span><b>Lý do xuất: </b>"+objMaster.ExportReason+"</span><br />";
+                }  
+                content += "<span><b>Xuất tại kho:</b> " + titleWareHouseName + " </span>"
+                content += " - <span><b>Số phương tiện :</b> " + objInvoice.VehicleNumber + "</span><br />"
+                content += "<div>";
+                content += "<div>";
+                content += "<table class='table pxk' style='width:100% ' cellpadding='1' cellspacing='0' border='1'>";
+                content += "<thead>";
+                content += "<tr>";
+                content += "<th rowspan='2'>STT</th>";
+                content += "<th rowspan='2'>Tên sản phẩm, hàng hóa</th>";
+                content += "<th rowspan='2'>Khoang hàng</th>";
+                content += "<th colspan='3'>Số lượng</th>";
+                content += "<th rowspan='2'>Nhiệt độ</th>";
+                content += "<th rowspan='2'>Tỷ trọng</th>";
+                content += "<th rowspan='2'>VCF</th>";
+                content += "</tr>";
+                content += "<tr>";
+                content += "<th>Ltt</th>";
+                content += "<th>L15</th>";
+                content += "<th>Kg</th>";
+                content += "</tr>";
+                content += "</thead>";
+                content += "<tbody>";
+
+
+                for (var i = 0; i < volume.length; i++) {
+                    for (var j = 0 ; j < objListCommandDetail.length; j++) {
+                        if (volume[i] == objListCommandDetail[j].CompartmentOrder) {
+                            content += "<tr>";
+                            content += "<td align='center'>" + count + "</td>";
+                            for (var k = 0; k < objListProduct.length; k++)
+                            {
+                                if (objListProduct[k].ProductCode == objListCommandDetail[j].ProductCode)
+                                {
+                                    {
+                                        content += "<td>" + objListProduct[k].ProductName + "</td>";
+                                    }
+                                }
+                            }
+                            //content += "<td>" + objListCommandDetail[j].ProductName + "</td>";
+                            content += "<td align='center'>" + objListCommandDetail[j].CompartmentOrder + "</td>";
+
+                            if (objListCommandDetail[j].V_Actual == null) {
+                                content += "<td align='right'>Null</td>";
+                            }
+                            else {
+                                content += "<td align='right'>" + objListCommandDetail[j].V_Actual.toFixed(2).toLocaleString("de-DE") + "</td>";
+                                totalLtt += objListCommandDetail[j].V_Actual;
+                            }
+
+                            if (objListCommandDetail[j].V_Actual_15 == null) {
+                                content += "<td align='right'>Null</td>";
+                            }
+                            else {
+                                content += "<td align='right'>" + eval(objListCommandDetail[j].V_Actual * objListCommandDetail[j].Vcf).toFixed(2).toLocaleString("de-DE") + "</td>";
+                                total += eval(objListCommandDetail[j].V_Actual * objListCommandDetail[j].Vcf);
+                            }
+
+                            if (objListCommandDetail[j].Wcf == null || objListCommandDetail[j].V_Actual_15 == null) {
+                                content += "<td align='right'>Null</td>"
+                            }
+                            else {
+                                content += "<td align='right'>" + eval(objListCommandDetail[j].Wcf * (objListCommandDetail[j].V_Actual * objListCommandDetail[j].Vcf)).toFixed(2).toLocaleString("de-DE") + "</td>"
+                                totalKg += eval(objListCommandDetail[j].Wcf * (objListCommandDetail[j].V_Actual * objListCommandDetail[j].Vcf));
+                            }
+
+                            if (objListCommandDetail[j].AvgTemperature == null) {
+                                content += "<td>0</td>"
+                            }
+                            else {
+                                content += "<td align='right'>" + (objListCommandDetail[j].AvgTemperature).toFixed(2).toLocaleString("de-DE") + "</td>"
+                            }
+
+                            if (objListCommandDetail[j].AvgDensity == null) {
+                                content += "<td align='right'>Null</td>"
+                            }
+                            else {
+                                //content +="<td align='right'>" + objListCommandDetail[i-1].AvgDensity.toLocaleString("de-DE") + "</td>"
+                                content += "<td align='right'>" + objListCommandDetail[j].AvgDensity.toFixed(4) + "</td>"
+                            }
+
+                            if (objListCommandDetail[j].Vcf == null) {
+                                content += "<td align='right'>Null</td>"
+                            }
+                            else {
+                                //content += "<td align='right'>" + objListCommandDetail[i - 1].Wcf.toLocaleString("de-DE") + "</td>"
+                                content += "<td align='right'>" + objListCommandDetail[j].Vcf.toFixed(4) + "</td>"
+                            }
+
+                            content += "</tr>";
+                            count++;
+                        }
+
+
+                }
+
+            }
+        content +="</tbody>";
+        content +="<tfoot>";
+        content +="<tr>";
+        content +="<td>&nbsp;</td>";
+        content +="<th>Tổng</th>";
+        content += "<td>&nbsp;</td>";
+        content += "<td align='right'>" + totalLtt.toFixed(2).toLocaleString("de-DE") + "</td>";
+        // content +="<td></td>";
+        content += "<td align='right'>" + total.toFixed(2).toLocaleString("de-DE") + "</td>";
+        content += "<td align='right'>" + totalKg.toFixed(2).toLocaleString("de-DE") + "</td>";
+        content +="<td>&nbsp;</td>";
+        content +="<td>&nbsp;</td>";
+        content +="<td>&nbsp;</td>";
+        content +="</tr>";
+
+        content +="<tr>";
+        var firstSeal = 0;
+        var lastSeal = 0;
+        var strnote = ""; // ghi chú
+        for (var k = 0; k < volume.length; k++) {
+            for (var i = 0; i < objListSeal.length; i++) {
+                if (volume[k] == objListSeal[i].CompartmentOrder) {
+                    strnote += ",K" + objListSeal[i].CompartmentOrder + "=" + objListSeal[i].Ratio;
+                    if (k == 0) {
+                        firstSeal = objListSeal[i].Seal1;
+                    }
+                    if (k == volume.length-1) {
+                        lastSeal = objListSeal[i].Seal2;
+                    }
+
+                }
+
+            }
+        }
+        if (strnote.length > 0) {
+            strnote = strnote.substring(1, strnote.length);
+        }
+
+        content += "<td colspan='9' rowspan='2'>Ghi chú : ";
+
+        content += strnote;
+        content += ", chì: (" + firstSeal + "-" + lastSeal+ ") ";
+        if (note != null && note != "") {
+            content +=", "+ note;
+        } else if (noteStored != null && noteStored != "") {
+            content += ", " + noteStored;
+        } else {
+
+        }
+
+        //content +="chì: ..., mẫu... . Căn cứ theo hợp đồng tiếp nhận, bảo quản , bơm rót nhiên liệu số ...  và phụ lục số  ..."
+        content +=" </td>";
+        content +="</tr>";
+        content +="</tfoot>";
+        content +="</table>";
+        content +="</div>";
+
+        content +="<div style='padding-top:2%'>";
+        content +="<div style='width:20%;float:left;padding-top: 16px; '>";
+        content +="<center>";
+        content +="<b>NGƯỜI LẬP PHIẾU</b><br />";
+        content +="</center>";
+        content +="</div>";
+        content +="<div style='width:20%;float:left;padding-top: 16px; '>";
+        content +="<center>";
+        content +="<b>NGƯỜI NHẬN HÀNG</b><br />";
+        content +="</center>";
+        content +="</div>";
+        content +="<div style='width:20%;float:left;padding-top: 16px; '>";
+        content +="<center>";
+        content +="<b>THỦ KHO</b><br />";
+        content +="</center>";
+        content +="</div>";
+        content +="<div style='width:20%;float:left;padding-top: 16px; '>";
+        content +="<center>";
+        content +="<b>BẢO VỆ</b><br />";
+        content +="</center>";
+        content +="</div>";
+        content +="<div style='width:20%;float:left'>";
+        content +="<center>";
+        content +="<span style='font-size:13px;'><b>Ngày : </b>" +  getDateNow() + " </span><br />";
+        content +="<b>THỦ TRƯỞNG</b>";
+        content +="</center>";
+        content +="</div>";
+        content +="</div>";
+
+        document.getElementById("commandInphieuxuatkho").innerHTML = content;
+        var divToPrint = document.getElementById('commandInphieuxuatkho');
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><head></head><body onload="window.print()">' + commandInphieuxuatkho.innerHTML + '</body></html>');
+        newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+        Number.prototype.pad = function (size) {
+            var s = String(this);
+            while (s.length < (size || 2)) { s = "0" + s; }
+            return s;
+        }
+    </script>
+}
+
+

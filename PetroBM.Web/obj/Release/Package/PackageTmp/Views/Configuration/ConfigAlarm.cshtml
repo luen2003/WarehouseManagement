@@ -1,0 +1,104 @@
+﻿@model PetroBM.Web.Models.TankModel
+
+@{
+    ViewBag.Title = "Đặt mức cảnh báo";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+
+@using (Html.BeginForm("DoConfigAlarm", "Configuration", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Tank.TankId)
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Id bể</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.Tank.TankId, new { @class = "form-control", @readonly = "readonly" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Tên bể</label>
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.Tank.TankName, new { @class = "form-control", @readonly = "readonly" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Mức rất cao</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Tank.HighHighLevel, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tank.HighHighLevel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Mức cao</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Tank.HighLevel, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tank.HighLevel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Mức thấp</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Tank.LowLevel, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tank.LowLevel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Mức rất thấp</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Tank.LowLowLevel, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tank.LowLowLevel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Nhiệt độ tối đa</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Tank.TemperatureHigh, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tank.TemperatureHigh, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Nhiệt độ tối thiểu</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Tank.TemperatureLow, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tank.TemperatureLow, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Density</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Tank.Density, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tank.Density, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("TankAlarm")'" />
+            </div>
+        </div>
+    </div>
+}

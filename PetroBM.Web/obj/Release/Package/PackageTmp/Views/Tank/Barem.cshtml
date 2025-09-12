@@ -1,0 +1,257 @@
+﻿@model PetroBM.Web.Models.TankModel
+@using PetroBM.Common.Util;
+
+@{
+    ViewBag.Title = "Cấu hình Barem - " + Model.Tank.TankName;
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+@using (Html.BeginForm("ImportBarem", "Tank", FormMethod.Post,
+                                                                new { enctype = "multipart/form-data" }))
+{
+    <p>
+        @Html.HiddenFor(model => model.TankId)
+        @Html.HiddenFor(model => model.WareHouseCode)
+        <input type="submit" value="Nhập từ file Excel" class="btn btn-primary" />
+        <div class="btn btn-primary">
+        @Html.TextBoxFor(model => model.BaremFile,
+            new { type = "file", accept = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })
+        </div>
+    </p>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col-50">
+                    @Html.Label("STT")
+                </th>
+                <th class="col-150">
+                    @Html.LabelFor(Model => Model.Tank.TankName)
+                </th>
+                <th class="col-150">
+                    @Html.LabelFor(Model => Model.Barem.High) (@Constants.DIMENSION_MM)
+                </th>
+                <th class="col-150">
+                    @Html.LabelFor(Model => Model.Barem.Volume) (@Constants.DIMENSION_L)
+                </th>
+                <th class="col-50" style="padding-left:17px">
+                    <input type="checkbox" id="check-all" class="flat">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{var i = 0; }
+            @if (Model.ListBarem.Count() == 0)
+                {
+                <tr style="display: none">
+                    <td class="col-50">
+                        0
+                    </td>
+                    <td class="col-150">
+                        @Html.DisplayFor(Model => Model.Tank.TankName)
+                    </td>
+                    <td class="col-150">
+                        <input class="col-150 barem-high text-box single-line" type="text" value="0">
+                    </td>
+                    <td class="col-150">
+                        <input class="col-150 barem-volume text-box single-line" type="text" value="0">
+                    </td>
+                    <td class="col-50">
+                        <input type="checkbox" class="flat" value="0" name="highs">
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model.ListBarem)
+                {
+                    i++;
+                    <tr>
+                        <td class="col-50">
+                            @i
+                        </td>
+                        <td class="col-150">
+                            @Html.DisplayFor(modelItem => item.MTank.TankName)
+                        </td>
+                        <td class="col-150">
+                            @Html.EditorFor(modelItem => item.High, new { htmlAttributes = new { @class = "col-150 barem-high" } })
+                        </td>
+                        <td class="col-150">
+                            @Html.EditorFor(modelItem => item.Volume, new { htmlAttributes = new { @class = "col-150 barem-volume" } })
+                        </td>
+                        <td class="col-50">
+                            <input type="checkbox" class="flat" value="@item.High" name="highs">
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <p>
+        <input type="button" value="Thêm" class="new-barem btn btn-success" />
+        <input type="button" class="btn btn-danger" name="Delete" value="Xóa" />
+        <input type="button" value="Quay lại" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "Tank", new { TankId = Model.TankId,WareHouseCode = Model.WareHouseCode })'" />
+    </p>
+                }
+
+@section style{
+    <style>
+        .table {
+            width: auto;
+        }
+
+        thead, tbody {
+            display: block;
+        }
+
+        tbody {
+            height: 468px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .col-50 {
+            width: 50px;
+        }
+
+        .col-150 {
+            width: 150px;
+        }
+
+        input[type="file"] {
+            display: initial;
+        }
+    </style>
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            $("#check-all").click(function(){
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
+
+            // New barem
+            $('.new-barem').on('click', function () {
+                var tankId = @Model.TankId;
+                var wareHouseCode = @Model.WareHouseCode;
+
+                var high = parseInt($('.barem-high:last').val()) + 1;
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CreateBarem", "Tank")',
+                    data: { wareHouseCode :wareHouseCode,
+                        tankId: tankId,
+                        high: high
+                    },
+                    dataType: 'text',
+                    success: function (data) {
+                        if (data =='') {
+                            var barem = $('tr:last').clone(true);
+                            barem.show();
+                            var index = parseInt(barem.find('td:first').text()) + 1;
+                            barem.find('td:first').text(index);
+                            barem.find('.barem-high').val(high);
+                            barem.find('.barem-volume').val(0);
+                            barem.find('.flat').val(high);
+                            $('tbody').append(barem);
+                            barem.find('.barem-volume').focus();
+                        }
+                        else {
+                            alert(data);
+                        }
+                    },
+                    error: function () {
+                        alert("Không thể xử lý");
+                    }
+                });
+            });
+
+            // Edit high
+            $('.barem-high').on('focusin', function () {
+                $(this).data('val', $(this).val());
+            });
+
+            $('.barem-high').on('change', function () {
+                var item = $(this);
+                var tankId = @Model.TankId;
+                var wareHouseCode = @Model.WareHouseCode;
+                var oldHigh = item.data('val');
+                var newHigh = item.val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("EditHighBarem", "Tank")',
+                    data: { wareHouseCode: wareHouseCode,
+                        tankId: tankId,
+                        oldHigh: oldHigh,
+                        newHigh: newHigh
+                    },
+                    dataType: 'text',
+                    success: function (data) {
+                        if (data !='') {
+                            alert(data);
+                            item.val(oldHigh);
+                        }
+                    },
+                    error: function () {
+                        alert("Không thể xử lý");
+                        item.val(oldHigh);
+                    }
+                });
+            });
+
+            //Edit volume
+            $('.barem-volume').on('focusin', function () {
+                $(this).data('val', $(this).val());
+            });
+
+            $('.barem-volume').on('change', function () {
+                var item = $(this);
+                var tankId = @Model.TankId;
+                var wareHouseCode = @Model.WareHouseCode;
+                var high = item.parent().prev("td").children().val();
+                var oldvolume = item.data('val');
+                var volume = item.val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("EditVolumeBarem", "Tank")',
+                    data: { wareHouseCode: wareHouseCode,
+                        tankId: tankId,
+                        high: high,
+                        volume: volume
+                    },
+                    dataType: 'text',
+                    success: function (data) {
+                        if (data !='') {
+                            alert(data);
+                            item.val(oldvolume);
+                        }
+                    },
+                    error: function () {
+                        alert("Không thể xử lý");
+                        item.val(oldvolume);
+                    }
+                });
+            });
+
+            //Delete 
+        })
+    </script>
+}

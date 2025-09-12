@@ -1,0 +1,94 @@
+﻿@model PetroBM.Web.Models.TankGroupModel
+@using PetroBM.Common.Util
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "Tạo mới nhóm bể";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+
+            <label class="control-label col-xs-2" for="TankGrp_TanktGrpName">
+            @Html.LabelFor(Model => Model.TankGrp.TanktGrpName)</label>
+            <div class="col-xs-4">
+                @Html.EditorFor(model => model.TankGrp.TanktGrpName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TankGrp.TanktGrpName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" for="TankGrp_TanktGrpName">
+                Kho 
+            </label>
+            <div class="col-xs-4">
+                <select  class="form-control" name="TankGrp.WareHouseCode" id="WareHouseCode" onchange="Init()">
+                    @foreach (var item in Model.WareHouses)
+                    {
+                        <option value="@item.WareHouseCode">@item.WareHouseName</option>
+                    }
+ 
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" for="TankGrp_TanktGrpName">
+                @Html.LabelFor(Model => Model.TankGrp.MTanks)
+            </label>
+            <div class="col-xs-4" id="Tank-list">
+                <select multiple class="selectpicker form-control tank-list" name="ListTankId" id="tank-multiple" data-container="body" data-live-search="true" title="Chọn bể" data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false">
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <input type="submit" value="Tạo mới" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+}
+
+@section style{
+    @Styles.Render("~/Content/bootstrap-select")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-select");
+    <script>
+        var listTank =@Html.Raw(Json.Encode(@Model.TankTemps));
+        Init();
+        $(document).ready(function () {
+            $(document).on("submit", "form", function (e) {
+               // $('#ListTankId').selectpicker('refresh');
+            });
+        });
+
+
+        function Init(){
+            var wareHousecode =$("#WareHouseCode").val();
+            var options = [], _options;
+
+            if (wareHousecode!="" && wareHousecode!=null ){           
+                for (var i = 0; i < listTank.length; i++) {
+
+                    if (listTank[i].WareHouseCode==wareHousecode)
+                    {
+                        var option = '<option value="' + listTank[i].TankId + '">' + listTank[i].TankName + '</option>';
+                        options.push(option);
+                    }
+                }
+                _options = options.join('');
+                $('#tank-multiple')[0].innerHTML = _options; 
+            }
+            $('.tank-list').selectpicker('refresh');
+        }
+    </script>
+}

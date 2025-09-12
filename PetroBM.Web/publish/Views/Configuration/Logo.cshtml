@@ -1,0 +1,45 @@
+﻿@model PetroBM.Web.Models.ConfigurationModel
+
+@{
+    ViewBag.Title = "Đặt logo";
+}
+
+@{
+    var alert = TempData["AlertMessage"];
+    if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+    {
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@alert</strong>
+        </div>
+    }
+}
+
+@using (Html.BeginForm("SaveLogo", "Configuration", FormMethod.Post,
+                                                new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="file">Logo đang sử dụng :</label>
+            <div class="col-xs-9">
+                    <img class="logo-image" src="@Model.LogoConfig.Value" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="file">Tải logo :</label>
+            <div id="logo-upload" class="col-xs-9">
+                @Html.TextBoxFor(model => model.LogoFile, new { type = "file", accept = "image/*" })
+                @Html.ValidationMessageFor(model => model.LogoFile)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-9">
+                <input type="submit" value="Lưu" class="btn btn-success" id="logo" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index","Home")'" />
+            </div>
+        </div>
+    </div>
+}

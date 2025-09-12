@@ -1,0 +1,77 @@
+﻿@model PetroBM.Web.Models.LocationModel
+
+@{
+    ViewBag.Title = "Cập nhật địa điểm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+
+        @Html.HiddenFor(model => model.Location.ID)
+       
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location.LocationCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location.LocationCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Location.LocationCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location.LocationName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location.LocationName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Location.LocationName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location.LocationAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location.LocationAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Location.LocationAddress, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location.Note, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Location.Note, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location.LocationStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Location.LocationStatus,
+                    new SelectList(
+                        new[]
+                        {
+                            new { Value = "Hoạt động", Text = "Hoạt động" },
+                            new { Value = "Ngưng", Text = "Ngưng" },
+                            new { Value = "Bảo trì", Text = "Bảo trì" }
+                        },
+                        "Value",
+                        "Text",
+                        Model.LocationStatus
+                    ),
+                    "-- Chọn trạng thái --",
+                    new { @class = "form-control" }
+                )
+                @Html.ValidationMessageFor(model => model.Location.LocationStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>        
+    </div>
+}

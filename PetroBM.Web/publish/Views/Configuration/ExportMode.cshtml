@@ -1,0 +1,39 @@
+﻿@model PetroBM.Web.Models.ConfigurationModel
+@using PetroBM.Common.Util;
+
+@{
+	ViewBag.Title = "Xuất hàng bằng thẻ / Xuất hàng bằng lệnh xuất";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+	var alert = TempData["AlertMessage"];
+	if (null != alert && !string.IsNullOrEmpty(alert.ToString()))
+	{
+		<div class="alert alert-success alert-dismissable">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@alert</strong>
+		</div>
+	}
+}
+
+@using (Html.BeginForm("SaveExportMode", "Configuration", FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label col-xs-2">Cách thức xuất hàng</label>
+			<div class="col-xs-10">
+				@Html.RadioButtonFor(model => model.ExportMode.Value, Constants.EXPORT_MODE_CARD)<span>Xuất hàng bằng thẻ</span><br/>
+				@Html.RadioButtonFor(model => model.ExportMode.Value, Constants.EXPORT_MODE_WORKORDER)<span>Xuất hàng bằng lệnh xuất</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-xs-offset-2 col-xs-9">
+				<input type="submit" value="Lưu" class="btn btn-success" />
+				<input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index","Home")'" />
+			</div>
+		</div>
+	</div>
+}

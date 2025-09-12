@@ -1,0 +1,615 @@
+﻿@model PetroBM.Web.Models.LoadingArmModel
+@using PetroBM.Common.Util
+
+@{
+    ViewBag.Title = "Kho: " + Session[Constants.Session_WareHouseName] + " > Dạng trực quan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .table-index {
+        font-weight: bold;
+        background: #ddd;
+        border-top: solid thin #ddd;
+    }
+    .mains {
+        min-height: 1800px;
+    }
+</style>
+
+<div class="">
+    <div>
+        @*<div>
+            <div class="col-md-1">
+                <label>Hiển thị họng</label>
+            </div>
+
+            <div class="col-md-11 form-group">
+                <select id="armno">
+                    <option>0</option>
+                    @foreach (var item in Model.ListLiveDataArmConfigArm)
+                    {
+                        <option>@Html.DisplayFor(modelItem => item.ArmNo)</option>
+                    }
+                </select>
+            </div>
+        </div>*@
+
+        <label class="col-md-12" style="font-size:16px;">Thông tin họng xuất: </label>
+
+        @*<div style="font-size:22px; font-weight:bold;">
+            <div class="col-md-2">
+                <label id="arm-name">Họng 1</label>
+            </div>
+            <div class="col-md-8" style="color:red;">
+                <label>Trạng thái : </label>
+                <label></label>
+            </div>
+        </div>*@
+
+    </div>
+    <br />
+    <table class="col-md-4 table">
+        @{
+            var kk = 0;
+            foreach (var item in Model.ListLiveDataArmByArmNo)
+            {
+                
+                <tr>
+                    <td colspan="2">
+                        <div style="font-size:22px; font-weight:bold;">
+                            <div class="col-md-2">
+                                <label>Họng @Html.DisplayFor(modelItem => item.ArmNo)</label>
+                            </div>
+                            <div class="col-md-8" style="color:red;">
+                                <label>Trạng thái : </label>
+                                @*<input type="hidden" class="status-input_@kk" value="@Html.DisplayFor(modelItem => item.Status)" />*@
+                                @if (item.Status == 0)
+                                {
+                                    <label id="status-label_@kk">Chờ quẹt thẻ</label>
+                                }
+                                else if (item.Status == 1)
+                                {
+                                    <label id="status-label_@kk">Nhập mã ngăn</label>
+                                }
+                                else if (item.Status == 2)
+                                {
+                                    <label id="status-label_@kk">Chuẩn bị xuất</label>
+                                }
+                                else if (item.Status == 3)
+                                {
+                                    <label id="status-label_@kk">Đang xuất</label>
+                                }
+                                else if (item.Status == 4)
+                                {
+                                    <label id="status-label_@kk">Kết thúc</label>
+                                }
+                                else if (item.Status == 5)
+                                {
+                                    <label id="status-label_@kk">Dừng ép</label>
+                                }
+                                else if (item.Status == 6)
+                                {
+                                    <label id="status-label_@kk">Nhập mã lệnh</label>
+                                }
+                                else if (item.Status == 7)
+                                {
+                                    <label id="status-label_@kk">Nhập serial</label>
+                                }
+                                else
+                                {
+                                    <label id="status-label_@kk"></label>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="height:300px">
+                    <td colspan="2">
+                        <div class="config-arm col-md-12">
+                            <div class="pump">
+                                <img src="~/Content/images/icon/pump-main.png" width="150" />
+                                <div class="flowrate-b tool-tip">
+                                    @*<span id="flowmeter-b"></span>*@
+                                    @if (item.Flowrate_E == 0 || item.Flowrate_E == null)
+                                    {
+                                        <span id="flowmeter-b_@kk">@Html.DisplayFor(modelItem => item.Flowrate)</span>
+                                    }
+                                    else
+                                    {
+                                        <span id="flowmeter-b_@kk">@Html.DisplayFor(modelItem => item.Flowrate_Base)</span>
+                                    }
+                                    <span class="tooltip-text">Lưu lượng xăng gốc</span>
+                                </div>
+                            </div>
+                            @if (item.Flowrate == 0 || item.Flowrate == null)
+                            {
+                                <div id="pipe_@kk" class="pipe-line-inactive"></div>
+                            }
+                            else
+                            {
+                                <div id="pipe_@kk" class="pipe-line-active"></div>
+                            }
+                            <div class="flowmeter">
+                                <div class="v-actual tool-tip">
+                                    @*<span id="v-actual"></span>*@
+                                    <span id="v-actual_@kk">@Html.DisplayFor(modelItem => item.V_Actual)</span>
+                                    <span class="tooltip-text">Thể tích thực</span>
+                                </div>
+                                <img src="~/Content/images/icon/u327.gif" width="80" />
+                            </div>
+                            <div class="temp-meter tool-tip" width="80">
+                                <div class="cur-temp">
+                                    <div class="cur-temp-txt tool-tip">
+                                        @*<span id="cur-temp-img"></span>*@
+                                        <span id="cur-temp-img_@kk">@Html.DisplayFor(modelItem => item.CurrentTemperature)</span>
+                                        <span class="tooltip-text" style="width: 94px;left: -20px;">
+                                            Nhiệt độ thực <br />Nhiệt độ TB
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="avg-temp">
+                                    <div class="avg-temp-txt tool-tip">
+                                        @*<span id="avg-temp-img"></span>*@
+                                        <span id="avg-temp-img_@kk" >@Html.DisplayFor(modelItem => item.AvgTemperature)</span>
+                                    </div>
+                                </div>
+                                <img src="~/Content/images/icon/Temp-meter.gif" />
+                            </div>
+                            <div class="valve">
+                                <div class="valve-status tool-tip">
+                                    @*<span id="valve-txt"></span>*@
+                                    @if (item.ValveStatus == 1)
+                                    {
+                                        <span id="valve-txt_@kk">Đóng</span>
+                                    }
+                                    else if (item.ValveStatus == 2)
+                                    {
+                                        <span id="valve-txt_@kk">Mở</span>
+                                    }
+                                    else if (item.ValveStatus == 3)
+                                    {
+                                        <span id="valve-txt_@kk">Giữ</span>
+                                    }
+                                    else
+                                    {
+                                        <span id="valve-txt_@kk"></span>
+                                    }
+                                    <span class="tooltip-text">Trạng thái van</span>
+                                </div>
+                                <img src="~/Content/images/icon/u329.gif" width="80" />
+                            </div>
+                            <div class="multiload">
+                                <img src="~/Content/images/icon/multiload.bmp" width="80" />
+                            </div>
+                            <div class="pipe-corner">
+                                <img src="~/Content/images/icon/Pipe-corner-new.gif" />
+                            </div>
+                            <div class="loading-arm">
+                                <img src="~/Content/images/icon/loading-arm.gif" height="120" />
+                            </div>
+                            @*<div class="dsc" id="dsc">
+                                <img src="~/Content/images/icon/dsc.gif" />
+                            </div>*@
+                            @if (item.ESD == 0)
+                            {
+                                <div class="dsc" id="dsc_@kk">
+                                    <img src="~/Content/images/icon/dsc.gif" />
+                                </div>
+                            } else
+                            {
+                                <div class="hidden" id="dsc"></div>
+                            }
+                            @*<div class="tanker-truck tool-tip" id="vehicle-image"><span class="" id="progress-text"></span><span id="progress-bar"></span></div>*@
+                            @*<div class="" id="vehicle-img">
+                                <span id="vehicle-text"></span>
+                                <span id="progress-bar"></span>
+                            </div>*@
+                            @if (item.Flowrate == null || item.Flowrate == 0)
+                            {
+                                <div class="hidden">
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            }
+                            else
+                            {
+                                if (item.CommandType == 1)
+                                {
+                                    <div class="tanker-truck tool-tip">
+                                        @if (item.V_Preset == 0)
+                                        {
+                                            <span class="tanker-truck-text"></span>
+                                        } else
+                                        {
+                                            <span class="tanker-truck-text">
+                                                @Math.Round(((double)item.V_Actual / (double)item.V_Preset) * 100) %
+                                            </span>
+                                        }
+                                        @if (item.V_Preset == 0)
+                                        {
+                                            <span class="progress-bar-truck"></span>
+                                        } else
+                                        {
+                                            <span class="progress-bar-truck" style="width: @Math.Round(((double)item.V_Actual / (double)item.V_Preset) * 133) px;"></span>
+                                        }
+                                    </div>
+                                }
+                                else if (item.CommandType == 0)
+                                {
+                                    <div class="tanker-ship tool-tip">
+                                        @if (item.V_Preset == 0)
+                                        {
+                                            <span class="tanker-ship-text"></span>
+                                        } else
+                                        {
+                                            <span class="tanker-ship-text">
+                                                @Math.Round(((double)item.V_Actual / (double)item.V_Preset) * 100) %
+                                            </span>
+                                        }
+                                        @if (item.V_Preset == 0)
+                                        {
+                                            <span class="progress-bar-ship"></span>
+                                        } else
+                                        {
+                                            <span class="progress-bar-ship" style="width: @Math.Round(((double)item.V_Actual / (double)item.V_Preset) * 133) px;"></span>
+                                        }
+                                    </div>
+                                }
+                            }
+                            @if (item.Abbreviations.IndexOf("E5") > 0  || item.Abbreviations.IndexOf("e5") > 0)
+                            {
+                                <div class="hidden" id="mix-arm_@kk"></div>
+                            }
+                            <div class="" id="mix-arm_@kk">
+                                <div class="connecter">
+                                    <img src="~/Content/images/icon/connecter-new.gif" />
+                                </div>
+                                @*<div id="pipe-small" class="pipe-line-inactive-small"></div>*@
+                                @if (item.Flowrate == null || item.Flowrate == 0)
+                                {
+                                    <div id="pipe-small_@kk" class="pipe-line-inactive-small"></div>
+                                } else
+                                {
+                                    <div id="pipe-small_@kk" class="pipe-line-active-small"></div>
+                                }
+                                <div class="pump-small">
+                                    <div class="flowrate-e tool-tip">
+                                        @*<span id="flowmeter-e"></span>*@
+                                        <span id="flowmeter-e_@kk">@Html.DisplayFor(modelItem => item.Flowrate_E)</span>
+                                        <span class="tooltip-text">Lưu lượng E</span>
+                                    </div>
+                                </div>
+                                <div class="flowmeter-small">
+                                    <div class="v-actual-e tool-tip">
+                                        @*<span id="v-actual-e"></span>*@
+                                        <span id="v-actual-e_@kk">@Html.DisplayFor(modelItem => item.V_Actual_E)</span>
+                                        <span class="tooltip-text">Thể tích E</span>
+                                    </div>
+                                    <img src="~/Content/images/icon/u327.gif" width="40" />
+                                </div>
+                                <div class="temp-meter-small tool-tip">
+                                    @* <div class="cur-temp-small" id="">@Html.DisplayFor(modelItem => item.CurrentTemperature)</div>*@
+                                    @*<div class="avg-temp-small" id="">@Html.DisplayFor(modelItem => item.AvgTemperature)</div>*@
+                                    <img src="~/Content/images/icon/Temp-meter.gif" width="40" />
+                                </div>
+                                <div class="valve-small">
+                                    <div class="valve-small-status tool-tip">
+                                        <span id="valve-small-txt"></span>
+                                        <span class="tooltip-text">Trạng thái van E</span>
+                                    </div>
+                                    <img src="~/Content/images/icon/u329.gif" width="40" />
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="70%" style="border: 0px"></td>
+                    <td style="border: 0px">
+                        @*<div class="table-info">*@
+                        <div>
+                            <table class="col-md-4 table" style="margin-top: -120px">
+                                <tr>
+                                    <td class="table-index">
+                                        Card serial
+                                    </td>
+                                    @*<td id="card-serial"></td>*@
+                                    <td id="card-serial_@kk">
+                                        @Html.DisplayFor(modelItem => item.CardSerial)
+                                    </td>
+                                    <td class="table-index">
+                                        Số phương tiện
+                                    </td>
+                                    @*<td id="vehicle" style="min-width:89px;"></td>*@
+                                    <td id="vehicle_@kk">
+                                        @Html.DisplayFor(modelItem => item.VehicleNumber)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="table-index">
+                                        Khách hàng
+                                    </td>
+                                    @*<td id="product-type"></td>*@
+                                <td id="product-type_@kk">
+                                    @foreach (var commandDetail in Model.ListCommandDetail)
+                                    {
+                                        if (commandDetail.Flag == Constants.Command_Flag_Exporting && commandDetail.CardSerial == item.CardSerial && commandDetail.ArmNo == item.ArmNo)
+                                        {
+                                            foreach (var command in Model.ListCommand)
+                                            {
+                                                if (commandDetail.CommandID == command.CommandID)
+                                                {
+                                                    foreach (var customer in Model.ListCustomer)
+                                                    {
+                                                        if (command.CustomerCode == customer.CustomerCode)
+                                                        {
+                                                            @customer.CustomerName
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                </td>
+                                    <td class="table-index">
+                                        Mã ngăn
+                                    </td>
+                                    @*<td id="compartment"></td>*@
+                                    <td id="compartment_@kk">
+                                        @Html.DisplayFor(modelItem => item.CompartmentOrder)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="table-index">
+                                        V Preset
+                                    </td>
+                                    @*<td id="v-preset"></td>*@
+                                    <td id="v-preset_@kk">
+                                        @Html.DisplayFor(modelItem => item.V_Preset)
+                                    </td>
+                                    <td class="table-index">
+                                        Chế độ xuất
+                                    </td>
+                                    @*<td id="modelog" style="min-width:89px;"></td>*@
+                                    @if (item.ModeLog == 1)
+                                    {
+                                        <td id="modelog_@kk">Tự động</td>
+                                    } else if (item.ModeLog == 2)
+                                    {
+                                        <td id="modelog_@kk">Bán tự động</td>
+                                    } else if (item.ModeLog == 3)
+                                    {
+                                        <td id="modelog_@kk">Bằng tay</td>
+                                    } else
+                                    {
+                                        <td id="modelog_@kk"></td>
+                                    }
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+
+                kk += 1;
+            }
+        }
+    </table>
+</div>
+             
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+            SearchData();
+
+            setInterval(function () {
+                SearchData();
+
+            }, 2000); // every 2 sec
+
+            function SearchData() {
+
+                /*var armNo = document.getElementById('armno').value;*/
+
+                $.ajax({
+                    url: '/LoadingArm/GetDataIndex/',
+                    type: 'POST',
+                    data: {
+                        "warehousecode" : @Html.Raw(Json.Encode(@Model.WareHouseCode)),
+                        "armNo": 0,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        $.each(data, function (i, item) {
+                            switch (item.ValveStatus) {
+                                case 0:
+                                    document.getElementById("valve-txt_" + i).innerHTML = "";
+                                    break;
+                                case 1:
+                                    document.getElementById("valve-txt_" + i).innerHTML = "Đóng";
+                                    break;
+                                case 2:
+                                    document.getElementById("valve-txt_" + i).innerHTML = "Mở";
+                                    break;
+                                case 3:
+                                    document.getElementById("valve-txt_" + i).innerHTML = "Giữ";
+                                    break;
+                            }
+
+                            if (item.Flowrate == 0 || item.Flowrate == null) {
+                                document.getElementById("pipe_" + i).className = "pipe-line-inactive";
+                            } else {
+                                document.getElementById("pipe_" + i).className = "pipe-line-active";
+                            }
+
+                            if (item.Flowrate_E == 0 || item.Flowrate_E == null) {
+                                document.getElementById("pipe-small_" + i).className = "pipe-line-inactive-small";
+                                document.getElementById('flowmeter-b_' + i).innerHTML = item.Flowrate;
+                            } else {
+                                document.getElementById("pipe-small_" + i).className = "pipe-line-active-small";
+                                document.getElementById('flowmeter-b_' + i).innerHTML = item.Flowrate_Base;
+                            }
+                            //document.getElementById('avg-temp_' + i).innerHTML = item.AvgTemperature;
+                            //document.getElementById('cur-temp').innerHTML = item.CurrentTemperature;
+                            document.getElementById('avg-temp-img_'+ i).innerHTML = item.AvgTemperature;
+                            document.getElementById('cur-temp-img_'+ i).innerHTML = item.CurrentTemperature;
+                            document.getElementById('card-serial_'+i).innerHTML = item.CardSerial;
+                            document.getElementById('vehicle_'+i).innerHTML = item.VehicleNumber;
+                            document.getElementById('compartment_' + i).innerHTML = item.CompartmentOrder;
+                            document.getElementById('v-preset_' + i).innerHTML = item.V_Preset;
+                            //document.getElementById('flowrate').innerHTML = item.Flowrate;
+                            //document.getElementById('v-preset').innerHTML = item.V_Preset;
+                            document.getElementById('v-actual_'+i).innerHTML = item.V_Actual;
+                            if (item.ESD == 0) {
+                                document.getElementById('dsc_'+i).className = "hidden";
+                            } else {
+                                document.getElementById('dsc_'+i).className = "dsc";
+                            }
+
+
+                            if(!item.Abbreviations.indexOf('E5') || !item.Abbreviations.indexOf('e5')){
+                                if (item.MixingRatio == 0 || item.MixingRatio == null) {
+                                    document.getElementById('mix-arm_'+i).className = "hidden";
+                                }else{
+                                    document.getElementById('mix-arm_'+i).className = "";
+                                }
+                            } else {
+                                document.getElementById('mix-arm_'+i).className = "hidden";
+                            }
+
+                            if (item.MixingRatio == 0 || item.MixingRatio == null) {
+                                document.getElementById('mix-arm_'+i).className = "hidden";
+                            } else {
+                                document.getElementById('mix-arm_'+i).className = "";
+                            }
+
+                            
+                            document.getElementById('flowmeter-e_'+i).innerHTML = item.Flowrate_E;
+                            document.getElementById('product-type_'+i).innerHTML = item.ProductName;
+                            //document.getElementById('arm-name').innerHTML = "Họng " + item.ArmNo;
+                            //if (item.Flowrate == null || item.Flowrate == 0) {
+                            //    document.getElementById('vehicle-img').className = "hidden";
+                            //} else{
+                            //    if(item.CommandType == 1){
+                            //        document.getElementById('vehicle-img').className = "tanker-truck tool-tip";
+                            //        document.getElementById('vehicle-text').innerHTML = Math.round((item.V_Actual / item.V_Preset) * 100) + "%";
+                            //        document.getElementById('vehicle-text').className = "tanker-truck-text";
+                            //        document.getElementById('progress-bar').className = "progress-bar-truck";
+                            //        document.getElementById('progress-bar').style.width = Math.round((item.V_Actual / item.V_Preset) * 133) + "px";
+
+                            //    }else if(item.CommandType == 0){
+                            //        document.getElementById('vehicle-img').className = "tanker-ship tool-tip";
+                            //        document.getElementById('vehicle-text').innerHTML = Math.round((item.V_Actual / item.V_Preset) * 100) + "%";
+                            //        document.getElementById('vehicle-text').className = "tanker-ship-text";
+                            //        document.getElementById('progress-bar').className = "progress-bar-ship";
+                            //        document.getElementById('progress-bar').style.width = Math.round((item.V_Actual / item.V_Preset) * 133) + "px";
+                            //    }}
+
+
+
+                            //document.getElementById('tanker-ship-text').innerHTML = Math.round((item.V_Actual / item.V_Preset) * 100) + "%";
+
+                            document.getElementById('v-actual-e_'+i).innerHTML = item.V_Actual_E;
+                            if (item.ModeLog == 1) {
+                                document.getElementById('modelog_' + i).innerHTML = "Tự động";
+                            }
+                            else if (item.ModeLog == 2) {
+                                document.getElementById('modelog_' + i).innerHTML = "Bán tự động";
+                            }
+                            else if (item.ModeLog == 3) {
+                                document.getElementById('modelog_' + i).innerHTML = "Bằng tay";
+                            }
+                             
+                            switch (item.Status) {
+                                case 0:
+                                    document.getElementById('status-label_' + i).innerHTML = "Chờ quẹt thẻ";
+                                    break;
+                                case 1:
+                                    document.getElementById('status-label_' + i).innerHTML = "Nhập mã ngăn";
+                                    break;
+                                case 2:
+                                    document.getElementById('status-label_' + i).innerHTML = "Chuẩn bị xuất";
+                                    break;
+                                case 3:
+                                    document.getElementById('status-label_' + i).innerHTML = "Đang xuất";
+                                    break;
+                                case 4:
+                                    document.getElementById('status-label_' + i).innerHTML = "Kết thúc";
+                                    break;
+                                case 5:
+                                    document.getElemegetElementByIdntsByClassName('status-label_' + i).innerHTML = "Dừng ép";
+                                    break;
+                                case 6:
+                                    document.getElementById('status-label_' + i).innerHTML = "Nhập mã lệnh";
+                                    break;
+                                case 7:
+                                    document.getElementById('status-label_' + i).innerHTML = "Nhập serial";
+                                    break;
+                                default:
+                                    break;
+                            }
+                        })
+                    },
+                });
+
+                //for (var kk = 0; kk <= 3; kk++) {
+                //    var inputStatus = document.getElementsByClassName('status-input_' + kk);
+                //    var labelStatus = document.getElementsByClassName('status-label_' + kk);
+                //    for (var i = 0; i <= inputStatus.length - 1; i++) {
+                //        console.log(inputStatus[i].value);
+                //        //if (inputStatus[i].value == 0) {
+                //        //    labelStatus[i].innerHTML = "Chờ quẹt thẻ";
+                //        //} else if (inputStatus[i].value == 2) {
+                //        //    labelStatus[i].innerHTML = "Nhập mã ngăn";
+                //        //} else if (inputStatus[i].value == 3) {
+                //        //    labelStatus[i].innerHTML = "Đang xuất";
+                //        //} else if (inputStatus[i].value == 4) {
+                //        //    labelStatus[i].innerHTML = "Kết thúc";
+                //        //} else if (inputStatus[i].value == 5) {
+                //        //    labelStatus[i].innerHTML = "Dừng ép";
+                //        //} else if (inputStatus[i].value == 6) {
+                //        //    labelStatus[i].innerHTML = "Nhập mã lệnh";
+                //        //} else if (inputStatus[i].value == 7) {
+                //        //    labelStatus[i].innerHTML = "Nhập serial";
+                //        //} else {
+                //        //    labelStatus[i].innerHTML = "";
+                //        //}
+                //        //switch (inputStatus[i].value) {
+                //        //    case 0:
+                //        //        labelStatus[i].innerHTML = "Chờ quẹt thẻ";
+                //        //        break;
+                //        //    case 1:
+                //        //        labelStatus[i].innerHTML = "Nhập mã ngăn";
+                //        //        break;
+                //        //    case 2:
+                //        //        labelStatus[i].innerHTML = "Chuẩn bị xuất";
+                //        //        break;
+                //        //    case 3:
+                //        //        labelStatus[i].innerHTML = "Đang xuất";
+                //        //        break;
+                //        //    case 4:
+                //        //        labelStatus[i].innerHTML = "Kết thúc";
+                //        //        break;
+                //        //    case 5:
+                //        //        labelStatus[i].innerHTML = "Dừng ép";
+                //        //        break;
+                //        //    case 6:
+                //        //        labelStatus[i].innerHTML = "Nhập mã lệnh";
+                //        //        break;
+                //        //    case 7:
+                //        //        labelStatus[i].innerHTML = "Nhập serial";
+                //        //        break;
+                //        //    default:
+                //        //        break;
+                //        //}
+                //    }
+                //}
+            }
+        });
+    </script>
+}

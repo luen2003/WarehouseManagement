@@ -1,0 +1,159 @@
+﻿@model PetroBM.Web.Models.ProductModel
+
+@{
+    ViewBag.Title = "Tạo mặt hàng";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.Label("Tên hàng")
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.Product.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product.ProductName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.Label("Mã hàng")
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.Product.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product.ProductCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.Label("Viết tắt")
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.Product.Abbreviations, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product.Abbreviations, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.LabelFor(Model => Model.Product.ProductType)
+            </label>
+            <div class="col-xs-10">
+                <div>
+                    <select name="Product.ProductType" class="form-control">
+                        <option value="Đơn" selected="selected">Đơn </option>
+                        <option value="Trộn">Trộn</option>
+                       
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.LabelFor(Model => Model.Product.OriginalProductCode)
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.Product.OriginalProductCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product.OriginalProductCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.LabelFor(Model => Model.Product.MixProductCode)
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.Product.MixProductCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product.MixProductCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.LabelFor(Model => Model.Product.InputWastageRate)
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.Product.InputWastageRate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product.InputWastageRate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.LabelFor(Model => Model.Product.ExportWastageRate)
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.Product.ExportWastageRate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product.ExportWastageRate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+		<div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.LabelFor(Model => Model.Product.StoreWastageRate)
+            </label>
+            <div class="col-xs-10">
+                @Html.EditorFor(model => model.Product.StoreWastageRate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product.StoreWastageRate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2">
+                @Html.LabelFor(Model => Model.Product.Color)
+            </label>
+            <div class="col-xs-10">
+                <input id="color-picker" />
+                @Html.EditorFor(model => model.Product.Color, new { htmlAttributes = new { @class = "form-control color-picker" } })
+                @Html.ValidationMessageFor(model => model.Product.Color, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Tao mới" class="btn btn-success" />
+                <input type="button" value="Hủy" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+}
+
+@section style{
+    @Styles.Render("~/Content/spectrum")
+    <style>
+        .color-picker {
+            display: inline-block;
+            width: 228px;
+        }
+    </style>
+}
+@section scripts{
+    @Scripts.Render("~/bundles/spectrum")
+    <script>
+        $(document).ready(function () {
+            $("#color-picker").spectrum({
+                showPaletteOnly: true,
+                togglePaletteOnly: true,
+                togglePaletteMoreText: 'more',
+                togglePaletteLessText: 'less',
+                color: 'blanchedalmond',
+                palette: [
+                    ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
+                    ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
+                    ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
+                    ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
+                    ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0"],
+                    ["#c00", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79"],
+                    ["#900", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47"],
+                    ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"]
+                ],
+                change: function (color) {
+                    console.log(color);
+                    $("#Product_Color").val(color.toHexString());
+                }
+            });
+        });
+    </script>
+}
