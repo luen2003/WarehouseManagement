@@ -90,6 +90,7 @@
         </div>
         <div class="row" style="padding-left:15px;padding-top:20px;">
             <button type="submit" class='btn btn-success' style=" vertical-align: text-bottom;">Tìm kiếm</button>
+            <button type="button" id="btnSync" class="btn btn-primary" style="margin-left:10px; background-color:#004085; border-color:#004085; vertical-align: text-bottom;">Đồng bộ </button>
         </div>
     </div>
     <br>
@@ -767,5 +768,10 @@
     function openCountdownTab() {
         window.open('/Home/Countdown', '_blank');
     }
+</script>
+<script>
+    $('#btnSync').click(function() {
+        alert('Đồng bộ dữ liệu được kích hoạt!');
+    });
 </script>
 }
