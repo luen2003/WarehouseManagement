@@ -22,8 +22,9 @@
             margin: 0 auto;
         }
 
+        /* ✅ Giữ nguyên góc bắt đầu từ 12h */
         svg {
-            transform: rotate(-90deg);
+            transform: rotate(90deg);
         }
 
         .circle-bg {
@@ -38,6 +39,10 @@
             stroke-width: 12;
             stroke-linecap: round;
             transition: stroke-dashoffset 1s linear;
+
+            /* ✅ Đảo chiều để vẽ theo chiều kim đồng hồ */
+            transform: scale(-1, 1);
+            transform-origin: center;
         }
 
         .time-text {
@@ -61,9 +66,9 @@
             border-radius: 5px;
         }
 
-            button:hover {
-                background: #e64a19;
-            }
+        button:hover {
+            background: #e64a19;
+        }
     </style>
 </head>
 <body>
@@ -71,8 +76,15 @@
 
     <div class="circle-timer">
         <svg width="200" height="200">
+            <!-- Vòng tròn nền -->
             <circle class="circle-bg" cx="100" cy="100" r="90" />
-            <circle class="circle-progress" cx="100" cy="100" r="90" stroke-dasharray="565.48" stroke-dashoffset="0" />
+            
+            <!-- Vòng tròn tiến trình -->
+            <circle class="circle-progress"
+                    id="progressCircle"
+                    cx="100" cy="100" r="90"
+                    stroke-dasharray="565.48"
+                    stroke-dashoffset="0" />
         </svg>
         <div class="time-text" id="time">05:00</div>
     </div>
@@ -80,24 +92,29 @@
     <button onclick="cancelCountdown()">Cancel</button>
 
     <script>
-        let totalSeconds = 5 * 60;
-        const totalDuration = totalSeconds;
+        const totalDuration = 5 * 60; // 5 phút
+        let totalSeconds = totalDuration;
+        let countdownInterval;
+
         const timeDisplay = document.getElementById("time");
-        const progressCircle = document.querySelector('.circle-progress');
+        const progressCircle = document.getElementById("progressCircle");
         const radius = 90;
         const circumference = 2 * Math.PI * radius;
 
-        progressCircle.style.strokeDasharray = circumference;
+        // ✅ Thiết lập giá trị ban đầu cho vòng tròn đầy
+        progressCircle.style.strokeDasharray = `${circumference}`;
         progressCircle.style.strokeDashoffset = 0;
 
         function updateDisplay() {
             const minutes = Math.floor(totalSeconds / 60);
             const seconds = totalSeconds % 60;
 
-            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            timeDisplay.textContent =
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-            const progress = totalSeconds / totalDuration;
-            const offset = circumference * (1 - progress);
+            // ✅ Tính offset để khuyết dần
+            const elapsed = totalDuration - totalSeconds;
+            const offset = (elapsed / totalDuration) * circumference;
             progressCircle.style.strokeDashoffset = offset;
         }
 
@@ -106,17 +123,13 @@
             closeTabOrRedirect();
         }
 
-
         function closeTabOrRedirect() {
-            // Cố gắng đóng tab (chỉ thành công nếu tab được mở bằng window.open())
-            window.close();
+            window.close(); // Chỉ hoạt động nếu mở bằng window.open()
 
-            // Nếu không đóng được, redirect về trang chủ sau 0.5s
             setTimeout(() => {
                 window.location.href = '/';
             }, 500);
         }
-
 
         function startCountdown() {
             updateDisplay();
@@ -133,7 +146,6 @@
             }, 1000);
         }
 
-        let countdownInterval;
         window.onload = startCountdown;
     </script>
 </body>
