@@ -22,7 +22,6 @@
             margin: 0 auto;
         }
 
-        /* ✅ Giữ nguyên góc bắt đầu từ 12h */
         svg {
             transform: rotate(90deg);
         }
@@ -39,8 +38,6 @@
             stroke-width: 12;
             stroke-linecap: round;
             transition: stroke-dashoffset 1s linear;
-
-            /* ✅ Đảo chiều để vẽ theo chiều kim đồng hồ */
             transform: scale(-1, 1);
             transform-origin: center;
         }
@@ -76,10 +73,8 @@
 
     <div class="circle-timer">
         <svg width="200" height="200">
-            <!-- Vòng tròn nền -->
             <circle class="circle-bg" cx="100" cy="100" r="90" />
             
-            <!-- Vòng tròn tiến trình -->
             <circle class="circle-progress"
                     id="progressCircle"
                     cx="100" cy="100" r="90"
@@ -92,7 +87,7 @@
     <button onclick="cancelCountdown()">Cancel</button>
 
     <script>
-        const totalDuration = 5 * 60; // 5 phút
+        const totalDuration = 5 * 60;
         let totalSeconds = totalDuration;
         let countdownInterval;
 
@@ -101,7 +96,6 @@
         const radius = 90;
         const circumference = 2 * Math.PI * radius;
 
-        // ✅ Thiết lập giá trị ban đầu cho vòng tròn đầy
         progressCircle.style.strokeDasharray = `${circumference}`;
         progressCircle.style.strokeDashoffset = 0;
 
@@ -112,7 +106,6 @@
             timeDisplay.textContent =
                 `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-            // ✅ Tính offset để khuyết dần
             const elapsed = totalDuration - totalSeconds;
             const offset = (elapsed / totalDuration) * circumference;
             progressCircle.style.strokeDashoffset = offset;
@@ -124,7 +117,7 @@
         }
 
         function closeTabOrRedirect() {
-            window.close(); // Chỉ hoạt động nếu mở bằng window.open()
+            window.close();
 
             setTimeout(() => {
                 window.location.href = '/';
