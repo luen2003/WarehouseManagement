@@ -155,7 +155,8 @@
                 @Html.DisplayFor(modelItem => item.DstPickup2)
             </td>
             <td class="text-center">
-                <img style='max-width: 30px' src='/Content/images/send-message.png' />
+                <img style='max-width: 30px' src='/Content/images/send-message.png' alt="Send"
+        onclick="openCountdownTab()"/>
             </td>
             <td class="text-center">
                 <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.DispatchID);"
@@ -760,6 +761,11 @@
         var s = String(this);
         while (s.length < (size || 2)) { s = "0" + s; }
         return s;
+    }
+</script>
+<script>
+    function openCountdownTab() {
+        window.open('/Home/Countdown', '_blank');
     }
 </script>
 

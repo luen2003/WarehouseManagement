@@ -30,5 +30,10 @@ namespace PetroBM.Web.Controllers
         {
             return View(configurationModel);
         }
+
+        public ActionResult Countdown()
+        {
+            return View();
+        }
     }
 }

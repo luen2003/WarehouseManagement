@@ -727,6 +727,7 @@
     <Content Include="Views\Ship\Create.cshtml" />
     <Content Include="Views\Ship\Edit.cshtml" />
     <Content Include="Views\Ship\Index.cshtml" />
+    <Content Include="Views\Home\Countdown.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\Messages.resx">

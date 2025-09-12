@@ -31,119 +31,136 @@
             <div class="row">
                 <label class="control-label col-xs-4">Số chứng từ</label>
                 <div class="form-group col-xs-8">
-                    @Html.EditorFor(model => model.CertificateNumber, new { htmlAttributes = new { @class = "form-control",
-                    @autofocus = "autofocus" } })
+                    @Html.EditorFor(model => model.CertificateNumber, new
+                    {
+                        htmlAttributes = new
+                        {
+                            @class = "form-control",
+                    @autofocus = "autofocus"
+                        }
+                    })
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <label class="control-label col-xs-4">Phương tiện</label>
-            <div class="form-group col-xs-8">
-                @Html.EditorFor(model => model.VehicleNumber, new { htmlAttributes = new { @class = "form-control", @id
-                                = "IdVehicle", @name = "ReportModel.Vehicle", @style = "width:217px" } })
+            <div class="row">
+                <label class="control-label col-xs-4">Phương tiện</label>
+                <div class="form-group col-xs-8">
+                    @Html.EditorFor(model => model.VehicleNumber, new
+                    {
+                        htmlAttributes = new
+                        {
+                            @class = "form-control",
+                            @id
+                                    = "IdVehicle",
+                            @name = "ReportModel.Vehicle",
+                            @style = "width:217px"
+                        }
+                    })
+                </div>
+
             </div>
 
-        </div>
-
-        @*<div class="row">
+            @*<div class="row">
                     <label class="control-label col-xs-4">Card Data</label>
                     <div class="form-group col-xs-8">
                         @Html.EditorFor(model => model.CardData, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>*@
-    </div>
+        </div>
 
-    <div class='col-sm-5 col-xs-6'>
+        <div class='col-sm-5 col-xs-6'>
 
-        <div class="row">
-            <label class="control-label col-xs-4">Thời gian đăng ký</label>
-            <div class="form-group col-xs-6">
-                <div class='input-group date' id='datetimepicker1'>
-                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+            <div class="row">
+                <label class="control-label col-xs-4">Thời gian đăng ký</label>
+                <div class="form-group col-xs-6">
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <label class="control-label col-xs-4">Phân xưởng</label>
-            <div class="form-group col-xs-6">
-                @Html.EditorFor(model => model.Dispatch.Department, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-
-    </div>
-
-    <div class='col-sm-3 col-xs-6'>
-        <div class="row">
-            <div class="form-group col-xs-10">
-                <div class='input-group date' id='datetimepicker2'>
-                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-
+            <div class="row">
+                <label class="control-label col-xs-4">Phân xưởng</label>
+                <div class="form-group col-xs-6">
+                    @Html.EditorFor(model => model.Dispatch.Department, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
+
         </div>
-        <div class="row">
-            &nbsp;
+
+        <div class='col-sm-3 col-xs-6'>
+            <div class="row">
+                <div class="form-group col-xs-10">
+                    <div class='input-group date' id='datetimepicker2'>
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row" style="padding-left:15px;padding-top:20px;">
+                <button type="submit" class='btn btn-success' style=" vertical-align: text-bottom;">Tìm kiếm</button>
+            </div>
         </div>
-        <div class="row" style="padding-left:15px;padding-top:20px;">
-            <button type="submit" class='btn btn-success' style=" vertical-align: text-bottom;">Tìm kiếm</button>
-        </div>
-    </div>
-    <br>
-    <table class="table" id="tabledispatch">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Dispatch.CertificateNumber)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Dispatch.TimeOrder)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Dispatch.VehicleNumber)
-                </th>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Dispatch.Department)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Dispatch.DstPickup1)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Dispatch.DstPickup2)
-                </th>
-                <th>
-
-                </th>
-                <th>
-
-                </th>
-                <th>
-
-                </th>
-            </tr>
-        </thead>
-
-        @{
-            var i = 0; var hong = "";
-            foreach (var item in Model.ListIEDispatch.Where(x => x.ProcessStatus == 0))
-            {
-                i = i + 1;
+        <br>
+        <table class="table" id="tabledispatch">
+            <thead>
                 <tr>
-                    <td class="text-center">
-                        <a href="../DispatchWater/DispatchWaterView/@item.DispatchID">@Html.DisplayFor(modelItem =>
-                                                item.CertificateNumber)</a>
-            </td>
-            <td>
-                @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VehicleNumber)
-            </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Dispatch.CertificateNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Dispatch.TimeOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Dispatch.VehicleNumber)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Dispatch.Department)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Dispatch.DstPickup1)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Dispatch.DstPickup2)
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+
+            @{
+                var i = 0; var hong = "";
+                foreach (var item in Model.ListIEDispatch.Where(x => x.ProcessStatus == 0))
+                {
+                    i = i + 1;
+                    <tr>
+                        <td class="text-center">
+                            <a href="../DispatchWater/DispatchWaterView/@item.DispatchID">
+                                @Html.DisplayFor(modelItem =>
+item.CertificateNumber)
+                        </a>
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VehicleNumber)
+                    </td>
 
 
                     <td>
@@ -156,37 +173,38 @@
                         @Html.DisplayFor(modelItem => item.DstPickup2)
                     </td>
                     <td class="text-center">
-                        <img style='max-width: 30px' src='/Content/images/send-message.png' />
+                        <img style='max-width: 30px' src='/Content/images/send-message.png' alt="Send"
+                             onclick="openCountdownTab()" />
                     </td>
                     <td class="text-center">
                         <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.DispatchID);"
-                            src='/Content/images/print.png' />
+                             src='/Content/images/print.png' />
                     </td>
                     <td class="text-center">
                         <img style='max-width: 30px' onclick="DeleteDispatch(@item.DispatchID);"
-                            src='/Content/images/Delete.png' />
+                             src='/Content/images/Delete.png' />
                     </td>
                 </tr>
 
-                }
-        }
-    </table>
-    <div class="text-center">
-        @Html.PagedListPager(Model.ListIEDispatch, page => Url.Action("DispatchDetailWater", new
-        {
-            certificateNumber = Model.CertificateNumber,
-                dstPickup1 = Model.DstPickup1,
-                dstPickup2 = Model.DstPickup2,
-                dstReceive = Model.DstReceive,
-                startDate = Model.StartDate,
-                endDate = Model.EndDate,
-                page
+            }
+            }
+        </table>
+        <div class="text-center">
+            @Html.PagedListPager(Model.ListIEDispatch, page => Url.Action("DispatchDetailWater", new
+            {
+                certificateNumber = Model.CertificateNumber,
+                    dstPickup1 = Model.DstPickup1,
+                    dstPickup2 = Model.DstPickup2,
+                    dstReceive = Model.DstReceive,
+                    startDate = Model.StartDate,
+                    endDate = Model.EndDate,
+                    page
 
-                }))
-    </div>
-    @*<button id="Submit" class='btn btn-success' style="float:right">Lưu</button>
+                    }))
+        </div>
+        @*<button id="Submit" class='btn btn-success' style="float:right">Lưu</button>
             <input type="button" value="In phiếu xuất kho" class="btn btn-primary" onclick="PrintInventoryOutput()" />*@
-</div>
+    </div>
 }
 <div id="commandInphieuxuatkho" style="visibility:hidden">
 
@@ -764,6 +782,12 @@
             var s = String(this);
             while (s.length < (size || 2)) { s = "0" + s; }
             return s;
+        }
+    </script>
+
+    <script>
+        function openCountdownTab() {
+            window.open('/Home/Countdown', '_blank');
         }
     </script>
 

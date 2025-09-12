@@ -1,0 +1,140 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Đếm ngược 5 phút</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background: #f9f9f9;
+        }
+
+        .circle-timer {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+        svg {
+            transform: rotate(-90deg);
+        }
+
+        .circle-bg {
+            fill: none;
+            stroke: #eee;
+            stroke-width: 12;
+        }
+
+        .circle-progress {
+            fill: none;
+            stroke: #FF5722;
+            stroke-width: 12;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        .time-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        button {
+            margin-top: 30px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background: #FF5722;
+            border: none;
+            color: white;
+            border-radius: 5px;
+        }
+
+            button:hover {
+                background: #e64a19;
+            }
+    </style>
+</head>
+<body>
+    <h1>Đếm ngược</h1>
+
+    <div class="circle-timer">
+        <svg width="200" height="200">
+            <circle class="circle-bg" cx="100" cy="100" r="90" />
+            <circle class="circle-progress" cx="100" cy="100" r="90" stroke-dasharray="565.48" stroke-dashoffset="0" />
+        </svg>
+        <div class="time-text" id="time">05:00</div>
+    </div>
+
+    <button onclick="cancelCountdown()">Cancel</button>
+
+    <script>
+        let totalSeconds = 5 * 60;
+        const totalDuration = totalSeconds;
+        const timeDisplay = document.getElementById("time");
+        const progressCircle = document.querySelector('.circle-progress');
+        const radius = 90;
+        const circumference = 2 * Math.PI * radius;
+
+        progressCircle.style.strokeDasharray = circumference;
+        progressCircle.style.strokeDashoffset = 0;
+
+        function updateDisplay() {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            const progress = totalSeconds / totalDuration;
+            const offset = circumference * (1 - progress);
+            progressCircle.style.strokeDashoffset = offset;
+        }
+
+        function cancelCountdown() {
+            clearInterval(countdownInterval);
+            closeTabOrRedirect();
+        }
+
+
+        function closeTabOrRedirect() {
+            // Cố gắng đóng tab (chỉ thành công nếu tab được mở bằng window.open())
+            window.close();
+
+            // Nếu không đóng được, redirect về trang chủ sau 0.5s
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 500);
+        }
+
+
+        function startCountdown() {
+            updateDisplay();
+
+            countdownInterval = setInterval(() => {
+                totalSeconds--;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(countdownInterval);
+                    closeTabOrRedirect();
+                } else {
+                    updateDisplay();
+                }
+            }, 1000);
+        }
+
+        let countdownInterval;
+        window.onload = startCountdown;
+    </script>
+</body>
+</html>
