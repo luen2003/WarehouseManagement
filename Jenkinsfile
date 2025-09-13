@@ -8,7 +8,7 @@ pipeline {
         HOSTED_SITE_FILE_PATH = "\"D:\\SOURCE_DEV_BY_CICD\\${HOSTED_SITE}\""
         PUBLISH_PROFILE = "FolderProfile"
         PUBLISH_PROFILE_BUILD_RESULT = "\\PetroBM.Web\\publish"
-        DEFAULT_REPORT_RECEIVER = "danhntb.piacom@petrolimex.com.vn"
+        DEFAULT_REPORT_RECEIVER = "dluongta@"
         BUILD_TOOL = "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\msbuild.exe\""
         PACKAGE_TOOL = "\"D:\\Tools\\nuget.exe\""
     }

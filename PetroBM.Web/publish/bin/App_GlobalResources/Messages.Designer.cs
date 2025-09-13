@@ -61,7 +61,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 125 Hoàng Quốc Việt - Cầu Giấy - Hà Nội.
         /// </summary>
         internal static string CompanyAddress {
             get {
@@ -70,7 +69,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  034255456.
         /// </summary>
         internal static string CompanyFax {
             get {
@@ -79,7 +77,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Công ty cổ phần tin học PIACOM.
         /// </summary>
         internal static string CompanyName {
             get {
@@ -88,7 +85,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0974211426.
         /// </summary>
         internal static string CompanyPhone {
             get {
@@ -97,7 +93,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 01012001201.
         /// </summary>
         internal static string CompanyTaxCode {
             get {
@@ -124,7 +119,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nguyễn Kim Thắng.
         /// </summary>
         internal static string ManagerName {
             get {
@@ -143,7 +137,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thủ trưởng.
         /// </summary>
         internal static string Position {
             get {
@@ -152,7 +145,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UBND THÀNH PHỒ HÀ NỘI.
         /// </summary>
         internal static string ProviceName {
             get {
