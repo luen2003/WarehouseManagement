@@ -24,7 +24,10 @@
                             <div class="col-md-7">
                                 @Html.EditorFor(model => model.Dispatch.CertificateNumber, new { htmlAttributes = new { @class = "form-control", @id = "CertificateNumber", @readonly = "readonly" } })
                             </div>
+
                         </div>
+
+
                         <div style="padding-top:10%;">
                             <div class="col-md-5">
                                 @Html.LabelFor(model => model.Dispatch.TimeStart, htmlAttributes: new { @class = "control-label" })
@@ -78,6 +81,18 @@
                             <div class="col-md-7">
                                 @Html.EditorFor(model => model.Dispatch.Remark, new { htmlAttributes = new { @class = "form-control", @id = "Remark", @tabindex = "4", style = "display:none;" } })
                             </div>
+                        </div>
+                        <div style="padding-top:10%;">
+                            <div class="col-md-5"> @Html.LabelFor(model => model.Dispatch.Paragraph1, htmlAttributes: new { @class = "control-label" }) </div> <div class="col-md-7"> @Html.EditorFor(model => model.Dispatch.Paragraph1, new { htmlAttributes = new { @class = "form-control", @id = "Paragraph2", @tabindex = "25" } }) </div>
+                        </div>
+
+                        <div style="padding-top:10%;">
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.Dispatch.Paragraph2, htmlAttributes: new { @class = "control-label" })
+                            </div> <div class="col-md-7"> @Html.EditorFor(model => model.Dispatch.Paragraph2, new { htmlAttributes = new { @class = "form-control", @id = "Paragraph1", @tabindex = "24" } }) </div>
+                        </div>
+                        <div style="padding-top:10%;">
+                            <div class="col-md-5"> @Html.LabelFor(model => model.Dispatch.From, htmlAttributes: new { @class = "control-label" }) </div> <div class="col-md-7"> @Html.EditorFor(model => model.Dispatch.From, new { htmlAttributes = new { @class = "form-control", @id = "From",@Value = Model.Dispatch?.To ?? "khi có lệnh" , @tabindex = "21" } }) </div>
                         </div>
 
                         <br>
@@ -138,14 +153,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="padding-top:10%;display:none;">
+                        @*<div style="padding-top:10%;display:none;">
                             <div class="col-md-5">
                                 @Html.LabelFor(model => model.Dispatch.DriverName2, htmlAttributes: new { @class = "control-label", style = "display:none;" })
                             </div>
                             <div class="col-md-7">
                                 @Html.EditorFor(model => model.Dispatch.DriverName2, new { htmlAttributes = new { @class = "form-control", @id = "DriverName2", @tabindex = "5", style = "display:none;" } })
                             </div>
-                        </div>
+                        </div>*@
                         <div style="padding-top:10%;">
                             <div class="col-md-5">
                                 @Html.LabelFor(model => model.Dispatch.Department, htmlAttributes: new { @class = "control-label" })
@@ -193,15 +208,9 @@
                         </div>
 
 
-                        <div style="padding-top:10%;">
-                            <div class="col-md-5">
-                                @Html.LabelFor(model => model.Dispatch.Paragraph1, htmlAttributes: new { @class = "control-label" })
-                            </div> <div class="col-md-7"> @Html.EditorFor(model => model.Dispatch.Paragraph1, new { htmlAttributes = new { @class = "form-control", @id = "Paragraph1", @tabindex = "24" } }) </div>
-                        </div>
+                        
 
-                        <div style="padding-top:10%;">
-                            <div class="col-md-5"> @Html.LabelFor(model => model.Dispatch.Paragraph2, htmlAttributes: new { @class = "control-label" }) </div> <div class="col-md-7"> @Html.EditorFor(model => model.Dispatch.Paragraph2, new { htmlAttributes = new { @class = "form-control", @id = "Paragraph2", @tabindex = "25" } }) </div>
-                        </div>
+                       
 
                         <div style="padding-top:10%;">
                             <div class="col-md-5"> @Html.LabelFor(model => model.Dispatch.Paragraph3, htmlAttributes: new { @class = "control-label" }) </div> <div class="col-md-7"> @Html.EditorFor(model => model.Dispatch.Paragraph3, new { htmlAttributes = new { @class = "form-control", @id = "Paragraph3", @tabindex = "26" } }) </div>
@@ -210,12 +219,14 @@
                             <div class="col-md-5"> @Html.LabelFor(model => model.Dispatch.Paragraph4, htmlAttributes: new { @class = "control-label" }) </div>
                             <div class="col-md-7"> @Html.EditorFor(model => model.Dispatch.Paragraph4, new { htmlAttributes = new { @class = "form-control", @id = "Paragraph4", @tabindex = "20" } }) </div>
                         </div>
-                        <div style="padding-top:10%;">
-                            <div class="col-md-5"> @Html.LabelFor(model => model.Dispatch.From, htmlAttributes: new { @class = "control-label" }) </div> <div class="col-md-7"> @Html.EditorFor(model => model.Dispatch.From, new { htmlAttributes = new { @class = "form-control", @id = "From", @tabindex = "21" } }) </div>
-                        </div>
+                        @*<div style="padding-top:10%;">
+                            <div class="col-md-5"> @Html.LabelFor(model => model.Dispatch.From, htmlAttributes: new { @class = "control-label" }) </div> 
+                            <div class="col-md-7">@Html.TextBoxFor(model => model.Dispatch.From, new { @class = "form-control", @id = "From", @tabindex = "21", @Value = Model.Dispatch?.From ?? "khi có lệnh" })</div>
+                        </div>*@
 
                         <div style="padding-top:10%;">
-                            <div class="col-md-5"> @Html.LabelFor(model => model.Dispatch.To, htmlAttributes: new { @class = "control-label" }) </div> <div class="col-md-7"> @Html.EditorFor(model => model.Dispatch.To, new { htmlAttributes = new { @class = "form-control", @id = "To", @tabindex = "22" } }) </div>
+                            <div class="col-md-5"> @Html.LabelFor(model => model.Dispatch.To, htmlAttributes: new { @class = "control-label" }) </div> 
+                            <div class="col-md-7"> @Html.TextBoxFor(model => model.Dispatch.To, new { @class = "form-control", @id = "To", @tabindex = "22", @Value = Model.Dispatch?.To ?? "khi thực hiện xong công việc" })</div>
                         </div>
 
                         <div id="SearchCust" style="padding-top: 10%; display: none">

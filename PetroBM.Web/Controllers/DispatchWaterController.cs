@@ -773,6 +773,8 @@ namespace PetroBM.Web.Controllers
             DispatchWaterModel.TimeOrder = ((DateTime)DispatchWaterModel.Dispatch.TimeOrder).ToString(Constants.DATE_FORMAT);
             DispatchWaterModel.ListProduct = ProductService.GetAllProduct().ToList();
             DispatchWaterModel.ListCustomer = CustomerService.GetAllCustomer().ToList();
+            DispatchWaterModel.MImage = imageService.GetImageByProcessStatus0();
+
             //commandModel.TimeOrder = DateTime.Now.ToString(Constants.DATE_FORMAT); 
             #region Khách hàng
 
