@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         <div style="padding-top:10%;display:none;">
-                            <div class="col-md-5" style = "display:none;">
+                            <div class="col-md-5" style="display:none;">
                                 <b>Nguyên tắc</b>
                             </div>
                             <div class="col-md-7">
@@ -73,15 +73,15 @@
                         </div>
                         <div style="padding-top:10%;display:none;">
                             <div class="col-md-5">
-                                @Html.LabelFor(model => model.Dispatch.Remark, htmlAttributes: new { @class = "control-label" , style = "display:none;"})
+                                @Html.LabelFor(model => model.Dispatch.Remark, htmlAttributes: new { @class = "control-label", style = "display:none;" })
                             </div>
                             <div class="col-md-7">
-                                @Html.EditorFor(model => model.Dispatch.Remark, new { htmlAttributes = new { @class = "form-control", @id = "Remark", @tabindex = "4" , style = "display:none;"} })
+                                @Html.EditorFor(model => model.Dispatch.Remark, new { htmlAttributes = new { @class = "form-control", @id = "Remark", @tabindex = "4", style = "display:none;" } })
                             </div>
                         </div>
 
                         <br>
-                        
+
 
 
                     </div>
@@ -103,11 +103,11 @@
                         </div>
                         <div style="padding-top:10%;display:none;">
                             <div class="col-md-5">
-                                @Html.LabelFor(model => model.Dispatch.TimeStop, htmlAttributes: new { @class = "control-label" , style = "display:none;"})
+                                @Html.LabelFor(model => model.Dispatch.TimeStop, htmlAttributes: new { @class = "control-label", style = "display:none;" })
                             </div>
                             <div class="col-md-7">
                                 <div class='input-group date' id='datetimepicker2' style="display:none;">
-                                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @id = "TimeStop" , style = "display:none;"} })
+                                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @id = "TimeStop", style = "display:none;" } })
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -120,7 +120,7 @@
                             </div>
                             <div class="col-md-7">
                                 <div class='input-group date' style="z-index:1; display:none;">
-                                    @Html.EditorFor(model => model.Dispatch.ProductCode, new { htmlAttributes = new { @class = "form-control", @id = "ProductCode", @tabindex = "5" , style = "display:none;"} })
+                                    @Html.EditorFor(model => model.Dispatch.ProductCode, new { htmlAttributes = new { @class = "form-control", @id = "ProductCode", @tabindex = "5", style = "display:none;" } })
                                     <span class="input-group-addon" onclick='showSearchP();'>
                                         <span class="glyphicon glyphicon-chevron-down" id="drilldownP"></span>
                                     </span>
@@ -140,7 +140,7 @@
                         </div>
                         <div style="padding-top:10%;display:none;">
                             <div class="col-md-5">
-                                @Html.LabelFor(model => model.Dispatch.DriverName2, htmlAttributes: new { @class = "control-label" , style = "display:none;"})
+                                @Html.LabelFor(model => model.Dispatch.DriverName2, htmlAttributes: new { @class = "control-label", style = "display:none;" })
                             </div>
                             <div class="col-md-7">
                                 @Html.EditorFor(model => model.Dispatch.DriverName2, new { htmlAttributes = new { @class = "form-control", @id = "DriverName2", @tabindex = "5", style = "display:none;" } })
@@ -184,8 +184,8 @@
                             </div>
                             <div class="col-md-7">
                                 @*<div class='input-group date' id='' style="z-index:1;">*@
-                                    @Html.EditorFor(model => model.Dispatch.DstReceive, new { htmlAttributes = new { @class = "form-control", @id = "DstReceive", @tabindex = "8" } })
-                                    @*<span class="input-group-addon" onclick='showSearchC();'>
+                                @Html.EditorFor(model => model.Dispatch.DstReceive, new { htmlAttributes = new { @class = "form-control", @id = "DstReceive", @tabindex = "8" } })
+                                @*<span class="input-group-addon" onclick='showSearchC();'>
                                         <span class="glyphicon glyphicon-chevron-down" id="drilldownC"></span>
                                     </span>*@
                                 @*</div>*@
@@ -239,7 +239,7 @@
     <div>
         <p>
             <button type="button" class="btn btn-success" onclick='Validation();' id="btnSave">Lưu</button>
-            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index")'">Hủy</button>
+            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("DispatchDetailWater")'">Hủy</button>
         </p>
     </div>
 }
@@ -340,26 +340,26 @@
     function Validation() {
         var stCheck = "";
 
-    var driver1 = document.getElementById("DriverName1");
-    if (driver1 && driver1.value.trim() === "") driver1.value = "NULL";
+        var driver1 = document.getElementById("DriverName1");
+        if (driver1 && driver1.value.trim() === "") driver1.value = "NULL";
 
-    var driver2 = document.getElementById("DriverName2");
-    if (driver2 && driver2.value.trim() === "") driver2.value = "NULL";
+        var driver2 = document.getElementById("DriverName2");
+        if (driver2 && driver2.value.trim() === "") driver2.value = "NULL";
 
-    var remark = document.getElementById("Remark");
-    if (remark && remark.value.trim() === "") remark.value = "NULL";
+        var remark = document.getElementById("Remark");
+        if (remark && remark.value.trim() === "") remark.value = "NULL";
 
-    var note1 = document.getElementById("Note1");
-    if (note1 && note1.value.trim() === "") note1.value = "NULL";
+        var note1 = document.getElementById("Note1");
+        if (note1 && note1.value.trim() === "") note1.value = "NULL";
 
-    var productCode = document.getElementById("ProductCode");
-    if (productCode && productCode.value.trim() === "") productCode.value = "01";
+        var productCode = document.getElementById("ProductCode");
+        if (productCode && productCode.value.trim() === "") productCode.value = "01";
 
-    var timeStop = document.getElementById("TimeStop");
-    var timeOrder = document.getElementById("TimeOrder");
-    if (true) {
-        if (timeOrder) timeStop.value = timeOrder.value;
-    }
+        var timeStop = document.getElementById("TimeStop");
+        var timeOrder = document.getElementById("TimeOrder");
+        if (true) {
+            if (timeOrder) timeStop.value = timeOrder.value;
+        }
 
 
 

@@ -1,24 +1,36 @@
-﻿using System.Web;
-using System.Web.Mvc;
-using PetroBM.Services.Services;
-using PetroBM.Domain.Entities;
-using PetroBM.Common.Util;
-using PagedList;
-using System.Linq;
-using System.Collections.Generic;
-using System;
-using System.IO;
-using System.Data;
-using PetroBM.Web.Models;
-using log4net;
-using System.Resources;
-using System.Reflection;
-using System.Globalization;
+﻿using log4net;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using PagedList;
+using PetroBM.Common.Util;
+using PetroBM.Data;
+using PetroBM.Domain.Entities;
+using PetroBM.Services.Services;
+using PetroBM.Web.Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Resources;
+using System.Web;
+using System.Web.Mvc;
 using System.Windows.Threading;
 
 namespace PetroBM.Web.Controllers
 {
+    public class DispatchHistDto
+    {
+        public int DispatchID { get; set; }
+        public DateTime? InsertDate { get; set; }
+        public string InsertUser { get; set; }
+        public DateTime? SysD { get; set; }   // Date thay đổi
+        public string SysU { get; set; }      // User thay đổi
+        public int VersionNo { get; set; }    // Phiên bản
+    }
+
+
     public class DispatchController : Controller
     {
 
@@ -67,6 +79,38 @@ namespace PetroBM.Web.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult GetHistory(int dispatchId)
+        {
+            const string sql = @"
+                    SELECT
+                        DispatchID,
+                        InsertDate,
+                        InsertUser,
+                        SysD,
+                        SysU,
+	                    VersionNo
+                    FROM dbo.MDispatch_Hist WITH (NOLOCK)
+                    WHERE DispatchID = @p0
+                    ORDER BY VersionNo ASC, SysD ASC;";
+            try
+            {
+                using (var db = new PetroBMContext())
+                {
+                    var rows = db.Database.SqlQuery<DispatchHistDto>(sql, dispatchId).ToList();
+                    return Json(new { ok = true, count = rows.Count, rows }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error($"GetHistory error for DispatchID={dispatchId}", ex);
+                Response.StatusCode = 500;
+                return Json(new { ok = false, error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         [HttpGet]
         public ActionResult RegisterDispatch()

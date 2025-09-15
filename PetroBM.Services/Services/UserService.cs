@@ -40,8 +40,12 @@ namespace PetroBM.Services.Services
 		List<MWareHousePermission> GetListWareHousePermission_ByUserName(String userName, int fromPermissionCode, int toPermissionCode);
 		int GetJobTitlesByUserName(string userName);
 
+		string GetUserIDByUserName(string userName);
 
-	}
+		string GetSerialNumberByUserName(string userName);
+
+
+    }
 
 	public class UserService : IUserService
 	{
@@ -76,7 +80,41 @@ namespace PetroBM.Services.Services
 			return 0;
 		}
 
-		public IEnumerable<MUser> GetAllUser()
+		public string GetUserIDByUserName(string userName)
+		{
+			try
+			{
+				var user = this.GetUser(userName);
+				if (user != null && user.DeleteFlg == Constants.FLAG_OFF)
+				{
+					return user.UserID;
+				}
+			}
+			catch (Exception ex)
+			{
+				log.Error(ex);
+			}
+			return string.Empty;
+        }
+
+		public string GetSerialNumberByUserName(string userName)
+		{
+			try
+			{
+				var user = this.GetUser(userName);
+				if (user != null && user.DeleteFlg == Constants.FLAG_OFF)
+				{
+					return user.SerialNumber;
+				}
+			}
+			catch (Exception ex)
+			{
+				log.Error(ex);
+			}
+			return string.Empty;
+        }
+
+        public IEnumerable<MUser> GetAllUser()
 		{
 			return userRepository.GetAll().Where(user => user.DeleteFlg == Constants.FLAG_OFF)
 				.OrderBy(user => user.InsertDate);

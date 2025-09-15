@@ -353,23 +353,27 @@
 </script>
 
 <div>
-    <a id="viewhistbtn" href="javascript:view_T_Hist()" style="float: right;">Lịch sử</a>
+    @*<a id="viewhistbtn" href="javascript:view_T_Hist(@Model.Dispatch.DispatchID)" style="float: right;">Lịch sử</a>*@
+    <a href="#"
+       onclick="return view_T_Hist(event, @Model.Dispatch.DispatchID)">
+        Xem lịch sử
+    </a>
+
     <div id="popupForm" style="display: none; position: fixed; top: 50%; left: 50%; border-radius: 10px; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; z-index: 9999; box-shadow: 0 0 10px #999;">
-        <h3>Lịch sử giao dịch</h3>
+        <h3>Lịch sử sửa đổi</h3>
         <div id="popupContent">
             <table class="hist-table">
                 <thead>
                     <tr>
-                        <th style="width: 10%; text-align: center; ">STT</th>
-                        <th style="width: 15%; text-align: center; ">Ngày tạo</th>
-                        <th style="width: 15%; text-align: center; ">User tạo</th>
-                        <th style="width: 15%; text-align: center; ">Date thay đổi</th>
-                        <th style="width: 15%; text-align: center; ">User thay đổi</th>
-                        <th style="width: 20%; text-align: center; ">Lý do</th>
+                        <th style="width: 10%; text-align: left; ">STT</th>
+                        <th style="width: 15%; text-align: left; ">Ngày tạo</th>
+                        <th style="width: 15%; text-align: left; ">Người tạo</th>
+                        <th style="width: 15%; text-align: left; ">Ngày thay đổi</th>
+                        <th style="width: 15%; text-align: left; ">Người thay đổi</th>
+                        <th style="width: 20%; text-align: left; ">Phiên bản</th>
                     </tr>
                 </thead>
-                <tbody> 
-
+                <tbody>
                 </tbody>
             </table>
         </div>
@@ -926,7 +930,7 @@
         if (document.getElementById("DstPickup2").value != "") {
             dstPickup2 = document.getElementById("DstPickup2").value;
             dstPickup2 = dstPickup2.split(" - ")[0].trim();
-        } 
+        }
 
         var department = '';
         if (document.getElementById("Department").value != "") {
@@ -955,8 +959,8 @@
         }
         else {
             alert("Vui lòng chọn điểm trả hàng");
-        }  
-         
+        }
+
         console.log(product);
         $.ajax({
             url: '/Dispatch/UpdateDispatch/',
@@ -974,12 +978,12 @@
                 "department": department,
                 "note": note,
                 "remark": remark,
-                "dstReceive": dstReceive, 
+                "dstReceive": dstReceive,
                 "user": ""
             },
             dataType: 'bool',
             success: function (result) {
-                update = result;  
+                update = result;
             }
         });
         if (update = true) {
@@ -992,7 +996,7 @@
     }
 
     function DeleteDispatch(DispatchID) {
-        var update = true; 
+        var update = true;
         $.ajax({
             url: '/Dispatch/DeleteDispatch/',
             type: 'POST',
@@ -1001,9 +1005,9 @@
             },
             dataType: 'bool',
             success: function (result) {
-                update = result; 
+                update = result;
             }
-        }); 
+        });
         if (update = true) {
             alert("Xóa thành công");
         }
@@ -1013,11 +1017,13 @@
         window.location.href = "/Dispatch/DispatchDetail";
     }
 
-    function view_T_Hist() {
-        // Hiện popup và overlay
-        document.getElementById('popupForm').style.display = 'block';
-        document.getElementById('popupOverlay').style.display = 'block'; 
-    }
+    //function view_T_Hist() {
+    //    // Hiện popup và overlay
+    //    document.getElementById('popupForm').style.display = 'block';
+    //    document.getElementById('popupOverlay').style.display = 'block';
+    //    // show popup…
+    //    loadDispatchHist(dispatchId);
+    //}
 
     function closePopup() {
         document.getElementById('popupForm').style.display = 'none';
@@ -1025,6 +1031,86 @@
     }
 </script>
 
+
+
+@*START_HISTORY*@
+<script>
+    // MỚI: không dùng biến chưa khai báo; tất cả đi qua 'resolvedId'
+    function view_T_Hist(el, id) {
+        document.getElementById('popupForm').style.display = 'block';
+        document.getElementById('popupOverlay').style.display = 'block';
+        // el: phần tử <a> được click (truyền 'this'), id: DispatchID (truyền từ Razor/JS)
+        var resolvedId = Number(
+            id ||
+            (el ? ($(el).data('dispatchId') || $(el).data('id')) : null) ||
+            ($('#DispatchID').val() || $('#txtDispatchID').val())
+        );
+
+        if (!resolvedId || isNaN(resolvedId)) {
+            console.error('view_T_Hist: thiếu DispatchID');
+            alert('Không xác định được DispatchID để xem lịch sử.');
+            return false;
+        }
+
+        // Gọi loader duy nhất bằng resolvedId
+        console.log('Load history for DispatchID =', resolvedId);
+        loadDispatchHist(resolvedId);
+        return false; // chặn điều hướng link
+    }
+</script>
+<script>
+  var HIST_URL = '@Url.Action("GetHistory","Dispatch")';
+
+    function formatVN(dt) {
+        if (!dt) return '';
+        var d = dt;
+        if (typeof dt === 'string') {
+            var m = /Date\((\d+)\)/.exec(dt);
+            d = m ? new Date(parseInt(m[1], 10)) : new Date(dt);
+        }
+        if (isNaN(d)) return '';
+        const pad = n => ('0' + n).slice(-2);
+        return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+    function esc(s) {
+        return (s || '').toString()
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function loadDispatchHist(id) {
+        var $tbody = $("#popupContent tbody");
+        $tbody.empty().append('<tr><td colspan="6" style="text-align:center">Đang tải...</td></tr>');
+
+        $.getJSON(HIST_URL, { dispatchId: Number(id) })
+            .done(function (res) {
+                $tbody.empty();
+                if (!res || !res.ok || !res.rows || res.rows.length === 0) {
+                    $tbody.append('<tr><td colspan="6" style="text-align:center">Không có dữ liệu</td></tr>');
+                    return;
+                }
+                res.rows.forEach(function (r, i) {
+                    $tbody.append(
+                        '<tr>'
+                        + '<td style="text-align:left">' + (i + 1) + '</td>'                  // STT
+                        + '<td style="text-align:left">' + esc(formatVN(r.InsertDate)) + '</td>' // Ngày tạo
+                        + '<td style="text-align:left">' + esc(r.InsertUser) + '</td>'      // User tạo
+                        + '<td style="text-align:left">' + esc(formatVN(r.SysD)) + '</td>'  // Date thay đổi
+                        + '<td style="text-align:left">' + esc(r.SysU) + '</td>'            // User thay đổi
+                        + '<td style="text-align:left">' + esc(r.VersionNo) + '</td>'       // Phiên bản
+                        + '</tr>'
+                    );
+                });
+            })
+            .fail(function (xhr) {
+                var msg = (xhr && xhr.responseText) ? xhr.responseText : 'Không rõ';
+                $tbody.empty().append('<tr><td colspan="6" style="text-align:center;color:#c00">AJAX lỗi: ' + esc(msg) + '</td></tr>');
+            });
+    }
+
+</script>
+
+@*END_HISTORY*@
 
 
 

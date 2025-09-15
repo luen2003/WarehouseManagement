@@ -1,5 +1,5 @@
 ﻿/*
- * Authori: Dinh Luong Ta :
+ * Authori: Nguyễn Kim thắng :
  * CV tồn đọng : Xử lí phân trang chưa hợp lí 
  * 1. Khi tìm kiếm xong có nhiều trang==> chọn trang ==> Trả kết quả chưa đúng
  * 

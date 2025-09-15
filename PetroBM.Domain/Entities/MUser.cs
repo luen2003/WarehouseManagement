@@ -38,6 +38,14 @@
         
         public int JobTitles { get; set; }
 
+        [StringLength(50, ErrorMessage = "Tối đa 50 kí tự")]
+        [Display(Name = "UserID")]
+        public string UserID { get; set; }
+
+        [StringLength(50, ErrorMessage = "Tối đa 50 kí tự")]
+        [Display(Name = "Serial Number")]
+        public string SerialNumber { get; set; }
+
         //[Display(Name = "Nhóm người dùng")]
         //public virtual MUserGrp MUserGrp { get; set; }
 

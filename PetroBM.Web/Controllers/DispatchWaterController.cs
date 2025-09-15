@@ -1,24 +1,34 @@
-﻿using System.Web;
-using System.Web.Mvc;
-using PetroBM.Services.Services;
-using PetroBM.Domain.Entities;
-using PetroBM.Common.Util;
-using PagedList;
-using System.Linq;
-using System.Collections.Generic;
-using System;
-using System.IO;
-using System.Data;
-using PetroBM.Web.Models;
-using log4net;
-using System.Resources;
-using System.Reflection;
-using System.Globalization;
+﻿using log4net;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using PagedList;
+using PetroBM.Common.Util;
+using PetroBM.Data;
+using PetroBM.Domain.Entities;
+using PetroBM.Services.Services;
+using PetroBM.Web.Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Resources;
+using System.Web;
+using System.Web.Mvc;
 using System.Windows.Threading;
 
 namespace PetroBM.Web.Controllers
 {
+    public class DispatchWaterHistDto
+    {
+        public int DispatchID { get; set; }
+        public DateTime? InsertDate { get; set; }
+        public string InsertUser { get; set; }
+        public DateTime? SysD { get; set; }   // Date thay đổi
+        public string SysU { get; set; }      // User thay đổi
+        public int VersionNo { get; set; }    // Phiên bản
+    }
 
     public class DispatchWaterController : Controller
     {
@@ -44,7 +54,7 @@ namespace PetroBM.Web.Controllers
         public DispatchWaterModel DispatchWaterModel;
         ILog log = log4net.LogManager.GetLogger(typeof(DispatchController));
 
-        public DispatchWaterController(IImageService imageService,  IShipService shipService, IDispatchWaterService DispatchWaterService, DispatchWaterModel DispatchWaterModel, IDispatchService dispatchService,
+        public DispatchWaterController(IImageService imageService, IShipService shipService, IDispatchWaterService DispatchWaterService, DispatchWaterModel DispatchWaterModel, IDispatchService dispatchService,
             IConfigurationService ConfigurationService, IUserService UserService, IProductService ProductService,
              ISealService SealService, IDepartmentService departmentService,
         IWareHouseService WareHouseService, ICustomerService CustomerService, IDriverService DriverService,
@@ -78,6 +88,38 @@ namespace PetroBM.Web.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult GetHistory(int dispatchId)
+        {
+            const string sql = @"
+                    SELECT
+                        DispatchID,
+                        InsertDate,
+                        InsertUser,
+                        SysD,
+                        SysU,
+	                    VersionNo
+                    FROM dbo.MDispatchWater_Hist WITH (NOLOCK)
+                    WHERE DispatchID = @p0
+                    ORDER BY VersionNo ASC, SysD ASC;";
+            try
+            {
+                using (var db = new PetroBMContext())
+                {
+                    var rows = db.Database.SqlQuery<DispatchWaterHistDto>(sql, dispatchId).ToList();
+                    return Json(new { ok = true, count = rows.Count, rows }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error($"GetHistory error for DispatchID={dispatchId}", ex);
+                Response.StatusCode = 500;
+                return Json(new { ok = false, error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpGet]
         public ActionResult RegisterDispatchWater()
         {
@@ -187,79 +229,79 @@ namespace PetroBM.Web.Controllers
 
 
         [HttpPost]
-public ActionResult RegisterDispatchWater(DispatchWaterModel DispatchWaterModel, IEnumerable<CProductModel> mProduct, IEnumerable<MCommandDetail> commandDetails)
-{
-    string Mess = "";
-    log.Info("Start controller command RegisterCommand");
+        public ActionResult RegisterDispatchWater(DispatchWaterModel DispatchWaterModel, IEnumerable<CProductModel> mProduct, IEnumerable<MCommandDetail> commandDetails)
+        {
+            string Mess = "";
+            log.Info("Start controller command RegisterCommand");
 
-    // Kiểm tra null để tránh lỗi
-    if (DispatchWaterModel == null || DispatchWaterModel.Dispatch == null)
-    {
-        log.Error("DispatchWaterModel hoặc DispatchWaterModel.Dispatch đang null.");
-        TempData["AlertMessage"] = "Dữ liệu không hợp lệ!";
-        return RedirectToAction("DispatchWaterView", "DispatchWater");
-    }
+            // Kiểm tra null để tránh lỗi
+            if (DispatchWaterModel == null || DispatchWaterModel.Dispatch == null)
+            {
+                log.Error("DispatchWaterModel hoặc DispatchWaterModel.Dispatch đang null.");
+                TempData["AlertMessage"] = "Dữ liệu không hợp lệ!";
+                return RedirectToAction("DispatchWaterView", "DispatchWater");
+            }
 
-    var oItem = new MDispatchWater();
+            var oItem = new MDispatchWater();
 
-    oItem.TimeOrder = DateTime.ParseExact(DispatchWaterModel.TimeOrder.ToString(), Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
-    oItem.CertificateTime = DateTime.ParseExact(DispatchWaterModel.TimeOrder.ToString(), Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
-    oItem.CertificateNumber = int.Parse(DispatchWaterModel.Dispatch.CertificateNumber.ToString());
-    oItem.VehicleNumber = DispatchWaterModel.Dispatch.VehicleNumber.ToString();
+            oItem.TimeOrder = DateTime.ParseExact(DispatchWaterModel.TimeOrder.ToString(), Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
+            oItem.CertificateTime = DateTime.ParseExact(DispatchWaterModel.TimeOrder.ToString(), Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
+            oItem.CertificateNumber = int.Parse(DispatchWaterModel.Dispatch.CertificateNumber.ToString());
+            oItem.VehicleNumber = DispatchWaterModel.Dispatch.VehicleNumber.ToString();
 
-    oItem.InsertUser = HttpContext.User.Identity.Name;
+            oItem.InsertUser = HttpContext.User.Identity.Name;
 
-    if (!string.IsNullOrEmpty(DispatchWaterModel.StartDate))
-        oItem.TimeStart = DateTime.ParseExact(DispatchWaterModel.StartDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
-    if (!string.IsNullOrEmpty(DispatchWaterModel.EndDate))
-        oItem.TimeStop = DateTime.ParseExact(DispatchWaterModel.EndDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(DispatchWaterModel.StartDate))
+                oItem.TimeStart = DateTime.ParseExact(DispatchWaterModel.StartDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(DispatchWaterModel.EndDate))
+                oItem.TimeStop = DateTime.ParseExact(DispatchWaterModel.EndDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
 
-    oItem.DriverName1 = DispatchWaterModel.Dispatch.DriverName1?.Split(new[] { " - " }, StringSplitOptions.None)[0] ?? "";
-    oItem.DriverName2 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.DriverName2) ? DispatchWaterModel.Dispatch.DriverName2.Split(new[] { " - " }, StringSplitOptions.None)[0] : "";
-    oItem.ProductCode = DispatchWaterModel.Dispatch.ProductCode?.Split(new[] { " - " }, StringSplitOptions.None)[0] ?? "";
-    oItem.Department = DispatchWaterModel.Dispatch.Department?.Split(new[] { " - " }, StringSplitOptions.None)[0] ?? "";
+            oItem.DriverName1 = DispatchWaterModel.Dispatch.DriverName1?.Split(new[] { " - " }, StringSplitOptions.None)[0] ?? "";
+            oItem.DriverName2 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.DriverName2) ? DispatchWaterModel.Dispatch.DriverName2.Split(new[] { " - " }, StringSplitOptions.None)[0] : "";
+            oItem.ProductCode = DispatchWaterModel.Dispatch.ProductCode?.Split(new[] { " - " }, StringSplitOptions.None)[0] ?? "";
+            oItem.Department = DispatchWaterModel.Dispatch.Department?.Split(new[] { " - " }, StringSplitOptions.None)[0] ?? "";
 
-    oItem.DstPickup1 = DispatchWaterModel.Dispatch.DstPickup1 ?? "";
-    oItem.DstPickup2 = DispatchWaterModel.Dispatch.DstPickup2 ?? "";
-    oItem.DstReceive = DispatchWaterModel.Dispatch.DstReceive ?? "";
-oItem.From = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.From) 
-    ? DispatchWaterModel.Dispatch.From
-    : "";
+            oItem.DstPickup1 = DispatchWaterModel.Dispatch.DstPickup1 ?? "";
+            oItem.DstPickup2 = DispatchWaterModel.Dispatch.DstPickup2 ?? "";
+            oItem.DstReceive = DispatchWaterModel.Dispatch.DstReceive ?? "";
+            oItem.From = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.From)
+                ? DispatchWaterModel.Dispatch.From
+                : "";
 
-oItem.To = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.To)
-    ? DispatchWaterModel.Dispatch.To
-    : "";
+            oItem.To = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.To)
+                ? DispatchWaterModel.Dispatch.To
+                : "";
 
-oItem.Paragraph1 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph1)
-    ? DispatchWaterModel.Dispatch.Paragraph1
-    : "";
+            oItem.Paragraph1 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph1)
+                ? DispatchWaterModel.Dispatch.Paragraph1
+                : "";
 
-oItem.Paragraph2 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph2)
-    ? DispatchWaterModel.Dispatch.Paragraph2
-    : "";
+            oItem.Paragraph2 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph2)
+                ? DispatchWaterModel.Dispatch.Paragraph2
+                : "";
 
-oItem.Paragraph3 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph3)
-    ? DispatchWaterModel.Dispatch.Paragraph3
-    : "";
+            oItem.Paragraph3 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph3)
+                ? DispatchWaterModel.Dispatch.Paragraph3
+                : "";
 
-oItem.Paragraph4 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph4)
-    ? DispatchWaterModel.Dispatch.Paragraph4 
-    : "";
+            oItem.Paragraph4 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph4)
+                ? DispatchWaterModel.Dispatch.Paragraph4
+                : "";
 
 
 
-    oItem.Note1 = DispatchWaterModel.Dispatch.Note1 ?? "";
-    oItem.Remark = DispatchWaterModel.Dispatch.Remark ?? "";
+            oItem.Note1 = DispatchWaterModel.Dispatch.Note1 ?? "";
+            oItem.Remark = DispatchWaterModel.Dispatch.Remark ?? "";
 
-    DispatchWaterService.CreateDispatch(oItem);
+            DispatchWaterService.CreateDispatch(oItem);
 
-    var dispatchid = DispatchWaterService.GetNewId();
+            var dispatchid = DispatchWaterService.GetNewId();
 
-    log.Info("Finish controller command RegisterCommand");
-    TempData["AlertMessage"] = Mess != "" ? Mess : "Thành công";
+            log.Info("Finish controller command RegisterCommand");
+            TempData["AlertMessage"] = Mess != "" ? Mess : "Thành công";
 
-    return RedirectToAction("DispatchWaterView", "DispatchWater", new { id = dispatchid });
-}
+            return RedirectToAction("DispatchWaterView", "DispatchWater", new { id = dispatchid });
+        }
 
 
         public ActionResult DispatchDetailWater(DispatchWaterModel DispatchWaterModel, int? page)
@@ -278,7 +320,7 @@ oItem.Paragraph4 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph4)
                     ? DateTime.ParseExact(DispatchWaterModel.EndDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture)
                     : (DateTime?)null;
 
-                var startTime = DispatchWaterModel.TimeOrder; 
+                var startTime = DispatchWaterModel.TimeOrder;
                 var endTime = DispatchWaterModel.Dispatch.TimeOrder.ToString(Constants.DATE_FORMAT);
 
                 DispatchWaterModel.ListIEDispatch = DispatchWaterService.GetList_Dispatch(
@@ -389,7 +431,7 @@ oItem.Paragraph4 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph4)
                     ? DateTime.ParseExact(DispatchWaterModel.EndDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture)
                     : (DateTime?)null;
 
-                var startTime = DispatchWaterModel.TimeOrder; 
+                var startTime = DispatchWaterModel.TimeOrder;
                 var endTime = DispatchWaterModel.Dispatch.TimeOrder.ToString(Constants.DATE_FORMAT);
 
                 DispatchWaterModel.ListIEDispatch = DispatchWaterService.GetList_Dispatch(
@@ -500,7 +542,7 @@ oItem.Paragraph4 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph4)
                     ? DateTime.ParseExact(DispatchWaterModel.EndDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture)
                     : (DateTime?)null;
 
-                var startTime = DispatchWaterModel.TimeOrder; 
+                var startTime = DispatchWaterModel.TimeOrder;
                 var endTime = DispatchWaterModel.Dispatch.TimeOrder.ToString(Constants.DATE_FORMAT);
 
                 DispatchWaterModel.ListIEDispatch = DispatchWaterService.GetList_Dispatch(
@@ -611,7 +653,7 @@ oItem.Paragraph4 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph4)
                     ? DateTime.ParseExact(DispatchWaterModel.EndDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture)
                     : (DateTime?)null;
 
-                var startTime = DispatchWaterModel.TimeOrder; 
+                var startTime = DispatchWaterModel.TimeOrder;
                 var endTime = DispatchWaterModel.Dispatch.TimeOrder.ToString(Constants.DATE_FORMAT);
 
                 DispatchWaterModel.ListIEDispatch = DispatchWaterService.GetList_Dispatch(

@@ -14,7 +14,8 @@ namespace PetroBM.Web.Models
         public IEnumerable<MUserGrp> ListUserGrp { get; set; }
         public List<int> ListUserGrpId { get; set; }
         public int? UserGrpId { get; set; }
-
         public int JobTitles { get; set; }
+        public string UserID { get; set; }
+        public string SerialNumber { get; set; }
     }
 }
