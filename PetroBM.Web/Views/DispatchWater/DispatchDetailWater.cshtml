@@ -792,8 +792,10 @@ item.CertificateNumber)
         }
     </script>
 <script>
-    $('#btnSync').click(function() {
-        alert('Đồng bộ dữ liệu được kích hoạt!');
+    $(document).ready(function () {
+        $("#btnSync").click(function () {
+            location.reload();
+        });
     });
 </script>
 }
