@@ -401,15 +401,9 @@
 
         stCheck = document.getElementById("Department").value;
         if (stCheck == "") {
-            alert("Phòng ban : đang bị trống, bạn hãy nhập bổ sung");
+            alert("Phân xưởng : đang bị trống, bạn hãy nhập bổ sung");
             return false;
         }
-        var department = document.getElementById("Department");
-        if (!department || department.value.trim() === "") {
-            alert("Phòng ban : đang bị trống, bạn hãy nhập bổ sung");
-            return false;
-        }
-
 
         $("#btnSave").prop("disabled", true);
         document.getElementById("frmRegisterDispatch").submit();

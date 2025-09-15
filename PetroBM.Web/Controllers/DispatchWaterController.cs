@@ -104,8 +104,8 @@ namespace PetroBM.Web.Controllers
                 foreach (var it in lst)
                 {
                     var datum = new Datum();
-                    datum.name = it.LocationCode + " - " + it.LocationName;
-                    datum.type = it.LocationCode.ToString();
+                    datum.name = it.LocationCode.Trim() + " - " + it.LocationName.Trim();
+                    datum.type = it.LocationCode.ToString().Trim();
                     lstWH.Add(datum);
                 }
                 DispatchWaterModel.LstWareHouse = lstWH;
@@ -219,9 +219,9 @@ public ActionResult RegisterDispatchWater(DispatchWaterModel DispatchWaterModel,
     oItem.ProductCode = DispatchWaterModel.Dispatch.ProductCode?.Split(new[] { " - " }, StringSplitOptions.None)[0] ?? "";
     oItem.Department = DispatchWaterModel.Dispatch.Department?.Split(new[] { " - " }, StringSplitOptions.None)[0] ?? "";
 
-    oItem.DstPickup1 = DispatchWaterModel.Dispatch.DstPickup1?.Split(new[] { " - " }, StringSplitOptions.None)[0] ?? "";
-    oItem.DstPickup2 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.DstPickup2) ? DispatchWaterModel.Dispatch.DstPickup2.Split(new[] { " - " }, StringSplitOptions.None)[0] : "";
-    oItem.DstReceive = DispatchWaterModel.Dispatch.DstReceive?.Split(new[] { " - " }, StringSplitOptions.None)[0] ?? "";
+    oItem.DstPickup1 = DispatchWaterModel.Dispatch.DstPickup1 ?? "";
+    oItem.DstPickup2 = DispatchWaterModel.Dispatch.DstPickup2 ?? "";
+    oItem.DstReceive = DispatchWaterModel.Dispatch.DstReceive ?? "";
 oItem.From = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.From) 
     ? DispatchWaterModel.Dispatch.From
     : "";
@@ -775,8 +775,8 @@ oItem.Paragraph4 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph4)
             foreach (var it in lst3)
             {
                 var datum = new Datum();
-                datum.name = it.LocationCode + " - " + it.LocationName;
-                datum.type = it.LocationCode.ToString();
+                datum.name = it.LocationCode.Trim() + " - " + it.LocationName.Trim();
+                datum.type = it.LocationCode.ToString().Trim();
                 lstKho.Add(datum);
             }
             DispatchWaterModel.LstWareHouse = lstKho;
@@ -843,9 +843,6 @@ oItem.Paragraph4 = !string.IsNullOrEmpty(DispatchWaterModel.Dispatch.Paragraph4)
             rs = DispatchWaterService.UpdateDispatch(dispatchId, timeStart, timeStop, vehicle, product, driverName1, driverName2, dstPickup1, dstPickup2, department, note, remark, dstReceive, From, To, Paragraph1, Paragraph2, Paragraph3, Paragraph4, HttpContext.User.Identity.Name);
             return rs;
         }
-
-
-
 
     }
 }
