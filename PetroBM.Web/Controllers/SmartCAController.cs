@@ -1,68 +1,137 @@
-﻿using Newtonsoft.Json;
-using PetroBM.Common.Util;
-using PetroBM.Domain.VNPT.SmartCA;
+﻿using PetroBM.Common.Util;
+using PetroBM.Services.Services;
 using PetroBM.Services.SmartCA;
-using RestSharp;
 using System;
-using System.IO;
 using System.Runtime.ConstrainedExecution;
-using System.Threading;
 using System.Web.Mvc;
 using VnptHashSignatures.Common;
 using VnptHashSignatures.Interface;
-using VnptHashSignatures.Pdf;
-using VnptHashSignatures.Xml;
 
 namespace PetroBM.Web.Controllers
 {
     public class SmartCAController : Controller
     {
-        private readonly SmartCAService _smartCAService;
+        private readonly ISmartCAService smartCAService;
+        private readonly IUserService userService;
 
-        public SmartCAController()
+        public SmartCAController(IUserService userService)
         {
-            // TODO: đưa 3 tham số này vào web.config/appsettings để dễ config
+            this.userService = userService;
+        }
+
+        // Route: /SmartCA/Test
+        public ActionResult Test()
+        {
             var clientId = Constants.CLIENT_ID;
             var clientSecret = Constants.CLIENT_SECRET;
-            var userId = "162952530";
 
-            _smartCAService = new SmartCAService(clientId, clientSecret, userId);
-        }
+            // Lấy username tại đây, khi HttpContext đã tồn tại
+            var userName = HttpContext.User.Identity.Name;
 
-        /// <summary>
-        /// Test: gọi API lấy thông tin chứng thư
-        /// </summary>
-        [HttpPost]
-        public ActionResult GetCertificate()
-        {
-            var apiUrl = "https://gwsca.vnpt.vn/sca/sp769/v1/credentials/get_certificate";
-            var cert = _smartCAService.GetCertificate(apiUrl, null);
+            var userId = userService.GetUserIDByUserName(userName);
+            var serialNumber = userService.GetSerialNumberByUserName(userName);
 
-            return Json(cert, JsonRequestBehavior.AllowGet);
-        }
+            var smartCAService = new SmartCAService(clientId, clientSecret, userId, serialNumber);
 
-        /// <summary>
-        /// Test: ký 1 file PDF mẫu
-        /// </summary>
-        [HttpPost]
-        public ActionResult Sign()
-        {
-            var pdfInput = Server.MapPath("~/App_Data/test.pdf");
-            if (!System.IO.File.Exists(pdfInput))
+            // Lấy transactionId từ Session, nếu chưa có thì tạo mới
+            var transactionId = Session["TransactionId"] as string;
+            if (string.IsNullOrEmpty(transactionId))
             {
-                return Content("Không tìm thấy file test.pdf trong App_Data.");
+                transactionId = TransactionIdUtil.Generate();
+                Session["TransactionId"] = transactionId;
             }
 
-            // 1. Lấy chứng thư số
-            var cert = _smartCAService.GetCertificate(
-                "https://gwsca.vnpt.vn/sca/sp769/v1/credentials/get_certificate", null);
-            if (cert == null)
-                return Content("Không tìm thấy chứng thư số.");
+            var certData = smartCAService.GetCertificateData(transactionId);
 
-            // 2. Hash file PDF
-            var unsignData = System.IO.File.ReadAllBytes(pdfInput);
+            return Json(new
+            {
+                transactionId,
+                certData,
+                userId,
+                serialNumber
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        // Route: /SmartCA/CheckCertificate
+        public ActionResult CheckCertificate()
+        {
+            // Lấy username hiện tại
+            var userName = HttpContext.User.Identity.Name;
+
+            // Lấy thông tin user
+            var userId = userService.GetUserIDByUserName(userName);
+            var serialNumber = userService.GetSerialNumberByUserName(userName);
+
+            // Tạo SmartCAService cho user này
+            var clientId = Constants.CLIENT_ID;
+            var clientSecret = Constants.CLIENT_SECRET;
+            var smartCAService = new SmartCAService(clientId, clientSecret, userId, serialNumber);
+
+            // Tạo transactionId và lưu vào Session
+            var transactionId = TransactionIdUtil.Generate();
+            Session["TransactionId"] = transactionId;
+
+            // Gọi đến Service để lấy certData
+            var certData = smartCAService.GetCertificateData(transactionId);
+
+            // Trả về JSON
+            return Json(new
+            {
+                userId,
+                serialNumber,
+                transactionId,
+                certData
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        // Route: /SmartCA/Sign
+        public ActionResult Sign()
+        {
+            // Lấy hoặc tạo transactionId
+            var transactionId = Session["TransactionId"] as string;
+            if (string.IsNullOrEmpty(transactionId))
+            {
+                transactionId = TransactionIdUtil.Generate();
+                Session["TransactionId"] = transactionId;
+            }
+
+            // Lấy username hiện tại
+            var userName = HttpContext.User.Identity.Name;
+
+            // Lấy userId và serialNumber
+            var userId = userService.GetUserIDByUserName(userName);
+            var serialNumber = userService.GetSerialNumberByUserName(userName);
+
+            // Tạo SmartCAService
+            var clientId = Constants.CLIENT_ID;
+            var clientSecret = Constants.CLIENT_SECRET;
+            var smartCAService = new SmartCAService(clientId, clientSecret, userId, serialNumber);
+
+            // Lấy certData (giống như gọi Check())
+            var certData = smartCAService.GetCertificateData(transactionId);
+            if (string.IsNullOrEmpty(certData))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Không lấy được certData từ VNPT."
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            var pdf = Server.MapPath("~/App_Data/dispatch.pdf");
+            if(!System.IO.File.Exists(pdf))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "File PDF để ký không tồn tại."
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            // Tính hash của file PDF
+            var unsignData = System.IO.File.ReadAllBytes(pdf);
             var signer = HashSignerFactory.GenerateSigner(
-                unsignData, cert.cert_data, null, HashSignerFactory.PDF);
+                unsignData, certData, null, HashSignerFactory.PDF);
             signer.SetHashAlgorithm(MessageDigestAlgorithm.SHA256);
 
             var hashValue = signer.GetSecondHashAsBase64();
@@ -71,28 +140,85 @@ namespace PetroBM.Web.Controllers
                 .Replace("-", "")
                 .ToLower();
 
-            // 3. Tạo transaction ký
-            var signData = _smartCAService.CreateSignTransaction(
-                "https://gwsca.vnpt.vn/sca/sp769/v1/signatures/sign",
-                dataToSign,
-                cert.serial_number);
+            // Gọi CreateSignTransaction để ký
+            var signResult = smartCAService.CreateSignTransaction(transactionId, dataToSign);
+            if (signResult == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Ký số thất bại."
+                }, JsonRequestBehavior.AllowGet);
+            }
 
-            return Json(signData, JsonRequestBehavior.AllowGet);
+            // Trả kết quả
+            return Json(new
+            {
+                success = true,
+                transactionId = transactionId,
+                tranCode = signResult.tran_code
+            }, JsonRequestBehavior.AllowGet);
         }
 
-        /// <summary>
-        /// Kiểm tra trạng thái ký từ transactionId
-        /// </summary>
-        [HttpPost]
-        public ActionResult CheckStatus(string transactionId)
+        // Route: /SmartCA/CheckStatus
+        public ActionResult CheckStatus()
         {
-            if (string.IsNullOrEmpty(transactionId))
-                return Content("Thiếu transactionId");
+            // Lấy hoặc tạo transactionId
+            var transactionId = Session["TransactionId"] as string;
+            //if (string.IsNullOrEmpty(transactionId))
+            //{
+            //    transactionId = TransactionIdUtil.Generate();
+            //    Session["TransactionId"] = transactionId;
+            //}
 
-            var status = _smartCAService.GetSignStatus(
-                $"https://gwsca.vnpt.vn/sca/sp769/v1/signatures/sign/{transactionId}/status");
+            // Lấy username hiện tại
+            var userName = HttpContext.User.Identity.Name;
 
-            return Json(status, JsonRequestBehavior.AllowGet);
+            // Lấy userId và serialNumber
+            var userId = userService.GetUserIDByUserName(userName);
+            var serialNumber = userService.GetSerialNumberByUserName(userName);
+
+            // Tạo SmartCAService
+            var clientId = Constants.CLIENT_ID;
+            var clientSecret = Constants.CLIENT_SECRET;
+            var smartCAService = new SmartCAService(clientId, clientSecret, userId, serialNumber);
+
+            // Gọi GetSignStatus để kiểm tra trạng thái ký
+            var statusResult = smartCAService.GetSignStatus(transactionId);
+            if (statusResult == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Không lấy được trạng thái ký số."
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            // Nếu trạng thái ký đang chờ, có thể thêm logic xử lý ở đây
+            if (statusResult.message == "PENDING")
+            {
+                
+            }
+
+            // Nếu trạng thái ký bị từ chối, có thể thêm logic xử lý ở đây
+            if (statusResult.message == "REJECTED")
+            {
+                // Xử lý khi ký bị từ chối
+            }
+
+            // Nếu trạng thái ký thành công, xóa transactionId trong Session
+            if (statusResult.message == "SUCCESS")
+            {
+                Session["TransactionId"] = null;
+            }
+
+            // Trả kết quả
+            return Json(new
+            {
+                success = true,
+                //transactionId = transactionId,
+                statusResult
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

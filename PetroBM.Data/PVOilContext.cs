@@ -51,7 +51,7 @@
         public virtual DbSet<MWareHouse> MWareHouse { get; set; }
         public virtual DbSet<MShip> MShip { get; set; }
         public virtual DbSet<MImage> MImage { get; set; }
-
+        public virtual DbSet<MDispatchWaterHist> MDispatchWaterHist { get; set; }
         public virtual DbSet<MInvoice> MInvoice { get; set; }
         public virtual DbSet<MInvoiceDetail> MInvoiceDetail { get; set; }
         public virtual DbSet<MLiveDataArm> MLiveDataArm { get; set; }

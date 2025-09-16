@@ -77,67 +77,77 @@
                                                 <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode)Dispatch">
                                                     <li>
                                                         <a href="/Dispatch/RegisterDispatch">
-                                                            
+
                                                             Tạo lệnh điều vận
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="/Dispatch/DispatchDetail">
-                                                            
+
                                                             Danh sách Lệnh điều vận
                                                         </a>
                                                     </li>
-													<li>
+                                                    <li>
                                                         <a href="/DispatchWater/RegisterDispatchWater">
-                                                            
+
                                                             Tạo lệnh điều vận đường thủy
                                                         </a>
                                                     </li>
-													@if (Model.UserRole == 0) {
-													<li>
-                                                        <a href="/DispatchWater/DispatchDetailWater">
-                                                            
-                                                            Danh sách Lệnh điều vận đường thủy
+                                                    <li>
+                                                        <a href="/Image/ImageList">
+
+                                                            Thư mục ảnh
                                                         </a>
                                                     </li>
-													}
-													@if (Model.UserRole == 1) {
-													<li>
-													                                                
-													                                                    
-                                                        <a href="/DispatchWater/DispatchDetailWater_1">
-                                                            
-                                                            Danh sách Lệnh điều vận đường thủy cho lãnh đạo phòng
-                                                        </a>
-                                                    </li>
-													}
-													@if (Model.UserRole == 2) {
+                                                    @if (Model.UserRole == 0)
+                                                    {
+                                                        <li>
+                                                            <a href="/DispatchWater/DispatchDetailWater">
 
-													<li>
+                                                                Danh sách Lệnh điều vận đường thủy
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (Model.UserRole == 1)
+                                                    {
+                                                        <li>
 
 
-													                                                    
+                                                            <a href="/DispatchWater/DispatchDetailWater_1">
+
+                                                                Danh sách Lệnh điều vận đường thủy cho lãnh đạo phòng
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (Model.UserRole == 2)
+                                                    {
+
+                                                        <li>
 
 
-                                                        <a href="/DispatchWater/DispatchDetailWater_2">
-                                                            
-                                                            Danh sách Lệnh điều vận đường thủy cho quản đốc phân xưởng
-                                                        </a>
-                                                    </li>
-													}
-													@if (Model.UserRole == 3) {
-													<li>
-													                                                    
 
-													                                                    
 
-                                                        <a href="/DispatchWater/DispatchDetailWater_3">
-                                                            
-                                                            Danh sách Lệnh điều vận đường thủy cho văn thư
-                                                        </a>
-                                                    </li>
-													}
-											
+
+                                                            <a href="/DispatchWater/DispatchDetailWater_2">
+
+                                                                Danh sách Lệnh điều vận đường thủy cho quản đốc phân xưởng
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (Model.UserRole == 3)
+                                                    {
+                                                        <li>
+
+
+
+
+                                                            <a href="/DispatchWater/DispatchDetailWater_3">
+
+                                                                Danh sách Lệnh điều vận đường thủy cho văn thư
+                                                            </a>
+                                                        </li>
+                                                    }
+
                                                 </ul>
                                             </li>
                                         }

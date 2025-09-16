@@ -17,18 +17,34 @@ using System.Resources;
 using System.Web;
 using System.Web.Mvc;
 using System.Windows.Threading;
+using System.Data.SqlClient;
 
 namespace PetroBM.Web.Controllers
 {
     public class DispatchHistDto
     {
         public int DispatchID { get; set; }
-        public DateTime? InsertDate { get; set; }
+        public int? CertificateNumber { get; set; }
+        public DateTime? TimeOrder { get; set; }
+        public DateTime? TimeStart { get; set; }
+        public DateTime? TimeStop { get; set; }
+        public string VehicleNumber { get; set; }
+        public string DriverName1 { get; set; }
+        public string DriverName2 { get; set; }
+        public string ProductCode { get; set; }
+        public string Department { get; set; }
+        public string DstPickup1 { get; set; }
+        public string DstPickup2 { get; set; }
+        public string DstReceive { get; set; }
+        public string Note1 { get; set; }
+        public string Remark { get; set; }
+        public DateTime InsertDate { get; set; }
         public string InsertUser { get; set; }
-        public DateTime? SysD { get; set; }   // Date thay đổi
-        public string SysU { get; set; }      // User thay đổi
-        public int VersionNo { get; set; }    // Phiên bản
+        public int VersionNo { get; set; }
+        public string SysU { get; set; }
+        public DateTime? SysD { get; set; }
     }
+
 
 
     public class DispatchController : Controller
@@ -79,6 +95,53 @@ namespace PetroBM.Web.Controllers
         {
             return View();
         }
+
+        
+        [HttpGet]
+        public ActionResult HistoryDetail(int dispatchId, int versionNo)
+        {
+            const string sql = @"
+            SELECT
+                DispatchID,
+                CertificateNumber,
+                TimeOrder,
+                CertificateTime,
+                TimeStart,
+                TimeStop,
+                VehicleNumber,
+                DriverName1,
+                DriverName2,
+                ProductCode,
+                Department,
+                DstPickup1,
+                DstPickup2,
+                DstReceive,
+                Note1,
+                Note2,
+                Remark,
+                [Status],
+                InsertDate,
+                InsertUser,
+                UpdateDate,
+                UpdateUser,
+                VersionNo,
+                DeleteFlg,
+                SysU,
+                SysD
+            FROM dbo.MDispatch_Hist
+            WHERE DispatchID = @DispatchID AND VersionNo = @VersionNo
+            ORDER BY VersionNo;";
+
+            var db = new PetroBMContext();
+            var p1 = new SqlParameter("@DispatchID", dispatchId);
+            var p2 = new SqlParameter("@VersionNo", versionNo);
+
+            var model = db.Database.SqlQuery<DispatchHistModel>(sql, p1, p2).FirstOrDefault();
+            if (model == null) return HttpNotFound("Không tìm thấy bản ghi lịch sử.");
+
+            return View("DispatchHistView", model);
+        }
+
 
         [HttpGet]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]

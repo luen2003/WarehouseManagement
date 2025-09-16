@@ -119,7 +119,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Dispatch.DstReceive)
                 </th>
+                <th>
 
+                </th>
                 <th>
 
                 </th>
@@ -160,8 +162,10 @@
                 @Html.DisplayFor(modelItem => item.DstReceive)
             </td>
             <td class="text-center">
-                <img style='max-width: 30px' src='/Content/images/send-message.png' alt="Send"
-        onclick="openCountdownTab()"/>
+                <img
+                     id="sign-btn-@item.DispatchID"
+                     style='max-width: 30px' src='/Content/images/sign-dispatch.png' alt="Sign"
+                     onclick="signDispatch(@item.DispatchID);" />
             </td>
             <td class="text-center">
                 <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.DispatchID);"
@@ -773,13 +777,74 @@
     }
 </script>
 <script>
-$(document).ready(function () {
-    $("#btnSync").click(function () {
-        location.reload(); // Hoặc: window.location.reload();
+    $(document).ready(function () {
+        $("#btnSync").click(function () {
+            location.reload(); // Hoặc: window.location.reload();
+        });
     });
-});
 
 </script>
 
+<script>
+    function signDispatch(dispatchID) {
+        // Gọi API Sign
+        fetch(`/SmartCA/Sign`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    //Hiển thị thông báo ký thành công
+                    alert(`Gửi ký thành công`);
+                    //console.log(data.transactionId);
 
+                    // Tự động check status
+                    checkSignStatus(data.transactionId);
+                } else {
+                    alert("Gửi ký thất bại: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert("Lỗi khi gửi ký");
+            });
+    }
+
+    function checkSignStatus(transactionId) {
+        fetch(`/SmartCA/CheckStatus`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "SUCCESS") {
+                    alert("Ký thành công!");
+                    disableSignButton(dispatchID);
+                } else if (data.status === "PENDING") {
+                    alert("Đang ký, thử lại sau 3s...");
+                    setTimeout(() => checkSignStatus(transactionId), 3000); // polling
+                } else {
+                    alert("Ký thất bại");
+                    console.log(data);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert("Lỗi khi kiểm tra trạng thái ký");
+            });
+    }
+
+</script>
+
+<script>
+    function disableSignButton(dispatchID) {
+        const btn = document.getElementById(`sign-btn-${dispatchID}`);
+        if (btn) {
+            btn.style.filter = 'grayscale(100%)';  // chuyển màu xám
+            btn.style.cursor = 'not-allowed';      // con trỏ không thể click
+            btn.onclick = null;                     // vô hiệu onclick
+        }
+    }
+</script>
 }

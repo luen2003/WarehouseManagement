@@ -4,6 +4,7 @@ using Unity.Mvc5;
 using PetroBM.Data.Infrastructure;
 using PetroBM.Data.Repositories;
 using PetroBM.Services.Services;
+using PetroBM.Services.SmartCA;
 
 namespace PetroBM.Web
 {
@@ -117,6 +118,7 @@ namespace PetroBM.Web
             container.RegisterType<IDispatchWaterService, DispatchWaterService>();
             container.RegisterType<ILocationService, LocationService>();
             container.RegisterType<IImageService, ImageService>();
+            //container.RegisterType<ISmartCAService, SmartCAService>();
 
 
             //container.

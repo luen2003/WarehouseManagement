@@ -135,9 +135,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Dispatch.DstReceive)
                     </th>
-                    <th>
+                    @*<th>
 
-                    </th>
+                    </th>*@
                     <th>
 
                     </th>
@@ -157,43 +157,43 @@
                             <a href="../DispatchWater/DispatchWaterView/@item.DispatchID">
                                 @Html.DisplayFor(modelItem =>
 item.CertificateNumber)
-                        </a>
-                    </td>
-                    <td>
-                        @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.VehicleNumber)
-                    </td>
+                            </a>
+                        </td>
+                        <td>
+                            @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VehicleNumber)
+                        </td>
 
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Department)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DstPickup1)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DstPickup2)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DstReceive)
-                    </td>
-                    <td class="text-center">
-                        <img style='max-width: 30px' src='/Content/images/send-message.png' alt="Send"
-                             onclick="openCountdownTab()" />
-                    </td>
-                    <td class="text-center">
-                        <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.DispatchID);"
-                             src='/Content/images/print.png' />
-                    </td>
-                    <td class="text-center">
-                        <img style='max-width: 30px' onclick="DeleteDispatch(@item.DispatchID);"
-                             src='/Content/images/Delete.png' />
-                    </td>
-                </tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Department)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DstPickup1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DstPickup2)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DstReceive)
+                        </td>
+                        @*<td class="text-center">
+                            <img style='max-width: 30px' src='/Content/images/send-message.png' alt="Send"
+                                 onclick="openCountdownTab()" />
+                        </td>*@
+                        <td class="text-center">
+                            <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.DispatchID);"
+                                 src='/Content/images/print.png' />
+                        </td>
+                        <td class="text-center">
+                            <img style='max-width: 30px' onclick="DeleteDispatch(@item.DispatchID);"
+                                 src='/Content/images/Delete.png' />
+                        </td>
+                    </tr>
 
-            }
+                }
             }
         </table>
         <div class="text-center">
@@ -796,13 +796,13 @@ item.CertificateNumber)
             window.open('/Home/Countdown', '_blank');
         }
     </script>
-<script>
-$(document).ready(function () {
-    $("#btnSync").click(function () {
-        location.reload(); // Hoặc: window.location.reload();
-    });
-});
+    <script>
+        $(document).ready(function () {
+            $("#btnSync").click(function () {
+                location.reload(); // Hoặc: window.location.reload();
+            });
+        });
 
-</script>
+    </script>
 
 }

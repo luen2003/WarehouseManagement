@@ -1,0 +1,80 @@
+﻿@model PetroBM.Domain.Entities.MImage
+@using PetroBM.Common.Util
+@{
+    ViewBag.Title = "Chỉnh sửa ảnh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Chỉnh sửa ảnh</h2>
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["AlertMessage"]
+    </div>
+}
+
+@using (Html.BeginForm("EditImage", "Image", FormMethod.Post, new { @id = "frmEditImage" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ID)
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(m => m.ImageName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.ImageName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ImageName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ImageCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.ImageCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ImageCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ImageURL, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.ImageURL, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ImageURL, "", new { @class = "text-danger" })
+                <br />
+                <img src="@Url.Content(Model.ImageURL)" alt="@Model.ImageName" style="max-width:150px; max-height:100px;" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ImagePosition, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.ImagePosition, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ImagePosition, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ImageUser, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.ImageUser, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ImageUser, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ProcessStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.ProcessStatus, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ProcessStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                @Html.ActionLink("Quay lại", "ImageList", "Image", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}

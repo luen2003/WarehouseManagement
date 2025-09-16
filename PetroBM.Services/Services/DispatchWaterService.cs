@@ -38,6 +38,10 @@ namespace PetroBM.Services.Services
 
         bool UpdateDispatch(int dispatchId, string timeStart, string timeStop, string vehicle, string product, string driverName1, string driverName2, string dstPickup1, string dstPickup2, string department, string note, string remark, string dstReceive, string From, string To, string Paragraph1, string Paragraph2, string Paragraph3, string Paragraph4, string user);
 
+        string GetTransactionId(int dispatchId);
+
+        void UpdateTransactionId(int dispatchId, string transactionId);
+
     }
 
     public class DispatchWaterService : IDispatchWaterService
@@ -331,6 +335,44 @@ namespace PetroBM.Services.Services
             return rs;
         }
 
+        public string GetTransactionId(int dispatchId)
+        {
+            string transactionId = null;
+
+            try
+            {
+                using (var context = new PetroBMContext())
+                {
+                    using (var conn = new SqlConnection(context.Database.Connection.ConnectionString))
+                    {
+                        conn.Open();
+                        using (var cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = "Select_TransactionId_DispatchWater_ByID";
+                            cmd.CommandType = CommandType.StoredProcedure;
+
+                            cmd.Parameters.Add(new SqlParameter("DispatchID", dispatchId));
+
+                            var reader = cmd.ExecuteReader();
+                            if (reader.Read())
+                            {
+                                transactionId = reader["TransactionId"]?.ToString();
+                            }
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error($"Lỗi khi lấy TransactionId cho DispatchID {dispatchId}: {ex}");
+                throw;
+            }
+
+            return transactionId;
+        }
+
+
         public bool UpdateDispatch(int dispatchId, string timeStart, string timeStop, string vehicle, string product, string driverName1, string driverName2, string dstPickup1, string dstPickup2, string department, string note, string remark, string dstReceive, string From, string To, string Paragraph1, string Paragraph2, string Paragraph3, string Paragraph4, string user)
         {
             var rs = false;
@@ -403,6 +445,40 @@ namespace PetroBM.Services.Services
             }
 
             return rs;
+        }
+
+        public void UpdateTransactionId(int dispatchId, string transactionId)
+        {
+            try
+            {
+                using (var context = new PetroBMContext())
+                {
+                    using (var conn = new SqlConnection(context.Database.Connection.ConnectionString))
+                    {
+                        conn.Open();
+                        using (var cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = "Update_TransactionId_DispatchWater_ByID";
+                            cmd.CommandType = CommandType.StoredProcedure;
+
+                            cmd.Parameters.Add(new SqlParameter("DispatchID", dispatchId));
+                            cmd.Parameters.Add(new SqlParameter("TransactionId", transactionId ?? ""));
+
+                            cmd.ExecuteNonQuery();
+                        }
+                        conn.Close();
+                    }
+                }
+
+                // Log event (nếu muốn)
+                eventService.CreateEvent(Constants.EVENT_TYPE_MANAGEMENT,
+                    Constants.EVENT_CONFIG_COMMAND_UPDATE, $"Cập nhật TransactionId cho DispatchID {dispatchId}");
+            }
+            catch (Exception ex)
+            {
+                log.Error($"Lỗi khi cập nhật TransactionId cho DispatchID {dispatchId}: {ex}");
+                throw; // có thể throw lên để controller xử lý
+            }
         }
     }
 }

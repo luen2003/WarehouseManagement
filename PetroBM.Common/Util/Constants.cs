@@ -384,6 +384,9 @@ namespace PetroBM.Common.Util
         public const string Session_Content_TitleCompanyFax = "033.3737923"; //Fax công ty
 
         // set giá trị lớn nhất cho số chứng từ CertificateNumber Command 
-        public const string Session_CertificateNumber = "CertificateNumber"; 
+        public const string Session_CertificateNumber = "CertificateNumber";
+
+        public const string CLIENT_ID = "4259-638354667519370012.apps.smartcaapi.com";
+        public const string CLIENT_SECRET = "ZmJiZDhlMmM-MjMyNC00N2Uz";
     }
 }

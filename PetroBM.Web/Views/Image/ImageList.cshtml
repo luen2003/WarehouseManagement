@@ -1,0 +1,64 @@
+﻿@model IEnumerable<PetroBM.Domain.Entities.MImage>
+@using PetroBM.Common.Util
+@{
+    ViewBag.Title = "Danh sách ảnh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Danh sách ảnh</h2>
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["AlertMessage"]
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Thêm ảnh mới", "RegisterImage", "Image", null, new { @class = "btn btn-success" })
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().ID)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().ImageName)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().ImageCode)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().ImageURL)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().ImagePosition)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().ImageUser)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().ProcessStatus)</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ID</td>
+                    <td>@item.ImageName</td>
+                    <td>@item.ImageCode</td>
+                    <td>
+                        <img src="@Url.Content(item.ImageURL)" alt="@item.ImageName" style="max-width:100px; max-height:60px;" />
+                        <br />
+                        <small>@item.ImageURL</small>
+                    </td>
+                    <td>@item.ImagePosition</td>
+                    <td>@item.ImageUser</td>
+                    <td>@item.ProcessStatus</td>
+                    <td>
+                        @Html.ActionLink("Sửa", "EditImage", new { id = item.ID }, new { @class = "btn btn-warning btn-sm" })
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center text-danger">Không có dữ liệu ảnh.</td>
+            </tr>
+        }
+    </tbody>
+</table>

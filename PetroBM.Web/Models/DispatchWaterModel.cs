@@ -78,6 +78,7 @@ namespace PetroBM.Web.Models
         public string Paragraph4 { get; set; }
         
         public int ProcessStatus { get; set; }
+        public string TransactionId { get; set; }
 
     }
 }

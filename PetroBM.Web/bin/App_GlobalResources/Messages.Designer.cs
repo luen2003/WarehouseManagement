@@ -61,6 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dinh Luong Ta.
         /// </summary>
         internal static string CompanyAddress {
             get {
@@ -69,6 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  0123456789.
         /// </summary>
         internal static string CompanyFax {
             get {
@@ -77,6 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dinh Luong Ta.
         /// </summary>
         internal static string CompanyName {
             get {
@@ -85,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0974211426.
+        ///   Looks up a localized string similar to 0123456789.
         /// </summary>
         internal static string CompanyPhone {
             get {
@@ -94,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 01012001201.
+        ///   Looks up a localized string similar to 0123456789.
         /// </summary>
         internal static string CompanyTaxCode {
             get {
@@ -121,6 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dinh Luong Ta.
         /// </summary>
         internal static string ManagerName {
             get {
@@ -139,6 +143,7 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thủ trưởng.
         /// </summary>
         internal static string Position {
             get {
@@ -147,6 +152,7 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UBND THÀNH PHỒ HÀ NỘI.
         /// </summary>
         internal static string ProviceName {
             get {

@@ -1,0 +1,183 @@
+﻿@model PetroBM.Web.Models.DispatchHistModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Chi tiết lịch sử lệnh điều vận";
+}
+<style>
+    .hist-wrap { max-width: 1100px; margin: 10px auto 24px; }
+    .hist-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .hist-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .hist-field { display:flex; flex-direction:column; }
+    .hist-field label { font-weight:600; margin-bottom:4px; }
+    .hist-field input, .hist-field textarea {
+        background:#f7f7f7; border:1px solid #ddd; border-radius:6px; padding:8px; width:100%;
+    }
+    .hist-section { margin-top:20px; }
+    .hist-section h4 {
+        font-weight:bold;
+    }
+    .mono {
+        /*font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;*/
+        font-weight: bold;
+    }
+    .muted {
+        color: #666;
+        font-weight: bold;
+    }
+    @@media (max-width: 992px) { .hist-grid { grid-template-columns: repeat(2, 1fr);} }
+    @@media (max-width: 576px) { .hist-grid { grid-template-columns: 1fr;} }
+</style>
+
+<div class="hist-wrap">
+    @*<div class="hist-header">
+        <h3 class="mono">Chi tiết lịch sử lệnh điều vận — Phiên bản @Model.VersionNo</h3>
+        <div class="muted">@(Model.SysU ?? "") · @(Model.SysD?.ToString("dd/MM/yyyy HH:mm") ?? "")</div>
+    </div>*@
+
+    <div class="hist-section">
+        <h4>Thông tin chung</h4>
+        <div class="hist-grid">
+            <div class="hist-field">
+                <label>ID</label>
+                <input value="@Model.DispatchID" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Mã chứng từ</label>
+                <input value="@(Model.CertificateNumber?.ToString() ?? "")" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Phiên bản</label>
+                <input value="@Model.VersionNo" readonly />
+            </div>
+
+            @*<div class="hist-field">
+            <label>Status</label>
+            <input value="@(Model.Status?.ToString() ?? "")" readonly />
+        </div>
+        <div class="hist-field">
+            <label>ProcessStatus</label>
+            <input value="@Model.ProcessStatus" readonly />
+        </div>*@
+        </div>
+    </div>
+
+    <div class="hist-section">
+        <h4>Thời gian</h4>
+        <div class="hist-grid">
+            <div class="hist-field">
+                <label>Thời gian đăng ký lệnh</label>
+                <input value="@(Model.TimeOrder?.ToString("dd/MM/yyyy HH:mm") ?? "")" readonly />
+            </div>
+            @*<div class="hist-field">
+                <label>CertificateTime</label>
+                <input value="@(Model.CertificateTime?.ToString("dd/MM/yyyy HH:mm") ?? "")" readonly />
+            </div>*@
+            <div class="hist-field">
+                <label>Thời gian thực hiện</label>
+                <input value="@(Model.TimeStart?.ToString("dd/MM/yyyy HH:mm") ?? "")" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Thời gian hoàn thành </label>
+                <input value="@(Model.TimeStop?.ToString("dd/MM/yyyy HH:mm") ?? "")" readonly />
+            </div>
+        </div>
+    </div>
+
+    <div class="hist-section">
+        <h4>Phương tiện & Tài xế</h4>
+        <div class="hist-grid">
+            <div class="hist-field">
+                <label>Số phương tiện</label>
+                <input value="@(Model.VehicleNumber ?? "")" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Lái xe 1</label>
+                <input value="@(Model.DriverName1 ?? "")" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Lái xe 2</label>
+                <input value="@(Model.DriverName2 ?? "")" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Hàng hoá</label>
+                <input value="@(Model.ProductCode ?? "")" readonly />
+            </div>
+        </div>
+    </div>
+
+    <div class="hist-section">
+        <h4>Đơn vị & Tuyến</h4>
+        <div class="hist-grid">
+            <div class="hist-field">
+                <label>Phòng ban</label>
+                <input value="@(Model.Department ?? "")" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Điểm lấy hàng 1</label>
+                <input value="@(Model.DstPickup1 ?? "")" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Điểm lấy hàng 2</label>
+                <input value="@(Model.DstPickup2 ?? "")" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Điểm trả hàng</label>
+                <input value="@(Model.DstReceive ?? "")" readonly />
+            </div>
+        </div>
+    </div>
+
+    <div class="hist-section">
+        <h4>Ghi chú</h4>
+        <div class="hist-grid" 
+             @*style="grid-template-columns: 1fr 1fr;"*@
+             >
+            <div class="hist-field">
+                <label>Ghi chú</label>
+                <textarea rows="2" readonly>@(Model.Note1 ?? "")</textarea>
+            </div>
+            <div class="hist-field">
+                <label>Nguyên tắc</label>
+                <textarea rows="2" readonly>@(Model.Remark ?? "")</textarea>
+            </div>
+            @*<div class="hist-field">
+            <label>Note2</label>
+            <textarea rows="2" readonly>@(Model.Note2 ?? "")</textarea>
+        </div>*@
+        </div>
+    </div>
+
+    <div class="hist-section">
+        <h4>Thông tin về thời gian và người dùng</h4>
+        <div class="hist-grid">
+            <div class="hist-field">
+                <label>Ngày tạo</label>
+                <input value="@Model.InsertDate.ToString("dd/MM/yyyy HH:mm")" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Người tạo</label>
+                <input value="@(Model.InsertUser ?? "")" readonly />
+            </div>
+            @*<div class="hist-field">
+            <label>UpdateDate</label>
+            <input value="@Model.UpdateDate.ToString("dd/MM/yyyy HH:mm")" readonly />
+        </div>
+        <div class="hist-field">
+            <label>UpdateUser</label>
+            <input value="@(Model.UpdateUser ?? "")" readonly />
+        </div>
+        <div class="hist-field">
+            <label>DeleteFlg</label>
+            <input value="@(Model.DeleteFlg ? "True" : "False")" readonly />
+        </div>*@
+            <div class="hist-field">
+                <label>Ngày sửa đổi</label>
+                <input value="@(Model.SysD?.ToString("dd/MM/yyyy HH:mm") ?? "")" readonly />
+            </div>
+            <div class="hist-field">
+                <label>Người sửa đổi</label>
+                <input value="@(Model.SysU ?? "")" readonly />
+            </div>
+        </div>
+    </div>
+</div>

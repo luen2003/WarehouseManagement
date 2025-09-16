@@ -118,14 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CompanyAddress" xml:space="preserve">
-    <value>DlUONGTA</value>
+    <value>Dinh Luong Ta</value>
     <comment> Địa chỉ công ty</comment>
   </data>
   <data name="CompanyFax" xml:space="preserve">
-    <value>034255456</value>
+    <value>0123456789</value>
   </data>
   <data name="CompanyName" xml:space="preserve">
-    <value>DLUONGTA</value>
+    <value>Dinh Luong Ta</value>
     <comment>Tên Công ty</comment>
   </data>
   <data name="CompanyPhone" xml:space="preserve">
@@ -137,10 +137,10 @@
   </data>
   <data name="ManagerName" xml:space="preserve">
     <value>Dinh Luong Ta</value>
-    <comment>Tên Developer</comment>
+    <comment>Tên thủ trưởng đơn vị</comment>
   </data>
   <data name="Position" xml:space="preserve">
-    <value>Developer</value>
+    <value>Thủ trưởng</value>
     <comment>Chức danh</comment>
   </data>
 </root>

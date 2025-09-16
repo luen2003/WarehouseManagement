@@ -53,6 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\MDepartment.cs" />
+    <Compile Include="Entities\MDispatchWaterHist.cs" />
+    <Compile Include="Entities\MDispatchHist.cs" />
     <Compile Include="Entities\MDispatch.cs" />
     <Compile Include="Entities\MCustomerGroup.cs" />
     <Compile Include="Entities\MDispatchWater.cs" />
@@ -107,6 +109,7 @@
     <Compile Include="Entities\MTankManual.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\WSystemSetting.cs" />
+    <Compile Include="VNPT\SmartCAModels.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PetroBM.Common\PetroBM.Common.csproj">

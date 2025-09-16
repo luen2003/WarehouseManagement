@@ -263,6 +263,28 @@
     }
 </script>
 
+<style>
+        /* Áp dụng chung cho bảng */
+        .hist-table {
+            width: 100%; /* Giúp bảng co giãn theo chiều rộng của thẻ chứa nó */
+            border-collapse: collapse; /* Gộp đường viền lại cho đẹp hơn */
+            border: 1px solid #ccc; /* Thay thế cho border="1" */
+        }
+
+        /* Áp dụng cho các ô tiêu đề (th) và ô dữ liệu (td) */
+        .hist-table th, .hist-table td {
+            padding: 10px; /* Thay thế cho cellpadding="10" */
+            text-align: left; /* Thay thế cho style="text-align: left;" */
+            border: 1px solid #ccc; /* Thêm đường viền cho từng ô */
+        }
+
+        /* Có thể thêm style riêng cho phần tiêu đề nếu muốn */
+        .hist-table th {
+            background-color: #f2f2f2; /* Ví dụ: thêm màu nền cho tiêu đề */
+            font-weight: bold;
+        }
+</style>
+
 <div>
     @*<a id="viewhistbtn" href="javascript:view_T_Hist()" style="float: right;">Lịch sử</a>*@
     <a href="#"
@@ -272,18 +294,31 @@
     <div id="popupForm" style="display: none; position: fixed; top: 50%; left: 50%; border-radius: 10px; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; z-index: 9999; box-shadow: 0 0 10px #999;">
         <h3>Lịch sử sửa đổi</h3>
         <div id="popupContent">
+            @*<table class="hist-table">
+            <thead>
+                <tr>
+                    <th style="width: 10%; text-align: left; ">STT</th>
+                    <th style="width: 15%; text-align: left; ">Ngày tạo</th>
+                    <th style="width: 15%; text-align: left; ">Người tạo</th>
+                    <th style="width: 15%; text-align: left; ">Ngày thay đổi</th>
+                    <th style="width: 15%; text-align: left; ">Người thay đổi</th>
+                    <th style="width: 20%; text-align: left; ">Phiên bản</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>*@
             <table class="hist-table">
                 <thead>
                     <tr>
-                        <th style="width: 10%; text-align: left; ">STT</th>
-                        <th style="width: 15%; text-align: left; ">Ngày tạo</th>
-                        <th style="width: 15%; text-align: left; ">Người tạo</th>
-                        <th style="width: 15%; text-align: left; ">Ngày thay đổi</th>
-                        <th style="width: 15%; text-align: left; ">Người thay đổi</th>
-                        <th style="width: 20%; text-align: left; ">Phiên bản</th>
+                        <th>Phiên bản</th>
+                        <th>Ngày thay đổi</th>
+                        <th>Người thay đổi</th>
+                        <th>Ngày tạo</th>
+                        <th>Người tạo</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="history-data-body">
                 </tbody>
             </table>
         </div>
@@ -337,14 +372,6 @@
 
                         <div style="padding-top:10%;">
                             <div class="col-md-5">
-                                @Html.LabelFor(model => model.Dispatch.DstPickup1, htmlAttributes: new { @class = "control-label" })
-                            </div>
-                            <div class="col-md-7">
-                                @Html.EditorFor(model => model.Dispatch.DstPickup1, new { htmlAttributes = new { @class = "form-control", @id = "DstPickup1", @tabindex = "2" } })
-                            </div>
-                        </div>
-                        <div style="padding-top:10%;">
-                            <div class="col-md-5">
                                 @Html.LabelFor(model => model.Dispatch.Department, htmlAttributes: new { @class = "control-label" })
                             </div>
 
@@ -365,6 +392,15 @@
                                 @Html.ValidationMessageFor(model => model.Dispatch.Department, "", new { @class = "text-danger" })
                             </div>
 
+                        </div>
+
+                        <div style="padding-top:10%;">
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.Dispatch.DstPickup1, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-7">
+                                @Html.EditorFor(model => model.Dispatch.DstPickup1, new { htmlAttributes = new { @class = "form-control", @id = "DstPickup1", @tabindex = "2" } })
+                            </div>
                         </div>
 
                         <div style="padding-top:10%;">
@@ -471,7 +507,7 @@
                                 @Html.EditorFor(model => model.Dispatch.DriverName2, new { htmlAttributes = new { @class = "form-control", @id = "DriverName2", @tabindex = "5", style = "display:none;" } })
                             </div>
                         </div>
-                        
+
 
 
                         <div style="padding-top:10%;">
@@ -1061,7 +1097,7 @@
 
 
 @*START_HISTORY*@
-<script>
+@*<script>
     // MỚI: không dùng biến chưa khai báo; tất cả đi qua 'resolvedId'
     function view_T_Hist(el, id) {
         document.getElementById('popupForm').style.display = 'block';
@@ -1134,6 +1170,95 @@
             });
     }
 
+</script>*@
+
+
+<script>
+    var HIST_URL = '@Url.Action("GetHistory", "DispatchWater")';
+    var HIST_DETAIL_URL = '@Url.Action("HistoryDetail", "DispatchWater")'; // <-- thêm base url cho view chi tiết
+
+    function view_T_Hist(el, id) {
+        document.getElementById('popupForm').style.display = 'block';
+        document.getElementById('popupOverlay').style.display = 'block';
+        // el: phần tử <a> được click (truyền 'this'), id: DispatchID (truyền từ Razor/JS)
+        var resolvedId = Number(
+            id ||
+            (el ? ($(el).data('dispatchId') || $(el).data('id')) : null) ||
+            ($('#DispatchID').val() || $('#txtDispatchID').val())
+        );
+
+        if (!resolvedId || isNaN(resolvedId)) {
+            console.error('view_T_Hist: thiếu DispatchID');
+            alert('Không xác định được DispatchID để xem lịch sử.');
+            return false;
+        }
+
+        // Gọi loader duy nhất bằng resolvedId
+        console.log('Load history for DispatchID =', resolvedId);
+        loadDispatchHist(resolvedId);
+        return false; // chặn điều hướng link
+    }
+
+  // ... giữ nguyên formatVN, esc ...
+    function formatVN(dt) {
+        if (!dt) return '';
+        var d = dt;
+        if (typeof dt === 'string') {
+            var m = /Date\((\d+)\)/.exec(dt);
+            d = m ? new Date(parseInt(m[1], 10)) : new Date(dt);
+        }
+        if (isNaN(d)) return '';
+        const pad = n => ('0' + n).slice(-2);
+        return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+    function esc(s) {
+        return (s || '').toString()
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+  function loadDispatchHist(id) {
+      var $tbody = $("#popupContent tbody");
+      $tbody.empty().append('<tr><td colspan="6" style="text-align:center">Đang tải...</td></tr>');
+
+      $.getJSON(HIST_URL, { dispatchId: Number(id) })
+          .done(function (res) {
+              $tbody.empty();
+              if (!res || !res.ok || !res.rows || res.rows.length === 0) {
+                  $tbody.append('<tr><td colspan="6" style="text-align:center">Không có dữ liệu</td></tr>');
+                  return;
+              }
+
+              res.rows.forEach(function (r) {
+                  // fallback nếu API không có DispatchID trong r
+                  var dispId = r.DispatchID || id;
+
+                  var detailHref = HIST_DETAIL_URL
+                    + '?dispatchId=' + encodeURIComponent(dispId)
+                    + '&versionNo=' + encodeURIComponent(r.VersionNo);
+
+                  $tbody.append(
+                      '<tr>'
+                      // --- SỬA TẠI ĐÂY: Phiên bản -> <a> mở màn chi tiết ---
+                      + '<td style="text-align:center">'
+                        + '<a href="' + detailHref + '" target="_blank" rel="noopener">'
+                        + esc(r.VersionNo)
+                        + '</a>'
+                      + '</td>'
+                      // ------------------------------------------------------
+                      + '<td style="text-align:left">' + esc(formatVN(r.SysD)) + '</td>'
+                      + '<td style="text-align:left">' + esc(r.SysU) + '</td>'
+                      + '<td style="text-align:left">' + esc(formatVN(r.InsertDate)) + '</td>'
+                      + '<td style="text-align:left">' + esc(r.InsertUser) + '</td>'
+                      + '</tr>'
+                  );
+              });
+          })
+          .fail(function (xhr) {
+              var msg = (xhr && xhr.responseText) ? xhr.responseText : 'Không rõ';
+              $tbody.empty().append('<tr><td colspan="6" style="text-align:center;color:#c00">AJAX lỗi: ' + esc(msg) + '</td></tr>');
+          });
+  }
 </script>
 
 @*END_HISTORY*@

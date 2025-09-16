@@ -85,7 +85,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0974211426.
+        ///   Looks up a localized string similar to 0123456789.
         /// </summary>
         internal static string CompanyPhone {
             get {
@@ -94,7 +94,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 01012001201.
+        ///   Looks up a localized string similar to 0123456789.
         /// </summary>
         internal static string CompanyTaxCode {
             get {
