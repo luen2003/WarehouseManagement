@@ -343,6 +343,51 @@
                                 @Html.EditorFor(model => model.Dispatch.DstPickup1, new { htmlAttributes = new { @class = "form-control", @id = "DstPickup1", @tabindex = "2" } })
                             </div>
                         </div>
+                        <div style="padding-top:10%;">
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.Dispatch.Department, htmlAttributes: new { @class = "control-label" })
+                            </div>
+
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.Dispatch.Department,
+                                    new SelectList(
+                                        new[]
+                                        {
+                                            new { Value = "Phân xưởng Vận tải thủy", Text = "Phân xưởng Vận tải thủy" },
+                                            new { Value = "Phân xưởng Bốc xếp và Cảng", Text = "Phân xưởng Bốc xếp và Cảng" },
+                                        },
+                                        "Value",
+                                        "Text",
+                                        Model.Dispatch.Department
+                                    ),
+                                    "-- Chọn phân xưởng --",
+                                    new { @class = "form-control", @id = "Department" })
+                                @Html.ValidationMessageFor(model => model.Dispatch.Department, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+
+                        <div style="padding-top:10%;">
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.Dispatch.DstPickup2, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-7">
+                                @Html.EditorFor(model => model.Dispatch.DstPickup2, new { htmlAttributes = new { @class = "form-control", @id = "DstPickup2", @tabindex = "7" } })
+                            </div>
+                        </div>
+                        <div style="padding-top:10%;">
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.Dispatch.DstReceive, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-7">
+                                @*<div class='input-group date' id='' style="z-index:1;">*@
+                                @Html.EditorFor(model => model.Dispatch.DstReceive, new { htmlAttributes = new { @class = "form-control", @id = "DstReceive", @tabindex = "8" } })
+                                @*<span class="input-group-addon" onclick='showSearchC();'>
+                    <span class="glyphicon glyphicon-chevron-down" id="drilldownC"></span>
+                </span>*@
+                                @*</div>*@
+                            </div>
+                        </div>
                         <div style="padding-top:10%;display:none;">
                             <div class="col-md-5" style="display:none;">
                                 <b>Nguyên tắc</b>
@@ -426,51 +471,7 @@
                                 @Html.EditorFor(model => model.Dispatch.DriverName2, new { htmlAttributes = new { @class = "form-control", @id = "DriverName2", @tabindex = "5", style = "display:none;" } })
                             </div>
                         </div>
-                        <div style="padding-top:10%;">
-                            <div class="col-md-5">
-                                @Html.LabelFor(model => model.Dispatch.Department, htmlAttributes: new { @class = "control-label" })
-                            </div>
-
-                            <div class="col-md-7">
-                                @Html.DropDownListFor(model => model.Dispatch.Department,
-                                    new SelectList(
-                                        new[]
-                                        {
-                                            new { Value = "Phân xưởng Vận tải thủy", Text = "Phân xưởng Vận tải thủy" },
-                                            new { Value = "Phân xưởng Bốc xếp và Cảng", Text = "Phân xưởng Bốc xếp và Cảng" },
-                                        },
-                                        "Value",
-                                        "Text",
-                                        Model.Dispatch.Department
-                                    ),
-                                    "-- Chọn phân xưởng --",
-                                    new { @class = "form-control", @id = "Department" })
-                                @Html.ValidationMessageFor(model => model.Dispatch.Department, "", new { @class = "text-danger" })
-                            </div>
-
-                        </div>
-
-                        <div style="padding-top:10%;">
-                            <div class="col-md-5">
-                                @Html.LabelFor(model => model.Dispatch.DstPickup2, htmlAttributes: new { @class = "control-label" })
-                            </div>
-                            <div class="col-md-7">
-                                @Html.EditorFor(model => model.Dispatch.DstPickup2, new { htmlAttributes = new { @class = "form-control", @id = "DstPickup2", @tabindex = "7" } })
-                            </div>
-                        </div>
-                        <div style="padding-top:10%;">
-                            <div class="col-md-5">
-                                @Html.LabelFor(model => model.Dispatch.DstReceive, htmlAttributes: new { @class = "control-label" })
-                            </div>
-                            <div class="col-md-7">
-                                @*<div class='input-group date' id='' style="z-index:1;">*@
-                                @Html.EditorFor(model => model.Dispatch.DstReceive, new { htmlAttributes = new { @class = "form-control", @id = "DstReceive", @tabindex = "8" } })
-                                @*<span class="input-group-addon" onclick='showSearchC();'>
-                                        <span class="glyphicon glyphicon-chevron-down" id="drilldownC"></span>
-                                    </span>*@
-                                @*</div>*@
-                            </div>
-                        </div>
+                        
 
 
                         <div style="padding-top:10%;">
