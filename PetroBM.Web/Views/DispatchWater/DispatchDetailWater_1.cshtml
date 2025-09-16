@@ -117,8 +117,9 @@
                     @Html.DisplayNameFor(model => model.Dispatch.DstPickup2)
                 </th>
                 <th>
-
+                    @Html.DisplayNameFor(model => model.Dispatch.DstReceive)
                 </th>
+
                 <th>
 
                 </th>
@@ -154,6 +155,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DstPickup2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DstReceive)
             </td>
             <td class="text-center">
                 <img style='max-width: 30px' src='/Content/images/send-message.png' alt="Send"
