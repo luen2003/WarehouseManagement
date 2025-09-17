@@ -3,35 +3,37 @@
 
 @{
     bool hasRenderedDispatchMenu = false;
+    bool hasRenderedSignMenu = false;
+
 }
 
 <nav id="sidebar">
 
-	<ul class="list-unstyled components">
-		<li class="active">
-			<a href="@Url.Action("Index", "Home")" onclick="setCookie('')">
-				<i class="glyphicon glyphicon-home"></i>
-				Trang chủ
-			</a>
-		</li>
-		@foreach (var warehouse in Model.WarehouseList)
-		{
-			<li>
-				<a href="#W@(warehouse.WareHouseCode)mnu" onclick="Mnu_WarehouseSelect(@(warehouse.WareHouseCode));return false;" data-toggle="collapse" aria-expanded="false">
-					<i class="glyphicon glyphicon-oil"></i>
-					@("Kho " + warehouse.WareHouseName)
-				</a>
-				<ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode)mnu">
+    <ul class="list-unstyled components">
+        <li class="active">
+            <a href="@Url.Action("Index", "Home")" onclick="setCookie('')">
+                <i class="glyphicon glyphicon-home"></i>
+                Trang chủ
+            </a>
+        </li>
+        @foreach (var warehouse in Model.WarehouseList)
+        {
+            <li>
+                <a href="#W@(warehouse.WareHouseCode)mnu" onclick="Mnu_WarehouseSelect(@(warehouse.WareHouseCode));return false;" data-toggle="collapse" aria-expanded="false">
+                    <i class="glyphicon glyphicon-oil"></i>
+                    @("Kho " + warehouse.WareHouseName)
+                </a>
+                <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode)mnu">
 
-					@foreach (var it in Model.WareHousePermissionList)
-					{
-						if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_MANUAL && it.WareHouseCode == warehouse.WareHouseCode)
-						{
-							<li>
-								<a href="#W@(warehouse.WareHouseCode)Manual" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Manual')" data-toggle="collapse" aria-expanded="false">
-									<i class="glyphicon glyphicon-wrench"></i>
-									Bán hàng
-								</a>
+                    @foreach (var it in Model.WareHousePermissionList)
+                    {
+                        if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_MANUAL && it.WareHouseCode == warehouse.WareHouseCode)
+                        {
+                            <li>
+                                <a href="#W@(warehouse.WareHouseCode)Manual" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Manual')" data-toggle="collapse" aria-expanded="false">
+                                    <i class="glyphicon glyphicon-wrench"></i>
+                                    Bán hàng
+                                </a>
                                 <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode)Manual">
                                     @foreach (var item in Model.WareHousePermissionList)
                                     {
@@ -45,29 +47,29 @@
                                                 <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode)Commands">
                                                     <li>
                                                         <a href="/command/RegisterCommand">
-                                                            
+
                                                             Đăng ký lệnh
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="/command/CommandbyVehicle">
-                                                            
+
                                                             Danh sách theo xe
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="/commanddetail/Index">
-                                                            
+
                                                             Danh sách lệnh theo ngăn
                                                         </a>
                                                     </li>
                                                 </ul>
                                             </li>
-										}
+                                        }
 
-										if (item.WareHouseCode == warehouse.WareHouseCode && item.PermissionCode == Constants.PERMISSION_WAREHOUSE_REGISTERDISPATCH)
-										{
-											hasRenderedDispatchMenu = true;
+                                        if (item.WareHouseCode == warehouse.WareHouseCode && item.PermissionCode == Constants.PERMISSION_WAREHOUSE_REGISTERDISPATCH)
+                                        {
+                                            hasRenderedDispatchMenu = true;
 
                                             <li>
                                                 <a href="#W@(warehouse.WareHouseCode)Dispatch" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Manual,#W@(warehouse.WareHouseCode)Dispatch')" data-toggle="collapse" aria-expanded="false">
@@ -93,12 +95,7 @@
                                                             Tạo lệnh điều vận đường thủy
                                                         </a>
                                                     </li>
-                                                    <li>
-                                                        <a href="/Image/ImageList">
 
-                                                            Thư mục ảnh
-                                                        </a>
-                                                    </li>
                                                     @if (Model.UserRole == 0)
                                                     {
                                                         <li>
@@ -170,47 +167,47 @@
                                             </li>
                                         }
                                         @*if (item.WareHouseCode == warehouse.WareHouseCode && item.PermissionCode == Constants.PERMISSION_WAREHOUSE_CANCELCOMMAND)
-            {
-                <li>
-                    <a href="/CommandDetail/CancelCommandByCompartment" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Manual')">
-                        <i class="glyphicon glyphicon-dashboard"></i>
-                        Hủy lệnh theo ngăn
-                    </a>
-                </li>
-            }*@
+                                            {
+                                                <li>
+                                                    <a href="/CommandDetail/CancelCommandByCompartment" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Manual')">
+                                                        <i class="glyphicon glyphicon-dashboard"></i>
+                                                        Hủy lệnh theo ngăn
+                                                    </a>
+                                                </li>
+                                            }*@
                                         @*if (item.WareHouseCode == warehouse.WareHouseCode && item.PermissionCode == Constants.PERMISSION_WAREHOUSE_REGISTERSEAL)
-            {
-                <li>
-                    <a href="/Seal/RegisterSeal" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Manual')">
-                        <i class="glyphicon glyphicon-dashboard"></i>
-                        Niêm chì
-                    </a>
-                </li>
-            }*@
+                                            {
+                                                <li>
+                                                    <a href="/Seal/RegisterSeal" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Manual')">
+                                                        <i class="glyphicon glyphicon-dashboard"></i>
+                                                        Niêm chì
+                                                    </a>
+                                                </li>
+                                            }*@
                                         @*if (item.WareHouseCode == warehouse.WareHouseCode && item.PermissionCode == Constants.PERMISSION_WAREHOUSE_REGISTERINVOICE)
-            {
-                <li>
-                    <a href="#W@(warehouse.WareHouseCode)Invoice" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Manual,#W@(warehouse.WareHouseCode)Invoice')" data-toggle="collapse" aria-expanded="false">
-                        <i class="glyphicon glyphicon-dashboard"></i>
-                        Hóa đơn
-                    </a>
-                    <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode)Invoice">
-                        <li>
-                            <a href="/Bills/CreateInvoice">
-                                
-                                Tạo hóa đơn
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/Bills/Index">
-                                
-                                Danh sách hóa đơn
-                            </a>
-                        </li>
+                                            {
+                                                <li>
+                                                    <a href="#W@(warehouse.WareHouseCode)Invoice" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Manual,#W@(warehouse.WareHouseCode)Invoice')" data-toggle="collapse" aria-expanded="false">
+                                                        <i class="glyphicon glyphicon-dashboard"></i>
+                                                        Hóa đơn
+                                                    </a>
+                                                    <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode)Invoice">
+                                                        <li>
+                                                            <a href="/Bills/CreateInvoice">
 
-                    </ul>
-                </li>
-            }*@
+                                                                Tạo hóa đơn
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/Bills/Index">
+
+                                                                Danh sách hóa đơn
+                                                            </a>
+                                                        </li>
+
+                                                    </ul>
+                                                </li>
+                                            }*@
 
                                         if (item.WareHouseCode == warehouse.WareHouseCode && item.PermissionCode == Constants.PERMISSION_WAREHOUSE_REGISTERINOUTMANUAL)
                                         {
@@ -222,228 +219,228 @@
                                                 <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode)Bills">
                                                     <li>
                                                         <a href="/Bills/BillList">
-                                                            
+
                                                             Xử lí sự số <br>(cập nhật tay)
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="/commanddetail/UpdateFlag">
-                                                            
+
                                                             Xử lí sự số <br>(đưa về bắt đầu xuất)
                                                         </a>
-                                                    </li> 
+                                                    </li>
                                                 </ul>
                                             </li>
                                         }
                                     }
 
                                 </ul>
-							</li>
-						}
-						if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_TANK && it.WareHouseCode == warehouse.WareHouseCode)
-						{
-							<li>
-								<a href="#W@(warehouse.WareHouseCode)Tanks" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Tanks')" data-toggle="collapse" aria-expanded="false">
-									<i class="glyphicon glyphicon-oil"></i>
-									Bể (@Html.Action("GetTankCount", "Tank", new { wareHouseCode = it.WareHouseCode }))
-								</a>
+                            </li>
+                        }
+                        if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_TANK && it.WareHouseCode == warehouse.WareHouseCode)
+                        {
+                            <li>
+                                <a href="#W@(warehouse.WareHouseCode)Tanks" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Tanks')" data-toggle="collapse" aria-expanded="false">
+                                    <i class="glyphicon glyphicon-oil"></i>
+                                    Bể (@Html.Action("GetTankCount", "Tank", new { wareHouseCode = it.WareHouseCode }))
+                                </a>
 
-								<ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode)Tanks">
-									@{
-										var i = 0;
-										foreach (var tank in Model.TankList)
-										{
-											i++;
-											if (tank.WareHouseCode == warehouse.WareHouseCode)
-											{
-												<li>
-													<a href="#W@(warehouse.WareHouseCode +"Tank" + i.ToString())" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Tanks,#W@(warehouse.WareHouseCode +"Tank" + i.ToString())')" data-toggle="collapse" aria-expanded="false">
-														<i class="glyphicon glyphicon-oil"></i>
-														@tank.TankName
-													</a>
+                                <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode)Tanks">
+                                    @{
+                                        var i = 0;
+                                        foreach (var tank in Model.TankList)
+                                        {
+                                            i++;
+                                            if (tank.WareHouseCode == warehouse.WareHouseCode)
+                                            {
+                                                <li>
+                                                    <a href="#W@(warehouse.WareHouseCode +"Tank" + i.ToString())" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)Tanks,#W@(warehouse.WareHouseCode +"Tank" + i.ToString())')" data-toggle="collapse" aria-expanded="false">
+                                                        <i class="glyphicon glyphicon-oil"></i>
+                                                        @tank.TankName
+                                                    </a>
 
-													<ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode +"Tank" + i.ToString())">
-														<li>
-															@Html.ActionLink("Đo máy", "TankLive", "Tank", new { id = tank.TankId }, null)
-														</li>
-														<li>
-															@Html.ActionLink("Đo tay", "TankManual", "Tank", new { id = tank.TankId }, null)
-														</li>
-														<li>
-															@Html.ActionLink("Tỉ trọng", "Density", "Tank", new { id = tank.TankId }, null)
-														</li>
-													</ul>
-												</li>
+                                                    <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode +"Tank" + i.ToString())">
+                                                        <li>
+                                                            @Html.ActionLink("Đo máy", "TankLive", "Tank", new { id = tank.TankId }, null)
+                                                        </li>
+                                                        <li>
+                                                            @Html.ActionLink("Đo tay", "TankManual", "Tank", new { id = tank.TankId }, null)
+                                                        </li>
+                                                        <li>
+                                                            @Html.ActionLink("Tỉ trọng", "Density", "Tank", new { id = tank.TankId }, null)
+                                                        </li>
+                                                    </ul>
+                                                </li>
 
-											}
+                                            }
 
-										}
-									}
-								</ul>
-							</li>
-						}
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        }
 
-						if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_TANKGROUP && it.WareHouseCode == warehouse.WareHouseCode)
-						{
-							<li>
-								<a href="#W@(warehouse.WareHouseCode + "TankGroup")" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)TankGroup')" data-toggle="collapse" aria-expanded="false">
-									<i class="glyphicon glyphicon-oil"></i>
-									Nhóm Bể (@Html.Action("GetTankGrpCount", "TankGroup", new { wareHouseCode = it.WareHouseCode }))
-								</a>
-								<ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode + "TankGroup")">
-									@foreach (var tankGrp in Model.TankGroupList)
-									{
-										if (tankGrp.WareHouseCode == warehouse.WareHouseCode)
-										{
-											<li>
-												<a href="#W@(warehouse.WareHouseCode + "TankGroup" + tankGrp.TankGrpId)" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)TankGroup,#W@(warehouse.WareHouseCode + "TankGroup" + tankGrp.TankGrpId)')" data-toggle="collapse" aria-expanded="false">@tankGrp.TanktGrpName </a>
-												<ul id="W@(warehouse.WareHouseCode + "TankGroup" + tankGrp.TankGrpId)" class="collapse list-unstyled">
-													<li>
-														@Html.ActionLink("Dạng bảng", "Table", "TankGroup", new { id = tankGrp.TankGrpId }, null)
-													</li>
-													<li>
-														@Html.ActionLink(" Dạng trực quan", "Graphical", "TankGroup", new { id = tankGrp.TankGrpId }, null)
-													</li>
+                        if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_TANKGROUP && it.WareHouseCode == warehouse.WareHouseCode)
+                        {
+                            <li>
+                                <a href="#W@(warehouse.WareHouseCode + "TankGroup")" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)TankGroup')" data-toggle="collapse" aria-expanded="false">
+                                    <i class="glyphicon glyphicon-oil"></i>
+                                    Nhóm Bể (@Html.Action("GetTankGrpCount", "TankGroup", new { wareHouseCode = it.WareHouseCode }))
+                                </a>
+                                <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode + "TankGroup")">
+                                    @foreach (var tankGrp in Model.TankGroupList)
+                                    {
+                                        if (tankGrp.WareHouseCode == warehouse.WareHouseCode)
+                                        {
+                                            <li>
+                                                <a href="#W@(warehouse.WareHouseCode + "TankGroup" + tankGrp.TankGrpId)" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)TankGroup,#W@(warehouse.WareHouseCode + "TankGroup" + tankGrp.TankGrpId)')" data-toggle="collapse" aria-expanded="false">@tankGrp.TanktGrpName </a>
+                                                <ul id="W@(warehouse.WareHouseCode + "TankGroup" + tankGrp.TankGrpId)" class="collapse list-unstyled">
+                                                    <li>
+                                                        @Html.ActionLink("Dạng bảng", "Table", "TankGroup", new { id = tankGrp.TankGrpId }, null)
+                                                    </li>
+                                                    <li>
+                                                        @Html.ActionLink(" Dạng trực quan", "Graphical", "TankGroup", new { id = tankGrp.TankGrpId }, null)
+                                                    </li>
 
-												</ul>
-											</li>
+                                                </ul>
+                                            </li>
 
-										}
-									}
-								</ul>
-							</li>
+                                        }
+                                    }
+                                </ul>
+                            </li>
 
-						}
+                        }
 
-						if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_PRODUCT && it.WareHouseCode == warehouse.WareHouseCode)
-						{
-							<li>
-								<a href="#W@(warehouse.WareHouseCode + "products")" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)products')" data-toggle="collapse" aria-expanded="false">
-									<i class="glyphicon glyphicon-duplicate"></i>
-									Mặt hàng (@Html.Action("GetProductNumber", "Product"))
-								</a>
-								<ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode + "products")">
-									@foreach (var product in Model.ProductList)
-									{
+                        if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_PRODUCT && it.WareHouseCode == warehouse.WareHouseCode)
+                        {
+                            <li>
+                                <a href="#W@(warehouse.WareHouseCode + "products")" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)products')" data-toggle="collapse" aria-expanded="false">
+                                    <i class="glyphicon glyphicon-duplicate"></i>
+                                    Mặt hàng (@Html.Action("GetProductNumber", "Product"))
+                                </a>
+                                <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode + "products")">
+                                    @foreach (var product in Model.ProductList)
+                                    {
 
-										<li>
-											<a href="#W@(warehouse.WareHouseCode + "Products" + product.ProductId)" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)products,#W@(warehouse.WareHouseCode + "Products" + product.ProductId)')" data-toggle="collapse" aria-expanded="false">
-												<i class="glyphicon glyphicon-duplicate"></i>
-												@product.ProductName
-											</a>
+                                        <li>
+                                            <a href="#W@(warehouse.WareHouseCode + "Products" + product.ProductId)" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)products,#W@(warehouse.WareHouseCode + "Products" + product.ProductId)')" data-toggle="collapse" aria-expanded="false">
+                                                <i class="glyphicon glyphicon-duplicate"></i>
+                                                @product.ProductName
+                                            </a>
 
-											<ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode + "Products" + product.ProductId)">
-												<li>
-													@Html.ActionLink("Dạng bảng", "Table", "Product", new { id = product.ProductId }, null)
-												</li>
-												<li>
-													@Html.ActionLink(" Dạng trực quan", "Graphical", "Product", new { id = product.ProductId }, null)
-												</li>
+                                            <ul class="collapse list-unstyled" id="W@(warehouse.WareHouseCode + "Products" + product.ProductId)">
+                                                <li>
+                                                    @Html.ActionLink("Dạng bảng", "Table", "Product", new { id = product.ProductId }, null)
+                                                </li>
+                                                <li>
+                                                    @Html.ActionLink(" Dạng trực quan", "Graphical", "Product", new { id = product.ProductId }, null)
+                                                </li>
 
-											</ul>
-										</li>
-									}
-								</ul>
-							</li>
-						}
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
 
-						if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_CONFIGARM && it.WareHouseCode == warehouse.WareHouseCode)
-						{
-							<li>
-								<a href="#W@(warehouse.WareHouseCode + "configarms")" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)configarms')" data-toggle="collapse" aria-expanded="false">
-									<i class="glyphicon glyphicon-duplicate"></i>
-									Họng xuất (@Html.Action("GetConfigArmNumber", "ConfigArm", new { wareHouseCode = it.WareHouseCode }))
-								</a>
+                        if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_CONFIGARM && it.WareHouseCode == warehouse.WareHouseCode)
+                        {
+                            <li>
+                                <a href="#W@(warehouse.WareHouseCode + "configarms")" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode)configarms')" data-toggle="collapse" aria-expanded="false">
+                                    <i class="glyphicon glyphicon-duplicate"></i>
+                                    Họng xuất (@Html.Action("GetConfigArmNumber", "ConfigArm", new { wareHouseCode = it.WareHouseCode }))
+                                </a>
 
-								<ul id="W@(warehouse.WareHouseCode + "configarms")" class="collapse list-unstyled">
-									<li>
+                                <ul id="W@(warehouse.WareHouseCode + "configarms")" class="collapse list-unstyled">
+                                    <li>
 
-										@Html.ActionLink("Dạng bảng", "IndexSearch", "LiveDataArm")
-									</li>
-									<li>
-										@Html.ActionLink("Dạng trực quan", "IndexVisual", "LoadingArm")
-									</li>
-									@*<li>
-											@Html.ActionLink("Dạng trực quan một bể", "IndexVisualWareHouse", "LoadingArm")
-										</li>*@
-									<li>
-										@Html.ActionLink("Theo trạng thái", "DisplayCommandStatus", "CommandDetail")
-									</li>
-									<li>
-										@Html.ActionLink("Tỷ trọng", "Index", "Density")
-									</li>
-								</ul>
-							</li>
+                                        @Html.ActionLink("Dạng bảng", "IndexSearch", "LiveDataArm")
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Dạng trực quan", "IndexVisual", "LoadingArm")
+                                    </li>
+                                    @*<li>
+                                            @Html.ActionLink("Dạng trực quan một bể", "IndexVisualWareHouse", "LoadingArm")
+                                        </li>*@
+                                    <li>
+                                        @Html.ActionLink("Theo trạng thái", "DisplayCommandStatus", "CommandDetail")
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Tỷ trọng", "Index", "Density")
+                                    </li>
+                                </ul>
+                            </li>
 
-						}
+                        }
 
-						@*if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_CONFIGARMGROUP && it.WareHouseCode == warehouse.WareHouseCode)
-						{
-							<li>
-								<a href="#W@(warehouse.WareHouseCode + "ConfigArmGroup")" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode + "ConfigArmGroup")')" data-toggle="collapse" aria-expanded="false">
-									<i class="glyphicon glyphicon-duplicate"></i>
-									Nhóm Họng Xuất (@Html.Action("GetCongifArmGrpNumber", "ConfigArmGroup"))
-								</a>
-								<ul id="W@(warehouse.WareHouseCode + "ConfigArmGroup")" class="collapse list-unstyled">
-									@foreach (var configArmGrp in Model.ConfigArmGroupList)
-									{
-										if (configArmGrp.WareHouseCode == warehouse.WareHouseCode)
-										{
-											<li>
-												<a href="#W@(warehouse.WareHouseCode + "ConfigArmGroup" + configArmGrp.ConfigArmGrpId)" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode + "ConfigArmGroup"),#W@(warehouse.WareHouseCode + "ConfigArmGroup" + configArmGrp.ConfigArmGrpId)')" data-toggle="collapse" aria-expanded="false">@configArmGrp.ConfigArmName </a>
-												<ul id="W@(warehouse.WareHouseCode + "ConfigArmGroup" + configArmGrp.ConfigArmGrpId)" class="collapse list-unstyled">
-													<li>
-														@Html.ActionLink("Dạng bảng", "Table", "LiveDataArm", new { configarmGroupId = configArmGrp.ConfigArmGrpId }, null)
-													</li>
-													<li>
-														@Html.ActionLink(" Dạng trực quan", "Graphical", "LiveDataArm", new { configarmGroupId = configArmGrp.ConfigArmGrpId }, null)
-													</li>
+                        @*if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_CONFIGARMGROUP && it.WareHouseCode == warehouse.WareHouseCode)
+                            {
+                                <li>
+                                    <a href="#W@(warehouse.WareHouseCode + "ConfigArmGroup")" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode + "ConfigArmGroup")')" data-toggle="collapse" aria-expanded="false">
+                                        <i class="glyphicon glyphicon-duplicate"></i>
+                                        Nhóm Họng Xuất (@Html.Action("GetCongifArmGrpNumber", "ConfigArmGroup"))
+                                    </a>
+                                    <ul id="W@(warehouse.WareHouseCode + "ConfigArmGroup")" class="collapse list-unstyled">
+                                        @foreach (var configArmGrp in Model.ConfigArmGroupList)
+                                        {
+                                            if (configArmGrp.WareHouseCode == warehouse.WareHouseCode)
+                                            {
+                                                <li>
+                                                    <a href="#W@(warehouse.WareHouseCode + "ConfigArmGroup" + configArmGrp.ConfigArmGrpId)" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode + "ConfigArmGroup"),#W@(warehouse.WareHouseCode + "ConfigArmGroup" + configArmGrp.ConfigArmGrpId)')" data-toggle="collapse" aria-expanded="false">@configArmGrp.ConfigArmName </a>
+                                                    <ul id="W@(warehouse.WareHouseCode + "ConfigArmGroup" + configArmGrp.ConfigArmGrpId)" class="collapse list-unstyled">
+                                                        <li>
+                                                            @Html.ActionLink("Dạng bảng", "Table", "LiveDataArm", new { configarmGroupId = configArmGrp.ConfigArmGrpId }, null)
+                                                        </li>
+                                                        <li>
+                                                            @Html.ActionLink(" Dạng trực quan", "Graphical", "LiveDataArm", new { configarmGroupId = configArmGrp.ConfigArmGrpId }, null)
+                                                        </li>
 
-												</ul>
-											</li>
-										}
-									}
-								</ul>
-							</li>
-						}*@
+                                                    </ul>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </li>
+                            }*@
 
-						if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_IMPORTPRODUCT && it.WareHouseCode == warehouse.WareHouseCode)
-						{
-							<li>
-								<a href="#W@(warehouse.WareHouseCode + "imports")" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode + "imports")')" data-toggle="collapse" aria-expanded="false">
-									<i class="glyphicon glyphicon-download"></i>
-									Nhập hàng
-								</a>
-								<ul id="W@(warehouse.WareHouseCode + "imports")" class="collapse list-unstyled">
-									<li>
-										@Html.ActionLink("Danh sách nhập hàng", "Index", "Import")
-									</li>
-								</ul>
-							</li>
+                        if (it.PermissionCode == Constants.PERMISSION_WAREHOUSE_IMPORTPRODUCT && it.WareHouseCode == warehouse.WareHouseCode)
+                        {
+                            <li>
+                                <a href="#W@(warehouse.WareHouseCode + "imports")" onclick="setCookie('#W@(warehouse.WareHouseCode)mnu,#W@(warehouse.WareHouseCode + "imports")')" data-toggle="collapse" aria-expanded="false">
+                                    <i class="glyphicon glyphicon-download"></i>
+                                    Nhập hàng
+                                </a>
+                                <ul id="W@(warehouse.WareHouseCode + "imports")" class="collapse list-unstyled">
+                                    <li>
+                                        @Html.ActionLink("Danh sách nhập hàng", "Index", "Import")
+                                    </li>
+                                </ul>
+                            </li>
 
-						}
-						@*if (Model.HasPermissionImport)
-							{
-								<li>
-									<a data-target="#imports"><span class="fa-stack fa-lg pull-left"><img src="~/Content/images/icon/resize/4_icon_product.jpg" /></span>Nhập hàng</a>
-									<ul id="imports"  class="collapse list-unstyled">
-										<li>
-											@Html.ActionLink("Danh sách nhập hàng", "Index", "Import")
-										</li>
-									</ul>
-								</li>
+                        }
+                        @*if (Model.HasPermissionImport)
+                            {
+                                <li>
+                                    <a data-target="#imports"><span class="fa-stack fa-lg pull-left"><img src="~/Content/images/icon/resize/4_icon_product.jpg" /></span>Nhập hàng</a>
+                                    <ul id="imports"  class="collapse list-unstyled">
+                                        <li>
+                                            @Html.ActionLink("Danh sách nhập hàng", "Index", "Import")
+                                        </li>
+                                    </ul>
+                                </li>
 
-							}*@
-					}
+                            }*@
+                    }
 
-				</ul>
+                </ul>
 
-			</li>
-		}
-		@if (Model.HasPermissionReport)
-		{
-			foreach (var warehouse in Model.WarehouseList)
-			{
+            </li>
+        }
+        @if (Model.HasPermissionReport)
+        {
+            foreach (var warehouse in Model.WarehouseList)
+            {
                 <li>
                     <a href="#reports" onclick="setCookie('#reports')" data-toggle="collapse" aria-expanded="false">
                         <i class="glyphicon glyphicon-list-alt"></i>
@@ -543,95 +540,95 @@
                                         </li>
                                     </ul>
                                 </li>
-                             }
-						 }
+                            }
+                        }
                     </ul>
                 </li>
-			}
-		}
+            }
+        }
 
-		@if (Model.HasPermissionChart)
-		{
-			<li>
-				<a href="#charts" onclick="setCookie('#charts')" data-toggle="collapse" aria-expanded="false">
-					<i class="fa fa-line-chart"></i>
-					Đồ thị
-				</a>
-				<ul id="charts" class="collapse list-unstyled">
+        @if (Model.HasPermissionChart)
+        {
+            <li>
+                <a href="#charts" onclick="setCookie('#charts')" data-toggle="collapse" aria-expanded="false">
+                    <i class="fa fa-line-chart"></i>
+                    Đồ thị
+                </a>
+                <ul id="charts" class="collapse list-unstyled">
 
-					@if (Model.HasPermissionChart_LIVECHART == true)
-					{
-						<li>
-							@Html.ActionLink("Thời gian thực đo bể", "LiveChart", "Chart")
-						</li>
-					}
-					@if (Model.HasPermissionChart_HISTORICALCHART == true)
-					{
-						<li>
-							@Html.ActionLink("Lịch sử đo bể", "HistoricalChart", "Chart")
-						</li>
-					}
+                    @if (Model.HasPermissionChart_LIVECHART == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Thời gian thực đo bể", "LiveChart", "Chart")
+                        </li>
+                    }
+                    @if (Model.HasPermissionChart_HISTORICALCHART == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Lịch sử đo bể", "HistoricalChart", "Chart")
+                        </li>
+                    }
 
-					@if (Model.HasPermissionChart_LIVECHARTEXPORT == true)
-					{
-						<li>
-							@Html.ActionLink("Thời gian thực bến xuất", "LiveChartExport", "Chart")
-						</li>
-					}
+                    @if (Model.HasPermissionChart_LIVECHARTEXPORT == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Thời gian thực bến xuất", "LiveChartExport", "Chart")
+                        </li>
+                    }
 
-					@if (Model.HasPermissionChart_HISTORICALCHARTEXPORT == true)
-					{
-						<li>
-							@Html.ActionLink("Lịch sử bến xuất", "HistoricalChartExport", "Chart")
-						</li>
-					}
+                    @if (Model.HasPermissionChart_HISTORICALCHARTEXPORT == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Lịch sử bến xuất", "HistoricalChartExport", "Chart")
+                        </li>
+                    }
 
-					@if (Model.HasPermissionChart_TANKTURNOVER == true)
-					{
-						<li>
-							@Html.ActionLink("Vòng quay bể và kho", "TankTurnOver", "Chart")
-						</li>
-					}
+                    @if (Model.HasPermissionChart_TANKTURNOVER == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Vòng quay bể và kho", "TankTurnOver", "Chart")
+                        </li>
+                    }
 
-					@if (Model.HasPermissionChart_EXPORTERROR == true)
-					{
-						<li>
-							@Html.ActionLink("Sai số các mẻ xuất", "ExportError", "Chart")
-						</li>
-					}
+                    @if (Model.HasPermissionChart_EXPORTERROR == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Sai số các mẻ xuất", "ExportError", "Chart")
+                        </li>
+                    }
 
-					@if (Model.HasPermissionChart_DIFFEXPORTBYDAY == true)
-					{
-						<li>
-							@Html.ActionLink("Chênh lệch xuất theo ngày", "DiffExportByDay", "Chart")
-						</li>
-					}
+                    @if (Model.HasPermissionChart_DIFFEXPORTBYDAY == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Chênh lệch xuất theo ngày", "DiffExportByDay", "Chart")
+                        </li>
+                    }
 
-					@if (Model.HasPermissionChart_USAGEPERFORMANCE == true)
-					{
-						<li>
-							@Html.ActionLink("Hiệu suất sử dụng", "UsagePerformance", "Chart")
-						</li>
-					}
-					@if (Model.HasPermissionChart_PRODUCTSKPI == true)
-					{
-						<li>
-							@Html.ActionLink("Tỷ lệ hàng hóa", "ProductsKPI", "Chart")
-						</li>
-					}
+                    @if (Model.HasPermissionChart_USAGEPERFORMANCE == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Hiệu suất sử dụng", "UsagePerformance", "Chart")
+                        </li>
+                    }
+                    @if (Model.HasPermissionChart_PRODUCTSKPI == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Tỷ lệ hàng hóa", "ProductsKPI", "Chart")
+                        </li>
+                    }
 
 
-				</ul>
-			</li>
-		}
+                </ul>
+            </li>
+        }
 
-		@if (Model.HasPermissionConfigGeneral)
-		{
-			<li>
-				<a href="#ListGeneral" onclick="setCookie('#ListGeneral')" data-toggle="collapse" aria-expanded="false">
-					<i class="glyphicon glyphicon-cog"></i>
-					Cấu hình chung
-				</a>
+        @if (Model.HasPermissionConfigGeneral)
+        {
+            <li>
+                <a href="#ListGeneral" onclick="setCookie('#ListGeneral')" data-toggle="collapse" aria-expanded="false">
+                    <i class="glyphicon glyphicon-cog"></i>
+                    Cấu hình chung
+                </a>
                 <ul id="ListGeneral" class="collapse list-unstyled">
                     @foreach (var it in Model.PermissionGeneralList)
                     {
@@ -710,106 +707,117 @@
                                 @Html.ActionLink("Danh mục Địa điểm", "Index", "Location")
                             </li>
                         }
+                        if (!hasRenderedSignMenu)
+                        {
+                            <li>
+                                <a href="/Image/ImageList">
+                                    Danh mục chữ ký
+                                </a>
+                            </li>
+
+                            hasRenderedSignMenu = true;
+
+                        }
                     }
 
                 </ul>
-			</li>
+            </li>
 
-		}
+        }
 
-		@if (Model.HasPermissionConfigPositionWareHouse)
-		{
-			<li>
-				<a href="#tank" onclick="setCookie('#tank')" data-toggle="collapse" aria-expanded="false">
-					<i class="glyphicon glyphicon-cog"></i>
-					Cấu hình tại Kho
-				</a>
-				<ul id="tank" class="collapse list-unstyled">
+        @if (Model.HasPermissionConfigPositionWareHouse)
+        {
+            <li>
+                <a href="#tank" onclick="setCookie('#tank')" data-toggle="collapse" aria-expanded="false">
+                    <i class="glyphicon glyphicon-cog"></i>
+                    Cấu hình tại Kho
+                </a>
+                <ul id="tank" class="collapse list-unstyled">
 
-					@foreach (var it in Model.PermissionPositionWareHouseList)
-					{
-						if (Constants.PERMISSION_CONFIGPOSITIONTANK == it.PermissionCode)
-						{
-							<li>
-								@Html.ActionLink("Bể", "Index", "Tank")
-							</li>
-						}
+                    @foreach (var it in Model.PermissionPositionWareHouseList)
+                    {
+                        if (Constants.PERMISSION_CONFIGPOSITIONTANK == it.PermissionCode)
+                        {
+                            <li>
+                                @Html.ActionLink("Bể", "Index", "Tank")
+                            </li>
+                        }
 
-						if (Constants.PERMISSION_CONFIGPOSITIONTANKGROUP == it.PermissionCode)
-						{
-							<li>
-								@Html.ActionLink("Nhóm bể", "Index", "TankGroup")
-							</li>
-						}
+                        if (Constants.PERMISSION_CONFIGPOSITIONTANKGROUP == it.PermissionCode)
+                        {
+                            <li>
+                                @Html.ActionLink("Nhóm bể", "Index", "TankGroup")
+                            </li>
+                        }
 
-						if (Constants.PERMISSION_CONFIGPOSITIONTANKDISPLAY == it.PermissionCode)
-						{
-							<li>
-								@Html.ActionLink("Chọn trường hiển thị Bể", "SelectFields", "Configuration")
-							</li>
-						}
-						if (Constants.PERMISSION_CONFIGPOSITIONCONFIGARM == it.PermissionCode)
-						{
-							<li>
-								@Html.ActionLink("Họng xuất", "Index", "ConfigArm")
-							</li>
-						}
+                        if (Constants.PERMISSION_CONFIGPOSITIONTANKDISPLAY == it.PermissionCode)
+                        {
+                            <li>
+                                @Html.ActionLink("Chọn trường hiển thị Bể", "SelectFields", "Configuration")
+                            </li>
+                        }
+                        if (Constants.PERMISSION_CONFIGPOSITIONCONFIGARM == it.PermissionCode)
+                        {
+                            <li>
+                                @Html.ActionLink("Họng xuất", "Index", "ConfigArm")
+                            </li>
+                        }
 
-						if (Constants.PERMISSION_CONFIGPOSITIONCONFIGARMGROUP == it.PermissionCode)
-						{
-							<li>
-								@Html.ActionLink("Nhóm Họng xuất", "Index", "ConfigArmGroup")
-							</li>
-						}
+                        if (Constants.PERMISSION_CONFIGPOSITIONCONFIGARMGROUP == it.PermissionCode)
+                        {
+                            <li>
+                                @Html.ActionLink("Nhóm Họng xuất", "Index", "ConfigArmGroup")
+                            </li>
+                        }
 
-						if (Constants.PERMISSION_CONFIGPOSITIONCONFIGARMDISPLAY == it.PermissionCode)
-						{
-							<li>
-								@Html.ActionLink("Chọn trường hiển thị Họng", "SelectedConfigArmFields", "Configuration")
-							</li>
-						}
+                        if (Constants.PERMISSION_CONFIGPOSITIONCONFIGARMDISPLAY == it.PermissionCode)
+                        {
+                            <li>
+                                @Html.ActionLink("Chọn trường hiển thị Họng", "SelectedConfigArmFields", "Configuration")
+                            </li>
+                        }
 
-						if (Constants.PERMISSION_CONFIGPOSITIONCARD == it.PermissionCode)
-						{
-							<li>
-								@Html.ActionLink("Danh mục Thẻ", "Index", "Card")
-							</li>
-						}
-						if (Constants.PERMISSION_CONFIGPOSITIONWARMINGEVENT == it.PermissionCode)
-						{
-							<li>
-								@Html.ActionLink("Âm thanh cảnh báo", "SoundAlarm", "Configuration")
-							</li>
-						}
-						if (Constants.PERMISSION_CONFIGPOSITIONEXPORTMODE == it.PermissionCode)
-						{
-							<li>
-								@Html.ActionLink("Xuất hàng bằng thẻ /Xuất hàng bằng lệnh xuất", "ExportMode", "Configuration")
-							</li>
-						}
-					}
+                        if (Constants.PERMISSION_CONFIGPOSITIONCARD == it.PermissionCode)
+                        {
+                            <li>
+                                @Html.ActionLink("Danh mục Thẻ", "Index", "Card")
+                            </li>
+                        }
+                        if (Constants.PERMISSION_CONFIGPOSITIONWARMINGEVENT == it.PermissionCode)
+                        {
+                            <li>
+                                @Html.ActionLink("Âm thanh cảnh báo", "SoundAlarm", "Configuration")
+                            </li>
+                        }
+                        if (Constants.PERMISSION_CONFIGPOSITIONEXPORTMODE == it.PermissionCode)
+                        {
+                            <li>
+                                @Html.ActionLink("Xuất hàng bằng thẻ /Xuất hàng bằng lệnh xuất", "ExportMode", "Configuration")
+                            </li>
+                        }
+                    }
 
-				</ul>
-			</li>
-		}
+                </ul>
+            </li>
+        }
 
 
-		@if (Model.HasPermissionManagement)
-		{
-			<li>
-				<a href="#admins" onclick="setCookie('#admins');" data-toggle="collapse" aria-expanded="false">
-					<img src="~/Content/images/icon/resize/IconManagement.png" />   Quản trị hệ thống
-				</a>
-				<ul id="admins" class="collapse list-unstyled">
-					<li>
-						@Html.ActionLink("Người dùng", "Index", "UserManagement")
-					</li>
-					<li>
-						@Html.ActionLink("Nhóm người dùng", "Index", "UserGroupManagement")
-					</li>
-				</ul>
-			</li>
-		}
-	</ul>
+        @if (Model.HasPermissionManagement)
+        {
+            <li>
+                <a href="#admins" onclick="setCookie('#admins');" data-toggle="collapse" aria-expanded="false">
+                    <img src="~/Content/images/icon/resize/IconManagement.png" />   Quản trị hệ thống
+                </a>
+                <ul id="admins" class="collapse list-unstyled">
+                    <li>
+                        @Html.ActionLink("Người dùng", "Index", "UserManagement")
+                    </li>
+                    <li>
+                        @Html.ActionLink("Nhóm người dùng", "Index", "UserGroupManagement")
+                    </li>
+                </ul>
+            </li>
+        }
+    </ul>
 
 </nav>

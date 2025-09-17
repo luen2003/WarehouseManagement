@@ -50,6 +50,9 @@
                     <td>@item.ProcessStatus</td>
                     <td>
                         @Html.ActionLink("Sửa", "EditImage", new { id = item.ID }, new { @class = "btn btn-warning btn-sm" })
+                        <button class="btn btn-danger btn-sm" onclick="deleteImage(@item.ID)">
+                            Xóa
+                        </button>
                     </td>
                 </tr>
             }
@@ -62,3 +65,26 @@
         }
     </tbody>
 </table>
+@section Scripts {
+    <script>
+        function deleteImage(id) {
+            if (!confirm("Bạn có chắc chắn muốn xóa ảnh này?")) {
+                return;
+            }
+
+            $.ajax({
+                url: '/Image/DeleteImage/',
+                type: 'POST',
+                data: { id: id },
+                success: function () {
+                    // Reload trang để cập nhật danh sách ảnh
+                    window.location.reload();
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi khi xóa ảnh.");
+                }
+            });
+        }
+    </script>
+}
+

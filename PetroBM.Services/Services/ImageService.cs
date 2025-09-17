@@ -169,7 +169,8 @@ namespace PetroBM.Services.Services
         public bool DeleteImage(int id)
         {
             log.Info($"DeleteImage called for id={id}");
-            var rs = false;
+            var result = false;
+
             try
             {
                 var image = imageRepository.GetById(id);
@@ -179,21 +180,22 @@ namespace PetroBM.Services.Services
                     return false;
                 }
 
-                using (TransactionScope ts = new TransactionScope())
+                using (var ts = new TransactionScope())
                 {
-                    // Instead of physical delete, set DeleteFlg = 1 (soft delete)
-                    imageRepository.Update(image);
-                    unitOfWork.Commit();
-                    ts.Complete();
-                    rs = true;
+                    imageRepository.Delete(image);         // Xóa khỏi repository
+                    unitOfWork.Commit();                   // Lưu vào DB
+                    ts.Complete();                         // Hoàn tất transaction
+                    result = true;
+                    log.Info($"DeleteImage: Image id={id} deleted successfully");
                 }
-
             }
             catch (Exception ex)
             {
-                log.Error("Error in DeleteImage", ex);
+                log.Error($"Error deleting image id={id}", ex);
             }
-            return rs;
+
+            return result;
         }
+
     }
 }
