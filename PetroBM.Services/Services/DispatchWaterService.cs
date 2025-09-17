@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Linq;
 using System.Transactions;
 using System.Web;
+using System.Web.Util;
 
 namespace PetroBM.Services.Services
 {
@@ -41,6 +42,8 @@ namespace PetroBM.Services.Services
         string GetTransactionId(int dispatchId);
 
         void UpdateTransactionId(int dispatchId, string transactionId);
+
+        bool UpdateProcessStatusById(int dispatchId);
 
     }
 
@@ -479,6 +482,43 @@ namespace PetroBM.Services.Services
                 log.Error($"Lỗi khi cập nhật TransactionId cho DispatchID {dispatchId}: {ex}");
                 throw; // có thể throw lên để controller xử lý
             }
+        }
+
+        public bool UpdateProcessStatusById(int dispatchId)
+        {
+            var rs = false;
+
+            try
+            {
+                using (var context = new PetroBMContext())
+                {
+                    using (var conn = new SqlConnection(context.Database.Connection.ConnectionString))
+                    {
+                        conn.Open();
+                        using (var cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = "Update_ProcessStatus_DispatchWater_ByID";
+                            cmd.CommandType = CommandType.StoredProcedure;
+
+                            cmd.Parameters.Add(new SqlParameter("DispatchID", dispatchId));
+
+                            cmd.ExecuteNonQuery();
+                            rs = true;
+                        }
+                        conn.Close();
+                    }
+                }
+
+                // Log event (nếu muốn)
+                eventService.CreateEvent(Constants.EVENT_TYPE_MANAGEMENT,
+                    Constants.EVENT_CONFIG_COMMAND_UPDATE, $"Cập nhật ProcessStatus cho DispatchID {dispatchId}");
+            }
+            catch (Exception ex)
+            {
+                log.Error($"Lỗi khi cập nhật ProcessStatus cho DispatchID {dispatchId}: {ex}");
+                throw; // có thể throw lên để controller xử lý
+            }
+            return rs;
         }
     }
 }

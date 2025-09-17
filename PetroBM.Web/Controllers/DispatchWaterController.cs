@@ -880,6 +880,13 @@ namespace PetroBM.Web.Controllers
             rs = DispatchWaterService.DeleteDispatch(dispatchId);
             return rs;
         }
+        public bool UpdateProcessStatusById(int dispatchId)
+        {
+            var rs = false;
+            rs = DispatchWaterService.UpdateProcessStatusById(dispatchId);
+            return rs;
+        }
+
 
         public bool UpdateWaterDispatch(int dispatchId, string timeStart, string timeStop, string vehicle, string product, string driverName1, string driverName2, string dstPickup1, string dstPickup2, string department, string note, string remark, string dstReceive, string From, string To, string Paragraph1, string Paragraph2, string Paragraph3, string Paragraph4, string user)
         {

@@ -152,46 +152,46 @@
                 foreach (var item in Model.ListIEDispatch.Where(x => x.ProcessStatus == 0))
                 {
                     i = i + 1;
-                    <tr>
-                        <td class="text-center">
-                            <a href="../DispatchWater/DispatchWaterView/@item.DispatchID">
-                                @Html.DisplayFor(modelItem =>
-item.CertificateNumber)
-                            </a>
-                        </td>
-                        <td>
-                            @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.VehicleNumber)
-                        </td>
+                        <tr>
+                            <td class="text-center">
+                                <a href="../DispatchWater/DispatchWaterView/@item.DispatchID">
+                                    @Html.DisplayFor(modelItem =>
+    item.CertificateNumber)
+                                </a>
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.TimeOrder).ToString(Constants.DATE_FORMAT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VehicleNumber)
+                            </td>
 
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Department)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DstPickup1)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DstPickup2)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DstReceive)
-                        </td>
-                        @*<td class="text-center">
-                            <img style='max-width: 30px' src='/Content/images/send-message.png' alt="Send"
-                                 onclick="openCountdownTab()" />
-                        </td>*@
-                        <td class="text-center">
-                            <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.DispatchID);"
-                                 src='/Content/images/print.png' />
-                        </td>
-                        <td class="text-center">
-                            <img style='max-width: 30px' onclick="DeleteDispatch(@item.DispatchID);"
-                                 src='/Content/images/Delete.png' />
-                        </td>
-                    </tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Department)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DstPickup1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DstPickup2)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DstReceive)
+                            </td>
+                            <td class="text-center">
+                                <img style='max-width: 30px' src='/Content/images/send-message.png' alt="Send"
+                                     onclick="openCountdownTab(); UpdateProcessStatusById(@item.DispatchID);" />
+                            </td>
+                            <td class="text-center">
+                                <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.DispatchID);"
+                                     src='/Content/images/print.png' />
+                            </td>
+                            <td class="text-center">
+                                <img style='max-width: 30px' onclick="DeleteDispatch(@item.DispatchID);"
+                                     src='/Content/images/Delete.png' />
+                            </td>
+                        </tr>
 
                 }
             }
@@ -316,6 +316,26 @@ item.CertificateNumber)
             var stt = '';
             $.ajax({
                 url: '/DispatchWater/DeleteWaterDispatch/',
+                type: 'POST',
+                data: {
+                    "DispatchID": dispatchID
+                },
+                dataType: 'bool',
+                success: function (result) {
+                    if (result = true) {
+                        update = 1;
+                        console.log(update);
+                    }
+                }
+            });
+            setTimeout(function () {
+                window.location.reload();
+            }, 500);
+        }
+        function UpdateProcessStatusById(dispatchID) {
+            var stt = '';
+            $.ajax({
+                url: '/DispatchWater/UpdateProcessStatusById/',
                 type: 'POST',
                 data: {
                     "DispatchID": dispatchID

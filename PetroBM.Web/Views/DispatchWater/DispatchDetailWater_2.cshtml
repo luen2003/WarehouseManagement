@@ -163,7 +163,7 @@
             </td>
             <td class="text-center">
                 <img style='max-width: 30px' src='/Content/images/send-message.png' alt="Send"
-                     onclick="openCountdownTab()" />
+                     onclick="openCountdownTab(); UpdateProcessStatusById(@item.DispatchID);" />
             </td>
             <td class="text-center">
                 <img style='max-width: 30px' onclick="PrintInventoryOutput(@item.DispatchID);"
@@ -295,6 +295,26 @@
         var stt = '';
         $.ajax({
             url: '/DispatchWater/DeleteWaterDispatch/',
+            type: 'POST',
+            data: {
+                "DispatchID": dispatchID
+            },
+            dataType: 'bool',
+            success: function (result) {
+                if (result = true) {
+                    update = 1;
+                    console.log(update);
+                }
+            }
+        });
+        setTimeout(function () {
+            window.location.reload();
+        }, 500);
+    }
+    function UpdateProcessStatusById(dispatchID) {
+        var stt = '';
+        $.ajax({
+            url: '/DispatchWater/UpdateProcessStatusById/',
             type: 'POST',
             data: {
                 "DispatchID": dispatchID
