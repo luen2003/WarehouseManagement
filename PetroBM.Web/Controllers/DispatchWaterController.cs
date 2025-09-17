@@ -372,7 +372,7 @@ namespace PetroBM.Web.Controllers
             bool checkPermission = baseService.CheckPermission(HttpContext.User.Identity.Name, Constants.PERMISSION_WAREHOUSE_REGISTERDISPATCH);
             if (true)
             {
-                int pageNumber = (page ?? 1);
+                int pageNumber = page ?? 1;
                 log.Info("start controller command commandView");
                 var startdate = !string.IsNullOrEmpty(DispatchWaterModel.StartDate)
     ? DateTime.ParseExact(DispatchWaterModel.StartDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture)
@@ -483,7 +483,7 @@ namespace PetroBM.Web.Controllers
             bool checkPermission = baseService.CheckPermission(HttpContext.User.Identity.Name, Constants.PERMISSION_WAREHOUSE_REGISTERDISPATCH);
             if (true)
             {
-                int pageNumber = (page ?? 1);
+                int pageNumber = page ?? 1;
                 log.Info("start controller command commandView");
                 var startdate = !string.IsNullOrEmpty(DispatchWaterModel.StartDate)
     ? DateTime.ParseExact(DispatchWaterModel.StartDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture)
@@ -594,7 +594,7 @@ namespace PetroBM.Web.Controllers
             bool checkPermission = baseService.CheckPermission(HttpContext.User.Identity.Name, Constants.PERMISSION_WAREHOUSE_REGISTERDISPATCH);
             if (true)
             {
-                int pageNumber = (page ?? 1);
+                int pageNumber = page ?? 1;
                 log.Info("start controller command commandView");
                 var startdate = !string.IsNullOrEmpty(DispatchWaterModel.StartDate)
     ? DateTime.ParseExact(DispatchWaterModel.StartDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture)
@@ -705,7 +705,7 @@ namespace PetroBM.Web.Controllers
             bool checkPermission = baseService.CheckPermission(HttpContext.User.Identity.Name, Constants.PERMISSION_WAREHOUSE_REGISTERDISPATCH);
             if (true)
             {
-                int pageNumber = (page ?? 1);
+                int pageNumber = page ?? 1;
                 log.Info("start controller command commandView");
                 var startdate = !string.IsNullOrEmpty(DispatchWaterModel.StartDate)
     ? DateTime.ParseExact(DispatchWaterModel.StartDate, Constants.DATE_FORMAT, CultureInfo.InvariantCulture)
