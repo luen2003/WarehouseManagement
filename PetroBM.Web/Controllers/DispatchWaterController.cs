@@ -187,7 +187,7 @@ namespace PetroBM.Web.Controllers
         {
             log.Info("Start controller RegisterDispatch");
             bool checkPermission = baseService.CheckPermission(HttpContext.User.Identity.Name, Constants.PERMISSION_WAREHOUSE_MANUAL);
-            if (true)
+            if (checkPermission)
             {
                 DispatchWaterModel.Dispatch.TimeOrder = DateTime.Now;
                 DispatchWaterModel.ListProduct = ProductService.GetAllProduct().ToList();
@@ -370,7 +370,7 @@ namespace PetroBM.Web.Controllers
         {
 
             bool checkPermission = baseService.CheckPermission(HttpContext.User.Identity.Name, Constants.PERMISSION_WAREHOUSE_REGISTERDISPATCH);
-            if (true)
+            if (checkPermission)
             {
                 int pageNumber = page ?? 1;
                 log.Info("start controller command commandView");
@@ -481,7 +481,7 @@ namespace PetroBM.Web.Controllers
         {
 
             bool checkPermission = baseService.CheckPermission(HttpContext.User.Identity.Name, Constants.PERMISSION_WAREHOUSE_REGISTERDISPATCH);
-            if (true)
+            if (checkPermission)
             {
                 int pageNumber = page ?? 1;
                 log.Info("start controller command commandView");
@@ -592,7 +592,7 @@ namespace PetroBM.Web.Controllers
         {
 
             bool checkPermission = baseService.CheckPermission(HttpContext.User.Identity.Name, Constants.PERMISSION_WAREHOUSE_REGISTERDISPATCH);
-            if (true)
+            if (checkPermission)
             {
                 int pageNumber = page ?? 1;
                 log.Info("start controller command commandView");
@@ -703,7 +703,7 @@ namespace PetroBM.Web.Controllers
         {
 
             bool checkPermission = baseService.CheckPermission(HttpContext.User.Identity.Name, Constants.PERMISSION_WAREHOUSE_REGISTERDISPATCH);
-            if (true)
+            if (checkPermission)
             {
                 int pageNumber = page ?? 1;
                 log.Info("start controller command commandView");
