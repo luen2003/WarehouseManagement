@@ -17,6 +17,7 @@ using System.Resources;
 using System.Web;
 using System.Web.Mvc;
 using System.Windows.Threading;
+using System.Data.SqlClient;
 
 namespace PetroBM.Web.Controllers
 {
@@ -87,6 +88,67 @@ namespace PetroBM.Web.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+
+        [HttpGet]
+        public ActionResult HistoryDetail(int dispatchId, int versionNo)
+        {
+            const string sql = @"
+            SELECT
+                DispatchID,
+                CertificateNumber,
+                TimeOrder,
+                CertificateTime,
+                TimeStart,
+                TimeStop,
+                VehicleNumber,
+                DriverName1,
+                DriverName2,
+                ProductCode,
+                Department,
+                DstPickup1,
+                DstPickup2,
+                DstReceive,
+                Note1,
+                Note2,
+                Remark,
+                [Status],
+                InsertDate,
+                InsertUser,
+                UpdateDate,
+                UpdateUser,
+                VersionNo,
+                DeleteFlg,
+                [From],
+                [To],
+                Paragraph1,
+                Paragraph2,
+                Paragraph3,
+                Paragraph4,
+                ProcessStatus,
+                SysU,
+                SysD,
+                TransactionId
+            FROM dbo.MDispatchWater_Hist
+            WHERE DispatchID = @DispatchID AND VersionNo = @VersionNo;";
+
+            using (var db = new PetroBMContext())
+            {
+                var p1 = new SqlParameter("@DispatchID", dispatchId);
+                var p2 = new SqlParameter("@VersionNo", versionNo);
+
+                var model = db.Database
+                    .SqlQuery<DispatchWaterHistModel>(sql, p1, p2)
+                    .FirstOrDefault();
+
+                if (model == null)
+                    return HttpNotFound("Không tìm thấy bản ghi lịch sử nước.");
+
+                // Gợi ý: nếu bạn đặt view riêng cho Water:
+                return View("DispatchWaterHistView", model);
+
+            }
         }
 
         [HttpGet]
@@ -327,7 +389,7 @@ namespace PetroBM.Web.Controllers
                     byte.Parse(Session[Constants.Session_WareHouse].ToString()),
                     DispatchWaterModel.CertificateNumber,
                     DispatchWaterModel.DstPickup1,
-                    DispatchWaterModel.DstPickup1,
+                    DispatchWaterModel.DstPickup2,
                     DispatchWaterModel.DstReceive,
                     startdate,
                     enddate,
@@ -438,7 +500,7 @@ namespace PetroBM.Web.Controllers
                     byte.Parse(Session[Constants.Session_WareHouse].ToString()),
                     DispatchWaterModel.CertificateNumber,
                     DispatchWaterModel.DstPickup1,
-                    DispatchWaterModel.DstPickup1,
+                    DispatchWaterModel.DstPickup2,
                     DispatchWaterModel.DstReceive,
                     startdate,
                     enddate,
@@ -549,7 +611,7 @@ namespace PetroBM.Web.Controllers
                     byte.Parse(Session[Constants.Session_WareHouse].ToString()),
                     DispatchWaterModel.CertificateNumber,
                     DispatchWaterModel.DstPickup1,
-                    DispatchWaterModel.DstPickup1,
+                    DispatchWaterModel.DstPickup2,
                     DispatchWaterModel.DstReceive,
                     startdate,
                     enddate,
@@ -660,7 +722,7 @@ namespace PetroBM.Web.Controllers
                     byte.Parse(Session[Constants.Session_WareHouse].ToString()),
                     DispatchWaterModel.CertificateNumber,
                     DispatchWaterModel.DstPickup1,
-                    DispatchWaterModel.DstPickup1,
+                    DispatchWaterModel.DstPickup2,
                     DispatchWaterModel.DstReceive,
                     startdate,
                     enddate,
@@ -880,13 +942,6 @@ namespace PetroBM.Web.Controllers
             rs = DispatchWaterService.DeleteDispatch(dispatchId);
             return rs;
         }
-        public bool UpdateProcessStatusById(int dispatchId)
-        {
-            var rs = false;
-            rs = DispatchWaterService.UpdateProcessStatusById(dispatchId);
-            return rs;
-        }
-
 
         public bool UpdateWaterDispatch(int dispatchId, string timeStart, string timeStop, string vehicle, string product, string driverName1, string driverName2, string dstPickup1, string dstPickup2, string department, string note, string remark, string dstReceive, string From, string To, string Paragraph1, string Paragraph2, string Paragraph3, string Paragraph4, string user)
         {

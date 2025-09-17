@@ -37,7 +37,7 @@
 
         <!-- Upload file thay cho nhập URL -->
         <div class="form-group">
-            @Html.Label("Ảnh đại diện", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Image URL", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
                 <input type="file" name="ImageFile" class="form-control" accept="image/*" />
             </div>
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="display: none;">
             @Html.LabelFor(m => m.ImageUser, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
                 @Html.TextBoxFor(m => m.ImageUser, new { @class = "form-control" })

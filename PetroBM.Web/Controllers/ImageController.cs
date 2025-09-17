@@ -50,7 +50,7 @@ namespace PetroBM.Web.Controllers
                 ImageCode = "Sign",
                 ImageURL = "/Content/images/Sign.png",
                 ImagePosition = "1,2,3,4",
-                ImageUser = "Admin",
+                ImageUser = HttpContext.User.Identity.Name,
                 ProcessStatus = 0
             };
 
