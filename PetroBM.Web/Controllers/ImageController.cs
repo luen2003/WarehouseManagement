@@ -3,6 +3,7 @@ using PetroBM.Domain.Entities;
 using PetroBM.Services.Services;
 using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace PetroBM.Web.Controllers
@@ -58,8 +59,11 @@ namespace PetroBM.Web.Controllers
 
         // POST: Image/Create
         [HttpPost]
-        public ActionResult RegisterImage(MImage model)
+        public ActionResult RegisterImage(MImage model, HttpPostedFileBase ImageFile)
         {
+            // Bỏ qua lỗi validate cho ImageURL vì sẽ set thủ công
+            ModelState.Remove("ImageURL");
+
             if (!ModelState.IsValid)
             {
                 TempData["AlertMessage"] = "Thông tin không hợp lệ.";
@@ -68,6 +72,21 @@ namespace PetroBM.Web.Controllers
 
             try
             {
+                if (ImageFile != null && ImageFile.ContentLength > 0)
+                {
+                    var folderPath = Server.MapPath("~/Content/images/Sign/");
+                    if (!System.IO.Directory.Exists(folderPath))
+                    {
+                        System.IO.Directory.CreateDirectory(folderPath);
+                    }
+
+                    var fileName = System.IO.Path.GetFileName(ImageFile.FileName);
+                    var filePath = System.IO.Path.Combine(folderPath, fileName);
+
+                    ImageFile.SaveAs(filePath);
+
+                    model.ImageURL = "/Content/images/Sign/" + fileName;
+                }
 
                 var result = _imageService.CreateImage(model);
                 if (result)
@@ -88,6 +107,8 @@ namespace PetroBM.Web.Controllers
                 return View(model);
             }
         }
+
+
 
         // GET: Image/Edit/5
         [HttpGet]
@@ -111,6 +132,57 @@ namespace PetroBM.Web.Controllers
             }
         }
 
+        // POST: Image/Edit/5
+        /*[HttpPost]
+        public ActionResult EditImage(MImage model, HttpPostedFileBase ImageFile)
+        {
+            ModelState.Remove("ImageURL");
+
+            if (!ModelState.IsValid)
+            {
+                TempData["AlertMessage"] = "Dữ liệu không hợp lệ.";
+                return View(model);
+            }
+
+            try
+            {
+                if (ImageFile != null && ImageFile.ContentLength > 0)
+                {
+                    var folderPath = Server.MapPath("~/Content/images/Sign/");
+                    if (!System.IO.Directory.Exists(folderPath))
+                    {
+                        System.IO.Directory.CreateDirectory(folderPath);
+                    }
+
+                    var fileName = System.IO.Path.GetFileName(ImageFile.FileName);
+                    var filePath = System.IO.Path.Combine(folderPath, fileName);
+
+                    ImageFile.SaveAs(filePath);
+
+                    // Cập nhật đường dẫn ảnh mới
+                    model.ImageURL = "/Content/images/Sign/" + fileName;
+                }
+
+                var result = _imageService.UpdateImage(model);
+                if (result)
+                {
+                    TempData["AlertMessage"] = "Cập nhật thành công.";
+                    return RedirectToAction("ImageList");
+                }
+                else
+                {
+                    TempData["AlertMessage"] = "Không thể cập nhật ảnh.";
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error updating image", ex);
+                TempData["AlertMessage"] = "Lỗi khi cập nhật.";
+                return View(model);
+            }
+        }
+        */
         // POST: Image/Edit/5
         [HttpPost]
         public ActionResult EditImage(MImage model)
@@ -142,6 +214,7 @@ namespace PetroBM.Web.Controllers
                 return View(model);
             }
         }
+
 
         // POST: Image/Delete/5
         [HttpPost]

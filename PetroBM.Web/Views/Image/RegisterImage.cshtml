@@ -14,7 +14,7 @@
     </div>
 }
 
-@using (Html.BeginForm("RegisterImage", "Image", FormMethod.Post, new { @id = "frmRegisterImage" }))
+@using (Html.BeginForm("RegisterImage", "Image", FormMethod.Post, new { @id = "frmRegisterImage", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
@@ -35,11 +35,11 @@
             </div>
         </div>
 
+        <!-- Upload file thay cho nhập URL -->
         <div class="form-group">
-            @Html.LabelFor(m => m.ImageURL, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Ảnh đại diện", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.TextBoxFor(m => m.ImageURL, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.ImageURL, "", new { @class = "text-danger" })
+                <input type="file" name="ImageFile" class="form-control" accept="image/*" />
             </div>
         </div>
 
@@ -75,3 +75,4 @@
         </div>
     </div>
 }
+
