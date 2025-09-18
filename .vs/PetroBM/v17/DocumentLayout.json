@@ -3,7 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\petrobm.web\\views\\dispatchwater\\dispatchdetailwater_3.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\petrobm.web\\controllers\\dispatchwatercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|solutionrelative:petrobm.web\\controllers\\dispatchwatercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|c:\\users\\dell\\documents\\kho_tkv_dev (2)\\kho_tkv_dev\\petrobm.web\\views\\dispatchwater\\dispatchdetailwater_3.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|solutionrelative:petrobm.web\\views\\dispatchwater\\dispatchdetailwater_3.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
@@ -19,16 +23,12 @@
       "RelativeMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|solutionrelative:petrobm.web\\views\\dispatchwater\\dispatchdetailwater_1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{99626AC3-CFFF-49C1-8ECE-DE6B64BE3CA2}|PetroBM.Services\\PetroBM.Services.csproj|c:\\users\\dell\\documents\\kho_tkv_dev (2)\\kho_tkv_dev\\petrobm.services\\services\\dispatchwaterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{99626AC3-CFFF-49C1-8ECE-DE6B64BE3CA2}|PetroBM.Services\\PetroBM.Services.csproj|C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\petrobm.services\\services\\dispatchwaterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{99626AC3-CFFF-49C1-8ECE-DE6B64BE3CA2}|PetroBM.Services\\PetroBM.Services.csproj|solutionrelative:petrobm.services\\services\\dispatchwaterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\petrobm.web\\models\\dispatchwaterhistmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|solutionrelative:petrobm.web\\models\\dispatchwaterhistmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\petrobm.web\\controllers\\dispatchwatercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|solutionrelative:petrobm.web\\controllers\\dispatchwatercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F965FFD8-2670-453E-8743-AAE3035BC607}|PetroBM.Web\\PetroBM.Web.csproj|C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\petrobm.web\\controllers\\smartcacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -123,19 +123,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "DispatchDetailWater_1.cshtml",
-              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_1.cshtml",
-              "RelativeDocumentMoniker": "PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_1.cshtml",
-              "ToolTip": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_1.cshtml",
-              "RelativeToolTip": "PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_1.cshtml",
-              "ViewState": "AgIAAEMAAAAAAAAAAAArwE0AAABMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-11T09:39:26.869Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "DispatchDetailWater.cshtml",
               "DocumentMoniker": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater.cshtml",
               "RelativeDocumentMoniker": "PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater.cshtml",
@@ -148,20 +135,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "DispatchDetailWater_2.cshtml",
               "DocumentMoniker": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_2.cshtml",
               "RelativeDocumentMoniker": "PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_2.cshtml",
               "ToolTip": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_2.cshtml",
               "RelativeToolTip": "PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_2.cshtml",
-              "ViewState": "AgIAAEMAAAAAAAAAAAArwE0AAABMAAAAAAAAAA==",
+              "ViewState": "AgIAADABAAAAAAAAAAAcwD0BAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-09-12T02:15:04.868Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "DispatchDetailWater_3.cshtml",
               "DocumentMoniker": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_3.cshtml",
               "RelativeDocumentMoniker": "PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_3.cshtml",
@@ -174,7 +161,32 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DispatchWaterController.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Controllers\\DispatchWaterController.cs",
+              "RelativeDocumentMoniker": "PetroBM.Web\\Controllers\\DispatchWaterController.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Controllers\\DispatchWaterController.cs",
+              "RelativeToolTip": "PetroBM.Web\\Controllers\\DispatchWaterController.cs",
+              "ViewState": "AgIAAL0CAAAAAAAAAAAAAEIDAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-10T04:01:58.335Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "DispatchDetailWater_1.cshtml",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_1.cshtml",
+              "RelativeDocumentMoniker": "PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_1.cshtml",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_1.cshtml",
+              "RelativeToolTip": "PetroBM.Web\\Views\\DispatchWater\\DispatchDetailWater_1.cshtml",
+              "ViewState": "AgIAAEMAAAAAAAAAAAArwE0AAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-11T09:39:26.869Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "DispatchWaterService.cs",
               "DocumentMoniker": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Services\\Services\\DispatchWaterService.cs",
               "RelativeDocumentMoniker": "PetroBM.Services\\Services\\DispatchWaterService.cs",
@@ -182,24 +194,11 @@
               "RelativeToolTip": "PetroBM.Services\\Services\\DispatchWaterService.cs",
               "ViewState": "AgIAALEBAAAAAAAAAAAgwLsBAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-11T09:27:13.701Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-11T09:27:13.701Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "DispatchWaterController.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Controllers\\DispatchWaterController.cs",
-              "RelativeDocumentMoniker": "PetroBM.Web\\Controllers\\DispatchWaterController.cs",
-              "ToolTip": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Controllers\\DispatchWaterController.cs",
-              "RelativeToolTip": "PetroBM.Web\\Controllers\\DispatchWaterController.cs",
-              "ViewState": "AgIAAKcDAAAAAAAAAAAgwLEDAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-10T04:01:58.335Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
               "Title": "DispatchWaterHistModel.cs",
               "DocumentMoniker": "C:\\Users\\DELL\\Documents\\KHO_TKV_DEV (2)\\KHO_TKV_DEV\\PetroBM.Web\\Models\\DispatchWaterHistModel.cs",
               "RelativeDocumentMoniker": "PetroBM.Web\\Models\\DispatchWaterHistModel.cs",

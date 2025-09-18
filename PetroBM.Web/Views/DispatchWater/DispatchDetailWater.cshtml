@@ -145,12 +145,15 @@
                     <th>
 
                     </th>
+                    <th>
+
+                    </th>
                 </tr>
             </thead>
 
             @{
                 var i = 0; var hong = "";
-                foreach (var item in Model.ListIEDispatch.Where(x => x.ProcessStatus == 0))
+                foreach (var item in Model.ListIEDispatch)
                 {
                     i = i + 1;
                         <tr>
@@ -339,7 +342,7 @@
                 url: '/DispatchWater/UpdateProcessStatusById/',
                 type: 'POST',
                 data: {
-                    "DispatchID": dispatchID
+                    "dispatchID": dispatchID
                 },
                 dataType: 'bool',
                 success: function (result) {

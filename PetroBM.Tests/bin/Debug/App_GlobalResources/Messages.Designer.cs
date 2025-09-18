@@ -124,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nguyễn Kim Thắng.
+        ///   Looks up a localized string similar to Dinh Luong Ta.
         /// </summary>
         internal static string ManagerName {
             get {

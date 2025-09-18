@@ -385,21 +385,25 @@ namespace PetroBM.Web.Controllers
                 var startTime = DispatchWaterModel.TimeOrder;
                 var endTime = DispatchWaterModel.Dispatch.TimeOrder.ToString(Constants.DATE_FORMAT);
 
-                DispatchWaterModel.ListIEDispatch = DispatchWaterService.GetList_Dispatch(
-                    byte.Parse(Session[Constants.Session_WareHouse].ToString()),
-                    DispatchWaterModel.CertificateNumber,
-                    DispatchWaterModel.DstPickup1,
-                    DispatchWaterModel.DstPickup2,
-                    DispatchWaterModel.DstReceive,
-                    startdate,
-                    enddate,
-                    DispatchWaterModel.From,
-                    DispatchWaterModel.To,
-                    DispatchWaterModel.Paragraph1,
-                    DispatchWaterModel.Paragraph2,
-                    DispatchWaterModel.Paragraph3,
-                    DispatchWaterModel.Paragraph4
-                ).ToPagedList(pageNumber, Constants.PAGE_SIZE);
+                var fullList = DispatchWaterService.GetList_Dispatch(
+    byte.Parse(Session[Constants.Session_WareHouse].ToString()),
+    DispatchWaterModel.CertificateNumber,
+    DispatchWaterModel.DstPickup1,
+    DispatchWaterModel.DstPickup2,
+    DispatchWaterModel.DstReceive,
+    startdate,
+    enddate,
+    DispatchWaterModel.From,
+    DispatchWaterModel.To,
+    DispatchWaterModel.Paragraph1,
+    DispatchWaterModel.Paragraph2,
+    DispatchWaterModel.Paragraph3,
+    DispatchWaterModel.Paragraph4
+);
+                var filtered = fullList.Where(x => x.ProcessStatus == 0).ToList();
+                var pagedList = filtered.Skip((pageNumber - 1) * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE).ToList();
+                var totalItems = filtered.Count();
+                DispatchWaterModel.ListIEDispatch = new StaticPagedList<MDispatchWater>(pagedList, pageNumber, Constants.PAGE_SIZE, totalItems);
 
 
                 // Phần này nên viết lúc đăng nhập
@@ -496,21 +500,25 @@ namespace PetroBM.Web.Controllers
                 var startTime = DispatchWaterModel.TimeOrder;
                 var endTime = DispatchWaterModel.Dispatch.TimeOrder.ToString(Constants.DATE_FORMAT);
 
-                DispatchWaterModel.ListIEDispatch = DispatchWaterService.GetList_Dispatch(
-                    byte.Parse(Session[Constants.Session_WareHouse].ToString()),
-                    DispatchWaterModel.CertificateNumber,
-                    DispatchWaterModel.DstPickup1,
-                    DispatchWaterModel.DstPickup2,
-                    DispatchWaterModel.DstReceive,
-                    startdate,
-                    enddate,
-                    DispatchWaterModel.From,
-                    DispatchWaterModel.To,
-                    DispatchWaterModel.Paragraph1,
-                    DispatchWaterModel.Paragraph2,
-                    DispatchWaterModel.Paragraph3,
-                    DispatchWaterModel.Paragraph4
-                ).ToPagedList(pageNumber, Constants.PAGE_SIZE);
+                var fullList = DispatchWaterService.GetList_Dispatch(
+    byte.Parse(Session[Constants.Session_WareHouse].ToString()),
+    DispatchWaterModel.CertificateNumber,
+    DispatchWaterModel.DstPickup1,
+    DispatchWaterModel.DstPickup2,
+    DispatchWaterModel.DstReceive,
+    startdate,
+    enddate,
+    DispatchWaterModel.From,
+    DispatchWaterModel.To,
+    DispatchWaterModel.Paragraph1,
+    DispatchWaterModel.Paragraph2,
+    DispatchWaterModel.Paragraph3,
+    DispatchWaterModel.Paragraph4
+);
+                var filtered = fullList.Where(x => x.ProcessStatus <= 1).ToList();
+                var pagedList = filtered.Skip((pageNumber - 1) * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE).ToList();
+                var totalItems = filtered.Count();
+                DispatchWaterModel.ListIEDispatch = new StaticPagedList<MDispatchWater>(pagedList, pageNumber, Constants.PAGE_SIZE, totalItems);
                 DispatchWaterModel.MImage = imageService.GetImageByUsername(HttpContext.User.Identity.Name);
 
 
@@ -607,21 +615,25 @@ namespace PetroBM.Web.Controllers
                 var startTime = DispatchWaterModel.TimeOrder;
                 var endTime = DispatchWaterModel.Dispatch.TimeOrder.ToString(Constants.DATE_FORMAT);
 
-                DispatchWaterModel.ListIEDispatch = DispatchWaterService.GetList_Dispatch(
-                    byte.Parse(Session[Constants.Session_WareHouse].ToString()),
-                    DispatchWaterModel.CertificateNumber,
-                    DispatchWaterModel.DstPickup1,
-                    DispatchWaterModel.DstPickup2,
-                    DispatchWaterModel.DstReceive,
-                    startdate,
-                    enddate,
-                    DispatchWaterModel.From,
-                    DispatchWaterModel.To,
-                    DispatchWaterModel.Paragraph1,
-                    DispatchWaterModel.Paragraph2,
-                    DispatchWaterModel.Paragraph3,
-                    DispatchWaterModel.Paragraph4
-                ).ToPagedList(pageNumber, Constants.PAGE_SIZE);
+                var fullList = DispatchWaterService.GetList_Dispatch(
+    byte.Parse(Session[Constants.Session_WareHouse].ToString()),
+    DispatchWaterModel.CertificateNumber,
+    DispatchWaterModel.DstPickup1,
+    DispatchWaterModel.DstPickup2,
+    DispatchWaterModel.DstReceive,
+    startdate,
+    enddate,
+    DispatchWaterModel.From,
+    DispatchWaterModel.To,
+    DispatchWaterModel.Paragraph1,
+    DispatchWaterModel.Paragraph2,
+    DispatchWaterModel.Paragraph3,
+    DispatchWaterModel.Paragraph4
+);
+                var filtered = fullList.Where(x => x.ProcessStatus == 2).ToList();
+                var pagedList = filtered.Skip((pageNumber - 1) * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE).ToList();
+                var totalItems = filtered.Count();
+                DispatchWaterModel.ListIEDispatch = new StaticPagedList<MDispatchWater>(pagedList, pageNumber, Constants.PAGE_SIZE, totalItems);
 
                 DispatchWaterModel.MImage = imageService.GetImageByUsername(HttpContext.User.Identity.Name);
 
@@ -718,21 +730,25 @@ namespace PetroBM.Web.Controllers
                 var startTime = DispatchWaterModel.TimeOrder;
                 var endTime = DispatchWaterModel.Dispatch.TimeOrder.ToString(Constants.DATE_FORMAT);
 
-                DispatchWaterModel.ListIEDispatch = DispatchWaterService.GetList_Dispatch(
-                    byte.Parse(Session[Constants.Session_WareHouse].ToString()),
-                    DispatchWaterModel.CertificateNumber,
-                    DispatchWaterModel.DstPickup1,
-                    DispatchWaterModel.DstPickup2,
-                    DispatchWaterModel.DstReceive,
-                    startdate,
-                    enddate,
-                    DispatchWaterModel.From,
-                    DispatchWaterModel.To,
-                    DispatchWaterModel.Paragraph1,
-                    DispatchWaterModel.Paragraph2,
-                    DispatchWaterModel.Paragraph3,
-                    DispatchWaterModel.Paragraph4
-                ).ToPagedList(pageNumber, Constants.PAGE_SIZE);
+                var fullList = DispatchWaterService.GetList_Dispatch(
+    byte.Parse(Session[Constants.Session_WareHouse].ToString()),
+    DispatchWaterModel.CertificateNumber,
+    DispatchWaterModel.DstPickup1,
+    DispatchWaterModel.DstPickup2,
+    DispatchWaterModel.DstReceive,
+    startdate,
+    enddate,
+    DispatchWaterModel.From,
+    DispatchWaterModel.To,
+    DispatchWaterModel.Paragraph1,
+    DispatchWaterModel.Paragraph2,
+    DispatchWaterModel.Paragraph3,
+    DispatchWaterModel.Paragraph4
+);
+                var filtered = fullList.Where(x => x.ProcessStatus == 3).ToList();
+                var pagedList = filtered.Skip((pageNumber - 1) * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE).ToList();
+                var totalItems = filtered.Count();
+                DispatchWaterModel.ListIEDispatch = new StaticPagedList<MDispatchWater>(pagedList, pageNumber, Constants.PAGE_SIZE, totalItems);
                 DispatchWaterModel.MImage = imageService.GetImageByUsername(HttpContext.User.Identity.Name);
 
 
@@ -815,6 +831,12 @@ namespace PetroBM.Web.Controllers
             log.Info("view");
             DispatchWaterModel.Dispatch = DispatchWaterService.FindDispatchWaterById(id);
             return View(DispatchWaterModel);
+        }
+        public bool UpdateProcessStatusById(int dispatchId)
+        {
+            var rs = false;
+            rs = DispatchWaterService.UpdateProcessStatusById(dispatchId);
+            return rs;
         }
 
         public ActionResult DispatchWaterView(int Id, DispatchWaterModel DispatchWaterModel)
@@ -935,6 +957,7 @@ namespace PetroBM.Web.Controllers
             log.Info("Finish controller dispatchView");
             return View(DispatchWaterModel);
         }
+
 
         public bool DeleteWaterDispatch(int dispatchId)
         {
