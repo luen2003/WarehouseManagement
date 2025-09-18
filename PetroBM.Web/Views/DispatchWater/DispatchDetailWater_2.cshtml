@@ -409,7 +409,8 @@
                 content += "    </div>";
                 content += "    <div style='width:50%;float:left;padding-top: 16px; '>";
                 content += "        <center>";
-                content += "<strong>" + GenTimeNow("Hạ long") + "</strong><br><b>TL. GIÁM ĐỐC</b><br><b>TP/PTP KHĐT</b><br><br>" + "<img src='" + imageUrl + "' style='width:100px; height:auto;'/>" + "<br><br><strong>Nguyễn Văn A/B</strong>";
+                content += "<strong>" + GenTimeNow("Hạ long") + "</strong><br><b>TL. GIÁM ĐỐC</b><br><b>TP/PTP KHĐT</b><br><br>" + "<img src='" + imageUrl + "' style='width:100px; height:auto;'/>" + "<br><br>";
+                content += "<strong>" + @Html.Raw(Json.Encode(@Model.CustomerName)) + "</strong>";
                 content += "        </center>";
                 content += "    </div>";
                 content += "</div>";

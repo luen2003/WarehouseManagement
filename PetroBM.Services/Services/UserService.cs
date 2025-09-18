@@ -44,6 +44,7 @@ namespace PetroBM.Services.Services
 
 		string GetSerialNumberByUserName(string userName);
 
+		string GetFullNameByUserName(string userName);
 
     }
 
@@ -112,6 +113,22 @@ namespace PetroBM.Services.Services
 				log.Error(ex);
 			}
 			return string.Empty;
+        }
+		        public string GetFullNameByUserName(string userName)
+        {
+            try
+            {
+                var user = this.GetUser(userName);
+                if (user != null && user.DeleteFlg == Constants.FLAG_OFF)
+                {
+                    return user.FullName;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+            return string.Empty;
         }
 
         public IEnumerable<MUser> GetAllUser()

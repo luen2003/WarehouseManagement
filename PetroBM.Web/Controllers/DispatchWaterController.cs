@@ -404,6 +404,7 @@ namespace PetroBM.Web.Controllers
                 var totalItems = filtered.Count();
                 DispatchWaterModel.ListIEDispatch = new StaticPagedList<MDispatchWater>(pagedList, pageNumber, Constants.PAGE_SIZE, totalItems);
 
+                DispatchWaterModel.CustomerName = UserService.GetFullNameByUserName(HttpContext.User.Identity.Name);
 
                 // Phần này nên viết lúc đăng nhập
                 // ResourceManager rm = new ResourceManager("Resources.Messages", System.Reflection.Assembly.Load("App_GlobalResources"));
@@ -518,6 +519,7 @@ namespace PetroBM.Web.Controllers
                 var pagedList = filtered.Skip((pageNumber - 1) * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE).ToList();
                 var totalItems = filtered.Count();
                 DispatchWaterModel.ListIEDispatch = new StaticPagedList<MDispatchWater>(pagedList, pageNumber, Constants.PAGE_SIZE, totalItems);
+                DispatchWaterModel.CustomerName = UserService.GetFullNameByUserName(HttpContext.User.Identity.Name);
                 DispatchWaterModel.MImage = imageService.GetImageByUsername(HttpContext.User.Identity.Name);
 
 
@@ -633,7 +635,7 @@ namespace PetroBM.Web.Controllers
                 var pagedList = filtered.Skip((pageNumber - 1) * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE).ToList();
                 var totalItems = filtered.Count();
                 DispatchWaterModel.ListIEDispatch = new StaticPagedList<MDispatchWater>(pagedList, pageNumber, Constants.PAGE_SIZE, totalItems);
-
+                DispatchWaterModel.CustomerName = UserService.GetFullNameByUserName(HttpContext.User.Identity.Name);
                 DispatchWaterModel.MImage = imageService.GetImageByUsername(HttpContext.User.Identity.Name);
 
                 // Phần này nên viết lúc đăng nhập
@@ -748,6 +750,7 @@ namespace PetroBM.Web.Controllers
                 var pagedList = filtered.Skip((pageNumber - 1) * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE).ToList();
                 var totalItems = filtered.Count();
                 DispatchWaterModel.ListIEDispatch = new StaticPagedList<MDispatchWater>(pagedList, pageNumber, Constants.PAGE_SIZE, totalItems);
+                DispatchWaterModel.CustomerName = UserService.GetFullNameByUserName(HttpContext.User.Identity.Name);
                 DispatchWaterModel.MImage = imageService.GetImageByUsername(HttpContext.User.Identity.Name);
 
 
@@ -858,6 +861,7 @@ namespace PetroBM.Web.Controllers
             DispatchWaterModel.ListCustomer = CustomerService.GetAllCustomer().ToList();
             DispatchWaterModel.MImage = imageService.GetImageByUsername(HttpContext.User.Identity.Name);
             DispatchWaterModel.ProcessStatus = UserService.GetJobTitlesByUserName(HttpContext.User.Identity.Name);
+            DispatchWaterModel.CustomerName = UserService.GetFullNameByUserName(HttpContext.User.Identity.Name);
 
             //commandModel.TimeOrder = DateTime.Now.ToString(Constants.DATE_FORMAT); 
             #region Khách hàng
@@ -886,6 +890,8 @@ namespace PetroBM.Web.Controllers
             DispatchWaterModel.LstProduct = lstP;
             DispatchWaterModel.ListProduct = ProductService.GetAllProduct().ToList();
             DispatchWaterModel.ListVehicle = shipService.GetAllShip().ToList();
+            DispatchWaterModel.CustomerName = UserService.GetFullNameByUserName(HttpContext.User.Identity.Name);
+
 
             //Lấy danh hàng hóa 
             DispatchWaterModel.ListTemProduct = ProductService.GetAllProduct().Select(x => new DataValue

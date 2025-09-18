@@ -146,7 +146,8 @@
                 content += "    </div>";
                 content += "    <div style='width:50%;float:left;padding-top: 16px; '>";
                 content += "        <center>";
-                content += "<strong>" + GenTimeNow("Hạ long") + "</strong><br><b>TL. GIÁM ĐỐC</b><br><b>TP/PTP KHĐT</b><br><br>" + "<img src='" + imageUrl + "' style='width:100px; height:auto;'/>" + "<br><br><strong>Nguyễn Văn A/B</strong>";
+                content += "<strong>" + GenTimeNow("Hạ long") + "</strong><br><b>TL. GIÁM ĐỐC</b><br><b>TP/PTP KHĐT</b><br><br>" + "<img src='" + imageUrl + "' style='width:100px; height:auto;'/>" + "<br><br>";
+                content += "<strong>" + @Html.Raw(Json.Encode(@Model.CustomerName)) + "</strong>";
                 content += "        </center>";
                 content += "    </div>";
                 content += "</div>";
@@ -575,7 +576,7 @@
             <input type="button" value="Về Danh Mục" class="btn btn-primary" onclick="ReturnDispatchList()" />
             @*<input type="button" value="In lệnh" class="btn btn-primary" onclick="Print2()" />*@
             <input type="button" value="Thêm lệnh" class="btn btn-primary" onclick="ReturnDispatchAdd()" />
-            <input type="button" value="In lệnh" class="btn btn-primary" onclick="PrintInventoryOutput(@Model.Dispatch.CertificateNumber)" />
+            <input type="button" value="In lệnh" class="btn btn-primary" onclick="PrintInventoryOutput(@Model.Dispatch.DispatchID)" />
             <button type="button" class="btn btn-success" onclick="UpdateDispatch(@Model.Dispatch.DispatchID);" id="btnSave">Lưu</button>
             <button type="button" class="btn btn-primary" onclick="DeleteDispatch(@Model.Dispatch.DispatchID);">Xóa</button>
             @*<input type="button" value="Cập nhật khách" class="btn btn-primary" onclick="UpdateCustomer()" />*@
