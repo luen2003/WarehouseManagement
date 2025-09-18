@@ -34,7 +34,6 @@ namespace PetroBM.Web.Controllers
     public class DispatchWaterController : Controller
     {
         private readonly IDispatchWaterService DispatchWaterService;
-
         private readonly ILocationService LocationService;
         private readonly IUserService UserService;
         private readonly IConfigurationService ConfigurationService;
@@ -858,6 +857,7 @@ namespace PetroBM.Web.Controllers
             DispatchWaterModel.ListProduct = ProductService.GetAllProduct().ToList();
             DispatchWaterModel.ListCustomer = CustomerService.GetAllCustomer().ToList();
             DispatchWaterModel.MImage = imageService.GetImageByUsername(HttpContext.User.Identity.Name);
+            DispatchWaterModel.ProcessStatus = UserService.GetJobTitlesByUserName(HttpContext.User.Identity.Name);
 
             //commandModel.TimeOrder = DateTime.Now.ToString(Constants.DATE_FORMAT); 
             #region Khách hàng

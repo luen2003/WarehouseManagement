@@ -8,6 +8,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var listIEDispatch = JsonConvert.SerializeObject(Model.ListIEDispatch);
 }
+@{
+    var redirectUrl = "/DispatchWater/DispatchDetailWater"; // Default
+
+    switch (Model.ProcessStatus)
+    {
+        case 1:
+            redirectUrl = "/DispatchWater/DispatchDetailWater_1";
+            break;
+        case 2:
+            redirectUrl = "/DispatchWater/DispatchDetailWater_2";
+            break;
+        case 3:
+            redirectUrl = "/DispatchWater/DispatchDetailWater_3";
+            break;
+    }
+}
+
 <script>
     var imageUrl = '@(Model.MImage?.ImageURL ?? "")';
 </script>
@@ -39,9 +56,9 @@
     var objListDispatch = @Html.Raw(listIEDispatch); //Chi tiết lệnh điều vận
     var objListProduct = @Html.Raw(Json.Encode(@Model.ListTemProduct)); //danh sách hàng hóa
 
-    function ReturnDispatchList()
-    {
-        window.location.href = "/DispatchWater/DispatchDetailWater";
+    function ReturnDispatchList() {
+        var redirectUrl = '@redirectUrl';
+        window.location.href = redirectUrl;
     }
 
     function ReturnCommandAdd() {
@@ -389,7 +406,7 @@
                                     ),
                                     "-- Chọn phân xưởng --",
                                     new { @class = "form-control", @id = "Department" })
-                                @Html.ValidationMessageFor(model => model.Dispatch.Department, "", new { @class = "text-danger" })
+                                @*@Html.ValidationMessageFor(model => model.Dispatch.Department, "", new { @class = "text-danger" })*@
                             </div>
 
                         </div>
